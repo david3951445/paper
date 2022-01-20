@@ -59,34 +59,14 @@ end
 C = [1 0 0 0; 0 0 1 0];
 
 %% LMI, find L, K
-options = sdpsettings('solver','lmilab');
+options = sdpsettings('solver','sdpt3');
 options = sdpsettings(options,'verbose',0);
 
 Kf = zeros(2, 4, rule.num); Lf = zeros(4, 2, rule.num);
 for i = 1 : rule.num
-    disp([num2str(i), 'st local LMI'])
     A = Af(:, :, i); B = Bf(:, :, i);
     
     % YALMIP method
-%     % STEP 1 : solve P2, L
-%     setlmis([]);
-%     % var
-%     W22 = lmivar(1, [4 1]); % 4x4
-%     Y = lmivar(2, [2 4]); % 2x4
-%     % LMIs
-%     lmiterm([-1 1 1 W22], 1, 1); % P22>0
-%     lmiterm([2 1 1 W22], A, 1, 's');
-%     lmiterm([2 1 1 Y], B, 1, 's');
-%     lmiterm([2 1 1 0], rho^(-2)*I);
-%     lmiterm([2 1 2 W22], 1, 1);
-%     lmiterm([2 2 2 0], -inv(Q));
-%     % solve
-%     lmis = getlmis; [~,xfeas] = feasp(lmis);
-%     W22 = dec2mat(lmis, xfeas, W22);
-%     Y = dec2mat(lmis, xfeas, Y);
-%     P22 = I/W22;
-%     K = Y*P22;
-%     M44 = (A+B*K)'*P22 + P22*(A+B*K) + rho^(-2)*P22*P22 + Q;
     % STEP 1 : solve P2, L
     W22 = sdpvar(4, 4); % symmetric
     Y = sdpvar(2, 4); % full
@@ -110,7 +90,6 @@ for i = 1 : rule.num
 
     P22 = I/W22;
     K = Y*P22;
-    M44 = addSym((A + B*K)'*P22) + rho^(-2)*P22*P22 + Q;
     
     % STEP 2 : solve W1, K
     P11 = sdpvar(4, 4);
@@ -133,7 +112,7 @@ for i = 1 : rule.num
     M34 = zeros(2, 4);
     M35 = zeros(2, 4);
     M36 = zeros(2, 4);
-    M44 = M44;
+    M44 = addSym((A + B*K)'*P22) + rho^(-2)*P22*P22 + Q;
     M45 = -P22*B*K - Q;
     M46 = zeros(4);
     M55 = addSym(P33*Ar) + Q;
