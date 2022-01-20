@@ -59,7 +59,7 @@ end
 C = [1 0 0 0; 0 0 1 0];
 
 %% LMI, find L, K
-options = sdpsettings('solver','lmilab');
+options = sdpsettings('solver','sdpt3');
 options = sdpsettings(options,'verbose',0);
 
 Kf = zeros(2, 4, rule.num); Lf = zeros(4, 2, rule.num);
@@ -68,37 +68,18 @@ for i = 1 : rule.num
     A = Af(:, :, i); B = Bf(:, :, i);
     
     % YALMIP method
-%     % STEP 1 : solve P2, L
-%     setlmis([]);
-%     % var
-%     W22 = lmivar(1, [4 1]); % 4x4
-%     Y = lmivar(2, [2 4]); % 2x4
-%     % LMIs
-%     lmiterm([-1 1 1 W22], 1, 1); % P22>0
-%     lmiterm([2 1 1 W22], A, 1, 's');
-%     lmiterm([2 1 1 Y], B, 1, 's');
-%     lmiterm([2 1 1 0], rho^(-2)*I);
-%     lmiterm([2 1 2 W22], 1, 1);
-%     lmiterm([2 2 2 0], -inv(Q));
-%     % solve
-%     lmis = getlmis; [~,xfeas] = feasp(lmis);
-%     W22 = dec2mat(lmis, xfeas, W22);
-%     Y = dec2mat(lmis, xfeas, Y);
-%     P22 = I/W22;
-%     K = Y*P22;
-%     M44 = (A+B*K)'*P22 + P22*(A+B*K) + rho^(-2)*P22*P22 + Q;
     % STEP 1 : solve P2, L
     W22 = sdpvar(4, 4); % symmetric
     Y = sdpvar(2, 4); % full
 
-    M11 = addSym(A*W22) + addSym(B*Y) + rho^(-2)*I;
+    M11 = A*W22 + W22*A' + B*Y +  + rho^(-2)*I;
     M12 = W22;
     M22 = -inv(Q);
 
     LMI = [M11  M12
            M12' M22];
 
-    sol = optimize([LMI <= 0, W22 >= 0], [], options);
+    sol = optimize([LMI <= 0, W22 >= 0], []);
 
     if strcmp(sol.info, 'Infeasible problem (MOSEK)')
         disp('Infeasible problem (MOSEK)');
@@ -150,7 +131,7 @@ for i = 1 : rule.num
     ];
     
 %     solvesdp([LMI <= 0, P11 >= 0, P33 >= 0])
-    sol = optimize([LMI <= 0, P11 >= 0, P33 >= 0], [], options);
+    sol = optimize([LMI <= 0, P11 >= 0, P33 >= 0], []);
 
     P11 = value(P11);
     P33 = value(P33);
@@ -252,7 +233,7 @@ Plot(t, xb);
 %     end
 % end
 
-rmpath(genpath('..\..\src'))
+removepath(genpath('..\..\src'))
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)
