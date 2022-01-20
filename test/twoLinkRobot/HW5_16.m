@@ -1,8 +1,8 @@
 clc; clear; clear global;
 close all
+rb = robot();
 
 % fixed parameters
-m1 = 5; m2 = 3; l1 = 1; l2 = 2; g = 9.8;
 I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
 
@@ -48,12 +48,15 @@ for i = 1 : rule.num
     % 1, 3 row
     Af(1, 2, i) = 1; Af(3, 4, i) = 1;
     % 2, 4 row
-    Af(2, :, i) = regress_2(var1, @f1, m1, m2, l1, l2, g)';
-    Af(4, :, i) = regress_2(var1, @f2, m1, m2, l1, l2, g)';
+    ptrf1 = @rb.f1;
+    ptrh = @h;
+    ptrf1([0;0;0;0])
+    Af(2, :, i) = regress_2(var1, @rb.f1)';
+    Af(4, :, i) = regress_2(var1, @rb.f2)';
     
     % B
-    Bf(2, :, i) = [g11(var1, m1, m2, l1) g12(var1, m1, m2, l1, l2)];
-    Bf(4, :, i) = [g12(var1, m1, m2, l1, l2) g22(var1, m1, m2, l2)];
+    Bf(2, :, i) = [rb.g11(var1) rb.g12(var1)];
+    Bf(4, :, i) = [rb.g12(var1) rb.g22(var1)];
 end
 % [Af, Bf] = para();
 C = [1 0 0 0; 0 0 1 0];
@@ -147,19 +150,19 @@ for i = 1 : length(t) - 1
             case 'n'
                 % x_hat, x, xr
                 kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j);
-                k1 = f(x(:, i), K*(xh(:, i)-xr(:, i)), m1, m2, l1, l2, g) + w(j);
+                k1 = rb.f(x(:, i), K*(xh(:, i)-xr(:, i))) + w(j);
                 kr1 = fl(j, xr(:, i), r, Ar, I);
                 
                 kh2 = fh(A, B, C, K, L, x(:, i)+0.5*k1*dt, xh(:, i)+0.5*kh1*dt, xr(:, i)) - L*v(:, j+1);
-                k2 = f(x(:, i)+0.5*k1*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh1-kr1)*dt), m1, m2, l1, l2, g) + w(j+1);
+                k2 = rb.f(x(:, i)+0.5*k1*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh1-kr1)*dt)) + w(j+1);
                 kr2 = fl(j+1, xr(:, i)+0.5*kr1*dt, r, Ar, I);
                 
                 kh3 = fh(A, B, C, K, L, x(:, i)+0.5*k2*dt, xh(:, i)+0.5*kh2*dt, xr(:, i)) - L*v(:, j+1);
-                k3 = f(x(:, i)+0.5*k2*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh2-kr2)*dt), m1, m2, l1, l2, g) + w(j+1);
+                k3 = rb.f(x(:, i)+0.5*k2*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh2-kr2)*dt)) + w(j+1);
                 kr3 = fl(j+1, xr(:, i)+0.5*kr2*dt, r, Ar, I);
                         
                 kh4 = fh(A, B, C, K, L, x(:, i)+k3*dt, xh(:, i)+kh3*dt, xr(:, i)) - L*v(:, j+2);
-                k4 = f(x(:, i)+k3*dt, K*(xh(:, i)-xr(:, i) + (kh3-kr3)*dt), m1, m2, l1, l2, g) + w(j+2);
+                k4 = rb.f(x(:, i)+k3*dt, K*(xh(:, i)-xr(:, i) + (kh3-kr3)*dt)) + w(j+2);
                 kr4 = fl(j+2, xr(:, i)+kr3*dt, r, Ar, I);
                 
                 temp1 = temp1 + hh.*(kh1+2*kh2+2*kh3+kh4)*dt/6;
@@ -198,15 +201,15 @@ end
 Plot(t, xb);
 
 %% controlabliliy
-for i = 1 : rule.num
-    A = Af(:, :, i); B=Bf(:, :, i);
-    if rank(ctrb(A,B)) ~= length(A)
-        disp('uncontrollable')
-    end
-    if rank(ctrb(A,C')) ~= length(A)
-        disp('unobservable')
-    end
-end
+% for i = 1 : rule.num
+%     A = Af(:, :, i); B=Bf(:, :, i);
+%     if rank(ctrb(A,B)) ~= length(A)
+%         disp('uncontrollable')
+%     end
+%     if rank(ctrb(A,C')) ~= length(A)
+%         disp('unobservable')
+%     end
+% end
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)
@@ -230,13 +233,6 @@ end
 
 function y = fh(A, B, C, K, L, x, xh, xr) % dx_hat/dt
 y = A*xh + B*K*(xh-xr) + L*C*(x-xh);
-end
-
-function y = f(x, u, m1, m2, l1, l2, g) % dx/dt
-y = [x(2);
-    f1(x, m1, m2, l1, l2, g)+[g11(x, m1, m2, l1) g12(x, m1, m2, l1, l2)]*u;
-    x(4);
-    f2(x, m1, m2, l1, l2, g)+[g12(x, m1, m2, l1, l2) g22(x, m1, m2, l2)]*u];
 end
 
 function y = fl(t, x, u, A, B) % for linear state
@@ -271,50 +267,4 @@ switch index
             y = 1 - (x - mid(index))/(mid(index+1) - mid(index));
         end
 end
-end
-
-function y = f1(x, m1, m2, l1, l2, g)
-s1 = sin(x(1)); s2 = sin(x(3));
-c1 = cos(x(1)); c2 = cos(x(3));
-SC = (s1*s2+c1*c2);
-num1 = (s1*c2-c1*s2)*(m2*l1*l2*SC*x(2)^2 - m2*(l2*x(4))^2);
-num2 = (m1+m2)*l2*g*s1 - m2*l2*g*s2*SC;
-den = l1*l2*((m1+m2) - m2*SC^2);
-y = (num1 + num2)/den;
-end
-
-function y = f2(x, m1, m2, l1, l2, g)
-s1 = sin(x(1)); s2 = sin(x(3));
-c1 = cos(x(1)); c2 = cos(x(3));
-SC = (s1*s2+c1*c2);
-num1 = (s1*c2-c1*s2)*(-(m1+m2)*(l1*x(2))^2 + m2*l1*l2*SC*x(4)^2);
-num2 = -(m1+m2)*l1*g*s1*SC + (m1+m2)*l1*g*s2;
-den = (m1+m2)*l2*g*s1 - m2*l2*g*s2*SC;
-y = (num1 + num2)/den;
-end
-
-function y = g11(x, m1, m2, l1)
-s1 = sin(x(1)); s2 = sin(x(3));
-c1 = cos(x(1)); c2 = cos(x(3));
-SC = (s1*s2+c1*c2);
-den =  l1^2*((m1+m2) - m2*SC^2);
-y = 1/den;
-end
-
-function y = g12(x, m1, m2, l1, l2) % g12=g22
-s1 = sin(x(1)); s2 = sin(x(3));
-c1 = cos(x(1)); c2 = cos(x(3));
-SC = (s1*s2+c1*c2);
-num = -SC;
-den =  l1*l2*((m1+m2) - m2*SC^2);
-y = num/den;
-end
-
-function y = g22(x, m1, m2, l2)
-s1 = sin(x(1)); s2 = sin(x(3));
-c1 = cos(x(1)); c2 = cos(x(3));
-SC = (s1*s2+c1*c2);
-num = m1+m2;
-den =  m2*l2^2*((m1+m2) - m2*SC^2);
-y = num/den;
 end

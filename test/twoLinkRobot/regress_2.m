@@ -1,6 +1,6 @@
 % linear multivariate regression algorithm
 
-function y = regress_2(set, f, m1, m2, l1, l2, g)
+function y = regress_2(set, f)
 num = length(set); % # of regression parameter
 range = [1 1 1 1]*10^(-5); 
 N = 100; % # of sample point
@@ -15,7 +15,7 @@ end
 
 S = zeros(num); b = zeros(num, 1);
 for i = 1 : N
-     b = b+ x(:, i)*f(x(:, i), m1, m2, l1, l2, g);
+     b = b+ x(:, i)*f(x(:, i));
      S = S + x(:, i)*x(:, i)';
 end
 
