@@ -1,7 +1,5 @@
 clc; clear; close all
-addpath(genpath('C:\Program Files\MATLAB\YALMIP-master')); % include YALMIP tollbox
-addpath(genpath('.\.\src'));
-addSym(1)
+addpath(genpath('..\..\src'));
 rb = robot();
 
 % fixed parameters
@@ -61,7 +59,7 @@ end
 C = [1 0 0 0; 0 0 1 0];
 
 %% LMI, find L, K
-options = sdpsettings('solver','mosek');
+options = sdpsettings('solver','sdpt3');
 options = sdpsettings(options,'verbose',0);
 
 Kf = zeros(2, 4, rule.num); Lf = zeros(4, 2, rule.num);
@@ -74,7 +72,7 @@ for i = 1 : rule.num
     W22 = sdpvar(4, 4); % symmetric
     Y = sdpvar(2, 4); % full
 
-    M11 = A*W22 + (A*W22)' + B*Y + (B*Y)' + rho^(-2)*I;
+    M11 = addSym(A*W22) + addSym(B*Y) + rho^(-2)*I;
     M12 = W22;
     M22 = -inv(Q);
 
@@ -93,8 +91,7 @@ for i = 1 : rule.num
 
     P22 = I/W22;
     K = Y*P22;
-    M44 = (A + B*K)'*P22 + P22*(A + B*K) + rho^(-2)*P22*P22 + Q;
- 
+    M44 = addSym((A + B*K)'*P22) + rho^(-2)*P22*P22 + Q;
     
     % STEP 2 : solve W1, K
     P11 = sdpvar(4, 4);
@@ -125,15 +122,16 @@ for i = 1 : rule.num
     M66 = -rho^2*I;
 
     LMI = [
-        M11 M12 M13 M14 M15 M16
-        M12' M22 M23 M24 M25 M26
-        M13' M23' M33 M34 M35 M36
-        M14' M24' M34' M44 M45 M46
-        M15' M25' M35' M45' M55 M56
+        M11  M12  M13  M14  M15  M16
+        M12' M22  M23  M24  M25  M26
+        M13' M23' M33  M34  M35  M36
+        M14' M24' M34' M44  M45  M46
+        M15' M25' M35' M45' M55  M56
         M16' M26' M36' M46' M56' M66
     ];
-
-    sol = optimize([LMI <= 0, P11 >= 0, P33 >= 0], []);
+    
+%     solvesdp([LMI <= 0, P11 >= 0, P33 >= 0])
+    sol = optimize([LMI <= 0, P11 >= 0, P33 >= 0], [], options);
 
     P11 = value(P11);
     P33 = value(P33);
