@@ -1,1 +1,10 @@
-contain all function, class
+Contain all function, class
+    - External
+    External toolbox.
+        - to solve LMI
+            - sdpt3 : linear programing solver
+            - YALMIP
+                - Modeling language or High level language for optimizes problem 
+                - Web page : https://yalmip.github.io
+        - to linearlize system
+            - tptool : tensoe product tool

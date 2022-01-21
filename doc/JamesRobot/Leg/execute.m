@@ -1,0 +1,13 @@
+leg_trajectory_interpolation
+leg_trajectory_interpolation_qr(1,1)
+leg_trajectory_interpolation_qr(1,2) 
+leg_trajectory_interpolation_qr(1,3) 
+leg_trajectory_interpolation_qr(2,1)
+leg_trajectory_interpolation_qr(2,2) 
+leg_trajectory_interpolation_qr(2,3) 
+leg_trajectory_interpolation_qr(3,1)
+leg_trajectory_interpolation_qr(3,2) 
+leg_trajectory_interpolation_qr(3,3)
+model_para_part3
+model_lpv_part3
+design_follower
