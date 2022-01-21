@@ -1,3 +1,10 @@
 Relates document
-    - JamesRobot
-    previous version written by James
+    - abstract of subfolders
+        - JamesRobot
+        previous version written by James
+
+    - TP model
+        - how to tansform nonlinear system to LPV system
+        https://www.researchgate.net/publication/347277203_Study_of_tensor_product_model_alternatives
+        - wiki's introduction
+        https://en.wikipedia.org/wiki/TP_model_transformation_in_control_theory
