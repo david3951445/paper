@@ -3,12 +3,12 @@ function B = setB(o)
 % Use tp model transformation to obtain B by a lpv Sys.
 
 %% tunable parameters
-domain = [-1 1; -1 1; -1 1; -1 1];
-gridsize = [10 10 10 10];
+domain = [-1 1; -1 1];
+gridsize = [10 10];
 SV_TOLERANCE = 0.001;
 
 %% hosvd
-num_p = 2; % length of parameter vector of lpv system (p = [x1,x3])
+num_p = length(gridsize); % length of parameter vector of lpv system (p = [x1,x3])
 lpv = o.Bl;
 dep = zeros([size(lpv) num_p]);
 dep(2,1,:) = [1 1];

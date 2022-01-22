@@ -8,7 +8,7 @@ classdef EXE
     %   SET_A = 0   - load rb.A and not execute set_A()
     
     properties (Constant)
-        SET_A = 0
-        SET_B = 1
+        SET_A = 1
+        SET_B = 0
     end
 end

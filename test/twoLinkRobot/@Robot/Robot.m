@@ -14,8 +14,15 @@ properties
     A % A matrix of linear systems
     B
     C
+    
+    mf_A_points
+    mf_B_points
 
     test = 0
+
+end
+
+properties (Access = private)
 end
 
 methods
@@ -44,8 +51,8 @@ methods
 end
 
 methods (Access = public)
-    A = setA(o)
-    B = setB(o)
+    [A, points] = setA(o)
+    [B, points] = setB(o)
 
     function y = f(o, x, u) % dx/dt
         y = [
