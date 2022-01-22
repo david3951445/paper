@@ -1,7 +1,7 @@
 clc; clear; close all
 addpath(genpath('..\..\src'))
-rb = robot();
-
+rb = Robot();
+save('rb.mat', 'rb')
 % fixed parameters
 I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
@@ -140,85 +140,85 @@ for i = 1 : rule.num
     Lf(:, :, i) = dl*L; Kf(:, :, i) = K*dk;
 end
 
-%% plot
-t = 0 : dt : tf; t2 = 0 : dt/2 : tf;
-
-r = r.amp*[zeros(1, length(t2)); sin(r.freq*t2); zeros(1, length(t2)); cos(r.freq*t2)]; % reference input
-v = d2*wgn(2, length(t2), 0);
-w = d2*wgn(4, length(t2), 0);
-wb = [v; w; r];
-
-xb = zeros(12, length(t));
-xb(1, 1) = 0.5; xb(3, 1) = -0.5;
-
-x = zeros(4, length(t)); xh = x; xr = x;
-x(1, 1) = 0.5; x(3, 1) = -0.5;
-
-% find x, u
-for i = 1 : length(t) - 1
-    j = 2*i-1;
-    temp = zeros(12, 1); temp1 = zeros(4, 1); temp2 = zeros(4, 1);
-    s = 0;
-    
-    for k = 1 : rule.num
-        A = Af(:, :, k); B = Bf(:, :, k);
-        K = Kf(:, :, k); L = Lf(:, :, k);
-        i0 = getIndex(k, rule.mf_num, rule.pv_num); % index
-        hh = h(xb(1, i), i0(1), rule.x1)*h(xb(2, i), i0(2), rule.x2)*h(xb(3, i), i0(3), rule.x3)*h(xb(4, i), i0(4), rule.x4);
-        
-        switch state
-            case 'n'
-                % x_hat, x, xr
-                kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j);
-                k1 = rb.f(x(:, i), K*(xh(:, i)-xr(:, i))) + w(j);
-                kr1 = fl(j, xr(:, i), r, Ar, I);
-                
-                kh2 = fh(A, B, C, K, L, x(:, i)+0.5*k1*dt, xh(:, i)+0.5*kh1*dt, xr(:, i)) - L*v(:, j+1);
-                k2 = rb.f(x(:, i)+0.5*k1*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh1-kr1)*dt)) + w(j+1);
-                kr2 = fl(j+1, xr(:, i)+0.5*kr1*dt, r, Ar, I);
-                
-                kh3 = fh(A, B, C, K, L, x(:, i)+0.5*k2*dt, xh(:, i)+0.5*kh2*dt, xr(:, i)) - L*v(:, j+1);
-                k3 = rb.f(x(:, i)+0.5*k2*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh2-kr2)*dt)) + w(j+1);
-                kr3 = fl(j+1, xr(:, i)+0.5*kr2*dt, r, Ar, I);
-                        
-                kh4 = fh(A, B, C, K, L, x(:, i)+k3*dt, xh(:, i)+kh3*dt, xr(:, i)) - L*v(:, j+2);
-                k4 = rb.f(x(:, i)+k3*dt, K*(xh(:, i)-xr(:, i) + (kh3-kr3)*dt)) + w(j+2);
-                kr4 = fl(j+2, xr(:, i)+kr3*dt, r, Ar, I);
-                
-                temp1 = temp1 + hh.*(kh1+2*kh2+2*kh3+kh4)*dt/6;
-                temp2 = temp2 + hh.*(k1+2*k2+2*k3+k4)*dt/6;
-                xr(:, i+1) = xr(:, i) + (kr1+2*kr2+2*kr3+kr4)*dt/6;
-                
-            case 'l'
-                Ab = [A-L*C, O, O; -B*K, A+B*K, -B*K; O, O, Ar];
-                Eb = [-L, I, O; zeros(4, 2), I, O; zeros(4, 2), O, I];
-                k1 = fl(j, xb(:, i), wb, Ab, Eb);
-                k2 = fl(j+1, xb(:, i)+0.5*k1*dt, wb, Ab, Eb);
-                k3 = fl(j+1, xb(:, i)+0.5*k2*dt, wb, Ab, Eb);
-                k4 = fl(j+2, xb(:, i)+k3*dt, wb, Ab, Eb);
-                temp = temp + hh.*(k1+2*k2+2*k3+k4)*dt/6;
-        end
-        
-    end
-
-    switch state
-        case 'n'
-            xh(:, i+1) = xh(:, i) + temp1;
-            x(:, i+1) = x(:, i) + temp2;
-            xb(:, i+1) = [xh(:, i+1); x(:, i+1); xr(:, i+1)];
-        case 'l'
-            xb(:, i+1) = xb(:, i) + temp;
-    end
-    
-%         x_sum = x_sum + xb'*Qb*xb*dt;
-    %     v_sum = v_sum + rho^2*vb(:, i)'*vb(:, i)*dt;
-end
-if state == 'l'
-    xb(1:4, :) = xb(5:8, :) - xb(1:4, :);
-end
-% v_sum = v_sum + [xh(:, 1); x(:, 1) - xh(:, 1)]'*Pb*[xh(:, 1); x(:, 1) - xh(:, 1)];
-
-Plot(t, xb);
+% %% plot
+% t = 0 : dt : tf; t2 = 0 : dt/2 : tf;
+% 
+% r = r.amp*[zeros(1, length(t2)); sin(r.freq*t2); zeros(1, length(t2)); cos(r.freq*t2)]; % reference input
+% v = d2*wgn(2, length(t2), 0);
+% w = d2*wgn(4, length(t2), 0);
+% wb = [v; w; r];
+% 
+% xb = zeros(12, length(t));
+% xb(1, 1) = 0.5; xb(3, 1) = -0.5;
+% 
+% x = zeros(4, length(t)); xh = x; xr = x;
+% x(1, 1) = 0.5; x(3, 1) = -0.5;
+% 
+% % find x, u
+% for i = 1 : length(t) - 1
+%     j = 2*i-1;
+%     temp = zeros(12, 1); temp1 = zeros(4, 1); temp2 = zeros(4, 1);
+%     s = 0;
+%     
+%     for k = 1 : rule.num
+%         A = Af(:, :, k); B = Bf(:, :, k);
+%         K = Kf(:, :, k); L = Lf(:, :, k);
+%         i0 = getIndex(k, rule.mf_num, rule.pv_num); % index
+%         hh = h(xb(1, i), i0(1), rule.x1)*h(xb(2, i), i0(2), rule.x2)*h(xb(3, i), i0(3), rule.x3)*h(xb(4, i), i0(4), rule.x4);
+%         
+%         switch state
+%             case 'n'
+%                 % x_hat, x, xr
+%                 kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j);
+%                 k1 = rb.f(x(:, i), K*(xh(:, i)-xr(:, i))) + w(j);
+%                 kr1 = fl(j, xr(:, i), r, Ar, I);
+%                 
+%                 kh2 = fh(A, B, C, K, L, x(:, i)+0.5*k1*dt, xh(:, i)+0.5*kh1*dt, xr(:, i)) - L*v(:, j+1);
+%                 k2 = rb.f(x(:, i)+0.5*k1*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh1-kr1)*dt)) + w(j+1);
+%                 kr2 = fl(j+1, xr(:, i)+0.5*kr1*dt, r, Ar, I);
+%                 
+%                 kh3 = fh(A, B, C, K, L, x(:, i)+0.5*k2*dt, xh(:, i)+0.5*kh2*dt, xr(:, i)) - L*v(:, j+1);
+%                 k3 = rb.f(x(:, i)+0.5*k2*dt, K*(xh(:, i)-xr(:, i) + 0.5*(kh2-kr2)*dt)) + w(j+1);
+%                 kr3 = fl(j+1, xr(:, i)+0.5*kr2*dt, r, Ar, I);
+%                         
+%                 kh4 = fh(A, B, C, K, L, x(:, i)+k3*dt, xh(:, i)+kh3*dt, xr(:, i)) - L*v(:, j+2);
+%                 k4 = rb.f(x(:, i)+k3*dt, K*(xh(:, i)-xr(:, i) + (kh3-kr3)*dt)) + w(j+2);
+%                 kr4 = fl(j+2, xr(:, i)+kr3*dt, r, Ar, I);
+%                 
+%                 temp1 = temp1 + hh.*(kh1+2*kh2+2*kh3+kh4)*dt/6;
+%                 temp2 = temp2 + hh.*(k1+2*k2+2*k3+k4)*dt/6;
+%                 xr(:, i+1) = xr(:, i) + (kr1+2*kr2+2*kr3+kr4)*dt/6;
+%                 
+%             case 'l'
+%                 Ab = [A-L*C, O, O; -B*K, A+B*K, -B*K; O, O, Ar];
+%                 Eb = [-L, I, O; zeros(4, 2), I, O; zeros(4, 2), O, I];
+%                 k1 = fl(j, xb(:, i), wb, Ab, Eb);
+%                 k2 = fl(j+1, xb(:, i)+0.5*k1*dt, wb, Ab, Eb);
+%                 k3 = fl(j+1, xb(:, i)+0.5*k2*dt, wb, Ab, Eb);
+%                 k4 = fl(j+2, xb(:, i)+k3*dt, wb, Ab, Eb);
+%                 temp = temp + hh.*(k1+2*k2+2*k3+k4)*dt/6;
+%         end
+%         
+%     end
+% 
+%     switch state
+%         case 'n'
+%             xh(:, i+1) = xh(:, i) + temp1;
+%             x(:, i+1) = x(:, i) + temp2;
+%             xb(:, i+1) = [xh(:, i+1); x(:, i+1); xr(:, i+1)];
+%         case 'l'
+%             xb(:, i+1) = xb(:, i) + temp;
+%     end
+%     
+% %         x_sum = x_sum + xb'*Qb*xb*dt;
+%     %     v_sum = v_sum + rho^2*vb(:, i)'*vb(:, i)*dt;
+% end
+% if state == 'l'
+%     xb(1:4, :) = xb(5:8, :) - xb(1:4, :);
+% end
+% % v_sum = v_sum + [xh(:, 1); x(:, 1) - xh(:, 1)]'*Pb*[xh(:, 1); x(:, 1) - xh(:, 1)];
+% 
+% Plot(t, xb);
 
 %% controlabliliy
 % for i = 1 : rule.num
