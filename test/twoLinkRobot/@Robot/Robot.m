@@ -14,12 +14,11 @@ properties
     A % A matrix of linear systems
     B
     C
+
+    test = 0
 end
 
-methods (Access = public)
-    setA(o)
-    setB(o)
-
+methods
     function o = Robot()
         %% set lpv system          
         o.Al = {
@@ -29,16 +28,25 @@ methods (Access = public)
             @(x)o.setAl(x, 41)  @(x)o.setAl(x, 42)  @(x)o.setAl(x, 43)  @(x)o.setAl(x, 44)
         };
         o.Bl = {
-            @(x)0               @(x)0
-            @(x)o.setBl(x, 21)  @(x)o.setBl(x, 22)
-            @(x)0               @(x)0
-            @(x)o.setBl(x, 21)  @(x)o.setBl(x, 21)
+            @(p)0               @(p)0
+            @(p)o.setBl(p, 21)  @(p)o.setBl(p, 22)
+            @(p)0               @(p)0
+            @(p)o.setBl(p, 21)  @(p)o.setBl(p, 21)
         };
 
         %% set linear system
         o.C = [1 0 0 0; 0 0 1 0];
     end
-    
+
+    function y = id(o, v)
+        y = v;
+    end
+end
+
+methods (Access = public)
+    A = setA(o)
+    B = setB(o)
+
     function y = f(o, x, u) % dx/dt
         y = [
             x(2)
@@ -122,7 +130,7 @@ methods (Access = public)
         num = m1+m2;
         den =  m2*l2^2*((m1+m2) - m2*SSCC^2);
         y = num/den;
-    end   
+    end
 end
 
 methods (Access = private)

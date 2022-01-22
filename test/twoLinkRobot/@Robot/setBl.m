@@ -1,6 +1,7 @@
-function y = setBl(o, x, position) % Bl constructor
+function y = setBl(o, p, position) % Bl constructor
+    x1 = p(1); x3 = p(2);
     m1 = o.m1; m2 = o.m2; l1 = o.l1; l2 = o.l2;
-    s1 = sin(x(1)); s2 = sin(x(3)); c1 = cos(x(1)); c2 = cos(x(3));
+    s1 = sin(x1); s2 = sin(x3); c1 = cos(x1); c2 = cos(x3);
     SSCC = (s1*s2+c1*c2);
 
     switch position
