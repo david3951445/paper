@@ -14,9 +14,6 @@ properties
     A % A matrix of linear systems
     B
     C
-    
-    mf_A_points
-    mf_B_points
 
     test = 0
 
@@ -51,9 +48,10 @@ methods
 end
 
 methods (Access = public)
-    [A, points] = setA(o)
-    [B, points] = setB(o)
-
+    % [A, points] = setA(o)
+    % [B, points] = setB(o)
+    % [M, points] = TPmodelTransf(o)
+    
     function y = f(o, x, u) % dx/dt
         y = [
             x(2)

@@ -1,11 +1,11 @@
 function y = mf_A(o, x, ind)
 %Calculate mbfun of ind-th
-n = length(o.mf_A_points);
+n = length(o.A.mf);
 
 y = 1;
 for i = 1 : n % multiply all "premise variable"
-    xS = o.mf_A_points{i}.x;
-    U = o.mf_A_points{i}.y;
+    xS = o.A.mf{i}.x;
+    U = o.A.mf{i}.y;
     k = ind(i);
 
     m = length(xS);
@@ -23,8 +23,7 @@ for i = 1 : n % multiply all "premise variable"
         end
     end
         
-    % if x < xS(1)
-        
+    % if x < xS(1)       
     % elseif x < xS(i)
     %     h1 = (x-xS(i-1))/(xS(i)-xS(i-1));
     %     h2 = 1-h1;

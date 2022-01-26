@@ -1,6 +1,8 @@
-function B = setB(o)
+function [B points] = setB(o)
 %Calculate B matrix of linear Sys.
 % Use tp model transformation to obtain B by a lpv Sys.
+% B         - B matrix
+% points    - discrete membership function of B
 
 %% tunable parameters
 domain = [-1 1; -1 1];
@@ -25,11 +27,29 @@ plothull(U, domain); % plot the results
 % [maxerr meanerr] = tperror(lpv, S, U, domain, 100);
 % disp('max and mean error:'); disp(maxerr); disp(meanerr);
 
-B = cell(size(S,1:size(domain,1)));
-for i1 = 1:size(S,1)
-    for i2 = 1:size(S,2)
-        B{i1,i2}(:,:) = S(i1,i2,:,:);      
+dim = size(S);
+dimL2 = dim(length(dim) - 1); % last 2-nd dimension
+dimL1 = dim(length(dim)); % last 1-st dimension
+len2 = 1;
+for i = 1 : num_p
+    len2 = len2*dim(i);
+end
+B = cell(1, len2);
+for i = 1 : len2
+    B{i} = zeros(dimL2, dimL1);
+    for j = 1 : dimL2*dimL1
+        B{i}(j) = S(i + len2*(j-1));
     end
+end
+
+
+
+% set discrete membership function (Use to construct CT membership function further)
+% xS = cell(size(xS_domain, 1), 1);
+% % sample x
+for i = 1 : num_p
+    points{i}.x = linspace(domain(i, 1),domain(i, 2), gridsize(i));
+    points{i}.y = U{i};
 end
 
 end
