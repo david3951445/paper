@@ -10,42 +10,6 @@ function M = TPmodelTransf(lpvPara)
 %     - M.sizeO         : Origin size in hosvd result, just for indexing A.mf
 %                         ex. size(S) = [9, 2, 9, 2, 4, 4] -> A.sizeO = size(S, 1 : 4)                  
 
-% switch type
-%     %% tunable parameters
-%     case 'A'
-%         domain = [-1 1; -1 1; -1 1; -1 1];
-%         gridsize = [10 10 10 10];
-%         SV_TOLERANCE = 0.001;
-%     case 'B'
-%         domain = [-1 1; -1 1];
-%         gridsize = [10 10];
-%         SV_TOLERANCE = 0.001;
-%     otherwise
-%         error('no this type in setLinearSys()')
-% end
-
-% lpv = sysMatrix;
-% num_p = length(gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
-% dep = zeros([size(lpv) num_p]);
-
-% %% hosvd
-% switch type
-%     % dep setting
-%     case 'A'
-%         dep(2,1,:) = [1 0 1 0];
-%         dep(2,2,:) = [1 1 1 0];
-%         dep(2,3,:) = [1 0 1 0];
-%         dep(2,4,:) = [1 0 1 1];
-%         dep(4,1,:) = [1 0 1 0];
-%         dep(4,2,:) = [1 1 1 0];
-%         dep(4,3,:) = [1 0 1 0];
-%         dep(4,4,:) = [1 0 1 1];
-%     case 'B'
-%         dep(2,1,:) = [1 1];
-%         dep(2,2,:) = [1 1];
-%         dep(4,1,:) = [1 1];
-%         dep(4,2,:) = [1 1];
-% end
 domain          = lpvPara.domain;
 gridsize        = lpvPara.gridsize;
 SV_TOLERANCE    = lpvPara.SV_TOLERANCE;

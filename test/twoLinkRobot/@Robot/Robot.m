@@ -66,10 +66,6 @@ methods
         o.B = [];
         o.C = [1 0 0 0; 0 0 1 0];
     end
-
-    function y = id(o, v)
-        y = v;
-    end
 end
 
 methods (Access = public)

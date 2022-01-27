@@ -5,7 +5,7 @@ function y = setBl(o, p, position) % Bl constructor
     SSCC = (s1*s2+c1*c2);
 
     switch position
-        case 21 % A21
+        case 21 % B21
             num = m2*l2^2;
         case 22
             num = -m2*l1*l2*SSCC;
