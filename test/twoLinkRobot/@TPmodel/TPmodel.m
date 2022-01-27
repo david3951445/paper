@@ -73,20 +73,23 @@ classdef TPmodel
             n = length(M.mf_discrete);         
             y = 1; % output of mf (value: 0~1)
             for i = 1 : n % multiply all "premise variable"
+                p = x(i);
                 X = M.mf_discrete{i}.x;
                 Y = M.mf_discrete{i}.y;
                 k = ind(i);
             
                 m = length(X);
-                if x < X(1)
+                if p < X(1)
                     y = y*Y(1, k);
-                elseif x > X(n)
+                elseif p > X(n)
                     y = y*Y(n, k);
                 else
                     for j = 2 : m
-                        if x < X(j)
+                        if p < X(j)
                             slope = (Y(j, k) - Y(j-1, k))/(X(j) - X(j-1));
-                            y = y*(Y(j-1, k) + slope*(x - X(j-1)));
+                            % Y(j-1, k)
+                            % slope*(p - X(j-1))
+                            y = y*(Y(j-1, k) + slope*(p - X(j-1)));
                             break;
                         end
                     end
