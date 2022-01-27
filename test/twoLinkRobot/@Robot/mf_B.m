@@ -1,11 +1,11 @@
-function y = mf_A(o, x, ind)
+function y = mf_B(o, x, ind)
     %Calculate mbfun of ind-th
-    n = length(o.B.mf);
+    n = length(o.B.mf_discrete);
     
     y = 1;
     for i = 1 : n % multiply all "premise variable"
-        xS = o.B.mf{i}.x;
-        U = o.B.mf{i}.y;
+        xS = o.B.mf_discrete{i}.x;
+        U = o.B.mf_discrete{i}.y;
         k = ind(i);
     
         m = length(xS);
@@ -16,7 +16,7 @@ function y = mf_A(o, x, ind)
         else
             for j = 2 : m
                 if x < xS(j)
-                    slope = (U(j, k) - U(j-1, k))/(xS(j) - xS(j-1))
+                    slope = (U(j, k) - U(j-1, k))/(xS(j) - xS(j-1));
                     y = y*(U(j-1, k) + slope*(x - xS(j-1)));
                     break;
                 end

@@ -25,20 +25,45 @@ end
 methods
     function o = Robot()
         %% set lpv system          
-        o.Al = {
+        o.Al.val = {
             @(x)0               @(x)1               @(x)0               @(x)0
             @(x)o.setAl(x, 21)  @(x)o.setAl(x, 22)  @(x)o.setAl(x, 23)  @(x)o.setAl(x, 24)
             @(x)0               @(x)0               @(x)1               @(x)0
             @(x)o.setAl(x, 41)  @(x)o.setAl(x, 42)  @(x)o.setAl(x, 43)  @(x)o.setAl(x, 44)
         };
-        o.Bl = {
+        o.Al.domain = [-1 1; -1 1; -1 1; -1 1];
+        o.Al.gridsize = [10 10 10 10];
+        o.Al.SV_TOLERANCE = 0.001;
+        o.Al.num_p = length(o.Al.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
+        o.Al.dep = zeros([size(o.Al.val) o.Al.num_p]);
+        o.Al.dep(2,1,:) = [1 0 1 0];
+        o.Al.dep(2,2,:) = [1 1 1 0];
+        o.Al.dep(2,3,:) = [1 0 1 0];
+        o.Al.dep(2,4,:) = [1 0 1 1];
+        o.Al.dep(4,1,:) = [1 0 1 0];
+        o.Al.dep(4,2,:) = [1 1 1 0];
+        o.Al.dep(4,3,:) = [1 0 1 0];
+        o.Al.dep(4,4,:) = [1 0 1 1];
+
+        o.Bl.val = {
             @(p)0               @(p)0
             @(p)o.setBl(p, 21)  @(p)o.setBl(p, 22)
             @(p)0               @(p)0
             @(p)o.setBl(p, 21)  @(p)o.setBl(p, 21)
         };
+        o.Bl.domain = [-1 1; -1 1];
+        o.Bl.gridsize = [10 10];
+        o.Bl.SV_TOLERANCE = 0.001;
+        o.Bl.num_p = length(o.Bl.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
+        o.Bl.dep = zeros([size(o.Bl.val) o.Bl.num_p]);
+        o.Bl.dep(2,1,:) = [1 1];
+        o.Bl.dep(2,2,:) = [1 1];
+        o.Bl.dep(4,1,:) = [1 1];
+        o.Bl.dep(4,2,:) = [1 1];
 
         %% set linear system
+        o.A = [];
+        o.B = [];
         o.C = [1 0 0 0; 0 0 1 0];
     end
 
