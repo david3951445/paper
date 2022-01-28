@@ -87,9 +87,21 @@ for i = 1:P
 	[Ui svi toli] = svdtrunc(tmp, svtol);
 	if keep(i) <= 0
 		disp('normalised singular values (and original ones):');
+		my_total = 0;
 		for j = 1:length(svi)
+			my_total = my_total + svi(j);
 			fprintf('%12.5f  (%g)\n',svi(j)/sqrt(gridprod), svi(j));
 		end
+
+		my_sum = 0;
+		for j = 1:length(svi)
+			my_sum = my_sum + svi(j);
+			if (my_sum/my_total > 0.9)
+				break;
+			end
+		end
+		disp(['first 90% singular value : ' num2str(j)])
+
 		% TODO: rewrite with isstrprop
 		ns = input('number of singular values to keep [all] = ');
 	else

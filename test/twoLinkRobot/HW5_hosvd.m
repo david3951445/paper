@@ -6,15 +6,22 @@ I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
 
 % tunable parameters
-d1 = 10^(-2); % scale of Q
-d2 = 0.1; % scale of disturblance
-d3 = 2;
-dk = d3*diag([20 10 20 10], 0); % scale of K
-dl = d3*diag([1 10 15 10], 0); % scale of L
-Qe = d1*0*I; Q = d1*[1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1]; rho = 10;
 state = 'n'; % n : nonlinear, l : linear
-dt = 0.01; tf = 5; % parameter of trajectory
-r.amp = 6; r.freq = 1; % parameter of sine wave in reference input
+
+d2 = 0; % scale of disturblance
+d3 = 2;
+dk = 1;%d3*diag([20 10 20 10], 0); % scale of K
+dl = 1;%d3*diag([1 10 15 10], 0); % scale of L
+
+d1  = 10^(-2); % scale of Q
+Qe  = 0*d1*I;
+Q   = d1*[1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+rho = 10;
+
+dt      = 0.01;
+tf      = 5; % parameter of trajectory
+amp     = 6;
+freq    = 1; % parameter of sine wave in reference input
 
 %% find Af, Bf, C
 rb = Robot();
@@ -32,18 +39,19 @@ else
     load('rb.mat', 'rb')
 end
 
+Af = rb.A.val;
+Bf = rb.B.val;
+C = rb.C;
+
 %% LMI, find L, K
 if EXE.K_L
-    Af = rb.A.val;
-    Bf = rb.B.val;
-    C = rb.C;
     options = sdpsettings('solver','sdpt3');
     options = sdpsettings(options,'verbose',0);
 
     Kf = cell(rb.A.len, rb.B.len); Lf = cell(rb.A.len, rb.B.len);
-    for i = 1 : rb.A.len
+    for i = 1 : 1%rb.A.len
         for j = 1 : rb.B.len
-            disp(['LMI iter: rb.A.len,rb.B.len = ' num2str(i) ',' num2str(j)])
+            fprintf('LMI iter: %d/%d, %d/%d\n', i, rb.A.len, j, rb.B.len)
             A = Af{i}; B = Bf{j};
 
             % YALMIP method
@@ -55,17 +63,26 @@ if EXE.K_L
             M12 = W22;
             M22 = -inv(Q);
 
-            LMI = [M11  M12
-                M12' M22];
+            LMI = [
+                M11  M12
+                M12' M22
+            ];
 
+            % solvesdp([LMI <= 0, W22 >= 0])
             sol = optimize([LMI <= 0, W22 >= 0], [], options);
 
-            if strcmp(sol.info, 'Infeasible problem (MOSEK)')
-                error('Infeasible problem (MOSEK)');
+            % if strcmp(sol.info, 'Infeasible problem (MOSEK)')
+            %     error('Infeasible problem (MOSEK)');
+            % end
+            if sol.problem == 0
+                W22 = value(W22);
+                Y = value(Y);
+            else
+                display('Hmm, something went wrong!');
+                sol.info
+                yalmiperror(sol.problem)
             end
-
-            W22 = value(W22);
-            Y = value(Y);
+            
 
             P22 = I/W22;
             K = Y*P22;
@@ -110,15 +127,22 @@ if EXE.K_L
             % solvesdp([LMI <= 0, P11 >= 0, P33 >= 0])
             sol = optimize([LMI <= 0, P11 >= 0, P33 >= 0], [], options);
 
-            P11 = value(P11);
-            P33 = value(P33);
-            Z = value(Z);
+            if sol.problem == 0
+                P11 = value(P11);
+                P33 = value(P33);
+                Z = value(Z);
+            else
+                display('Hmm, something went wrong!');
+                sol.info
+                yalmiperror(sol.problem)
+            end
 
             L = P11\Z;
 
             Lf{i, j} = dl*L; Kf{i, j} = K*dk;
         end
     end
+
     gain.L = Lf;
     gain.K = Kf;
     save('gain.mat', 'gain')
@@ -129,7 +153,7 @@ end
 %% plot
 t = 0 : dt : tf; t2 = 0 : dt/2 : tf;
 
-r = r.amp*[zeros(1, length(t2)); sin(r.freq*t2); zeros(1, length(t2)); cos(r.freq*t2)]; % reference input
+r = amp*[zeros(1, length(t2)); sin(freq*t2); zeros(1, length(t2)); cos(freq*t2)]; % reference input
 v = d2*wgn(2, length(t2), 0);
 w = d2*wgn(4, length(t2), 0);
 wb = [v; w; r];
@@ -139,6 +163,7 @@ xb(1, 1) = 0.5; xb(3, 1) = -0.5;
 
 x = zeros(4, length(t)); xh = x; xr = x;
 x(1, 1) = 0.5; x(3, 1) = -0.5;
+
 
 % find x, u
 if EXE.TRAJ
@@ -154,17 +179,17 @@ if EXE.TRAJ
         j = 2*i-1;
         temp = zeros(12, 1); temp1 = zeros(4, 1); temp2 = zeros(4, 1);
         s = 0;
-        
+        % sum_hh = 0;
         for k = 1 : rb.A.len
             for kk = 1 : rb.B.len
-                A = Af{k}; B = Bf{kk};
+                A = rb.A.val{k}; B = rb.B.val{kk};
                 K = gain.K{k, kk}; L = gain.L{k, kk};
                 hh = rb.A.mf(xb(1:4, i), k)*rb.B.mf(xb([1, 3], i), kk);
                 
                 switch state
                     case 'n'
                         % x_hat, x, xr
-                        kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j);
+                        kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j)
                         k1 = rb.f(x(:, i), K*(xh(:, i)-xr(:, i))) + w(j);
                         kr1 = fl(j, xr(:, i), r, Ar, I);
                         
@@ -193,9 +218,11 @@ if EXE.TRAJ
                         k4 = fl(j+2, xb(:, i)+k3*dt, wb, Ab, Eb);
                         temp = temp + hh.*(k1+2*k2+2*k3+k4)*dt/6;
                 end
-                
+
+                % sum_hh = sum_hh + hh;
             end
         end
+        % sum_hh
 
         switch state
             case 'n'
@@ -222,7 +249,7 @@ end
 
 %% controlabliliy
 % for i = 1 : rule.num
-%     A = Af(:, :, i); B=Bf(:, :, i);
+%     A = rb.A.val{i}; B = rb.B.val{i};
 %     if rank(ctrb(A,B)) ~= length(A)
 %         disp('uncontrollable')
 %     end
@@ -232,6 +259,18 @@ end
 % end
 
 rmpath(genpath('..\..\src'))
+
+%% if you want to check if sum of membership function is 1
+sum = 0;
+for i = 1 : rb.A.len
+    sum = sum + rb.A.mf([0, 1, -1, 0], i);
+end
+disp(['sum of mbfun of A: ' num2str(sum)])
+% sum = 0;
+% for i = 1 : rb.B.len
+%     sum = sum + rb.B.mf([0, 0, 0, 0], i);
+% end
+% disp(['sum of mbfun of B: ' num2str(sum)])
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)
@@ -260,15 +299,3 @@ end
 function y = fl(t, x, u, A, B) % for linear state
 y = A*x + B*u(:, t);
 end
-
-%% if you want to check if sum of membership function is 1
-% sum = 0;
-% for i = 1 : rb.A.len
-%     sum = sum + rb.A.mf([0, 0, 0, 0], i);
-% end
-% disp(['sum of mbfun of A: ' num2str(sum)])
-% sum = 0;
-% for i = 1 : rb.B.len
-%     sum = sum + rb.B.mf([0, 0, 0, 0], i);
-% end
-% disp(['sum of mbfun of B: ' num2str(sum)])
