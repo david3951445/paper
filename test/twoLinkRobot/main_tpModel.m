@@ -1,6 +1,6 @@
 clc; clear; close all
 addpath(genpath('..\..\src'))
-
+addpath(genpath('function'))
 % fixed parameters
 I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
@@ -27,16 +27,16 @@ freq    = 1; % parameter of sine wave in reference input
 rb = Robot();
 if EXE.A
     rb.A = TPmodel(rb.Al);
-    save('rb.mat', 'rb')
+    save('data/rb.mat', 'rb')
 else
-    load('rb.mat', 'rb')
+    load('data/rb.mat', 'rb')
 end 
 
 if EXE.B
     rb.B = TPmodel(rb.Bl);
-    save('rb.mat', 'rb')
+    save('data/rb.mat', 'rb')
 else
-    load('rb.mat', 'rb')
+    load('data/rb.mat', 'rb')
 end
 
 Af = rb.A.val;
@@ -145,9 +145,9 @@ if EXE.K_L
 
     gain.L = Lf;
     gain.K = Kf;
-    save('gain.mat', 'gain')
+    save('data/gain.mat', 'gain')
 else
-    load('gain.mat', 'gain')
+    load('data/gain.mat', 'gain')
 end
 
 %% plot
@@ -189,7 +189,7 @@ if EXE.TRAJ
                 switch state
                     case 'n'
                         % x_hat, x, xr
-                        kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j)
+                        kh1 = fh(A, B, C, K, L, x(:, i), xh(:, i), xr(:, i)) - L*v(:, j);
                         k1 = rb.f(x(:, i), K*(xh(:, i)-xr(:, i))) + w(j);
                         kr1 = fl(j, xr(:, i), r, Ar, I);
                         
@@ -258,6 +258,7 @@ end
 %     end
 % end
 
+rmpath(genpath('function'))
 rmpath(genpath('..\..\src'))
 
 %% if you want to check if sum of membership function is 1

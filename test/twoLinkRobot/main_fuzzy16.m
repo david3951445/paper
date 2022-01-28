@@ -14,7 +14,7 @@ dk = d3*diag([20 10 20 10], 0); % scale of K
 dl = d3*diag([1 10 15 10], 0); % scale of L
 Qe = d1*0*I; Q = d1*[1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1]; rho = 10;
 state = 'n'; % n : nonlinear, l : linear
-dt = 0.002; tf = 10; % parameter of trajectory
+dt = 0.01; tf = 10; % parameter of trajectory
 r.amp = 6; r.freq = 1; % parameter of sine wave in reference input
 
 rule.mf_num = 2; % # of membership function
