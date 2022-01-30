@@ -32,7 +32,7 @@ methods
             @(x)o.setAl(x, 41)  @(x)o.setAl(x, 42)  @(x)o.setAl(x, 43)  @(x)o.setAl(x, 44)
         };
         o.Al.domain = 2*[-1 1; -1 1; -1 1; -1 1];
-        o.Al.gridsize = 10*[10 10 10 10];
+        o.Al.gridsize = 5*[10 10 10 10];
         o.Al.SV_TOLERANCE = 0.001;
         o.Al.num_p = length(o.Al.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
         o.Al.dep = zeros([size(o.Al.val) o.Al.num_p]);
@@ -52,7 +52,7 @@ methods
             @(p)o.setBl(p, 21)  @(p)o.setBl(p, 21)
         };
         o.Bl.domain = 2*[-1 1; -1 1];
-        o.Bl.gridsize = 10*[10 10];
+        o.Bl.gridsize = 5*[10 10];
         o.Bl.SV_TOLERANCE = 0.001;
         o.Bl.num_p = length(o.Bl.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
         o.Bl.dep = zeros([size(o.Bl.val) o.Bl.num_p]);
@@ -62,8 +62,8 @@ methods
         o.Bl.dep(4,2,:) = [1 1];
 
         %% set linear system
-        o.A = [];
-        o.B = [];
+        % o.A = [];
+        % o.B = [];
         o.C = [1 0 0 0; 0 0 1 0];
     end
 end
@@ -157,16 +157,27 @@ methods (Access = public)
         den =  m2*l2^2*((m1+m2) - m2*SSCC^2);
         y = num/den;
     end
+
+    function save(o, fname, whichVar)
+        switch whichVar
+            case 'A'
+                A = o.A;
+            case 'B'
+                B = o.B;
+        end
+        save(fname, num2str(whichVar), '-append');
+    end
 end
 
 methods (Access = private)
     y = setAl(o, x, position)
     y = setBl(o, x, position)
 
-    function S = saveobj(o)
-        S = o;
-    end
+%     function S = saveobj(o)
+%         S = o;
+%     end
 end
 
 end
 %#ok<*PROPLC>
+%#ok<*NASGU>

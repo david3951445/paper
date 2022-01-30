@@ -5,11 +5,12 @@ classdef TPmodel
         sizeO       % Origin size in hosvd result, just for indexing A.mf. ex: size(S) = [9, 2, 9, 2, 4, 4] -> A.sizeO = size(S, 1 : 4)
         val         % Core tensor (or "linear matrice")
         len         % array length of "val"
+        index
     end
 
     properties (Access = private)
         mf_discrete % Discrete (because it's composed by "points") membership function (or "weighting functions") of Core tensor
-        index       % for indexing "mf_discrete"
+        % index       % for indexing "mf_discrete"
     end
     
     methods
@@ -40,8 +41,8 @@ classdef TPmodel
 
             %% set M.val by S
             % The way of indexing is changed here.
-            % ex: S = [4, 2, 4, 2, :, :] -> A = {4*2*4*2}(:,:)
-            len = prod(M.sizeO); % ex: prod([1 2 3]) = 1*2*3
+            % ex: S = [4, 2, 4, 2, :, :] -> A = {64}(:,:).
+            len = prod(M.sizeO); % ex: prod([4 2 4 2]) = 64
             M.val = cell(1, len);
             for i = 1 : len
                 M.val{i} = zeros(dimL2, dimL1);
@@ -62,8 +63,22 @@ classdef TPmodel
 
             
             %% If you want to check model approximation error:
-            % [maxerr meanerr] = tperror(lpv, S, U, domain, 100);
+            % [maxerr meanerr] = tperror(lpv, S, U, domain, len);
             % disp('max and mean error:'); disp(maxerr); disp(meanerr);
+
+            %% test if A{64} == A{4,2,4,2}
+            % disp('tpmodel')
+            % sum = 0;
+            % sum_A = zeros(4);
+            % for i = 1 : M.len
+            %     ind = M.index(:, i);
+            %     i1 = ind(1);i2 = ind(2);i3 = ind(3);i4 = ind(4);
+            %     A{i1,i2,i3,i4}(:,:) = S(i1,i2,i3,i4,:,:);
+            %     sum_A = sum_A + M.mf([0 0 0 0], i)*A{i1,i2,i3,i4};
+            % end
+            % disp(['sum of mbfun of A: ' num2str(sum)])
+            % disp('sum of of A: ')
+            % disp(sum_A) 
         end
         
         function y = mf(M, x, ind)

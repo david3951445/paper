@@ -1,11 +1,13 @@
+%two-link robot, tpModel, no observer, xb = [x x-xr]'.
 clc; clear; close all
 addpath(genpath('..\..\src'))
 addpath(genpath('function'))
-% fixed parameters
+
+%% fixed parameters
 I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
 
-% tunable parameters
+%% tunable parameters
 state = 'l'; % n : nonlinear, l : linear
 
 d2 = 0; % scale of disturblance
@@ -27,18 +29,22 @@ freq    = 1; % parameter of sine wave in reference input
 
 %% find Af, Bf, C
 rb = Robot();
+% if ~EXE.A
+%     load('data/rb.mat', 'rb')
+% end
+% if ~EXE.B
 if EXE.A
     rb.A = TPmodel(rb.Al);
-    save('data/rb.mat', 'rb')
+    rb.save('data/rb', 'A')
 else
-    load('data/rb.mat', 'rb')
+    rb.A = load('data/rb', 'A').A;
 end 
 
 if EXE.B
     rb.B = TPmodel(rb.Bl);
-    save('data/rb.mat', 'rb')
+    rb.save('data/rb', 'B');
 else
-    load('data/rb.mat', 'rb')
+    rb.B = load('data/rb', 'B').B;
 end
 
 Af = rb.A.val;
@@ -186,6 +192,7 @@ if EXE.K_L
                 
             sol = optimize([LMI <= 10^(-4)*eye(16), W1 >= 0, W2 >= 0], [], options);
 
+            % chack state of solution
             if sol.problem
                 sol.info
             end
@@ -332,15 +339,26 @@ rmpath(genpath('..\..\src'))
 
 %% if you want to check if sum of membership function is 1
 sum = 0;
+sum_A = zeros(4);
 for i = 1 : rb.A.len
-    sum = sum + rb.A.mf([0, 1, -1, 0], i);
+    h = rb.A.mf([0, 1, -1, 0], i);
+    sum = sum + h;
+    sum_A = sum_A + h.*rb.A.val{i};
 end
 disp(['sum of mbfun of A: ' num2str(sum)])
-% sum = 0;
-% for i = 1 : rb.B.len
-%     sum = sum + rb.B.mf([0, 0, 0, 0], i);
-% end
-% disp(['sum of mbfun of B: ' num2str(sum)])
+disp('sum of of A: ')
+disp(sum_A)
+
+sum = 0;
+sum_B = zeros(4, 2);
+for i = 1 : rb.B.len
+    h = rb.B.mf([0, 0, 0, 0], i);
+    sum = sum + h;
+    sum_B = sum_B + h.*rb.B.val{i};
+end
+disp(['sum of mbfun of B: ' num2str(sum)])
+disp('sum of of B: ')
+disp(sum_B)
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)
