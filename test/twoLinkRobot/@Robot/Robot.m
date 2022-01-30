@@ -33,7 +33,7 @@ methods
             @(p)0               @(p)0               @(p)0               @(p)1
             @(p)o.setAl(p, 41)  @(p)o.setAl(p, 42)  @(p)o.setAl(p, 43)  @(p)o.setAl(p, 44)
         };
-        o.Al.domain = 2*[-1 1; -1 1; -1 1; -1 1];
+        o.Al.domain = 1*[-1 1; -1 1; -1 1; -1 1];
         o.Al.gridsize = 5*[10 10 10 10];
         o.Al.SV_TOLERANCE = 0.001;
         o.Al.num_p = length(o.Al.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
