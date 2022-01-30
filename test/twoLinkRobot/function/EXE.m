@@ -10,8 +10,9 @@ classdef EXE
     properties (Constant)
         A       = 1
         B       = 0
+        A_B     = 0
         K_L     = 0
-        TRAJ    = 0
+        TRAJ    = 1
         PLOT    = 0
     end
 end

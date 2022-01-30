@@ -29,10 +29,7 @@ freq    = 1; % parameter of sine wave in reference input
 
 %% find Af, Bf, C
 rb = Robot();
-% if ~EXE.A
-%     load('data/rb.mat', 'rb')
-% end
-% if ~EXE.B
+
 if EXE.A
     rb.A = TPmodel(rb.Al);
     rb.save('data/rb', 'A')
@@ -45,7 +42,7 @@ if EXE.B
     rb.save('data/rb', 'B');
 else
     rb.B = load('data/rb', 'B').B;
-end
+end 
 
 Af = rb.A.val;
 Bf = rb.B.val;

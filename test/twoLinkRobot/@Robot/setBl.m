@@ -12,7 +12,7 @@ function y = setBl(o, p, position) % Bl constructor
         case 41
             num = -m2*l1*l2*SSCC;
         case 42
-            num = ((m1+m2)*l1^2);
+            num = (m1+m2)*l1^2;
         otherwise
             error(['cannot construct B' str(position) ' please check your Bl matrix'])
     end

@@ -8,12 +8,14 @@ end
 properties
     % lpv system
     Al % A matrix of lpv system
-    Bl 
+    Bl % B matrix of lpv system
+    ABl % AB solve together
 
     % linear systems
     A % A matrix of linear systems
-    B
-    C
+    B % B matrix of linear systems
+    AB % AB matrix of linear systems
+    C % C matrix of linear systems
 
     test = 0
 
@@ -26,10 +28,10 @@ methods
     function o = Robot()
         %% set lpv system          
         o.Al.val = {
-            @(x)0               @(x)1               @(x)0               @(x)0
-            @(x)o.setAl(x, 21)  @(x)o.setAl(x, 22)  @(x)o.setAl(x, 23)  @(x)o.setAl(x, 24)
-            @(x)0               @(x)0               @(x)1               @(x)0
-            @(x)o.setAl(x, 41)  @(x)o.setAl(x, 42)  @(x)o.setAl(x, 43)  @(x)o.setAl(x, 44)
+            @(p)0               @(p)1               @(p)0               @(p)0
+            @(p)o.setAl(p, 21)  @(p)o.setAl(p, 22)  @(p)o.setAl(p, 23)  @(p)o.setAl(p, 24)
+            @(p)0               @(p)0               @(p)0               @(p)1
+            @(p)o.setAl(p, 41)  @(p)o.setAl(p, 42)  @(p)o.setAl(p, 43)  @(p)o.setAl(p, 44)
         };
         o.Al.domain = 2*[-1 1; -1 1; -1 1; -1 1];
         o.Al.gridsize = 5*[10 10 10 10];
@@ -49,7 +51,7 @@ methods
             @(p)0               @(p)0
             @(p)o.setBl(p, 21)  @(p)o.setBl(p, 22)
             @(p)0               @(p)0
-            @(p)o.setBl(p, 21)  @(p)o.setBl(p, 21)
+            @(p)o.setBl(p, 41)  @(p)o.setBl(p, 42)
         };
         o.Bl.domain = 2*[-1 1; -1 1];
         o.Bl.gridsize = 5*[10 10];
@@ -60,6 +62,45 @@ methods
         o.Bl.dep(2,2,:) = [1 1];
         o.Bl.dep(4,1,:) = [1 1];
         o.Bl.dep(4,2,:) = [1 1];
+
+        o.ABl.val = {
+            @(p)0               @(p)1               @(p)0               @(p)0               @(p)0               @(p)0
+            @(p)o.setABl(p, 21) @(p)o.setABl(p, 22) @(p)o.setABl(p, 23) @(p)o.setABl(p, 24) @(p)o.setABl(p, 25) @(p)o.setABl(p, 26)
+            @(p)0               @(p)0               @(p)0               @(p)1               @(p)0               @(p)0
+            @(p)o.setABl(p, 41) @(p)o.setABl(p, 42) @(p)o.setABl(p, 43) @(p)o.setABl(p, 44) @(p)o.setABl(p, 45) @(p)o.setABl(p, 46)
+        };
+        o.ABl.domain = 2*[-1 1; -1 1; -1 1; -1 1;];
+        o.ABl.gridsize = 4*[10 10 10 10];
+        o.ABl.SV_TOLERANCE = 0.001;
+        o.ABl.num_p = length(o.ABl.gridsize); % length of parameter vector of lpv system
+        o.ABl.dep = zeros([size(o.ABl.val) o.ABl.num_p]);
+        % A
+        o.ABl.dep(2,1,:) = [1 0 1 0];
+        o.ABl.dep(2,2,:) = [1 1 1 0];
+        o.ABl.dep(2,3,:) = [1 0 1 0];
+        o.ABl.dep(2,4,:) = [1 0 1 1];
+        o.ABl.dep(4,1,:) = [1 0 1 0];
+        o.ABl.dep(4,2,:) = [1 1 1 0];
+        o.ABl.dep(4,3,:) = [1 0 1 0];
+        o.ABl.dep(4,4,:) = [1 0 1 1];
+        % o.ABl.dep(2,1,:) = [1 0 1 0 1 0];
+        % o.ABl.dep(2,2,:) = [1 1 1 0 0 0];
+        % o.ABl.dep(2,3,:) = [1 0 1 0 0 1];
+        % o.ABl.dep(2,4,:) = [1 0 1 1 0 0];
+        % o.ABl.dep(4,1,:) = [1 0 1 0 1 0];
+        % o.ABl.dep(4,2,:) = [1 1 1 0 0 0];
+        % o.ABl.dep(4,3,:) = [1 0 1 0 0 1];
+        % o.ABl.dep(4,4,:) = [1 0 1 1 0 0];
+        % B
+        o.ABl.dep(2,5,:) = [1 0 1 0];
+        o.ABl.dep(2,6,:) = [1 0 1 0];
+        o.ABl.dep(4,5,:) = [1 0 1 0];
+        o.ABl.dep(4,6,:) = [1 0 1 0];
+        % o.ABl.dep(2,5,:) = [1 0 1 0 0 0];
+        % o.ABl.dep(2,6,:) = [1 0 1 0 0 0];
+        % o.ABl.dep(4,5,:) = [1 0 1 0 0 0];
+        % o.ABl.dep(4,6,:) = [1 0 1 0 0 0];
+
 
         %% set linear system
         % o.A = [];
@@ -164,15 +205,19 @@ methods (Access = public)
                 A = o.A;
             case 'B'
                 B = o.B;
+            case 'AB'
+                AB = o.AB;
         end
         save(fname, num2str(whichVar), '-append');
     end
+    
+    y = setAl(o, p, position)
 end
 
 methods (Access = private)
-    y = setAl(o, x, position)
-    y = setBl(o, x, position)
-
+%     y = setAl(o, p, position)
+    y = setBl(o, p, position)
+    y = setABl(o, p, position)
 %     function S = saveobj(o)
 %         S = o;
 %     end
