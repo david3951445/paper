@@ -15,8 +15,8 @@ classdef Fuzzy
     methods
         function obj = Fuzzy() % initialize
             % op
-            len = {length(cell2mat(obj.OP(1))), length(cell2mat(obj.OP(2)))};
-            obj.op = struct('val',obj.OP, 'len', len);
+            len = {length(obj.OP{1}), length(obj.OP{2})};
+            obj.op = struct('val', obj.OP, 'len', len);
             
             % len_OP
             obj.len_OP = length(obj.OP);
@@ -97,4 +97,4 @@ classdef Fuzzy
         end
     end
 end
-
+%#ok<*PROPLC>

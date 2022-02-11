@@ -1,85 +1,63 @@
 clc; clear; close all; tic
+addpath(genpath('../../../src'))
 uav = UAV; fz = Fuzzy; ref = REF(uav);
-p = struct; % rho, Q, A, B, K, P1, P2
-
-% constant parameter
 
 % tunable parameter
-runLinearize = 0; % whether run linearize part
-runLMI       = 0; % whether run LMI part
-
-p.tf = 2*pi;      % final time of trajectory
-p.dt = 0.001;     % time step of RK4
-p.rho = 10^(10);
-p.Q = 10^(-10)*diag([1, 0.001, 1, 0.001, 1, 0.001, 1, 0, 1, 0, 1, 0.001]);
+% p : tf, dt, rho, Q, A, B, K, P1, P2
+p.tf    = 2*pi;      % final time of trajectory
+p.dt    = 0.002;     % time step of RK4
+p.rho   = 10^(10);
+p.Q     = 10^(-10)*diag([1, 0.001, 1, 0.001, 1, 0.001, 1, 0, 1, 0, 1, 0.001]);
 
 %% linearize
-if runLinearize == 0
-    load Matrix
+if EXE.A_B
+    [A, B] = getLocalMatrix(uav, fz);
+    save('Matrix.mat', 'A', '-append')
+    save('Matrix.mat', 'B', '-append')
 else
-    p = getLocalMatrix(uav, fz, p);
-    save Matrix.mat p
+    A = load('Matrix.mat').A;
+    B = load('Matrix.mat').B;
 end
+p.A = A; p.B = B;
 uav.A = p.A; uav.B = p.B;
 
 %% find K
 % H infinity peformance : xQx/vv < rho^2
-if runLMI == 0
-    load Matrix
+if EXE.LMI
+    pp = getControlGain(uav, fz, ref, p);
+    save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
+    save('Matrix.mat', '-struct', 'pp', 'P2', '-append')
+    save('Matrix.mat', '-struct', 'pp', 'K', '-append')
 else
-    p = getControlGain(uav, fz, ref, p);
-    save Matrix.mat p
+    pp.P1 = load('Matrix.mat').P1;
+    pp.P2 = load('Matrix.mat').P2;
+    pp.K = load('Matrix.mat').K;
 end
+p.P1 = pp.P1; p.P2 = pp.P2; p.K = pp.K;
 uav.K = p.K;
 
 %% trajectory
-tr = trajectory(uav, fz, ref, p);
+if EXE.TRAJ
+    tr = trajectory(uav, fz, ref, p);
+end
+
 
 %% plot
-Plot(tr)
+if EXE.PLOT
+    Plot(tr)
+end
+plot(tr.t, tr.r(7:12, :));
+legend
 
-%% augment system parameter
-eigOfLMI(uav, fz, ref, p);
+%% Calculate eigenvalue of LMI
+% eigOfLMI(uav, fz, ref, p);
 
+%% Calculate execution time
 toc
 
+rmpath(genpath('../../../src'))
+
 %% functions
-function p = getLocalMatrix(uav, fz, p)  
-    s = sym('s', [uav.dim, 1]);
-    
-    % find A
-    A = zeros(uav.dim, uav.dim, fz.num);
-    for k = 1 : fz.num       
-        y = subs(uav.f(s), s(fz.PV), fz.set(:, k));
-        for i = 1 : uav.dim
-            [cf, u] = coeffs(y(i));
-            u = subs(u, s, (1:uav.dim)');
-            A(i, u, k) = cf;
-        end
-    end
-
-    % find B
-    B = zeros(uav.dim, uav.dim_u, fz.num);
-    for k = 1 : fz.num
-        y = subs(uav.g(s), s(fz.PV), fz.set(:, k));
-        B(:, :, k) = subs(y, s(11), 0); % let phi = 0
-    end
-    
-    p.A = A; p.B = B;
-end
-
-function Plot(tr)
-    % figure('units','normalized','outerposition',[0 0 1 1])
-    state = [1:12];
-    for i = 1 : length(state)
-        figure(i)
-    %     subplot(1, 2, i);
-        plot(tr.t, tr.x(state(i), :), tr.t, tr.xr(state(i), :));
-        title(['x_{' num2str(state(i)) '}']); legend("x", "x_r");
-        xlabel("t"); ylim([-2 2])
-    end
-end
-
 function eigOfLMI(uav, fz, ref, p)
 I = eye(uav.dim);
 O = zeros(uav.dim);
@@ -99,7 +77,8 @@ for i = 1 : fz.num
     
     Mb = Mb + Qb + symmetric((Ab + Bb*Kb)'*Pb) + p.rho^(-2)*Pb*(Fb*Fb')*Pb;
 end
-max(eig(Mb))
+disp('eig of LMI: ')
+disp(max(eig(Mb)))
 end
 
 function y = symmetric(x)

@@ -1,6 +1,6 @@
+% difference between 1 : 2 use inverse dynamic
 clc; clear; close all; tic
 uav = UAV; fz = Fuzzy; ref = REF(uav);
-p = struct; % rho, Q, A, B, K, P1, P2
 
 % constant parameter
 
@@ -9,6 +9,7 @@ runID        = 0; % whether run inverse dynamics part
 runLinearize = 1; % whether run linearize part
 runLMI       = 1; % whether run LMI part
 
+p = struct; % rho, Q, A, B, K, P1, P2
 p.tf   = 4*pi;      % final time of trajectory
 p.dt   = 0.005;     % time step of RK4
 p.ampv = 0;           % amplitude of v

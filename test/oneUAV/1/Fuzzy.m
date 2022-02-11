@@ -1,6 +1,14 @@
 classdef Fuzzy  
     properties (Constant)
-        OP = {linspace(-pi/6, pi/6, 5), linspace(-pi/6, pi/6, 5)}; % operation points
+        % operation points
+        OP = {
+            linspace(-pi/6, pi/6, 5)
+            linspace(-pi/6, pi/6, 5)
+            % [-20 0 20]
+            % [-20 0 20]
+            % [-20 0 20]
+        };
+
         PV = [7, 9] % loction of chosen premise variable in state x
     end
     
@@ -14,12 +22,14 @@ classdef Fuzzy
     
     methods
         function obj = Fuzzy() % initialize
-            % op
-            len = {length(cell2mat(obj.OP(1))), length(cell2mat(obj.OP(2)))};
-            obj.op = struct('val',obj.OP, 'len', len);
-            
             % len_OP
             obj.len_OP = length(obj.OP);
+
+            % op
+            for i = 1 : obj.len_OP
+                obj.op(i).val = obj.OP{i};
+                obj.op(i).len = length(obj.OP{i});
+            end
             
             % num
             obj.num = 1;
@@ -97,4 +107,4 @@ classdef Fuzzy
         end
     end
 end
-
+%#ok<*PROPLC>

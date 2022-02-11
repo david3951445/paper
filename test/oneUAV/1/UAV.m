@@ -1,4 +1,4 @@
-% it's a simplify version of UAV model
+% it's a simplify model for UAV
 classdef UAV  
     properties (Constant)
         % system parameters

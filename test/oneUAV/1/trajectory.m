@@ -3,9 +3,13 @@ function tr = trajectory(uav, fz, ref, p)
     t = 0 : dt : p.tf; t2 = 0 : dt2 : p.tf;
 
     v = zeros(uav.dim, length(t2));
-    v(2:2:12, :) = 0.1*wgn(uav.dim/2, length(t2), 0);
-    x = zeros(uav.dim, length(t)); x(1:6, 1) = [0; 1; 0.5; 0; 0; 0.8];
-    xr = zeros(uav.dim, length(t)); xr(1:6, 1) = [0; 1; 0.5; 0; 0; 0.8];
+%     v(2:2:12, :) = 0.1*wgn(uav.dim/2, length(t2), 0);
+    x = zeros(uav.dim, length(t));
+%     x(1:6, 1) = [0; 1; 0.5; 0; 0; 0.8];
+    x(:, 1) = [0.54 0.55 0.57 0.57 2 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
+    xr = zeros(uav.dim, length(t));
+    xr(1:6, 1) = [0; 1; 0.5; 0; 0; 0.8];
+    
 
     for i = 1 : length(t) - 1
         [k1, kr1] = RK4(uav, fz, ref, x(:, i),           xr(:, i),            v(2*i-1), t2(2*i-1));
@@ -15,9 +19,13 @@ function tr = trajectory(uav, fz, ref, p)
 
         x(:, i+1)  = x(:, i)  + (k1 + 2*k2 + 2*k3 + k4)*dt/6; 
         xr(:, i+1) = xr(:, i) + (kr1 + 2*kr2 + 2*kr3 + kr4)*dt/6;
+        r(:, i+1) = ref.r(x(:, i), 0, t(i));
     end
     
-    tr.x = x; tr.xr = xr; tr.t = t;
+    tr.x = x;
+    tr.xr = xr;
+    tr.r = r;
+    tr.t = t;
     
     %% function
     function [k, kr] = RK4(uav, fz, ref, x, xr, v, t)
