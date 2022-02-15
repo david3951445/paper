@@ -8,9 +8,9 @@ classdef EXE
     %   F = 0   - load output of f() and not execute f()
     
     properties (Constant)
-        A_B     = 1 % whether run linearize part
-        LMI     = 1 % whether run LMI part
-        TRAJ    = 0
+        A_B     = 0 % whether run linearize part
+        LMI     = 0 % whether run LMI part
+        TRAJ    = 1
         PLOT    = 0
     end
 end

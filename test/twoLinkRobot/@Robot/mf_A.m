@@ -1,4 +1,4 @@
-% % old
+% % old method
 % function y = mf_A(o, x, ind)
 % %Calculate mbfun of ind-th
 % n = length(o.A.mf_discrete);

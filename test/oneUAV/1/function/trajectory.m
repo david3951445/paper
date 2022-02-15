@@ -12,6 +12,10 @@ function tr = trajectory(uav, fz, ref, p)
     
 
     for i = 1 : length(t) - 1
+%         if isnan(norm(x))
+%             error('diverge')
+%         end
+        
         [k1, kr1] = RK4(uav, fz, ref, x(:, i),           xr(:, i),            v(2*i-1), t2(2*i-1));
         [k2, kr2] = RK4(uav, fz, ref, x(:, i)+0.5*k1*dt, xr(:, i)+0.5*kr1.*dt, v(2*i),   t2(2*i));
         [k3, kr3] = RK4(uav, fz, ref, x(:, i)+0.5*k2*dt, xr(:, i)+0.5*kr2.*dt, v(2*i),   t2(2*i));

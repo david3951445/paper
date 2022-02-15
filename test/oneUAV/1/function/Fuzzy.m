@@ -1,9 +1,11 @@
-classdef Fuzzy  
+classdef Fuzzy
+    %T-S fuzzy model
+    
     properties (Constant)
         % operation points
         OP = {
-            linspace(-pi/6, pi/6, 5)
-            linspace(-pi/6, pi/6, 5)
+            linspace(-pi/6, pi/6, 3)
+            linspace(-pi/6, pi/6, 3)
             % [-20 0 20]
             % [-20 0 20]
             % [-20 0 20]
