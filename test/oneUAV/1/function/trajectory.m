@@ -33,15 +33,16 @@ function tr = trajectory(uav, fz, ref, p)
     
     %% function
     function [k, kr] = RK4(uav, fz, ref, x, xr, v, t)
-        k = zeros(uav.dim, 1); kr = zeros(uav.dim, 1);
+        % Calculate sum of Kj
+        K_total = zeros(size(uav.K(:, :, 1)));
         for j = 1 : fz.num
-            K = uav.K(:, :, j);
-            U = K*(x - xr);
-        %     U = K*[x; xr]; % method 2
-            k = k + fz.mbfun(j, x)*(uav.f(x) + uav.g(x)*U + v);
-%             kr = kr + fz.mbfun(j, x)*(ref.A*xr + ref.B*ref.r(x, U(1), t));
-        %     kr = kr + ref.r(x, U(1), t) - x; % method 2
+            % U = K*[x; xr]; % method 2
+            K_total = K_total + fz.mbfun(j, x)*uav.K(:, :, j);
+            % kr = kr + ref.r(x, U(1), t) - x; % method 2
         end
+        
+        U = K_total*(x - xr);
+        k = uav.f(x) + uav.g(x)*U + v;
         kr = ref.A*xr + ref.B*ref.r(x, U(1), t);
     end
 end
