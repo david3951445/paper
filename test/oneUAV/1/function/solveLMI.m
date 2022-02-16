@@ -25,14 +25,13 @@ function K = solveLMI(A, B, E, Ar, Br, Q1, Q2, rho)
 % hold then (3) achieve (5).
 
 %% tunable parameter
-d1 = 10^(-1); % LMI <= d1*I. if problem infeasible, try increasing d1
-
+d1 = 10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
 
 %% solve
 [DIM_X, DIM_U] = size(B);
 
 options = sdpsettings('solver','sdpt3');
-options = sdpsettings(options,'verbose',0);
+options = sdpsettings(options,'verbose', 0);
 
 W1 = sdpvar(DIM_X, DIM_X); % symmetric
 W2 = sdpvar(DIM_X, DIM_X);
@@ -54,7 +53,7 @@ if Q1 == 0
         M13' M23' M33
     ];
 
-    eq1 = LMI <= 10^(-1)*eye(3*DIM_X)
+    eq1 = LMI <= d1*eye(3*DIM_X)
 else
     M14 = W1;
     M24 = zeros(DIM_X);
@@ -68,7 +67,7 @@ else
         M14' M24' M34' M44
     ];
 
-    eq1 = LMI <= 10^(-1)*eye(4*DIM_X)
+    eq1 = LMI <= d1*eye(4*DIM_X)
 end
     
 % If you want to limit size of K
@@ -90,8 +89,8 @@ W1 = value(W1);
 W2 = value(W2);
 Y2 = value(Y2);
 
-P1 = I/W1;
-P2 = I/W2;
+P1 = eye(DIM_X)/W1;
+P2 = eye(DIM_X)/W2;
 K = Y2*P2;
 
 %% local function

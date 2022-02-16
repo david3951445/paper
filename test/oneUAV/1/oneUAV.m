@@ -12,7 +12,7 @@ ref = REF(uav);
 % p : tf, dt, rho, Q, A, B, K, P1, P2
 p.tf    = 2*pi;      % final time of trajectory
 p.dt    = 0.002;     % time step of RK4
-p.rho   = 1*10^(1);
+p.rho   = 1*10^(2);
 p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001]);
 
 %% linearize
@@ -28,28 +28,29 @@ p.A = A; p.B = B;
 uav.A = p.A; uav.B = p.B;
 
 %% find K
-for i = 1 : size(A, 3)
-    A(:, :, i) = A(:, :, i) - 0.05*eye(uav.dim);
-end
+% let A more negtive
+% for i = 1 : size(A, 3)
+%     A(:, :, i) = A(:, :, i) - 5*eye(uav.dim);
+% end
 
 if EXE.LMI
     pp = getControlGain2(uav, fz, ref, p);
-    save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
-    save('Matrix.mat', '-struct', 'pp', 'P2', '-append')
+%     save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
+%     save('Matrix.mat', '-struct', 'pp', 'P2', '-append')
     save('Matrix.mat', '-struct', 'pp', 'K', '-append')
 else
-    pp.P1 = load('Matrix.mat').P1;
-    pp.P2 = load('Matrix.mat').P2;
+%     pp.P1 = load('Matrix.mat').P1;
+%     pp.P2 = load('Matrix.mat').P2;
     pp.K = load('Matrix.mat').K;
 end
-p.P1 = pp.P1; p.P2 = pp.P2; p.K = pp.K;
+% p.P1 = pp.P1; p.P2 = pp.P2;
+p.K = pp.K;
 uav.K = p.K;
 
 %% trajectory
 if EXE.TRAJ
     tr = trajectory(uav, fz, ref, p);
 end
-
 
 %% plot
 if EXE.PLOT
@@ -63,6 +64,16 @@ end
 
 %% Calculate execution time
 toc
+
+%% Debug
+% Test if sum of membership function is 1
+sum = 0;
+x0 = rand(12,1);
+for j = 1 : fz.num
+    sum = sum + fz.mbfun(j, x0);
+end
+
+%% Remove path
 rmpath(genpath('function'))
 rmpath(genpath('../../../src'))
 
