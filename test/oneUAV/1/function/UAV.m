@@ -13,22 +13,18 @@ classdef UAV
     
     properties
         x % trajectory
-        A, B, K
-        c % for calculation speed
+        A
+        B
+        K
+        E
+        O
     end
     
     % system functions
     methods
         function obj = UAV()
-            obj.c(1) = (obj.Jy - obj.Jz)/obj.Jx;
-            obj.c(2) = (obj.Jz - obj.Jx)/obj.Jy;
-            obj.c(3) = (obj.Jx - obj.Jy)/obj.Jz;
-            obj.c(4) = - obj.Kph/obj.Jx;
-            obj.c(5) = - obj.Kth/obj.Jy;
-            obj.c(6) = - obj.Kps/obj.Jy;    
-            obj.c(7) = - obj.Kx/obj.m;
-            obj.c(8) = - obj.Ky/obj.m;
-            obj.c(9) = - obj.Kz/obj.m;
+            obj.E = eye(obj.dim);
+            obj.O = zeros(obj.dim);
         end
         
         function y = f(obj, x)  
@@ -38,12 +34,6 @@ classdef UAV
                  x(8) ; ((obj.Jy - obj.Jz)*x(9)*x(11) - obj.Kph*x(8))/obj.Jx;
                  x(10); ((obj.Jz - obj.Jx)*x(7)*x(11) - obj.Kth*x(10))/obj.Jy;
                  x(12); ((obj.Jx - obj.Jy)*x(7)*x(9) - obj.Kps*x(12))/obj.Jz;];
-%                 y = [x(2) ; obj.c(7)*x(2);
-%                  x(4) ; obj.c(8)*x(4);
-%                  x(6) ; obj.c(9)*x(6) - obj.G;
-%                  x(8) ; obj.c(1)*x(9)*x(11) + obj.c(4)*x(8);
-%                  x(10); obj.c(2)*x(7)*x(11) + obj.c(4)*x(10);
-%                  x(12); obj.c(3)*x(7)*x(9)  + obj.c(4)*x(12)];
         end
         
         function y = g(obj, x)

@@ -45,26 +45,26 @@ M22 = addSym(Ar*W) + rho^(-2)*EEBB;
 
 M13 = W;
 M23 = O;
-M33 = -inv(Q);
+M33 = -inv(2*Q);
 
 M14 = O;
 M24 = W;
 M34 = O;
-M44 = -inv(Q);
-
-% LMI = [
-%     M11  M12  M13  M14
-%     M12' M22  M23  M24
-%     M13' M23' M33  M34
-%     M14' M24' M34' M44
-% ];
-% eq1 = LMI <= d1*eye(4*DIM_X)
+M44 = -inv(2*Q);
 
 LMI = [
-    M11  M12
-    M12' M22
+    M11  M12  M13  M14
+    M12' M22  M23  M24
+    M13' M23' M33  M34
+    M14' M24' M34' M44
 ];
-eq1 = LMI <= 0;
+eq1 = LMI <= d1*eye(4*DIM_X)
+
+% LMI = [
+%     M11  M12
+%     M12' M22
+% ];
+% eq1 = LMI <= 0;
     
 % If you want to limit size of K
 % LMI2 = [

@@ -34,20 +34,21 @@ uav.A = p.A; uav.B = p.B;
 % end
 
 if EXE.LMI
-    pp = getControlGain2(uav, fz, ref, p);
+    K = getControlGain2(uav, fz, ref, p);
 %     save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
 %     save('Matrix.mat', '-struct', 'pp', 'P2', '-append')
-    save('Matrix.mat', '-struct', 'pp', 'K', '-append')
+    save('Matrix.mat', 'K', '-append')
 else
 %     pp.P1 = load('Matrix.mat').P1;
 %     pp.P2 = load('Matrix.mat').P2;
-    pp.K = load('Matrix.mat').K;
+    K = load('Matrix.mat').K;
 end
 % p.P1 = pp.P1; p.P2 = pp.P2;
-p.K = pp.K;
+p.K = K;
 uav.K = p.K;
 
 %% trajectory
+tr = trajectory1(uav, fz, ref, p);
 if EXE.TRAJ
     tr = trajectory(uav, fz, ref, p);
 end
@@ -67,17 +68,21 @@ toc
 
 %% Debug
 % Test if sum of membership function is 1
-sum = 0;
-x0 = rand(12,1);
-for j = 1 : fz.num
-    sum = sum + fz.mbfun(j, x0);
-end
+% sum = 0;
+% x0 = rand(12,1);
+% for j = 1 : fz.num
+%     sum = sum + fz.mbfun(j, x0);
+% end
 
 %% Remove path
 rmpath(genpath('function'))
 rmpath(genpath('../../../src'))
 
 %% functions
+function y = Ab(x)
+    Ab = @(x) [A+B*K -B*K; O Ar];
+end
+
 function eigOfLMI(uav, fz, ref, p)
 I = eye(uav.dim);
 O = zeros(uav.dim);

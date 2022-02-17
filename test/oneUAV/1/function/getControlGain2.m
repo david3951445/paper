@@ -1,4 +1,4 @@
-function m = getControlGain2(uav, fz, ref, p, m)
+function K = getControlGain2(uav, fz, ref, p, m)
 %YALMIP (spdvar method)
 DIM_X   = uav.dim;
 DIM_U   = uav.dim_u;
@@ -14,7 +14,7 @@ for i = 1 : LEN
     fprintf('LMI iter: %d/%d\n', i, LEN)
     A = uav.A(:, :, i); B = uav.B(:, :, i);
     
-    m.K(:, :, i) = solveLMI(A, B, I, Ar, Br, Q1, Q2, rho);
+    K(:, :, i) = solveLMI1(A, B, I, Ar, Br, Q2, rho);
 end
 
 %% local function
