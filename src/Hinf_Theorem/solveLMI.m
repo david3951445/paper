@@ -1,5 +1,5 @@
 function K = solveLMI(A, B, E, Ar, Br, Q1, Q2, rho)
-%solution of "Qb + Pb(Ab+BbKb) + (Ab+BbKb)'Pb + PbEbEb'Pb/rho^2 < 0, P1 > 0, P2 > 0"
+%solution of "Qb + Pb(Ab+BbKb) + (Ab+BbKb)'Pb + PbEbEb'Pb/rho^2 < 0, Pb > 0"
 %
 % This function is used to solve a control problem defined below :
 % (1) system
@@ -21,11 +21,11 @@ function K = solveLMI(A, B, E, Ar, Br, Q1, Q2, rho)
 %       where Pb = [P1 0; 0 P2]
 %
 % Given (1) ~ (6), form H infinity theorem, if
-%       "Qb + Pb(Ab+BbKb) + (Ab+BbKb)'Pb + PbEbEb'Pb/rho^2 < 0, P1 > 0, P2 > 0"
+%       "Qb + Pb(Ab+BbKb) + (Ab+BbKb)'Pb + PbEbEb'Pb/rho^2 < 0, Pb > 0"
 % hold then (3) achieve (5).
 
 %% tunable parameter
-d1 = 10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
+d1 = 0*10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
 
 %% solve
 [DIM_X, DIM_U] = size(B);
@@ -81,7 +81,7 @@ eqns = [eq1, W1 >= 0, W2 >= 0];
 sol = optimize(eqns, [], options);
 
 % If you want to see solution information
-% if sol.problem
+% if sol.problem % Solve failed
     sol.info
 % end
     
