@@ -4,8 +4,8 @@ classdef Fuzzy
     properties (Constant)
         % operation points
         OP = {
-            linspace(-pi/6, pi/6, 3)
-            linspace(-pi/6, pi/6, 3)
+            linspace(-pi/6, pi/6, 4)
+            linspace(-pi/6, pi/6, 4)
             % [-20 0 20]
             % [-20 0 20]
             % [-20 0 20]
@@ -50,11 +50,10 @@ classdef Fuzzy
         end
         
         function y = mbfun(obj, k, x) % membership function of rule k
-            total = 1;
+            y = 1;
             for i = 1 : obj.len_OP
-                total = total*grade(obj, k, x(obj.PV(i)), i);
+                y = y*grade(obj, k, x(obj.PV(i)), i);
             end
-            y = total;
         end
         
         function y = alpha(obj, k, x) % Interpolation function
@@ -70,7 +69,7 @@ classdef Fuzzy
     end
     
     methods (Access = private)
-        % grade of membership(triangular function)
+        % grade of membership(triangular function). old method
         function y = grade(obj, k, x, i_op)  
             V = obj.op(i_op).val;
             L = obj.op(i_op).len;

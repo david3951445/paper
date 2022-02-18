@@ -17,9 +17,9 @@ K = K2*1;
 Ab = @(x) [A+B*K -B*K; O Ar];
 Eb = [E O; O Br];
 xb0 = [x0; xr0];
-vb = @(t)[v(t); r(t)];
-sysArg = LTI(Ab, Eb, dt, T, xb0, vb);
-% sysRef = LTI(Ar, Br, dt, T, xr0, r);
+vb = @(x, t)[v(t); r(t)];
+sysArg = LPV(Ab, Eb, dt, T, xb0, vb);
+% sysRef = LPV(Ar, Br, dt, T, xr0, r);
 
 sys = sysArg;
 plot(sys.t, sys.x)

@@ -4,6 +4,7 @@ classdef Class1
     
     properties
         A1
+        B1 = 1
     end
     
     methods
@@ -13,10 +14,10 @@ classdef Class1
             obj.A1 = a1;
         end
         
-        function outputArg = method1(obj,inputArg)
+        function obj = setA(obj, a1)
             %METHOD1 Summary of this method goes here
             %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+            obj.A1 = a1;
         end
     end
 end

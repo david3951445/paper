@@ -2,15 +2,15 @@ classdef TPmodel
     %TP type polytopic LPV model (transformed from LPV model)
     
     properties
-        sizeO       % Origin size in hosvd result, just for indexing A.mf. ex: size(S) = [9, 2, 9, 2, 4, 4] -> A.sizeO = size(S, 1 : 4)
+        sizeO       % Origin size in hosvd result, just for indexing M.mf(). ex: size(S) = [9, 2, 9, 2, 4, 4] -> A.sizeO = size(S, 1 : 4)
         val         % Core tensor (or "linear matrice")
-        len         % array length of "val"
-        index
+        len         % number of Core tensor (length(val))
+        % index       % for indexing "mf_discrete"
     end
 
     properties (Access = private)
         mf_discrete % Discrete (because it's composed by "points") membership function (or "weighting functions") of Core tensor
-        % index       % for indexing "mf_discrete"
+        index       % for indexing "mf_discrete"
     end
     
     methods

@@ -1,4 +1,4 @@
-% difference between 1 : 2 use inverse dynamic
+%difference between 1 : 2 use inverse dynamic
 clc; clear; close all; tic
 uav = UAV; fz = Fuzzy; ref = REF(uav);
 

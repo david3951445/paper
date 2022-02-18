@@ -4,28 +4,14 @@ clc; clear; close all; tic
 addpath(genpath('function'))
 addpath(genpath('../../../src'))
 
-uav = UAV;
-fz = Fuzzy;
-ref = REF(uav);
-
 % tunable parameter
-% p : tf, dt, rho, Q, A, B, K, P1, P2
-p.tf    = 2*pi;      % final time of trajectory
-p.dt    = 0.002;     % time step of RK4
+% Hinf performance. Q, R, rho
 p.rho   = 1*10^(2);
-p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001, 1, 0.001]);
+p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0.0001, 0.1, 0.0001, 0.1, 0.0001]);
 
-%% linearize
-if EXE.A_B
-    [A, B] = getLocalMatrix(uav, fz);
-    save('Matrix.mat', 'A', '-append')
-    save('Matrix.mat', 'B', '-append')
-else
-    A = load('Matrix.mat').A;
-    B = load('Matrix.mat').B;
-end
-p.A = A; p.B = B;
-uav.A = p.A; uav.B = p.B;
+fz  = Fuzzy();
+uav = UAV(fz);
+ref = REF(uav);
 
 %% find K
 % let A more negtive
@@ -34,31 +20,26 @@ uav.A = p.A; uav.B = p.B;
 % end
 
 if EXE.LMI
-    K = getControlGain2(uav, fz, ref, p);
-%     save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
-%     save('Matrix.mat', '-struct', 'pp', 'P2', '-append')
-    save('Matrix.mat', 'K', '-append')
-else
-%     pp.P1 = load('Matrix.mat').P1;
-%     pp.P2 = load('Matrix.mat').P2;
-    K = load('Matrix.mat').K;
+    uav.K = getControlGain2(fz, uav, ref, p);
+    uav.save('data/uav.mat', 'K')
+    % save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
 end
-% p.P1 = pp.P1; p.P2 = pp.P2;
-p.K = K;
-uav.K = p.K;
+% pp.P1 = load('Matrix.mat').P1;
 
 %% trajectory
-tr = trajectory1(uav, fz, ref, p);
 if EXE.TRAJ
-    tr = trajectory(uav, fz, ref, p);
+    tr = Trajectory(uav, ref, fz);
+    % tr = trajectory2(uav, fz, ref, p);
 end
 
 %% plot
 if EXE.PLOT
-    Plot(tr)
+    tr.plot();
+    % Plot(tr)
 end
-% plot(tr.t, tr.r(7:12, :));
-% legend
+
+
+
 
 %% Calculate eigenvalue of LMI
 % eigOfLMI(uav, fz, ref, p);

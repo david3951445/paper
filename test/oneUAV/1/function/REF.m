@@ -1,40 +1,46 @@
 % reference model
 classdef REF
     properties (Constant)
-        c = 1*[10, 5, 10, 5, 10, 5];
+        c = 1*[10, 5, 10, 5, 10, 5]
+        g = 9.81
         %         radius = 10;
         %         freq = 0.5;
     end
     
     properties
-        A, B, m, g
+        A
+        B
+
+        m % mass of UAV
     end
     
     methods
         function obj = REF(uav)
-            I = eye(uav.dim);
-            obj.A = -10*I;
+            obj.A = -10*eye(uav.dim);
             obj.B = -obj.A;
+
             obj.m = uav.m;
-            obj.g = uav.G;
         end
         
         function y = r(obj, x, F, t)
-            radius = 10; % 1
+            radius   = 10; % 1
             radius_z = 1; % 0.8
-            freg = 0.5;
-            y = [radius*sin(freg*t)
+            freg     = 0.5;
+
+            y = [
+                radius*sin(freg*t)
                 freg*radius*cos(freg*t)
-                radius*cos(0.5*t);
-                -0.5*radius*sin(0.5*t);
-                radius_z*t;
-                radius_z;
-                0;
-                0;
-                0;
-                0;
-                0;
-                0];
+                radius*cos(0.5*t)
+                -0.5*radius*sin(0.5*t)
+                radius_z*t
+                radius_z
+                0
+                0
+                0
+                0
+                0
+                0
+            ];
             
             % method 1-1
             % ux = obj.c(1)*(x(1) - y(1)) + obj.c(2)*(x(2) - y(2));
@@ -59,9 +65,9 @@ classdef REF
             uy = 5*d1(3)+1.5*d1(4);
             
             y(7) = 20*atan(ux*sin(y(11))-1*uy*cos(y(11))); % roll
-            %   y(8) = (y(7)-f1(7))/h;
+            % y(8) = (y(7)-f1(7))/h;
             y(9) = -30*atan((ux*cos(y(11))+uy*sin(y(11)))/cos(y(11))); % pitch
-            %   y(10) = (y(9)-f1(9))/h;
+            % y(10) = (y(9)-f1(9))/h;
         end
     end
 end
