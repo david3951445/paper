@@ -4,14 +4,13 @@ classdef Fuzzy
     properties (Constant)
         % operation points
         OP = {
-            linspace(-pi/6, pi/6, 4)
-            linspace(-pi/6, pi/6, 4)
-            % [-20 0 20]
-            % [-20 0 20]
-            % [-20 0 20]
+            linspace(-0.5, 0.5, 4)
+            linspace(-0.5, 0.5, 4)
+            [pi/2, 0]
         };
 
-        PV = [7, 9] % loction of chosen premise variable in state x
+        % PV = [7, 9] % loction of chosen premise variable in state x
+        PV = [7, 9, 11]
     end
     
     properties
@@ -39,11 +38,18 @@ classdef Fuzzy
                 obj.num = obj.num*obj.op(i).len;
             end   
             
-            % set, type     
-            for i = 1 : obj.op(1).len
-                for j = 1 : obj.op(2).len
-                    obj.set(:, (i-1)*obj.op(2).len + j) = [obj.op(1).val(i); obj.op(2).val(j)];
-                    obj.type(:, (i-1)*obj.op(2).len + j) = [i; j];
+            % set, type 
+            ind = 1;    
+            for i1 = 1 : obj.op(1).len
+                for i2 = 1 : obj.op(2).len
+                    for i3 = 1 : obj.op(3).len
+                        % obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2)];
+                        % obj.type(:, ind) = [i1; i2];
+
+                        obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2); obj.op(3).val(i3)];
+                        obj.type(:, ind) = [i1; i2; i3];
+                        ind = ind + 1;
+                    end
                 end
             end
             
@@ -56,16 +62,16 @@ classdef Fuzzy
             end
         end
         
-        function y = alpha(obj, k, x) % Interpolation function
-            e = 10^(-10); % prevent dividing by 0
-            num = 1/(norm(x(obj.PV) - obj.set(k))+e);
-            den = 0;
-            for i = 1 : obj.num
-                den = den + 1/(norm(x(obj.PV) - obj.set(i))+e);
-            end
+        % function y = alpha(obj, k, x) % Interpolation function
+        %     e = 10^(-10); % prevent dividing by 0
+        %     num = 1/(norm(x(obj.PV) - obj.set(k))+e);
+        %     den = 0;
+        %     for i = 1 : obj.num
+        %         den = den + 1/(norm(x(obj.PV) - obj.set(i))+e);
+        %     end
 
-            y = num/den;
-            end
+        %     y = num/den;       
+        % end
     end
     
     methods (Access = private)

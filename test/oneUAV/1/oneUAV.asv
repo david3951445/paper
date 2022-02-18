@@ -7,7 +7,7 @@ addpath(genpath('../../../src'))
 % tunable parameter
 % Hinf performance. Q, R, rho
 p.rho   = 1*10^(2);
-p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0.0001, 0.1, 0.0001, 0.1, 0.0001]);
+p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.01, 0.00001, 0.01, 0.00001, 0.01, 0.00001]);
 
 fz  = Fuzzy();
 uav = UAV(fz);
@@ -15,8 +15,8 @@ ref = REF(uav);
 
 %% find K
 % let A more negtive
-% for i = 1 : size(uav.A{1})
-%     uav.A{i} = uav.A{i} - 0.05*eye(uav.dim);
+% for i = 1 : size(A, 3)
+%     A(:, :, i) = A(:, :, i) - 5*eye(uav.dim);
 % end
 
 if EXE.LMI
@@ -38,16 +38,14 @@ if EXE.PLOT
     % Plot(tr)
 end
 
-%% Eigenvalue of LMI
+
+
+
+%% Calculate eigenvalue of LMI
 % eigOfLMI(uav, fz, ref, p);
 
-%% Execution time
+%% Calculate execution time
 toc
-
-%% Controlability
-% for i = 1 : fz.num
-%     disp(['Rank of linear system ' num2str(i) ': ' num2str(rank(ctrb(uav.A{i}, uav.B{i})))])   
-% end
 
 %% Debug
 % Test if sum of membership function is 1
