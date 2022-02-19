@@ -17,7 +17,7 @@ for i = 1 : LEN
     fprintf('LMI iter: %d/%d\n', i, LEN)
     A = uav.A{i}; B = uav.B{i};
 
-    K{i} = solveLMI1(A, B, E, Ar, Br, Q2, rho);
+    K{i} = solveLMI2(A, B, E, Ar, Br, Q2, rho);
 end
 
 %% local function

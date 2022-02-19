@@ -1,7 +1,14 @@
 classdef UAV  
 %it's a simplify model for UAV
-% sys
-%       dx/dt = f(x) + g(x)*u + Ev
+% - System form
+%       - dx/dt = f(x) + g(x)*u + Ev
+% - The model is refered to 1.pdf
+%       - Euler angle (extrinsic rotation)
+%           - x(7)  : phi, x-axis
+%           - x(9)  : theta, y-axis
+%           - x(11) : psi, z-axis
+%           - note: x(7), x(9), x(11) are not roll, pitch, yaw respectively. Typo in 1.pdf.
+%             more detail : https://en.wikipedia.org/wiki/Rotation_matrix
     properties (Constant)
         % system parameters
         m = 2, l = 0.2, b = 2, d = 5, G = 9.81
@@ -40,12 +47,26 @@ classdef UAV
         end
         
         function y = f(obj, x)  
-            y = [x(2) ; -obj.Kx*x(2)/obj.m;
-                 x(4) ; -obj.Ky*x(4)/obj.m;
-                 x(6) ; -obj.Kz*x(6)/obj.m - obj.G;
-                 x(8) ; ((obj.Jy - obj.Jz)*x(9)*x(11) - obj.Kph*x(8))/obj.Jx;
-                 x(10); ((obj.Jz - obj.Jx)*x(7)*x(11) - obj.Kth*x(10))/obj.Jy;
-                 x(12); ((obj.Jx - obj.Jy)*x(7)*x(9) - obj.Kps*x(12))/obj.Jz;];
+            y = [
+                x(2)
+                -obj.Kx*x(2)/obj.m
+                x(4)
+                -obj.Ky*x(4)/obj.m
+                x(6)
+                -obj.Kz*x(6)/obj.m + obj.G
+                x(8)
+                % ((obj.Jy - obj.Jz)*x(9)*x(11) - obj.Kph*x(8))/obj.Jx
+                % ((obj.Jy - obj.Jz)*x(10)*x(12) - obj.Kph*x(8))/obj.Jx
+                -obj.Kph*x(8)/obj.Jx
+                x(10)
+                % ((obj.Jz - obj.Jx)*x(7)*x(11) - obj.Kth*x(10))/obj.Jy
+                % ((obj.Jz - obj.Jx)*x(8)*x(12) - obj.Kth*x(10))/obj.Jy
+                -obj.Kth*x(10)/obj.Jy
+                x(12)
+                % ((obj.Jx - obj.Jy)*x(7)*x(9) - obj.Kps*x(12))/obj.Jz
+                % ((obj.Jx - obj.Jy)*x(8)*x(10) - obj.Kps*x(12))/obj.Jz
+                -obj.Kps*x(12)/obj.Jz
+            ];
         end
         
         function y = g(obj, x)
@@ -99,6 +120,7 @@ classdef UAV
                     u = subs(u, s, (1:obj.dim)'); % u = [s2, s3] -> u = [2, 3]
                     obj.A{k}(i, u) = cf; % A1 = [0 1 1 0 ... 0]
                 end
+                obj.A{k};
             end
         
             % find B
@@ -114,3 +136,5 @@ classdef UAV
         end
     end
 end
+%#ok<*PROPLC>
+%#ok<*NASGU>

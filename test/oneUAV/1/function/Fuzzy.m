@@ -4,6 +4,10 @@ classdef Fuzzy
     properties (Constant)
         % operation points
         OP = {
+            % [-0.6 -0.05 -0.025 0.0025 0.05 0.6]
+            % [-0.6 -0.05 -0.025 0.0025 0.05 0.6]
+            % [-0.5 -0.05 0.05 0.5]
+            % [-0.5 -0.05 0.05 0.5]
             linspace(-0.5, 0.5, 4)
             linspace(-0.5, 0.5, 4)
             [pi/2, 0]

@@ -31,7 +31,7 @@ d1 = 0*10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
 [DIM_X, DIM_U]  = size(B);
 O               = zeros(DIM_X);
 
-options = sdpsettings('solver', 'mosek');
+options = sdpsettings('solver', 'sdpt3');
 options = sdpsettings(options,'verbose', 0);
 
 W1 = sdpvar(DIM_X, DIM_X); % symmetric
