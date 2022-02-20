@@ -10,11 +10,11 @@ classdef Fuzzy
             % [-0.5 -0.05 0.05 0.5]
             linspace(-0.5, 0.5, 4)
             linspace(-0.5, 0.5, 4)
-            [pi/2, 0]
+            % [pi/2, 0]
         };
 
-        % PV = [7, 9] % loction of chosen premise variable in state x
-        PV = [7, 9, 11]
+        PV = [7, 9] % loction of chosen premise variable in state x
+        % PV = [7, 9, 11]
     end
     
     properties
@@ -46,14 +46,14 @@ classdef Fuzzy
             ind = 1;    
             for i1 = 1 : obj.op(1).len
                 for i2 = 1 : obj.op(2).len
-                    for i3 = 1 : obj.op(3).len
-                        % obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2)];
-                        % obj.type(:, ind) = [i1; i2];
+                    % for i3 = 1 : obj.op(3).len
+                        obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2)];
+                        obj.type(:, ind) = [i1; i2];
 
-                        obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2); obj.op(3).val(i3)];
-                        obj.type(:, ind) = [i1; i2; i3];
+                        % obj.set(:, ind) = [obj.op(1).val(i1); obj.op(2).val(i2); obj.op(3).val(i3)];
+                        % obj.type(:, ind) = [i1; i2; i3];
                         ind = ind + 1;
-                    end
+                    % end
                 end
             end
             

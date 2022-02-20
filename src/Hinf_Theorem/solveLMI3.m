@@ -18,7 +18,7 @@ function K = solveLMI1(A, B, E, Ar, Br, Q, rho)
 %       where Qb = [Q -Q; -Q Q]
 % (6) Lyapunov function
 %       V(x) = xb'Pbxb
-%       where Pb = [P1 0; 0 P2]
+%       where Pb = [P -P; -P P]
 %
 % Given (1) ~ (6), form H infinity theorem, if
 %       "Qb + Pb(Ab+BbKb) + (Ab+BbKb)'Pb + PbEbEb'Pb/rho^2 < 0, Pb > 0"
@@ -30,33 +30,33 @@ d1 = 0*10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
 %% solve
 [DIM_X, DIM_U]  = size(B);
 O               = zeros(DIM_X);
-
+EEBB            = E*E'+ Br*Br';
 options = sdpsettings('solver', 'sdpt3');
 options = sdpsettings(options,'verbose', 0);
 
-W1 = sdpvar(DIM_X, DIM_X); % symmetric
-Y1 = sdpvar(DIM_U, DIM_X); % full
+W = sdpvar(DIM_X, DIM_X); % symmetric
+Y = sdpvar(DIM_U, DIM_X); % full
     
-M11 = addSym(A*W1 + B*Y1) + rho^(-2)*E*E';
+M11 = addSym(A*W + B*Y) + rho^(-2)*EEBB;
 
-M12 = W1*sqrtm(Q);
-M22 = -eye(DIM_X);
+M12 = -addSym(B*Y) - Ar*W - W*A' - rho^(-2)*EEBB;
+M22 = addSym(Ar*W + B*Y) + rho^(-2)*EEBB;
 
 LMI = [
     M11  M12
     M12' M22
 ];
-eq1 = LMI <= d1*eye(2*DIM_X);
-% eq1 = M11 <= 0;
+% eq1 = LMI <= d1*eye(2*DIM_X);
+eq1 = LMI <= 0;
     
 % If you want to limit size of K
 % LMI2 = [
 %     -10^(4)*eye(DIM_U)   Y2
 %     Y2'                 -eye(DIM_X)
 % ];
-% eqns = [LMI <= eq1, LMI2 <= 0, W1 >= 0, W2 >= 0];
+% eqns = [LMI <= eq1, LMI2 <= 0, W >= 0;
 
-eqns = [eq1, W1 >= 0];
+eqns = [eq1, W >= 0];
 sol = optimize(eqns, [], options);
 
 % If you want to see solution information
@@ -64,11 +64,11 @@ sol = optimize(eqns, [], options);
     sol.info
 % end
     
-W1 = value(W1);
-Y1 = value(Y1);
+W = value(W);
+Y = value(Y);
 
 % P = eye(DIM_X)/W;
-K = Y1/W1;
+K = Y/W;
 
 %% local function
 function y = addSym(x)

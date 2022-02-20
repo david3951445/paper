@@ -58,16 +58,17 @@ classdef Trajectory
                 o.x(:, i+1) = xb(1 : o.SIZE_X, i+1);
                 o.xr(:, i+1) = xb(o.SIZE_X+1 : 2*o.SIZE_X, i+1);
 
-                total_K = zeros(o.SIZE_U, o.SIZE_X);
-                for j = 1 : fz.num
-                    total_K = total_K + fz.mbfun(j, o.x(:, i+1))*uav.K{j};
-                end
-                o.u(:, i+1) = total_K*(o.x(:, i+1) - o.xr(:, i+1));
+                % total_K = zeros(o.SIZE_U, o.SIZE_X);
+                % for j = 1 : fz.num
+                %     total_K = total_K + fz.mbfun(j, o.x(:, i+1))*uav.K{j};
+                % end
+                % o.u(:, i+1) = total_K*(o.x(:, i+1) - o.xr(:, i+1));
             end
         end
         
         function plot(o)
             % figure('units','normalized','outerposition',[0 0 1 1])
+            % x(t), xr(t)
             for i = 1 : o.SIZE_X
                 figure(i)
                 plot(o.t, o.x(i, :), o.t, o.xr(i, :))
@@ -77,11 +78,12 @@ classdef Trajectory
                 % ylim([-2 2])
             end 
             
-            for j = 1 : o.SIZE_U
-                figure(i+j)
-                plot(o.t, o.u(j, :));
-                title(['u_{' num2str(j) '}'])
-            end
+            % u(t)
+            % for j = 1 : o.SIZE_U
+            %     figure(i+j)
+            %     plot(o.t, o.u(j, :));
+            %     title(['u_{' num2str(j) '}'])
+            % end
         end
 
     end
@@ -96,19 +98,24 @@ classdef Trajectory
 
             if o.IS_LINEAR % linear
                 Ab = zeros(o.SIZE_X*2);
-                total_B = zeros(o.SIZE_X, o.SIZE_U);
+                Bb = zeros(o.SIZE_X*2, o.SIZE_U);
+                Kb = zeros(o.SIZE_U, o.SIZE_X*2);
+                ABK = zeros(o.SIZE_X*2);
+
                 for i = 1 : fz.num
                     A = uav.A{i};
                     B = uav.B{i};
                     K = uav.K{i};
-
-                    total_B = total_B + fz.mbfun(i, x)*B;
-                    Ab = Ab + fz.mbfun(i, x)*[A+B*K -B*K; O ref.A];
+                    
+                    Ab = [A O; O ref.A];
+                    Bb = [B; zeros(o.SIZE_X, o.SIZE_U)];
+                    Kb = [K -K];
+                    ABK = ABK + fz.mbfun(i, x)*(Ab + Bb*Kb);
                 end
                 Eb = [uav.E uav.O; uav.O ref.B];
 
-                feed = [total_B*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
-                k = Ab*xb + Eb*[v(t); r];
+                % feed = [total_B*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
+                k = ABK*xb + Eb*[v(t); r];
             else % nonlinear
                 % control gain
                 K = zeros(size(uav.K{1}));

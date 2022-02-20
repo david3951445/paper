@@ -1,13 +1,13 @@
 %main script
 % one UAV, fuzzy, reference model tracking control, no observer
-clc; clear; close all; tic
-addpath(genpath('function'))
+clc; clear; close all; tic; warning off
 addpath(genpath('../../../src'))
+addpath(genpath('function'))
 
 % tunable parameter
 % Hinf performance. Q, R, rho
 p.rho   = 1*10^(2);
-p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0.0001, 0.1, 0.0001, 0.1, 0.0001]);
+p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0, 0.1, 0, 0.1, 0.0001]);
 
 fz  = Fuzzy();
 uav = UAV(fz);

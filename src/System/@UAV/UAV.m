@@ -19,7 +19,7 @@ classdef UAV
         dim = 12  % dimension of state
         dim_u = 4 % dimension of control 
 
-        E = eye(12) % disturbance matrix
+        E = 10^(-3)*diag([0 1 0 1 0 1 0 1 0 1 0 1]) % disturbance matrix
         O = zeros(12);    
     end   
     
