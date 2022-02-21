@@ -33,10 +33,12 @@ O               = zeros(DIM_X);
 
 options = sdpsettings('solver', 'sdpt3');
 options = sdpsettings(options,'verbose', 0);
+eqn = [];
 
 W1 = sdpvar(DIM_X, DIM_X); % symmetric
 Y1 = sdpvar(DIM_U, DIM_X); % full
-    
+eqn = [eqn, W1 >= 0];
+
 M11 = addSym(A*W1 + B*Y1) + rho^(-2)*E*E';
 
 M12 = W1*sqrtm(Q);
@@ -46,7 +48,7 @@ LMI = [
     M11  M12
     M12' M22
 ];
-eq1 = LMI <= d1*eye(2*DIM_X);
+eqn = [eqn, LMI <= d1*eye(2*DIM_X)];
 % eq1 = M11 <= 0;
     
 % If you want to limit size of K
@@ -54,10 +56,10 @@ eq1 = LMI <= d1*eye(2*DIM_X);
 %     -10^(4)*eye(DIM_U)   Y2
 %     Y2'                 -eye(DIM_X)
 % ];
-% eqns = [LMI <= eq1, LMI2 <= 0, W1 >= 0, W2 >= 0];
+% eqn = [eqn, LMI2 <= 0];
 
-eqns = [eq1, W1 >= 0];
-sol = optimize(eqns, [], options);
+
+sol = optimize(eqn, [], options);
 
 % If you want to see solution information
 % if sol.problem % Solve failed

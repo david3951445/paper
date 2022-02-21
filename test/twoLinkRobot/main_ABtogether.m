@@ -6,118 +6,43 @@ addpath(genpath('function'))
 %% fixed parameters
 I = eye(4); O = zeros(4);
 Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
+Br = -Ar;
 
 %% tunable parameters
 state = 'n'; % n : nonlinear, l : linear
-
+E = I;
 d2 = 0; % scale of disturblance
-d3 = 2;
-dk = 1;%d3*diag([20 10 20 10], 0); % scale of K
-dl = 1;%d3*diag([1 10 15 10], 0); % scale of L
 
-d1  = 10^(-2); % scale of Q
-Qe  = 0*d1*I;
-Q   = d1*diag([1 1 1 1]);
+Q   = 10^(-2)*diag([1 0.001 1 0.001]);
+rho = 10^(3);
 Q1  = 10^(-3)*I;
 Q2 = 10^(-6)*I;
-rho = 10^(3);
 
-dt      = 0.01;
+dt      = 0.002;
 tf      = 5; % parameter of trajectory
 amp     = 6;
 freq    = 1; % parameter of sine wave in reference input
 
-%% find Af, Bf, C
 rb = Robot();
-% if ~EXE.A
-%     load('data/rb.mat', 'rb')
-% end
-% if ~EXE.B
+
+%% find Af, Bf, C
 if EXE.A_B
     rb.AB = TPmodel(rb.ABl);
-    rb.save('data/rb', 'AB')
-else
-    rb.AB = load('data/rb', 'AB').AB;
+    rb.save('data/rb.mat', 'AB')
 end
-
-%% LMI, find L, K
-if EXE.K_L
-    Kf = cell(1, rb.AB.len);
-    C = rb.C;
-    options = sdpsettings('solver','sdpt3');
-    options = sdpsettings(options,'verbose',0);
-
-    for i = 1 : rb.AB.len
-        fprintf('LMI iter: %d/%d\n', i, rb.AB.len)
+ 
+%% LMI
+LEN = rb.AB.len;
+if EXE.LMI
+    rb.K = cell(1, LEN);
+    for i = 1 : LEN
+        fprintf('LMI iter: %d/%d\n', i, LEN)
         A = rb.AB.val{i}(:, 1:4); B = rb.AB.val{i}(:, 5:6);
 
-        %%% METHOD 3, [Q1 0; 0 Q2], preposMulti [W1 0; 0 W2]
-        W1 = sdpvar(4, 4); % symmetric
-        W2 = sdpvar(4, 4);
-        Y2 = sdpvar(2, 4); % full
-
-        M11 = addSym(A*W1) + rho^(-2)*I;
-        M12 = B*Y2 + (A*W1)';
-        M13 = W1;
-        M14 = zeros(4);
-        M22 = addSym(-Ar*W2 + B*Y2) + 2*rho^(-2)*I;
-        M23 = zeros(4);
-        M24 = W2;
-        M33 = -inv(Q1);
-        M34 = zeros(4);
-        M44 = -inv(Q2);
-
-        LMI = [
-            M11  M12  M13  M14
-            M12' M22  M23  M24
-            M13' M23' M33  M34
-            M14' M24' M34' M44
-        ];
-    
-        % Limit size of K
-        LMI2 = [
-            -10^(4)*eye(2)   Y2
-            Y2'              -eye(4)
-        ];
-    
-        sol = optimize([LMI <= 10^(-4)*eye(16), LMI2 <= 0, W1 >= 0, W2 >= 0], [], options);
-        
-        sol.info
-%         if sol.problem
-%             sol.info
-%         end
-
-        W1 = value(W1);
-        W2 = value(W2);
-        Y2 = value(Y2);
-        
-        P1 = I/W1;
-        P2 = I/W2;
-        K = Y2*P2;
-
-        Kf{i} = K*dk;
-        
-        %% eig test
-        % Qb = [Q1 O; O Q2];
-        % Ab = [A O; A -Ar];
-        % Bb = [B; B];
-        % Kb = [zeros(2, 4) K];
-        % P = [P1 O; O P2];
-        % Eb = [I O;I -I];
-        % LMI_ = Qb + addSym(P*(Ab + Bb*Kb)) + P*(Eb*Eb')*P/rho^(2);
-        % eig(LMI_)
-        % eig(P1)
-        % eig(P2)
-        % eig(M)
+        rb.K{i} = solveLMI1(A, B, E, Ar, Br, Q, rho);
     end
-
-    gain.K = Kf;
-    save('data/gain.mat', 'gain')
-else
-    load('data/gain.mat', 'gain')
+    rb.save('data/rb.mat', 'K')
 end
-
-
 
 %% plot
 t = 0 : dt : tf; t2 = 0 : dt/2 : tf;
@@ -206,25 +131,26 @@ if EXE.PLOT
     Plot(t, xb);
 end
 
-rmpath(genpath('function'))
-rmpath(genpath('..\..\src'))
-
 %% if you want to check if sum of membership function is 1
-sum = 0;
-sum_AB = zeros(4, 6);
-for i = 1 : rb.AB.len
-    h = rb.AB.mf([0, 0.5, -0.5, 0], i);
-    sum = sum + h;
-    sum_AB = sum_AB + h.*rb.AB.val{i};
-end
-disp(['sum of mbfun of AB: ' num2str(sum)])
-disp('sum of of AB: ')
-disp(sum_AB)
+% sum = 0;
+% sum_AB = zeros(4, 6);
+% for i = 1 : rb.AB.len
+%     h = rb.AB.mf([0, 0.5, -0.5, 0], i);
+%     sum = sum + h;
+%     sum_AB = sum_AB + h.*rb.AB.val{i};
+% end
+% disp(['sum of mbfun of AB: ' num2str(sum)])
+% disp('sum of of AB: ')
+% disp(sum_AB)
 
 %% if u want to check norm of Matrix
-for i = 1 : rb.AB.len
-    disp(['norm of K: ' num2str(norm(Kf{i}))]);
-end
+% for i = 1 : rb.AB.len
+%     disp(['norm of K: ' num2str(norm(Kf{i}))]);
+% end
+
+%% Remove path
+rmpath(genpath('function'))
+rmpath(genpath('..\..\src'))
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)

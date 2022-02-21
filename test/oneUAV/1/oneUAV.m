@@ -4,11 +4,6 @@ clc; clear; close all; tic; warning off
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
-% tunable parameter
-% Hinf performance. Q, R, rho
-p.rho   = 1*10^(2);
-p.Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0, 0.1, 0, 0.1, 0.0001]);
-
 fz  = Fuzzy();
 uav = UAV(fz);
 ref = REF(uav);
@@ -20,7 +15,7 @@ ref = REF(uav);
 % end
 
 if EXE.LMI
-    uav.K = getControlGain2(fz, uav, ref, p);
+    uav.K = getControlGain2(fz, uav, ref);
     uav.save('data/uav.mat', 'K')
     % save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
 end

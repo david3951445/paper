@@ -69,21 +69,22 @@ classdef REF
                     
             % a = 1/(uz + obj.g);
             % phi_d = x(11);
-            % % y(7) = asin(obj.m/F*(ux*sin(x(11)) - uy*cos(x(11))));
-            % y(7) = atan(a*(ux*sin(phi_d) - uy*cos(phi_d)));
-            % y(9) = atan(a*(ux*cos(phi_d) + uy*sin(phi_d))/cos(x(7)));
+            % % r(7) = asin(obj.m/F*(ux*sin(x(11)) - uy*cos(x(11))));
+            % r(7) = atan(a*(ux*sin(phi_d) - uy*cos(phi_d)));
+            % r(9) = atan(a*(ux*cos(phi_d) + uy*sin(phi_d))/cos(x(7)));
 
             % method 1-2 (inverse dynamic, good)
-            % y(7) = atan(-freg*cos(freg*t)/obj.g);
-            % y(9) = atan(freg*sin(freg*t)/(obj.g*cos(y(7))));
-            
+            % r(7) = atan(-freg*cos(freg*t)/obj.g);
+            % r(9) = atan(freg*sin(freg*t)/(obj.g*cos(r(7))));
+            % F = 0;
+
             % method 1-2-1 (inverse dynamic, good)
             c1 = obj.m*d2xd + obj.Kx*dxd;
             c2 = obj.m*d2yd + obj.Ky*dyd;
             c3 = obj.m*(d2zd + obj.g) + obj.Kz*dzd;
             r(7) = atan2(c1, c3);
             r(9) = atan2(-c2*cos(r(7)), c3);
-            F = -c2/sin(r(9));
+            F = sqrt(c1^2 + c2^2 + c3^2);
 
             % method 1-3
             % y(7) = 0.4*atan(obj.m*(-uy)/(ux + uy + uz));

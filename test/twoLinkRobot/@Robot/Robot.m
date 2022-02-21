@@ -16,6 +16,7 @@ properties
     B % B matrix of linear systems
     AB % AB matrix of linear systems
     C % C matrix of linear systems
+    K
 
     test = 0
 
@@ -26,6 +27,13 @@ end
 
 methods
     function o = Robot()
+        % load old data
+        RB_MAT = load('data/rb.mat');
+        % o.A = RB_MAT.A;
+        % o.B = RB_MAT.B;
+        o.AB = RB_MAT.AB;
+        % o.K = RB_MAT.K;
+
         %% set lpv system          
         o.Al.val = {
             @(p)0               @(p)1               @(p)0               @(p)0
@@ -34,7 +42,7 @@ methods
             @(p)o.setAl(p, 41)  @(p)o.setAl(p, 42)  @(p)o.setAl(p, 43)  @(p)o.setAl(p, 44)
         };
         o.Al.domain = 1*[-1 1; -1 1; -1 1; -1 1];
-        o.Al.gridsize = 5*[10 10 10 10];
+        o.Al.gridsize = 1*[10 10 10 10];
         o.Al.SV_TOLERANCE = 0.001;
         o.Al.num_p = length(o.Al.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
         o.Al.dep = zeros([size(o.Al.val) o.Al.num_p]);
@@ -54,7 +62,7 @@ methods
             @(p)o.setBl(p, 41)  @(p)o.setBl(p, 42)
         };
         o.Bl.domain = 2*[-1 1; -1 1];
-        o.Bl.gridsize = 5*[10 10];
+        o.Bl.gridsize = 1*[10 10];
         o.Bl.SV_TOLERANCE = 0.001;
         o.Bl.num_p = length(o.Bl.gridsize); % length of parameter vector of lpv system (p = [x1, x2, x3, x4])
         o.Bl.dep = zeros([size(o.Bl.val) o.Bl.num_p]);
@@ -69,7 +77,7 @@ methods
             @(p)0               @(p)0               @(p)0               @(p)1               @(p)0               @(p)0
             @(p)o.setABl(p, 41) @(p)o.setABl(p, 42) @(p)o.setABl(p, 43) @(p)o.setABl(p, 44) @(p)o.setABl(p, 45) @(p)o.setABl(p, 46)
         };
-        o.ABl.domain = 2*[-1 1; -1 1; -1 1; -1 1;];
+        o.ABl.domain = 1.7*[-1 1; -1 1; -1 1; -1 1;];
         o.ABl.gridsize = 4*[10 10 10 10];
         o.ABl.SV_TOLERANCE = 0.001;
         o.ABl.num_p = length(o.ABl.gridsize); % length of parameter vector of lpv system
@@ -207,8 +215,17 @@ methods (Access = public)
                 B = o.B;
             case 'AB'
                 AB = o.AB;
+            case 'K'
+                K = o.K;
+            otherwise
+                disp('No such property in Robot')
         end
-        save(fname, num2str(whichVar), '-append');
+
+        if isfile(fname)
+            save(fname, whichVar, '-append');
+        else
+            save(fname, whichVar);
+        end
     end
     
     y = setAl(o, p, position)

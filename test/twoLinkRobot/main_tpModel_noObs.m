@@ -331,9 +331,6 @@ end
 %     end
 % end
 
-rmpath(genpath('function'))
-rmpath(genpath('..\..\src'))
-
 %% if you want to check if sum of membership function is 1
 sum = 0;
 sum_A = zeros(4);
@@ -356,6 +353,10 @@ end
 disp(['sum of mbfun of B: ' num2str(sum)])
 disp('sum of of B: ')
 disp(sum_B)
+
+%% remove path
+rmpath(genpath('function'))
+rmpath(genpath('..\..\src'))
 
 %% functions
 function y = getIndex(i, n, m) % transformation of index. ex: 1~27 => (1~3, 1~3, 1~3)

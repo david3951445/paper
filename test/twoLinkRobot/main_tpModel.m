@@ -78,7 +78,7 @@ if EXE.K_L
                 W22 = value(W22);
                 Y = value(Y);
             else
-                display('Hmm, something went wrong!');
+                disp('Hmm, something went wrong!');
                 sol.info
                 yalmiperror(sol.problem)
             end

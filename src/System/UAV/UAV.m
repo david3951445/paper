@@ -17,10 +17,7 @@ classdef UAV
         Kph = 0.012, Kth = 0.012, Kps = 0.012
         
         dim = 12  % dimension of state
-        dim_u = 4 % dimension of control 
-
-        E = 10^(-3)*diag([0 1 0 1 0 1 0 1 0 1 0 1]) % disturbance matrix
-        O = zeros(12);    
+        dim_u = 4 % dimension of control   
     end   
     
     properties

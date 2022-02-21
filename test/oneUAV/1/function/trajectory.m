@@ -2,7 +2,7 @@ classdef Trajectory
 %Generate trajectory for a system with reference model
 
     properties (Constant)
-        dt  = 0.002 % time step
+        dt  = 0.001 % time step
         T   = 20 % final time
 
         % initial value
@@ -90,11 +90,15 @@ classdef Trajectory
 
     methods (Access = private)
         function k = RK4(o, uav, fz, ref, xb, t)
-            O       = zeros((o.SIZE_X));
-            v       = @(t) 0.1*randn(o.SIZE_X, 1) + 0;
+            O       = zeros(o.SIZE_X);
+            v       = @(t) 0.01*randn(o.SIZE_X, 1) + 0;
             [r, F]  = ref.r_F(xb(1 : o.SIZE_X), t);
             x       = xb(1 : o.SIZE_X);
             xr      = xb(o.SIZE_X+1 : o.SIZE_X*2);
+
+            total.A = O;
+            total.B = zeros(o.SIZE_X, o.SIZE_U);
+            total.K = total.B';
 
             if o.IS_LINEAR % linear
                 Ab = zeros(o.SIZE_X*2);
@@ -110,25 +114,35 @@ classdef Trajectory
                     Ab = [A O; O ref.A];
                     Bb = [B; zeros(o.SIZE_X, o.SIZE_U)];
                     Kb = [K -K];
+                    % Kb = K;
+
+                    total.A = total.A + fz.mbfun(i, x)*A;
+                    total.B = total.B + fz.mbfun(i, x)*B;
+                    total.K = total.K + fz.mbfun(i, x)*K;
+
                     ABK = ABK + fz.mbfun(i, x)*(Ab + Bb*Kb);
                 end
-                Eb = [uav.E uav.O; uav.O ref.B];
+                Eb = [eye(o.SIZE_X) O; O ref.B];
 
-                % feed = [total_B*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
-                k = ABK*xb + Eb*[v(t); r];
+                feed = [uav.g(x)*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
+                k = ABK*xb + Eb*[v(t); r] + 0*feed;
+                % u = K*(x - xr);
+                % k = [
+                %     total.A*x + total.B*u + eye(o.SIZE_X)*v(t)
+                %     ref.A*xr + ref.B*r
+                % ];
             else % nonlinear
                 % control gain
-                K = zeros(size(uav.K{1}));
                 for i = 1 : fz.num
-                    K = K + fz.mbfun(i, x)*uav.K{i};
+                    total.K = total.K + fz.mbfun(i, x)*uav.K{i};
                 end
                 % fine-tune
                 % K = K;
                 
-                U = K*(x - xr);
+                U = total.K*(x - xr);
 
                 k = [
-                    uav.f(x) + uav.g(x)*U + uav.E*v(t)
+                    uav.f(x) + uav.g(x)*U + eye(o.SIZE_X)*v(t)
                     ref.A*xr + ref.B*r
                 ];
             end

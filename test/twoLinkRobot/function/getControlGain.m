@@ -1,4 +1,4 @@
-function K = getControlGain2(fz, uav, ref)
+function K = getControlGain(fz, uav, Ar, Br)
 %YALMIP method
 
 % Hinf performance. Q, R, rho
@@ -10,8 +10,6 @@ O = zeros(12);
 LEN     = fz.num;
 DIM_X   = uav.dim;
 DIM_U   = uav.dim_u;
-Ar      = ref.A;
-Br      = ref.B;
 % Q1      = 0; % p.Q*10^(-3); % correspond to x (Q1 = 0 theoretically, if you want to set it to zero, remove M33)
 
 K = cell(1, LEN);
