@@ -3,4 +3,5 @@ Some general Hinf Theorem
     - Pb = [P1 0; 0 P2] or [P 0; 0 P] or [P -P; -P P] ...
     - xb = [x; xr] or [x; x-xr] ...
     - Qb = [Q1 0; 0 Q2] or [Q -Q; -Q Q]
-    - Note: The corresponding Ab, Bb, Kb may change too. 
+    - Note: The corresponding Ab, Bb, Kb may change too.
+- recommend solveLMI1().

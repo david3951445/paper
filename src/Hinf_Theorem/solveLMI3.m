@@ -32,7 +32,7 @@ d1 = 0*10^(-4); % LMI <= d1*I. if problem infeasible, try increasing d1
 O               = zeros(DIM_X);
 EEBB            = E*E'+ Br*Br';
 
-options = sdpsettings('solver', 'sdpt3');
+options = sdpsettings('solver', 'mosek');
 options = sdpsettings(options,'verbose', 0);
 eqn = [];
 
@@ -46,18 +46,35 @@ M11 = addSym(A*W + B*Y) + rho^(-2)*EEBB;
 M12 = -addSym(B*Y) - Ar*W - W*A' - rho^(-2)*EEBB;
 M22 = addSym(Ar*W + B*Y) + rho^(-2)*EEBB;
 
-LMI = [
-    M11  M12
-    M12' M22
-];
-eqn = [eqn, M11 <= 0];
-    
-% If you want to limit size of K
-% LMI2 = [
-%     -10^(4)*eye(DIM_U)   Y2
-%     Y2'                 -eye(DIM_X)
+M13 = W*sqrt(Q);
+M23 = O;
+M33 = -eye(DIM_X);
+
+M14 = O;
+M24 = W*sqrt(Q);
+M34 = O;
+M44 = -eye(DIM_X);
+
+% LMI = [
+%     M11  M12
+%     M12' M22
 % ];
-% eqns = [LMI <= eq1, LMI2 <= 0, W >= 0;
+% eqn = [eqn, M11 <= 0];
+
+LMI = [
+    M11  M12  M13  M14
+    M12' M22  M23  M24
+    M13' M23' M33  M34
+    M14' M24' M34' M44
+];
+eqn = [eqn, LMI <= 0];
+
+% If you want to limit size of K
+LMI2 = [
+    -10^(4)*eye(DIM_U)   Y
+    Y'                 -eye(DIM_X)
+];
+eqns = [eqn, LMI2 <= 0];
 
 sol = optimize(eqn, [], options);
 

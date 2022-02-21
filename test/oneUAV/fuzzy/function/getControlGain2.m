@@ -2,9 +2,9 @@ function K = getControlGain2(fz, uav, ref)
 %YALMIP method
 
 % Hinf performance. Q, R, rho
-rho   = 1*10^(2);
-Q     = 10^(-2)*diag([1, 0.001, 1, 0.001, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % correspond to x - xr
-E = 1*10^(0)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % disturbance matrix
+rho   = 10^(1);
+Q     = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % correspond to x - xr
+E = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % disturbance matrix
 O = zeros(12);  
 
 LEN     = fz.num;

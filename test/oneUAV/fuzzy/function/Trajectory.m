@@ -3,7 +3,7 @@ classdef Trajectory
 
     properties (Constant)
         dt  = 0.001 % time step
-        T   = 20 % final time
+        T   = 15 % final time
 
         % initial value
         x0  = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
