@@ -11,7 +11,7 @@ classdef REF
     
     methods
         function obj = REF(uav)
-            I = eye(uav.dim);
+            I = eye(uav.DIM_X);
             obj.A = -10*I;
             obj.B = -obj.A;
             obj.m = uav.m;

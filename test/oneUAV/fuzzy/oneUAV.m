@@ -1,36 +1,46 @@
 %main script
 % one UAV, fuzzy, reference model tracking control, no observer
-clc; clear; close all; tic; warning off
+clc; clear; close all; tic; % warning off
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 fz  = Fuzzy();
-uav = UAV(fz);
+
+uav = UAV_FZmodel(fz);
+% If you want to tune parameter
+uav.tr.dt   = 0.001;
+uav.tr.T    = 5;
+uav.rho     = 10^(1);
+uav.Q       = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % correspond to x - xr
+uav.E       = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % disturbance matrix
+
 ref = REF(uav);
 
-%% find K
-% let A more negtive
-% for i = 1 : size(uav.A{1})
-%     uav.A{i} = uav.A{i} - 0.05*eye(uav.dim);
-% end
+%% find A, B (linearize)
+if EXE.A_B
+    uav = uav.getAB(fz);
+    uav.save('A')
+    uav.save('B')  
+end 
 
+%% find K, L
+% let A more negtive
+% for i = 1 : size(obj.A{1})
+%     obj.A{i} = obj.A{i} - 0.05*eye(obj.dim);
+% end
 if EXE.LMI
-    uav.K = getControlGain2(fz, uav, ref);
-    uav.save('data/uav.mat', 'K')
-    % save('Matrix.mat', '-struct', 'pp', 'P1', '-append')
+    uav = uav.getKL(fz, ref);
+    uav.save('K')
 end
-% pp.P1 = load('Matrix.mat').P1;
 
 %% trajectory
 if EXE.TRAJ
-    tr = Trajectory(uav, ref, fz);
-    % tr = trajectory2(uav, fz, ref, p);
+    uav = uav.trajectory(ref, fz);
+    uav.save('tr');
 end
 
-%% plot
 if EXE.PLOT
-    tr.plot();
-    % Plot(tr)
+    uav.tr.plot();
 end
 
 %% Eigenvalue of LMI
