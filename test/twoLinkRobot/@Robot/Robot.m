@@ -32,7 +32,7 @@ methods
         % o.A = RB_MAT.A;
         % o.B = RB_MAT.B;
         o.AB = RB_MAT.AB;
-        % o.K = RB_MAT.K;
+        o.K = RB_MAT.K;
 
         %% set lpv system          
         o.Al.val = {
@@ -77,8 +77,8 @@ methods
             @(p)0               @(p)0               @(p)0               @(p)1               @(p)0               @(p)0
             @(p)o.setABl(p, 41) @(p)o.setABl(p, 42) @(p)o.setABl(p, 43) @(p)o.setABl(p, 44) @(p)o.setABl(p, 45) @(p)o.setABl(p, 46)
         };
-        o.ABl.domain = 1.7*[-1 1; -1 1; -1 1; -1 1;];
-        o.ABl.gridsize = 4*[10 10 10 10];
+        o.ABl.domain = pi/2*[-1 1; -1 1; -1 1; -1 1;];
+        o.ABl.gridsize = 20*[1 1 1 1];
         o.ABl.SV_TOLERANCE = 0.001;
         o.ABl.num_p = length(o.ABl.gridsize); % length of parameter vector of lpv system
         o.ABl.dep = zeros([size(o.ABl.val) o.ABl.num_p]);
@@ -228,11 +228,10 @@ methods (Access = public)
         end
     end
     
-    y = setAl(o, p, position)
 end
 
 methods (Access = private)
-%     y = setAl(o, p, position)
+    y = setAl(o, p, position)
     y = setBl(o, p, position)
     y = setABl(o, p, position)
 %     function S = saveobj(o)

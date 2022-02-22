@@ -9,7 +9,7 @@ Ar = [0 1 0 0; -6 -5 0 0; 0 0 0 1; 0 0 -6 -5];
 Br = -Ar;
 
 %% tunable parameters
-state = 'n'; % n : nonlinear, l : linear
+state = 'l'; % n : nonlinear, l : linear
 E = I;
 d2 = 0; % scale of disturblance
 
@@ -77,7 +77,7 @@ if EXE.TRAJ
         % sum_hh = 0;
         for k = 1 : rb.AB.len
             A = rb.AB.val{k}(:, 1:4); B = rb.AB.val{k}(:, 5:6);
-            K = gain.K{k};
+            K = rb.K{k};
             p = [x(:, i)'];
             hh = rb.AB.mf(p, k);
             
@@ -132,21 +132,21 @@ if EXE.PLOT
 end
 
 %% if you want to check if sum of membership function is 1
-% sum = 0;
-% sum_AB = zeros(4, 6);
-% for i = 1 : rb.AB.len
-%     h = rb.AB.mf([0, 0.5, -0.5, 0], i);
-%     sum = sum + h;
-%     sum_AB = sum_AB + h.*rb.AB.val{i};
-% end
-% disp(['sum of mbfun of AB: ' num2str(sum)])
-% disp('sum of of AB: ')
-% disp(sum_AB)
+sum = 0;
+sum_AB = zeros(4, 6);
+for i = 1 : rb.AB.len
+    h = rb.AB.mf([0, 0.5, -0.5, 0], i);
+    sum = sum + h;
+    sum_AB = sum_AB + h.*rb.AB.val{i};
+end
+disp(['sum of mbfun of AB: ' num2str(sum)])
+disp('sum of of AB: ')
+disp(sum_AB)
 
 %% if u want to check norm of Matrix
-% for i = 1 : rb.AB.len
-%     disp(['norm of K: ' num2str(norm(Kf{i}))]);
-% end
+for i = 1 : rb.AB.len
+    disp(['norm of K: ' num2str(norm(rb.K{i}))]);
+end
 
 %% Remove path
 rmpath(genpath('function'))

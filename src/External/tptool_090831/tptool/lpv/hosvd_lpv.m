@@ -94,13 +94,18 @@ for i = 1:P
 		end
 
 		my_sum = 0;
+		my_percent.val = [0.85, 0.9, 0.95];
+		my_percent.ind = 1;
 		for j = 1:length(svi)
 			my_sum = my_sum + svi(j);
-			if (my_sum/my_total > 0.9)
-				break;
+			if (my_sum/my_total > my_percent.val(my_percent.ind))
+				disp(['first ' num2str(my_percent.val(my_percent.ind)*100) '% singular value : ' num2str(j)])
+				my_percent.ind = my_percent.ind + 1;
+				if my_percent.ind > length(my_percent.val)
+					break;
+				end
 			end
 		end
-		disp(['first 90% singular value : ' num2str(j)])
 
 		% TODO: rewrite with isstrprop
 		ns = input('number of singular values to keep [all] = ');
