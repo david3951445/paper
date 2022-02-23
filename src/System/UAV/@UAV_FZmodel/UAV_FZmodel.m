@@ -11,31 +11,26 @@ classdef UAV_FZmodel < UAV
     
     properties
         % fz
-        A
-        B
-        K
     end
     
     properties (Access = private)
-        DATA_PATH = ['data/' mfilename];
+
     end
 
     % system functions
     methods
         function uav = UAV_FZmodel(fz)
             uav@UAV();
-            % load old data
-            file = load(uav.DATA_PATH);
-            uav.A = file.A;
-            uav.B = file.B;
-            uav.K = file.K;
-            uav.tr = file.tr;
+            uav = uav.load(mfilename); % load old data
         end
         
-        obj = getAB(obj, fz)
-        obj = getKL(obj, fz, ref)
-        obj = trajectory(obj, ref, fz) % get trajectory (x, xr, u, ...)
-        save(obj, whichVar) % save property
+        uav = getAB(uav, fz)
+        uav = getKL(uav, fz, ref)
+        uav = trajectory(uav, ref, fz) % get trajectory (x, xr, u, ...)
+        
+        function save(uav, whichVar) % pass "mfilename" to save@UAV()
+            save@UAV(uav, mfilename, whichVar);
+        end
     end
 
     methods (Access = private)
