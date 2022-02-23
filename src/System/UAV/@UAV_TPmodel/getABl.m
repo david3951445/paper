@@ -1,5 +1,5 @@
-function uav = getABl(uav)
-%Construct ABl
+function uav = getAB(uav)
+%Construct AB
 % parameter vector in lpv model : p = [x7 x9 x11]
 
 % m = o.m, l = 0.2, b = 2, d = 5, G = 9.81
@@ -20,27 +20,34 @@ function uav = getABl(uav)
 % s11 = sin(x11);
 
 % Note: This matrix is associated with uav.f() nad uav.g()
-uav.ABl.val = cell(uav.DIM_X, uav.DIM_X + uav.DIM_U);
-uav.ABl.val(:) = {@(p)0};
+uav.AB.lpv = cell(uav.DIM_X, uav.DIM_X + uav.DIM_U);
+uav.AB.lpv(:) = {@(p)0};
 % A
-uav.ABl.val{1, 2}   = @(p)1;
-uav.ABl.val{2, 2}   = @(p)-uav.Kx/uav.m;
-uav.ABl.val{3, 4}   = @(p)1;
-uav.ABl.val{4, 4}   = @(p)-uav.Ky/uav.m;
-uav.ABl.val{5, 6}   = @(p)1;
-uav.ABl.val{6, 6}   = @(p)-uav.Kz/uav.m + uav.G;
-uav.ABl.val{7, 8}   = @(p)1;
-uav.ABl.val{8, 8}   = @(p)-uav.Kph/uav.Jx;
-uav.ABl.val{9, 10}  = @(p)1;
-uav.ABl.val{10, 10} = @(p)-uav.Kth/uav.Jy;
-uav.ABl.val{11, 12} = @(p)1;
-uav.ABl.val{12, 12} = @(p)-uav.Kps/uav.Jz;
+uav.AB.lpv{1, 2}   = @(p)1;
+uav.AB.lpv{2, 2}   = @(p)-uav.Kx/uav.m;
+uav.AB.lpv{3, 4}   = @(p)1;
+uav.AB.lpv{4, 4}   = @(p)-uav.Ky/uav.m;
+uav.AB.lpv{5, 6}   = @(p)1;
+uav.AB.lpv{6, 6}   = @(p)-uav.Kz/uav.m + uav.G;
+uav.AB.lpv{7, 8}   = @(p)1;
+uav.AB.lpv{8, 8}   = @(p)-uav.Kph/uav.Jx;
+uav.AB.lpv{9, 10}  = @(p)1;
+uav.AB.lpv{10, 10} = @(p)-uav.Kth/uav.Jy;
+uav.AB.lpv{11, 12} = @(p)1;
+uav.AB.lpv{12, 12} = @(p)-uav.Kps/uav.Jz;
 % B
-uav.ABl.val{2, 13}  = @(p)(cos(p(1))*sin(p(2))*cos(p(3)) + sin(p(1))*sin(p(3)))/uav.m;
-uav.ABl.val{4, 13}  = @(p)(cos(p(1))*sin(p(2))*cos(p(3)) - sin(p(1))*cos(p(3)))/uav.m;
-uav.ABl.val{6, 13}  = @(p)cos(p(1))*cos(p(2))/uav.m;
-uav.ABl.val{8, 14}  = @(p)1/uav.Jx;
-uav.ABl.val{10, 15} = @(p)1/uav.Jy;
-uav.ABl.val{12, 16} = @(p)1/uav.Jz;
+uav.AB.lpv{2, 13}  = @(p)(cos(p(1))*sin(p(2))*cos(p(3)) + sin(p(1))*sin(p(3)))/uav.m;
+uav.AB.lpv{4, 13}  = @(p)(cos(p(1))*sin(p(2))*cos(p(3)) - sin(p(1))*cos(p(3)))/uav.m;
+uav.AB.lpv{6, 13}  = @(p)cos(p(1))*cos(p(2))/uav.m;
+uav.AB.lpv{8, 14}  = @(p)1/uav.Jx;
+uav.AB.lpv{10, 15} = @(p)1/uav.Jy;
+uav.AB.lpv{12, 16} = @(p)1/uav.Jz;
 
+uav.AB.num_p = length(uav.AB.gridsize); % length of parameter vector of lpv system
+uav.AB.dep = zeros([size(uav.AB.lpv) uav.AB.num_p]);
+
+% B
+uav.AB.dep(2, 13, :) = [1 1 1];
+uav.AB.dep(4, 13, :) = [1 1 1];
+uav.AB.dep(6, 13, :) = [1 1 0];
 end

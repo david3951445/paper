@@ -12,6 +12,9 @@ uav.K = cell(1, LEN);
 for i = 1 : LEN
     fprintf('LMI iter: %d/%d\n', i, LEN)
     A = uav.A{i}; B = uav.B{i};
+    
+    % let A more negtive
+    % uav.A{i} = uav.A{i} - 0.05*eye(obj.dim);
 
     uav.K{i} = solveLMI1(A, B, uav.E, Ar, Br, uav.Q, uav.rho);
 end
