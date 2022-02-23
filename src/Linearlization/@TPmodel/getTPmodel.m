@@ -1,13 +1,13 @@
-function o = getTPmodel(o)
+function o = getTPmodel(o, para)
 %Transform "LPV model" to "TP type polytopic LPV model"
 % see https://en.wikipedia.org/wiki/TP_model_transformation_in_control_theory to better understand
 % - lpvPara : LPV system parameter
-domain          = o.domain;
-gridsize        = o.gridsize;
-SV_TOLERANCE    = o.SV_TOLERANCE;
-lpv             = o.lpv;
-num_p           = o.num_p;
-dep             = o.dep;
+domain          = para.domain;
+gridsize        = para.gridsize;
+SV_TOLERANCE    = para.SV_TOLERANCE;
+lpv             = para.lpv;
+num_p           = para.num_p;
+dep             = para.dep;
 
 lpvdata = sampling_lpv(lpv, dep, domain, gridsize);
 [S U sv tol] = hosvd_lpv(lpvdata, dep, gridsize, SV_TOLERANCE); % hosvd

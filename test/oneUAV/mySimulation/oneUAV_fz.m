@@ -26,9 +26,9 @@ ref = REF(uav);
 
 %% find A, B (linearize)
 if EXE.A_B
-    uav = uav.getAB(fz);
-    uav.save('A')
-    uav.save('B')  
+    uav = uav.getAB(fz);    
+    uav.Save('A')
+    uav.Save('B')  
 end 
 
 %% find K, L
@@ -38,13 +38,13 @@ end
 % end
 if EXE.LMI
     uav = uav.getKL(fz, ref);
-    uav.save('K')
+    uav.Save('K')
 end
 
 %% trajectory
 if EXE.TRAJ
     uav = uav.trajectory(ref, fz);
-    uav.save('tr');
+    uav.Save('tr');
 end
 
 if EXE.PLOT

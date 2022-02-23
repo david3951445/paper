@@ -10,8 +10,9 @@ classdef UAV_TPmodel < UAV
     end   
     
     properties
-        ABl
         AB
+        ABl
+        test = 1
     end
     
     % system functions
@@ -22,8 +23,21 @@ classdef UAV_TPmodel < UAV
 
         end
         
-        function save(obj, whichVar) % pass "mfilename" to save@UAV()
-            save@UAV(obj, mfilename, whichVar);
+        function Save(uav, whichVar)
+            PATH = [uav.DATA_FOLDER_PATH mfilename];
+
+            switch whichVar
+                case 'AB'
+                    AB = uav.AB;
+                otherwise
+                    Save@UAV(uav, mfilename, whichVar); % The properties in superclass UAV()
+            end
+
+            if isfile([PATH '.mat'])
+                save(PATH, whichVar, '-append')
+            else
+                save(PATH, whichVar)
+            end           
         end
     end
 
@@ -31,5 +45,3 @@ classdef UAV_TPmodel < UAV
 
     end
 end
-%#ok<*PROPLC>
-%#ok<*NASGU>

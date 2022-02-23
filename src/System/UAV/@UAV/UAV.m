@@ -42,7 +42,7 @@ classdef UAV
         tr % trajectories (x, xr, t, dt, ...)
     end
 
-    properties (Access = private)
+    properties %(Access = protected)
         DATA_FOLDER_PATH = 'data/'
     end
     
@@ -85,7 +85,7 @@ classdef UAV
             y(12, 4) = 1/obj.Jz;
         end
 
-        save(obj, filename, whichVar) % save property
+        Save(obj, filename, whichVar) % save property
         obj = load(obj, filename)
     end
 

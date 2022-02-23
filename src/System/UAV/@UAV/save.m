@@ -1,4 +1,4 @@
-function save(obj, filename, whichVar)
+function Save(obj, filename, whichVar)
 %Save a property into UAV_FZmodel.mat
 % whichVar  : which property be saved
 % filename  : name of saved file

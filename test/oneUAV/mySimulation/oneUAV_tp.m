@@ -12,14 +12,14 @@ ref = REF(uav);
 if EXE.A_B
     uav.AB = TPmodel();
     % If you want to tune parameter
-    uav.AB.domain       = 0.5*[-1 1; -1 1; -1 1];
-    uav.AB.gridsize     = 20*[1 1 1];
-    uav.AB.SV_TOLERANCE = 0.001;
-    uav = uav.getABl();
+    uav.ABl.domain       = 0.5*[-1 1; -1 1; -1 1];
+    uav.ABl.gridsize     = 20*[1 1 1];
+    uav.ABl.SV_TOLERANCE = 0.001;
+    uav = uav.getABl(); % Construct remain part of ABl
 
-    uav.AB.getTPmodel();
-    uav.save('A')
-    uav.save('B')
+    uav.AB = uav.AB.getTPmodel(uav.ABl); % Obtain TP model (Local matrices and corresponding interpolation function)
+    
+    uav.Save('AB')
 end 
 
 %% find K, L
@@ -30,7 +30,7 @@ if EXE.LMI
     uav.E               = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % Disturbance matrix 
 
     uav = uav.getKL(fz, ref);
-    uav.save('K')
+    uav.Save('K')
 end
 
 %% trajectory
@@ -42,7 +42,7 @@ if EXE.TRAJ
     uav.tr.IS_RK4       = 1; % Run RK4 or Euler method
 
     uav = uav.trajectory(ref, fz);
-    uav.save('tr');
+    uav.Save('tr');
 end
 
 if EXE.PLOT
@@ -51,6 +51,9 @@ end
 
 %% Execution time
 toc
+
+%% if you want to check if sum of membership function is 1
+checkLinearizedSum(uav.AB.val, @(x,i)uav.AB.mf(x,i))
 
 %% Controlability
 % for i = 1 : fz.num

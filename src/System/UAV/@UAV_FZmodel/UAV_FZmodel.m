@@ -28,8 +28,8 @@ classdef UAV_FZmodel < UAV
         uav = getKL(uav, fz, ref)
         uav = trajectory(uav, ref, fz) % get trajectory (x, xr, u, ...)
         
-        function save(uav, whichVar) % pass "mfilename" to save@UAV()
-            save@UAV(uav, mfilename, whichVar);
+        function Save(uav, whichVar) % pass "mfilename" to save@UAV()
+            Save@UAV(uav, mfilename, whichVar);
         end
     end
 

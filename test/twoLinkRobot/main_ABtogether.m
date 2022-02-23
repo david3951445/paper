@@ -27,7 +27,7 @@ rb = Robot();
 
 %% find Af, Bf, C
 if EXE.A_B
-    rb.AB = TPmodel(rb.ABl);
+    rb.AB = TPmodel();
     rb.save('data/rb.mat', 'AB')
 end
  
