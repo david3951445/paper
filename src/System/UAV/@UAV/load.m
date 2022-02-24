@@ -10,6 +10,9 @@ if isfile([uav.PATH '.mat'])
     if isfield(data, 'B')
         uav.B = data.B;
     end
+    if isfield(data, 'AB')
+        uav.AB = data.AB;
+    end
     if isfield(data, 'K')
         uav.K = data.K;
     end

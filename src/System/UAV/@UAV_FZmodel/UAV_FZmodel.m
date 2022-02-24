@@ -21,16 +21,17 @@ classdef UAV_FZmodel < UAV
     methods
         function uav = UAV_FZmodel(fz)
             uav@UAV();
-            uav = uav.load(mfilename); % load old data
+            uav.PATH = [uav.DATA_FOLDER_PATH mfilename]; % Path of data
+            uav = uav.load(); % load old data
         end
         
         uav = getAB(uav, fz)
-        uav = getKL(uav, fz, ref)
-        uav = trajectory(uav, ref, fz) % get trajectory (x, xr, u, ...)
+        uav = getKL(uav, fz)
+        uav = trajectory(uav, fz) % get trajectory (x, xr, u, ...)
         
-        function Save(uav, whichVar) % pass "mfilename" to save@UAV()
-            Save@UAV(uav, mfilename, whichVar);
-        end
+        % function Save(uav, whichVar) % pass "mfilename" to save@UAV()
+        %     Save@UAV(uav, whichVar);
+        % end
     end
 
     methods (Access = private)

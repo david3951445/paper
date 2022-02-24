@@ -1,4 +1,4 @@
-function uav = trajectory(uav, ref)
+function uav = trajectory(uav)
 %calculate trajectory
 
 dt          = uav.tr.dt;
@@ -15,11 +15,11 @@ for i = 1 : LEN - 1
         disp(['t = ' num2str(i*dt)])
     end
     
-    k1 = RK4(uav, ref, xb(:, i), i*dt);
+    k1 = RK4(uav, xb(:, i), i*dt);
     if uav.tr.IS_RK4
-        k2 = RK4(uav, ref, xb(:, i)+k1*dt/2, i*dt + dt/2);
-        k3 = RK4(uav, ref, xb(:, i)+k2*dt/2, i*dt + dt/2);
-        k4 = RK4(uav, ref, xb(:, i)+k3*dt, i*dt + dt); 
+        k2 = RK4(uav, xb(:, i)+k1*dt/2, i*dt + dt/2);
+        k3 = RK4(uav, xb(:, i)+k2*dt/2, i*dt + dt/2);
+        k4 = RK4(uav, xb(:, i)+k3*dt, i*dt + dt); 
 
         xb(:, i+1)  = xb(:, i)  + (k1 + 2*k2 + 2*k3 + k4)*dt/6;
     end
@@ -38,10 +38,10 @@ uav.tr.t = t;
 end
 
 %% Local function
-function k = RK4(uav, ref, xb, t)
+function k = RK4(uav, xb, t)
     O       = zeros(uav.DIM_X);
-    v       = @(t) 0.01*randn(uav.DIM_X, 1) + 0;
-    [r, F]  = ref.r_F(xb(1 : uav.DIM_X), t);
+    v       = @(t) 0.01*randn(uav.DIM_X, 1) + 0; % disterbance
+    [r, F]  = uav.r_F(xb(1 : uav.DIM_X), t);
     x       = xb(1 : uav.DIM_X);
     xr      = xb(uav.DIM_X+1 : uav.DIM_X*2);
 
@@ -90,7 +90,7 @@ function k = RK4(uav, ref, xb, t)
 
         k = [
             uav.f(x) + uav.g(x)*U + eye(uav.DIM_X)*v(t)
-            ref.A*xr + ref.B*r
+            uav.Ar*xr + uav.Br*r
         ];
     end
 end

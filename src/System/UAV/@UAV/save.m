@@ -1,27 +1,26 @@
-function Save(obj, filename, whichVar)
+function Save(uav, whichVar)
 %Save a property into UAV_FZmodel.mat
 % whichVar  : which property be saved
-% filename  : name of saved file
-
-PATH = [obj.DATA_FOLDER_PATH filename];
 
 switch whichVar
     case 'A'
-        A = obj.A;
+        A = uav.A;
     case 'B'
-        B = obj.B;
+        B = uav.B;
+    case 'AB'
+        AB = uav.AB;
     case 'K'
-        K = obj.K;
+        K = uav.K;
     case 'tr'
-        tr = obj.tr;
+        tr = uav.tr;
     otherwise
         disp(['No such property in UAV'])
 end
 
-if isfile([PATH '.mat'])
-    save(PATH, whichVar, '-append');
+if isfile([uav.PATH '.mat'])
+    save(uav.PATH, whichVar, '-append');
 else
-    save(PATH, whichVar);
+    save(uav.PATH, whichVar);
 end
     
 end

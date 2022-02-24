@@ -12,7 +12,6 @@ dep             = para.dep;
 lpvdata = sampling_lpv(lpv, dep, domain, gridsize);
 [S U sv tol] = hosvd_lpv(lpvdata, dep, gridsize, SV_TOLERANCE); % hosvd
 U = genhull(U, 'close'); % generating tight polytopic representation
-plothull(U, domain); % plot the results
 
 dim = size(S);
 % this two dimension contain the linear matrix
@@ -44,12 +43,14 @@ end
 
 o.index = Combvec(o.sizeO);
 
-
 %% If you want to check model approximation error:
 % [maxerr meanerr] = tperror(lpv, S, U, domain, len);
 % disp('max and mean error:'); disp(maxerr); disp(meanerr);
 
-%% test if A{64} == A{4,2,4,2}
+%% If you want to plot interpolation function
+% plothull(U, domain); % plot the results
+
+%% Test if A{64} == A{4,2,4,2}
 % disp('tpmodel')
 % sum = 0;
 % sum_A = zeros(4);

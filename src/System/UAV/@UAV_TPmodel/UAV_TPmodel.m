@@ -4,14 +4,13 @@ classdef UAV_TPmodel < UAV
 %       - dx/dt = Ai*x + Bi*u + Ev
 % - Control law
 %       - u = Ki*x;
-%
     properties (Constant)
-        % system parameters
+        
     end   
     
     properties
-        AB
-        ABl
+        AB % [A B] matrix
+        ABl % AB's TPmodel transformation parameters
     end
 
     properties (Access = private)
@@ -26,36 +25,10 @@ classdef UAV_TPmodel < UAV
         end
         
         uav = getAB(uav)
-        uav = getKL(uav, ref)
-        uav = trajectory(uav, ref)
-        
-        function Save(uav, whichVar)
-            switch whichVar
-                case 'AB'
-                    AB = uav.AB;
-                otherwise
-                    Save@UAV(uav, mfilename, whichVar); % The properties in superclass UAV()
-                    return
-            end
-            
-            if isfile([uav.PATH '.mat'])
-                save(uav.PATH, whichVar, '-append')
-            else
-                save(uav.PATH, whichVar)
-            end           
-        end
-
-        function uav = load(uav)
-            if isfile([uav.PATH '.mat'])
-                data = load(uav.PATH);
-                
-                if isfield(data, 'AB')
-                    uav.AB = data.AB;
-                end
-            end
-
-            uav = load@UAV(uav);
-        end
+        uav = getKL(uav)
+        uav = trajectory(uav)
+        % Save(uav, whichVar)
+        % uav = load(uav)
     end
 
     methods (Access = private)

@@ -5,8 +5,7 @@ addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 fz  = Fuzzy();
-uav = UAV_TPmodel() ;
-ref = REF(uav);
+uav = UAV_TPmodel();
 
 %% find A, B (linearize)
 if EXE.A_B
@@ -27,7 +26,7 @@ if EXE.LMI
     uav.Q               = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % Correspond to x - xr
     uav.E               = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % Disturbance matrix 
 
-    uav = uav.getKL(ref);
+    uav = uav.getKL();
     uav.Save('K')
 end
 
@@ -39,7 +38,7 @@ if EXE.TRAJ
     uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
     uav.tr.IS_RK4       = 1; % Run RK4 or Euler method
 
-    uav = uav.trajectory(ref);
+    uav = uav.trajectory();
     uav.Save('tr');
 end
 

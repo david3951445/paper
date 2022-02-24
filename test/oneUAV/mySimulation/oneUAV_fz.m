@@ -22,8 +22,6 @@ uav.tr.T            = 10; % Final time
 uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
 uav.tr.IS_RK4       = 1; % Run RK4 or Euler method
 
-ref = REF(uav);
-
 %% find A, B (linearize)
 if EXE.A_B
     uav = uav.getAB(fz);    
@@ -37,13 +35,13 @@ end
 %     obj.A{i} = obj.A{i} - 0.05*eye(obj.dim);
 % end
 if EXE.LMI
-    uav = uav.getKL(fz, ref);
+    uav = uav.getKL(fz);
     uav.Save('K')
 end
 
 %% trajectory
 if EXE.TRAJ
-    uav = uav.trajectory(ref, fz);
+    uav = uav.trajectory(fz);
     uav.Save('tr');
 end
 
