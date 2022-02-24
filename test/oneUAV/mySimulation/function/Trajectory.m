@@ -11,8 +11,8 @@ classdef Trajectory
         T   = 10 % final time
 
         % initial value
-        x0  = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
-        xr0 = [0 1 0.5 0 0 0.8 0 0 0 0 0 0]';
+        x0
+        xr0
 
         IS_LINEAR = 1 % run fuzzy linear system or origin nonlinear system
         IS_RK4 = 0 % run RK4 or Euler
@@ -35,7 +35,7 @@ classdef Trajectory
             % x(t), xr(t)
             SIZE_X = size(o.x, 1);
             for i = 1 : SIZE_X
-                figure(i)
+                figure
                 plot(o.t, o.x(i, :), o.t, o.xr(i, :))
                 title(['x_{' num2str(i) '}'])
                 legend("x", "x_r")

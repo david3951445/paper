@@ -8,6 +8,7 @@ LEN         = length(t);
 xb          = zeros(2*uav.DIM_X, LEN);
 xb(:, 1)    = [uav.tr.x0; uav.tr.xr0];
 u           = zeros(uav.DIM_U, LEN);
+% [uav.tr.r(:, 1), ~]  = uav.r_F([], 0);
 
 disp('Ploting trajectory ...')
 for i = 1 : LEN - 1       
@@ -27,6 +28,7 @@ for i = 1 : LEN - 1
 
     uav.tr.x(:, i+1) = xb(1 : uav.DIM_X, i+1);
     uav.tr.xr(:, i+1) = xb(uav.DIM_X+1 : 2*uav.DIM_X, i+1);
+    % uav.tr.r(:, i+1) = 
 
     % total_K = zeros(o.DIM_U, o.DIM_X);
     % for j = 1 : fz.num
@@ -60,7 +62,7 @@ function k = RK4(uav, fz, xb, t)
             B = uav.B{i};
             K = uav.K{i};
             
-            Ab = [A O; O ref.A];
+            Ab = [A O; O uav.Ar];
             Bb = [B; zeros(uav.DIM_X, uav.DIM_U)];
             Kb = [K -K];
             % Kb = K;
@@ -71,7 +73,7 @@ function k = RK4(uav, fz, xb, t)
 
             ABK = ABK + fz.mbfun(i, x)*(Ab + Bb*Kb);
         end
-        Eb = [eye(uav.DIM_X) O; O ref.B];
+        Eb = [eye(uav.DIM_X) O; O uav.Br];
 
         feed = [uav.g(x)*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
         k = ABK*xb + Eb*[v(t); r] + 0*feed;

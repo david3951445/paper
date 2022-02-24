@@ -39,11 +39,15 @@ end
 
 %% Local function
 function k = RK4(uav, xb, t)
-    O       = zeros(uav.DIM_X);
-    v       = @(t) 0.01*randn(uav.DIM_X, 1) + 0; % disterbance
-    [r, F]  = uav.r_F(xb(1 : uav.DIM_X), t);
-    x       = xb(1 : uav.DIM_X);
-    xr      = xb(uav.DIM_X+1 : uav.DIM_X*2);
+    DIM_X   = uav.DIM_X;
+    DIM_U   = uav.DIM_U;
+    O       = zeros(DIM_X);
+    v       = @(t) 0.01*randn(DIM_X, 1) + 0; % disterbance
+    x       = xb(1 : DIM_X);
+    xr      = xb(DIM_X+1 : DIM_X*2);
+    [r, F]  = uav.r_F(x, t);
+    feed    = uav.g(x)*[F; 0; 0; 0]; % feedforward
+    Fg      = 0;%uav.m*uav.G/cos(x(7))/cos(x(9));
 
     total.A = O;
     total.B = zeros(uav.DIM_X, uav.DIM_U);
@@ -57,21 +61,21 @@ function k = RK4(uav, xb, t)
             B = uav.AB.val{i}(:, DIM_X+1 : DIM_X+DIM_U);
             K = uav.K{i};
             
-            Ab = [A O; O ref.A];
+            Ab = [A O; O uav.Ar];
             Bb = [B; zeros(uav.DIM_X, uav.DIM_U)];
             Kb = [K -K];
             % Kb = K;
 
-            total.A = total.A + fz.mbfun(i, x)*A;
-            total.B = total.B + fz.mbfun(i, x)*B;
-            total.K = total.K + fz.mbfun(i, x)*K;
+            total.A = total.A + uav.AB.mf(x, i)*A;
+            total.B = total.B + uav.AB.mf(x, i)*B;
+            total.K = total.K + uav.AB.mf(x, i)*K;
 
-            ABK = ABK + fz.mf(x, i)*(Ab + Bb*Kb);
+            ABK = ABK + uav.AB.mf(x, i)*(Ab + Bb*Kb);
         end
-        Eb = [eye(uav.DIM_X) O; O ref.B];
+        Eb = [eye(uav.DIM_X) O; O uav.Br];
 
-        feed = [uav.g(x)*[F; 0; 0; 0]; zeros(12, 1)]; % feedforward
-        k = ABK*xb + Eb*[v(t); r] + 0*feed;
+        
+        k = ABK*xb + Eb*[v(t); r] + 0*[feed; zeros(12, 1)];
 
         % u = K*(x - xr);
         % k = [
@@ -89,7 +93,7 @@ function k = RK4(uav, xb, t)
         U = total.K*(x - xr);
 
         k = [
-            uav.f(x) + uav.g(x)*U + eye(uav.DIM_X)*v(t)
+            uav.f(x) + uav.g(x)*U + eye(uav.DIM_X)*v(t) + Fg
             uav.Ar*xr + uav.Br*r
         ];
     end

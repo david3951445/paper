@@ -10,7 +10,7 @@ classdef UAV_FZmodel < UAV
     end   
     
     properties
-        % fz
+        % fz may be moved to here
     end
     
     properties (Access = private)

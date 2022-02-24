@@ -5,25 +5,13 @@ addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 fz  = Fuzzy();
-% If you want to tune parameter
-% EXE.A_B
-% fz.a = 1;
-% ...
-
 uav = UAV_FZmodel(fz);
-%% If you want to tune parameter
-% EXE.LMI
-uav.rho             = 10^(1);
-uav.Q               = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % Correspond to x - xr
-uav.E               = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % Disturbance matrix
-% EXE.TRAJ
-uav.tr.dt           = 0.001; % Time step
-uav.tr.T            = 10; % Final time
-uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
-uav.tr.IS_RK4       = 1; % Run RK4 or Euler method
 
 %% find A, B (linearize)
 if EXE.A_B
+    % uav.fz. = ...
+    % ...
+    
     uav = uav.getAB(fz);    
     uav.Save('A')
     uav.Save('B')  
@@ -35,12 +23,23 @@ end
 %     obj.A{i} = obj.A{i} - 0.05*eye(obj.dim);
 % end
 if EXE.LMI
+    uav.rho             = 10^(1);
+    uav.Q               = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % Correspond to x - xr
+    uav.E               = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % Disturbance matrix
+
     uav = uav.getKL(fz);
     uav.Save('K')
 end
 
 %% trajectory
 if EXE.TRAJ
+    uav.tr.dt           = 0.001; % Time step
+    uav.tr.T            = 10; % Final time
+    uav.tr.x0           = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
+    uav.tr.xr0          = [0 1 0.5 0 0 0.8 0 0 0 0 0 0]';
+    uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
+    uav.tr.IS_RK4       = 0; % Run RK4 or Euler method
+
     uav = uav.trajectory(fz);
     uav.Save('tr');
 end

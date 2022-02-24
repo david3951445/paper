@@ -87,7 +87,7 @@ classdef UAV
         function y = g(uav, x)
 %             y = zeros(uav.dim, uav.dim_u);
             y(2, 1)  = (cos(x(7))*sin(x(9))*cos(x(11)) + sin(x(7))*sin(x(11)))/uav.m;
-            y(4, 1)  = (cos(x(7))*sin(x(9))*cos(x(11)) - sin(x(7))*cos(x(11)))/uav.m;
+            y(4, 1)  = (cos(x(7))*sin(x(9))*sin(x(11)) - sin(x(7))*cos(x(11)))/uav.m;
             y(6, 1)  = cos(x(7))*cos(x(9))/uav.m;
             y(8, 2)  = 1/uav.Jx;
             y(10, 3) = 1/uav.Jy;

@@ -12,12 +12,15 @@ freg    = 0.5;
 xd      = amp*sin(freg*t);
 dxd     = freg*amp*cos(freg*t);
 d2xd    = -freg^2*amp*sin(freg*t);
+d3xd    = -freg^3*amp*cos(freg*t);
 yd      = amp*cos(freg*t);
 dyd     = -freg*amp*sin(freg*t);
 d2yd    = -freg^2*amp*cos(freg*t);
+d3yd    = freg^3*amp*sin(freg*t);
 zd      = amp_z*t;
 dzd     = amp_z;
 d2zd    = 0;
+d3zd    = 0;
 psid    = 0;
 
 r = [
@@ -36,11 +39,11 @@ r = [
 ];
 
 %% method 1, 1.pdf, r = r(x, t)
-% method 1-1
 % ux = obj.c(1)*(x(1) - y(1)) + obj.c(2)*(x(2) - y(2));
 % uy = obj.c(3)*(x(3) - y(3)) + obj.c(4)*(x(4) - y(4));
 % uz = obj.c(5)*(x(5) - y(5)) + obj.c(6)*(x(6) - y(6));
-        
+
+% method 1-1     
 % a = 1/(uz + obj.G);
 % phi_d = x(11);
 % r(7) = asin(obj.m/F*(ux*sin(x(11)) - uy*cos(x(11))));
@@ -73,7 +76,15 @@ r = [
 c1 = obj.m*d2xd + obj.Kx*dxd;
 c2 = obj.m*d2yd + obj.Ky*dyd;
 c3 = obj.m*(d2zd + obj.G) + obj.Kz*dzd;
-r(7) = atan2(c1, c3);
-r(9) = atan2(-c2*cos(r(7)), c3);
+r(9) = atan2(c1, c3);
+r(10) = 1/(1+(c1/c3)^2)*((obj.m*d3xd + obj.Kx*d2xd))/c3;
+r(7) = atan2(-c2*cos(r(9)), c3);
+r(8) = 1/(1+(c2*cos(r(9))/c3)^2)*(((obj.m*d3yd + obj.Ky*d2yd)*cos(r(9)-c2*sin(r(9)))))/c3;
 F = sqrt(c1^2 + c2^2 + c3^2);
+% Fg = obj.m*obj.G/cos(r(7))/cos(r(9));
+
+% method 2-3
+% FF = obj.m*sqrt(d2xd^2 + d2yd^2 + (d2zd + obj.G)^2);
+% r(7) = asin(obj.m/FF*(-d2yd));
+% r(9) = atan((d2xd + d2yd)/(d2zd+obj.G));
 end

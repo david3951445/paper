@@ -22,6 +22,7 @@ if iscell(U)
 %		h = figure;
 %		set(h, 'WindowStyle', 'docked');
 		plot(x,U{i},'LineWidth',2);
+		title(['p' num2str(i)])
 		axis tight
 	end
 	return
