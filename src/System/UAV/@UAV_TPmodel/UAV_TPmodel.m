@@ -12,32 +12,49 @@ classdef UAV_TPmodel < UAV
     properties
         AB
         ABl
-        test = 1
+    end
+
+    properties (Access = private)
     end
     
     % system functions
     methods
         function uav = UAV_TPmodel()
             uav@UAV();
-            uav = uav.load(mfilename); % load old data b
-
+            uav.PATH = [uav.DATA_FOLDER_PATH mfilename]; % Path of data
+            uav = uav.load(); % load old data
         end
         
+        uav = getAB(uav)
+        uav = getKL(uav, ref)
+        uav = trajectory(uav, ref)
+        
         function Save(uav, whichVar)
-            PATH = [uav.DATA_FOLDER_PATH mfilename];
-
             switch whichVar
                 case 'AB'
                     AB = uav.AB;
                 otherwise
                     Save@UAV(uav, mfilename, whichVar); % The properties in superclass UAV()
+                    return
+            end
+            
+            if isfile([uav.PATH '.mat'])
+                save(uav.PATH, whichVar, '-append')
+            else
+                save(uav.PATH, whichVar)
+            end           
+        end
+
+        function uav = load(uav)
+            if isfile([uav.PATH '.mat'])
+                data = load(uav.PATH);
+                
+                if isfield(data, 'AB')
+                    uav.AB = data.AB;
+                end
             end
 
-            if isfile([PATH '.mat'])
-                save(PATH, whichVar, '-append')
-            else
-                save(PATH, whichVar)
-            end           
+            uav = load@UAV(uav);
         end
     end
 

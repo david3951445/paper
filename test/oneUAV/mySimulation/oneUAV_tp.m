@@ -5,7 +5,7 @@ addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 fz  = Fuzzy();
-uav = UAV_TPmodel();
+uav = UAV_TPmodel() ;
 ref = REF(uav);
 
 %% find A, B (linearize)
@@ -15,10 +15,8 @@ if EXE.A_B
     uav.ABl.domain       = 0.5*[-1 1; -1 1; -1 1];
     uav.ABl.gridsize     = 20*[1 1 1];
     uav.ABl.SV_TOLERANCE = 0.001;
-    uav = uav.getABl(); % Construct remain part of ABl
-
-    uav.AB = uav.AB.getTPmodel(uav.ABl); % Obtain TP model (Local matrices and corresponding interpolation function)
     
+    uav = uav.getAB();
     uav.Save('AB')
 end 
 
@@ -29,7 +27,7 @@ if EXE.LMI
     uav.Q               = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % Correspond to x - xr
     uav.E               = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % Disturbance matrix 
 
-    uav = uav.getKL(fz, ref);
+    uav = uav.getKL(ref);
     uav.Save('K')
 end
 
@@ -41,7 +39,7 @@ if EXE.TRAJ
     uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
     uav.tr.IS_RK4       = 1; % Run RK4 or Euler method
 
-    uav = uav.trajectory(ref, fz);
+    uav = uav.trajectory(ref);
     uav.Save('tr');
 end
 
@@ -53,7 +51,7 @@ end
 toc
 
 %% if you want to check if sum of membership function is 1
-checkLinearizedSum(uav.AB.val, @(x,i)uav.AB.mf(x,i))
+% checkLinearizedSum(uav.AB.val, @(x,i)uav.AB.mf(x,i))
 
 %% Controlability
 % for i = 1 : fz.num

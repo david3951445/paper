@@ -1,9 +1,8 @@
-function uav = load(uav, filename)
+function uav = load(uav)
 %load old data
 
-PATH = [uav.DATA_FOLDER_PATH filename];
-if isfile([PATH '.mat'])
-    data = load(PATH);
+if isfile([uav.PATH '.mat'])
+    data = load(uav.PATH);
 
     if isfield(data, 'A')
         uav.A = data.A;

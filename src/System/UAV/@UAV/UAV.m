@@ -42,8 +42,9 @@ classdef UAV
         tr % trajectories (x, xr, t, dt, ...)
     end
 
-    properties %(Access = protected)
+    properties (Access = protected)
         DATA_FOLDER_PATH = 'data/'
+        PATH % data path
     end
     
     methods

@@ -2,11 +2,6 @@ function uav = getAB(uav)
 %Construct AB
 % parameter vector in lpv model : p = [x7 x9 x11]
 
-% m = o.m, l = 0.2, b = 2, d = 5, G = 9.81
-% Jx = 1.25, Jy = 1.25, Jz = 2.2
-% Kx =o.Kx, Ky = o.Ky, Kz = o.Kz
-% Kph = 0.012, Kth = 0.012, Kps = 0.012
-
 % x7 = p(1);
 % x9 = p(2);
 % x11 = p(3);
@@ -51,4 +46,5 @@ uav.ABl.dep(2, 13, :) = [1 1 1];
 uav.ABl.dep(4, 13, :) = [1 1 1];
 uav.ABl.dep(6, 13, :) = [1 1 0];
 
+uav.AB = uav.AB.getTPmodel(uav.ABl); % Obtain TP model (Local matrices and corresponding interpolation function)  
 end
