@@ -1,6 +1,9 @@
 function uav = getAB(uav)
 %Construct AB
 % parameter vector in lpv model : p = [x7 x9 x11]
+% If some of local linearized matrix too big or too small
+%       (1) change p. (p = cos(x7) ...)
+%       (2) change wtype in function genhull(U, wtype)
 
 % x7 = p(1);
 % x9 = p(2);

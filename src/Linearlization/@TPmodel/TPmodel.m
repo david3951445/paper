@@ -17,7 +17,7 @@ classdef TPmodel
         end
         
         y = mf(o, x, ind) % membership function
-        o = getTPmodel(o, para)
+        o = getTPmodel(o, para) % Execute TPmodel transformation
     end
 end
 

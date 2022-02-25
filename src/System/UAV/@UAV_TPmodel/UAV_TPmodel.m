@@ -24,9 +24,9 @@ classdef UAV_TPmodel < UAV
             uav = uav.load(); % load old data
         end
         
-        uav = getAB(uav)
-        uav = getKL(uav)
-        uav = trajectory(uav)
+        uav = getAB(uav) % TPmodel parameter setting and execute
+        uav = getKL(uav) % LMI
+        uav = trajectory(uav) % calculate trajectory
         % Save(uav, whichVar)
         % uav = load(uav)
     end

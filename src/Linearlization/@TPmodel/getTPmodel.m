@@ -1,6 +1,7 @@
 function o = getTPmodel(o, para)
 %Transform "LPV model" to "TP type polytopic LPV model"
 % see https://en.wikipedia.org/wiki/TP_model_transformation_in_control_theory to better understand
+
 % - lpvPara : LPV system parameter
 domain          = para.domain;
 gridsize        = para.gridsize;
