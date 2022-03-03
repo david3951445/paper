@@ -4,25 +4,30 @@ addpath(genpath('../../src'))
 
 I = eye(2); O = zeros(2);
 A = [0 1; 1 2]; B = [0; 1]; E = 1*[1 0; 0 1]; Ar = -10*I; Br = -Ar;
-Q1 = 0; Q2 = 10^(0)*[1 0; 0 0.001]; rho = 3;
-dt = 0.002; T = 10; x0 = [0.1; 0.2]; xr0 = [1; 0];
+[DIM_X, DIM_U] = size(B);
+Q1 = 0; Q2 = 10^(1)*[1 0; 0 0.001]; rho = 1; R = 0;
+dt = 0.001; T = 10; x0 = [0.1; 0.2]; xr0 = [1; 0];
 freq = 1; amp = 1;
-v = @(t)[0.5*randn + 0; 0.5*randn + 0];
 r = @(t)[amp*sin(freq*t); amp*freq*cos(freq*t)];
 
-% K1 = solveLMI(A, B, E, Ar, Br, Q1, Q2, rho);
-K2 = solveLMI1(A, B, E, Ar, Br, Q2, rho);
-K = K2*1;
+% K2 = solveLMI1(A, B, E, Ar, Br, Q2, rho);
+K2 = solveLMI6(A, B, R, Q2, rho);
+K = K2;
+norm(K)
 
-Ab = @(x) [A+B*K -B*K; O Ar];
-Eb = [E O; O Br];
-xb0 = [x0; xr0];
-vb = @(x, t)[v(t); r(t)];
-sysArg = LPV(Ab, Eb, dt, T, xb0, vb);
-% sysRef = LPV(Ar, Br, dt, T, xr0, r);
+t = 0 : dt : T;
+x = zeros(DIM_X, length(t)); 
+xr = x;
+x(:, 1) = x0; xr(:, 1) = xr0;
+for i = 1 : length(t) - 1
+    k = A*x(:, i) + B*K*(x(:, i) - xr(:, i));
+    x(:, i+1) = x(:, i) + dt*k;
+    k = Ar*xr(:, i+1) + Br*r(i*dt);
+%     xr(:, i+1) = xr(:, i) + dt*k;
+    xr(:, i+1) = r(i*dt);
+end
 
-sys = sysArg;
-plot(sys.t, sys.x)
+plot(t, x, t, xr)
 legend('x1', 'x2', 'xr1', 'xr2')
 
 if rank(ctrb(A, B)) == size(A, 1)

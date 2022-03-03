@@ -44,12 +44,12 @@ M11 = addSym(A*W + B*Y) + rho^(-2)*E*E';
 M12 = -B*Y;
 M22 = addSym(Ar*W) + rho^(-2)*Br*Br';
 
-M13 = W*sqrt(Q);
+M13 = W*sqrtm(Q);
 M23 = O;
 M33 = -eye(DIM_X);
 
 M14 = O;
-M24 = W*sqrt(Q);
+M24 = W*sqrtm(Q);
 M34 = O;
 M44 = -eye(DIM_X);
 
