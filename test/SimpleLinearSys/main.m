@@ -3,15 +3,15 @@ clc; clear; close all;
 addpath(genpath('../../src'))
 
 I = eye(2); O = zeros(2);
-A = [0 1; 1 2]; B = [0; 1]; E = 1*[1 0; 0 1]; Ar = -10*I; Br = -Ar;
+A = [2 0; 1 1]; B = [1.5; 1]; E = 1*[1 0; 0 1]; Ar = -10*I; Br = -Ar;
 [DIM_X, DIM_U] = size(B);
-Q1 = 0; Q2 = 10^(1)*[1 0; 0 0.001]; rho = 1; R = 0;
+Q1 = 0; Q2 = 10^(0)*[1 0; 0 0.001]; rho = 10; R = 0;
 dt = 0.001; T = 10; x0 = [0.1; 0.2]; xr0 = [1; 0];
 freq = 1; amp = 1;
 r = @(t)[amp*sin(freq*t); amp*freq*cos(freq*t)];
 
-% K2 = solveLMI1(A, B, E, Ar, Br, Q2, rho);
-K2 = solveLMI6(A, B, R, Q2, rho);
+K2 = solveLMI1(A, B, E, Ar, Br, Q2, rho);
+% K2 = solveLMI6(A, B, R, Q2, rho);
 K = K2;
 norm(K)
 
@@ -32,6 +32,9 @@ legend('x1', 'x2', 'xr1', 'xr2')
 
 if rank(ctrb(A, B)) == size(A, 1)
     disp('controllable')
+else
+    disp('rank of system:')
+    disp(rank(ctrb(A, B)))
 end
 
 rmpath(genpath('../../src'))

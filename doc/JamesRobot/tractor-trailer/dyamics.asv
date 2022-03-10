@@ -1,3 +1,0 @@
-clc;clear;
-%%%  M(q)du+H(q)=B(q)tau  %%% 
-syms phi0 phi1 phi0 mo m1 d a1 a0 I0 I1 

@@ -1,2 +1,2 @@
 clc; clear;
-addpath(genpath('../../../src'))
+a=1
