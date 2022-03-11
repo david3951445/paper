@@ -3,18 +3,16 @@ classdef UAV
 % - System form
 %       - dx/dt = f(x) + g(x)*u + Ev
 % - The model is refered to 1.pdf
-%       - Euler angle (extrinsic rotation)
-%           - x(7)  : phi, x-axis
-%           - x(9)  : theta, y-axis
-%           - x(11) : psi, z-axis
+%       - Euler angle (intrinsic rotation)
+%           - x(7)  : phi, x-axis, roll
+%           - x(9)  : theta, y-axis, pitch
+%           - x(11) : psi, z-axis, yaw
 %       - Typo in 1.pdf.
-%           - x(7), x(9), x(11) are not roll, pitch, yaw respectively. 
-%               - More detail : https://en.wikipedia.org/wiki/Rotation_matrix
 %           - Coriolis term in dx(7)dt
 %               ((uav.Jy - uav.Jz)*x(9)*x(11) - uav.Kph*x(8))/uav.Jx
 %             need to be corrected to
 %               ((uav.Jy - uav.Jz)*x(10)*x(12) - uav.Kph*x(8))/uav.Jx
-%             dx(9)dt, dx(11)t as well.
+%             dx(9)/dt, dx(11)/dt as well.
 %               - More detail
 %                   Quadrotor control: modeling, nonlinear control design, and simulation (2.19)
 %                   [https://www.diva-portal.org/smash/get/diva2:860649/FULLTEXT01.pdf]
@@ -68,7 +66,7 @@ classdef UAV
                 x(4)
                 -uav.Ky*x(4)/uav.m
                 x(6)
-                -uav.Kz*x(6)/uav.m + uav.G
+                -uav.Kz*x(6)/uav.m - uav.G
                 x(8)
                 % ((uav.Jy - uav.Jz)*x(9)*x(11) - uav.Kph*x(8))/uav.Jx
                 % ((uav.Jy - uav.Jz)*x(10)*x(12) - uav.Kph*x(8))/uav.Jx
