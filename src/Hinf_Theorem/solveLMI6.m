@@ -35,17 +35,19 @@ LMI = [
 ];
 
 % Consider R
-M13 = Y'*sqrtm(R);
-% M13 = Y';
-M23 = zeros(size(B));
-M33 = -eye(DIM_U);
-% M33 = -inv(R);
+if ~isempty(R)
+    M13 = Y'*sqrtm(R);
+    % M13 = Y';
+    M23 = zeros(size(B));
+    M33 = -eye(DIM_U);
+    % M33 = -inv(R);
 
-% LMI = [
-%     M11  M12  M13
-%     M12' M22  M23
-%     M13' M23' M33
-% ];
+    LMI = [
+        M11  M12  M13
+        M12' M22  M23
+        M13' M23' M33
+    ];
+end
 
 eqn = [eqn, LMI <= 0];  
 % eqn = [eqn, LMI <= d1*eye(4*DIM_X)];  
