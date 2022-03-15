@@ -36,13 +36,13 @@ M22 = Q + addSym(P2*A - Y2*C);
 
 M13 = P1;
 M23 = O;
-M33 = -rho^(-2)*eye(DIM_X);
+M33 = -rho^(2)*eye(DIM_X);
 % M33 = -inv(R);
 
 M14 = O;
 M24 = P2;
 M34 = O;
-M44 = -rho^(-2)*eye(DIM_X);
+M44 = -rho^(2)*eye(DIM_X);
 
 LMI = [
     M11  M12  M13 M14
