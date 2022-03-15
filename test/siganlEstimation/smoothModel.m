@@ -2,8 +2,15 @@
 clc; clear; close all
 addpath(genpath('../../src'))
 
-A = -1;
-DIM_X = size(A, 1);
+A = -1; C = 1
+[DIM_U, DIM_X] = size(C);
+
+WINDOW = 3;
+Aa = [1 -1; 1 -1];
+WINDOW = 
+Ca = zeros(DIM_X, )
+Ab = [A Ca; zeros() Aa];
+
 dt = 0.001; T = 10; t = 0 : dt : T;
 
 x = zeros(DIM_X, length(t));
