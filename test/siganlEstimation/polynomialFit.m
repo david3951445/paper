@@ -7,7 +7,6 @@
 clc; clear; close all
 addpath(genpath('../../src'))
 
-I = eye(2); O = zeros(2);
 A = [0 1; 2 1]; B = [0; 1];
 [DIM_X, DIM_U] = size(B);
 R = 0; Q = [1 0; 0 0.001]; rho = 1;

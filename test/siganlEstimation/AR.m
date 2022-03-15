@@ -1,12 +1,18 @@
+%Methods for signal estimation
+% The signal is assumed to be unknown, but the current and past value is knowned
+% Thus, we can use an autoregressive model to describe the siganl
+% Then, a signal is estimated.
+% These methods only make sense if the siganl has some degree of autocorrelation.
+
 clc; clear; close all
 rng(0);
 n = 1;
-n_pre = n+5;
+n_pre = n+5; % Window, determine how many previous time values were taken.
 dt = 0.1;
 t = 0 : dt : 50;
 
 w = randn(1, length(t));
-y = 3*cos(t) + 0*w - 0.1*t + 0.01*t.^2;
+y = 3*cos(t) + 0*w - 0.1*t + 0.01*t.^2; % signal to be estimated
 
 y_withInit = [zeros(1, n_pre), y];
 % sys = ar(y, n);
@@ -27,7 +33,7 @@ for i = 1 : length(t)
 
     yh{1}(i) = y_cur2*coeff;
     
-    %% Base on smooth model, coeff is a geometric sequence.
+    %% Base on smooth model, coeff is a normalized geometric sequence.
     coeff2 = 0.98.^(0:n-1)'; coeff2 = coeff2/sum(coeff2);
     yh{2}(i) = y_cur2*coeff2;
     
