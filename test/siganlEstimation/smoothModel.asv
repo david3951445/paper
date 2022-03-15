@@ -35,10 +35,8 @@ L = 5;
 
 for i = 1 : length(t) - 1
     i_v_withInit = i + WINDOW;
-    k = [
-        [A Ca]*x(:, i)
-        dvdt_withInit(i_v_withInit-1 : -1 : i_v_withInit-WINDOW)'
-    ];
+    err_smooth = dvdt_withInit(i_v_withInit-1 : -1 : i_v_withInit-WINDOW)' - Aa*x(DIM_X+1:DIM_X3, i);
+    k = Ab*x(:, i) + [0; err_smooth];
     x(:, i+1) = x(:, i) + dt*k;
 
     k = Ab*xh(:, i) + L*Cb*(x(:, i) - xh(:, i));
@@ -49,9 +47,8 @@ TITLE = {'x', 'v(t)', 'v(t-h)'};
 for i = 1 : 3
     subplot(3, 1, i)
     hold on
-    plot(t, x(i, :), 'Displayname', 'state')
-    plot(t, xh(i, :), 'DisplayName', 'estimated')
-    hold off
+    plot(t, x(i, :), 'Displayname', 'state)
+    ', t, xh(i, :), 'DisplayName', ["state", "estimated"])
     legend
     title(TITLE{i})
 end

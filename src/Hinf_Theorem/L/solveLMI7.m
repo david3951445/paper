@@ -8,7 +8,7 @@ function L = solveLMI7(A, C, Q, rho)
 %       dxh/dt = Ax + L*C*(x - xh)
 % (3) augment sys
 %       dxb/dt = Ab*xb + vb
-%       where xb = [x; x - xh], Ab = [A 0; 0 A - L*C], vb = [v; 0]
+%       where xb = [x; x-xh], Ab = [A 0; 0 A-L*C], vb = [v; 0]
 % (5) H infinity performance
 %       x'Qbx / vb'vb < rho^2
 % (6) Lyapunov function
@@ -32,7 +32,7 @@ eqn = [eqn, P1 >= 0, P2 >= 0];
 M11 = addSym(P1*A);
 
 M12 = O;
-M22 = Q + addsym(P2*A - Y2*C);
+M22 = Q + addSym(P2*A - Y2*C);
 
 M13 = P1;
 M23 = O;
