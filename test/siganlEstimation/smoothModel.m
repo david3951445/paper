@@ -16,36 +16,32 @@ addpath(genpath('../../src'))
 A = -1; C = 1;
 [DIM_U, DIM_X] = size(C);
 I = eye(DIM_X);
-dt = 0.001; T = 10; t = 0 : dt : T;
+dt = 0.001; T = 5; t = 0 : dt : T;
 
 MIN_e = realmax;
-MAX_WINDOW = 15;
+MAX_WINDOW = 10;
 e = zeros(1, MAX_WINDOW-1);
 x_log = cell(1, MAX_WINDOW-1);
 xh_log = cell(1, MAX_WINDOW-1);
-for WINDOW = 2+0 : MAX_WINDOW
+for WINDOW = 2 : MAX_WINDOW
     % smooth model
     DIM_X2 = DIM_X*WINDOW;
     Aa = zeros(WINDOW);
     
-    point = 0 : -1 : -WINDOW+1+0;
-    Aa(1, 1:WINDOW-0) = FindFDC(point, 1)';
-    for i = 2 : WINDOW
-%         point = i-1 : -1 : -WINDOW+i;
-        point = [1 0];
-        Aa(i, i-1:i) = FindFDC(point, 1)'; % obtain coefficient
+    % method 1
+%     point = 0 : -1 : -WINDOW+1;
+%     Aa(1, 1:WINDOW) = FindFDC(point, 1)';
+%     for i = 2 : WINDOW
+%         point = [1 0];
+%         Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
+%     end
+    
+    % method 2
+    for i = 1 : WINDOW
+        point = i-1 : -1 : -WINDOW+i;
+        Aa(i, :) = FindFDC(point, 1)'/dt;
     end
-    if WINDOW == 7
-        Aa
-%         Aa(2:7, :) = [
-%             1 -1 0 0 0 0 0
-%             0 1 -1 0 0 0 0
-%             0 0 1 -1 0 0 0
-%             0 0 0 1 -1 0 0
-%             0 0 0 0 1 -1 0
-%             0 0 0 0 0 1 -1
-%         ];
-    end
+
     Aa = kron(Aa, I);
     Ca = zeros(1, WINDOW); Ca(1) = 1;
     Ca = kron(Ca, I);
@@ -65,14 +61,14 @@ for WINDOW = 2+0 : MAX_WINDOW
 
     x = zeros(DIM_X3, length(t));
     xh = zeros(DIM_X3, length(t));
-
     x(:, 1) = [1; zeros(DIM_X2, 1)];
+  
     w = randn(1, length(t));
-    v = 5*cos(t) +0.1*w - 0.1*t + 0.001*t.^2;
-    v_withInit = [zeros(1, WINDOW), v];
-
+    v = 5*cos(t) +0.5*w - 0.1*t + 0.001*t.^2;
+    v_withInit = [zeros(1, WINDOW-1), v];
+%     xh(:, 1) = [1; v_withInit(WINDOW:-1:1)'];
     for i = 1 : length(t) - 1
-        i_v_withInit = i + WINDOW;
+        i_v_withInit = i + WINDOW-1;
         k = [A Ca]*x(:, i);
     %         dvdt_withInit(i_v_withInit-1 : -1 : i_v_withInit-WINDOW)'
     %     ];
