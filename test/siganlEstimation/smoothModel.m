@@ -13,7 +13,7 @@ clc; clear; close all
 addpath(genpath('../../src'))
 
 % system
-A = -1; C = 1;
+A = -2; C = 1;
 [DIM_U, DIM_X] = size(C);
 I = eye(DIM_X);
 dt = 0.001; T = 5; t = 0 : dt : T;
@@ -30,7 +30,7 @@ for WINDOW = 2 : MAX_WINDOW
     
     % method 1
 %     point = 0 : -1 : -WINDOW+1;
-%     Aa(1, 1:WINDOW) = FindFDC(point, 1)';
+%     Aa(1, 1:WINDOW) = FindFDC(point, 1)'/dt;
 %     for i = 2 : WINDOW
 %         point = [1 0];
 %         Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
@@ -41,7 +41,9 @@ for WINDOW = 2 : MAX_WINDOW
         point = i-1 : -1 : -WINDOW+i;
         Aa(i, :) = FindFDC(point, 1)'/dt;
     end
-
+%     if WINDOW == 2
+%         Aa
+%     end
     Aa = kron(Aa, I);
     Ca = zeros(1, WINDOW); Ca(1) = 1;
     Ca = kron(Ca, I);
@@ -64,7 +66,7 @@ for WINDOW = 2 : MAX_WINDOW
     x(:, 1) = [1; zeros(DIM_X2, 1)];
   
     w = randn(1, length(t));
-    v = 5*cos(t) +0.5*w - 0.1*t + 0.001*t.^2;
+    v = 5*cos(t) +0.2*w - 0.5*t + 0.001*t.^2;
     v_withInit = [zeros(1, WINDOW-1), v];
 %     xh(:, 1) = [1; v_withInit(WINDOW:-1:1)'];
     for i = 1 : length(t) - 1
