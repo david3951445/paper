@@ -37,7 +37,6 @@ M22 = Q + addSym(P2*A - Y2*C);
 M13 = P1;
 M23 = O;
 M33 = -rho^(2)*eye(DIM_X);
-% M33 = -inv(R);
 
 M14 = O;
 M24 = P2;
@@ -45,13 +44,25 @@ M34 = O;
 M44 = -rho^(2)*eye(DIM_X);
 
 LMI = [
-    M11  M12  M13 M14
-    M12' M22  M23 M24
-    M13' M23' M33 M34
-    M14' M24' M34 M44
+    M11  M12
+    M12' M22
 ];
+% LMI = [
+%     M11  M12  M13 M14
+%     M12' M22  M23 M24
+%     M13' M23' M33 M34
+%     M14' M24' M34 M44
+% ];
+eqn = [eqn, LMI <= 0];  
 
-eqn = [eqn, LMI <= 0];   
+% If you want to limit size of L, i.e., Y'*weight*Y <= Ub
+% weight = eye(DIM_X); % weight of Y
+% Ub = 10^(3)*eye(DIM_U); % upper bound
+% LMI2 = [
+%     -Ub  Y2'
+%     Y2  -P2
+% ];
+% eqn = [eqn, LMI2 <= 0];
 
 sol = optimize(eqn, [], options);
 
