@@ -19,7 +19,7 @@ I = eye(DIM_X);
 dt = 0.001; T = 5; t = 0 : dt : T;
 
 MIN_e = realmax;
-MAX_WINDOW = 10;
+MAX_WINDOW = 6;
 e = zeros(1, MAX_WINDOW-1);
 x_log = cell(1, MAX_WINDOW-1);
 xh_log = cell(1, MAX_WINDOW-1);
@@ -29,21 +29,25 @@ for WINDOW = 2 : MAX_WINDOW
     Aa = zeros(WINDOW);
     
     % method 1
-%     point = 0 : -1 : -WINDOW+1;
-%     Aa(1, 1:WINDOW) = FindFDC(point, 1)'/dt;
-%     for i = 2 : WINDOW
-%         point = [1 0];
-%         Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
-%     end
+    point = 0 : -1 : -WINDOW+1;
+    Aa(1, 1:WINDOW) = FindFDC(point, 1)'/dt;
+%     point = zeros(WINDOW, 1); point(1:2) = [1 -1];
+%     Aa(1, 1:WINDOW) = point/dt;
+    for i = 2 : WINDOW
+        point = [1 0];
+        Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
+    end
     
     % method 2
-    for i = 1 : WINDOW
-        point = i-1 : -1 : -WINDOW+i;
-        Aa(i, :) = FindFDC(point, 1)'/dt;
-    end
-%     if WINDOW == 2
-%         Aa
+%     for i = 1 : WINDOW
+%         point = i-1 : -1 : -WINDOW+i;
+%         Aa(i, :) = FindFDC(point, 1)'/dt;
 %     end
+
+    if WINDOW == 5
+        Aa
+%         Aa = [1 -1 0 0 0; 1 -1 0 0 0; 0 1 -1 0 0; 0 0 1 -1 0; 0 0 0 1 -1]/dt;
+    end
     Aa = kron(Aa, I);
     Ca = zeros(1, WINDOW); Ca(1) = 1;
     Ca = kron(Ca, I);
