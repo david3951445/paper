@@ -38,6 +38,8 @@ classdef UAV
         TIMES_AR = 10;
 
         tr % trajectories (x, xr, t, dt, ...)
+
+        tau
     end
 
     properties (Access = protected)

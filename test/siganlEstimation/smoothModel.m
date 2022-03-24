@@ -83,7 +83,8 @@ for WINDOW = 2 : MAX_WINDOW
     x(:, 1) = [1; zeros(DIM_X2, 1)];
   
     w = randn(1, length(t));
-    v = 0.5*cos(10*t) +0*w - 0.8*t + 0.001*t.^2;
+%     v = 0.5*cos(10*t) +0*w - 1*t + 0.001*t.^2;
+    v = 1*w;
     v_withInit = [zeros(1, WINDOW-1), v];
 %     xh(:, 1) = [1; v_withInit(WINDOW:-1:1)'];
     for i = 1 : length(t) - 1
@@ -129,7 +130,7 @@ Layout = tiledlayout(WIMDOW_peek+1, 1);
 for i = 1 : WIMDOW_peek+1
     nexttile
     hold on
-    if i == 1
+    if 1%i == 1
         plot(t, x_log{MIN_e_WINDOW}(i, :), 'Displayname', 'state')
         plot(t, xh_log{MIN_e_WINDOW}(i, :), 'DisplayName', 'estimated')
     else
