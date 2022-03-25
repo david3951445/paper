@@ -69,7 +69,7 @@ for WINDOW = 2 : MAX_WINDOW
 
     % Qa = 10^(-10).^(WINDOW-1:-1:0)
     Qa = 10^(-3)*ones(1, WINDOW);
-    Q = diag([0 Qa]);
+    Q = diag([10^(-3) Qa]);
     Q = kron(I, Q);
     Q(1:DIM_X,1:DIM_X) = 1;
     rho = 1;

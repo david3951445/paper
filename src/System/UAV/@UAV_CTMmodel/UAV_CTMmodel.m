@@ -1,4 +1,4 @@
-classdef UAV_CLMmodel < UAV
+classdef UAV_CTMmodel < UAV
 %UAV CTM-based model
 % - System form
 %       - tau = M(x)*x'' + C(x, x') + G(x) + F(x')
@@ -10,7 +10,7 @@ classdef UAV_CLMmodel < UAV
     end   
     
     properties
-
+        
     end
     
     properties (Access = private)
@@ -19,7 +19,7 @@ classdef UAV_CLMmodel < UAV
 
     % system functions
     methods
-        function uav = UAV_FZmodel(fz)
+        function uav = UAV_CTMmodel(fz)
             uav@UAV();
             uav.PATH = [uav.DATA_FOLDER_PATH mfilename]; % Path of data
             uav = uav.load(); % load old data
