@@ -1,4 +1,4 @@
-Contain all function, class
+Contain all scripts(function, class, main)
     - External
     External toolbox.
         - to solve LMI
@@ -9,4 +9,14 @@ Contain all function, class
         - to linearlize system
             - tptool : tensoe product tool
     - Matrix
-    - 
+    - Hinf_Therom
+        - Solving control or observer gain with H infinity performance
+    - Linearization
+        - Methods for linearize a nonlinear system
+            - Fuzzy : T-S fuzzy approach
+            - TPmodel : Tensor product transmormation approach
+            - checkLinearizedSum.m : Check the sum of interpolation function of local linear systems
+    - System
+        - Some time systems with state-space representation
+            - UAV : UAV model
+            - LPV : Linear Parameter Varing system
