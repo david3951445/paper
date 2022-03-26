@@ -1,4 +1,4 @@
-function [r, F] = r_F(obj, x, t)
+function r = ref(obj, i)
 %Generate reference and feedforward force
 % x     | vector | system state
 % t     | scalar | current time

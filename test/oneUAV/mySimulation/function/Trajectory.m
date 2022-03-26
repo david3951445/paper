@@ -20,6 +20,7 @@ classdef Trajectory
         % trajectory
         x
         xr
+        xb
         u
         v
         r

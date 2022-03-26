@@ -10,7 +10,7 @@ classdef EXE
     properties (Constant)
         A_B     = 0 % whether run linearize part
         LMI     = 0 % whether run LMI part
-        TRAJ    = 0
+        TRAJ    = 1
         PLOT    = 0
     end
 end

@@ -11,6 +11,8 @@ switch whichVar
         AB = uav.AB;
     case 'K'
         K = uav.K;
+    case 'L'
+        L = uav.L;
     case 'tr'
         tr = uav.tr;
     otherwise

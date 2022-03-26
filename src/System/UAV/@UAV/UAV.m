@@ -33,6 +33,7 @@ classdef UAV
         B  % Input matrix
         C  % output matrix
         K  % Control gain matrix
+        L  % Observer gain matrix
 
         Ar
         Br
