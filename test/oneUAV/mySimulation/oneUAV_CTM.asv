@@ -4,7 +4,7 @@ clc; clear; close all; tic; % warning off
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
-%% linear matrixs after linearize feedback(based on CTM). A, B, C
+%% linear matrixs after CTM. A, B, C
 uav = UAV_CTMmodel();
 DIM_F = uav.DIM_X/2;
 I = eye(DIM_F*3);
@@ -15,7 +15,7 @@ C = I;
 [DIM_X, DIM_U] = size(B);
 [DIM_Y, ~] = size(C);
 
-%% A matrix for unknown signal
+% A matrix for unknown signal
 WINDOW = 2;
 dt = 0.001;
 Af = zeros(WINDOW);
@@ -30,7 +30,7 @@ Cf = zeros(3, WINDOW); Cf(:, 1) = 1;
 Cf = kron(Cf, eye(DIM_F));
 DIM_X2 = DIM_F*WINDOW;
 
-%% augment system
+% augment system
 uav.A = [A Cf; zeros(DIM_X2, DIM_X) Af];
 uav.B = [B; zeros(DIM_X2, DIM_U)];
 uav.C = [C zeros(DIM_Y, DIM_X2)];
@@ -51,8 +51,7 @@ Q2 = 1*kron(Q2, eye(DIM_F));
 rho = 10;
 
 if EXE.LMI
-    disp('solving LMI ...')
-    [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
+    [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, rho);
     uav.Save('K')
     uav.Save('L') 
 end
@@ -62,7 +61,7 @@ end
 %% trajectory
 if EXE.TRAJ
     uav.tr.dt           = dt; % Time step
-    uav.tr.T            = 5; % Final time
+    uav.tr.T            = 10; % Final time
     uav.tr.x0           = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
     uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
     uav.tr.IS_RK4       = 0; % Run RK4 or Euler method
@@ -75,12 +74,13 @@ if EXE.PLOT
     % uav.tr.plot();
 
     r = [uav.tr.r{1}; uav.tr.r{2}];
+    x = uav.tr.x(DIM_F+i, :)
     for i = 1 : uav.DIM_X%size(o.x, 1)
         figure
         hold on
-%         plot(uav.tr.t, uav.tr.x(DIM_F+i, :), 'DisplayName', 'state')
-%         plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
-        plot(uav.tr.t, uav.tr.x(DIM_F+i, :)+r(i, :), 'DisplayName', 'state of ')
+        plot(uav.tr.t, uav.tr.x(DIM_F+i, :), 'DisplayName', 'state')
+        plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
+        plot(uav.tr.t, uav.tr.x(i, DIM_F+ (1:DIM_F*2)), 'DisplayName', 'state of ')
         plot(uav.tr.t, r(i, :), 'DisplayName', 'reference')
         
         title(['x_{' num2str(i) '}'])

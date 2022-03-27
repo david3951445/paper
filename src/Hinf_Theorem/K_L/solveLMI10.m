@@ -1,4 +1,4 @@
-function [K, L] = solveLMI9(A, B, C, E, Q1, Q2, rho)
+function [K, L] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
 %solution of "Qb + Pb*Ab + Ab'*Pb + Pb*E*E'*Pb/rho^2 < 0, Pb > 0"
 %
 % This function is used to solve a control problem defined below :
@@ -43,13 +43,28 @@ M14 = O;
 M24 = rho^(-1)*P2;%*E;
 M34 = O;
 M44 = -I;
+if ~isempty(R)
+    M15 = Y1'*sqrt(R);
+    M25 = zeros(DIM_U);
+    M35 = zeros(DIM_U);
+    M45 = zeros(DIM_U);
+    M55 = -eye(DIM_U);
 
-LMI = [
-    M11  M12  M13  M14
-    M12' M22  M23  M24
-    M13' M23' M33  M34
-    M14' M24' M34' M44
-];
+    LMI = [
+        M11  M12  M13  M14  M15
+        M12' M22  M23  M24  M25
+        M13' M23' M33  M34  M25
+        M14' M24' M34' M44  M45
+        M15' M25' M35' M45  M55
+    ];
+else
+    LMI = [
+        M11  M12  M13  M14
+        M12' M22  M23  M24
+        M13' M23' M33  M34
+        M14' M24' M34' M44
+    ];
+end
 % LMI = [
 %     M11  M12  M13
 %     M12' M22  M23
@@ -67,8 +82,8 @@ eqn = [eqn, LMI <= 0];
 % weight = -eye(DIM_X); % weight of Y
 % Ub = -1000*eye(DIM_U); % upper bound
 % LMI2 = [
-%     Ub  Y
-%     Y'  weight
+%     Ub  Y1
+%     Y1'  weight
 % ];
 % eqn = [eqn, LMI2 <= 0];
 

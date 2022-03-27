@@ -6,6 +6,12 @@ t           = 0 : dt : uav.tr.T;
 t2          = 0 : dt : uav.tr.T + dt*4; % for numercial differention
 LEN         = length(t);
 
+x           = zeros(uav.DIM_X3, LEN);
+x(uav.DIM_F+(1:2*uav.DIM_F)) = uav.tr.x0;
+xh          = zeros(uav.DIM_X3, LEN);
+xb          = [x; xh];
+u           = zeros(uav.DIM_U, LEN);
+
 %% calculate r, dr, ddr
 % referecne trajectory of x, y, z
 amp_z   = 1; % 0.8
@@ -22,8 +28,6 @@ for i = 1 : LEN+4
 end
 % dr1 = my_diff(r1)/dt;
 % ddr1 = my_diff(dr1)/dt;
-
-% ir1 = cumsum(t1)
 dr1 = diff(r1,1,2)/dt;
 ddr1 = diff(r1,2,2)/dt;
 
@@ -65,27 +69,18 @@ uav.tr.r = {[r1; r2], [dr1; dr2], [ddr1; ddr2]};
 % plot(t,ddr1)
 % legend
 
-%% calculate disturbance
-v           = 0.01*randn(uav.DIM_X, LEN) + 0;
-uav.tr.v    = [zeros(uav.DIM_X, LEN); zeros(uav.DIM_X, LEN); v];
+%% disturbance
+v = 0.01*randn(uav.DIM_X, LEN) + 0;
+uav.tr.v = [zeros(uav.DIM_X, LEN); zeros(uav.DIM_X, LEN); v];
 
-%% calculate x, xh
-x           = zeros(uav.DIM_X3, LEN);
-r           = [uav.tr.r{1}; uav.tr.r{2}];
-x(uav.DIM_F+(1:2*uav.DIM_F)) = uav.tr.x0 - r(:, 1);
-xh          = zeros(uav.DIM_X3, LEN);
-xb          = [x; xh];
-u           = zeros(uav.DIM_U, LEN);
+%% plot
 disp('Ploting trajectory ...')
 for i = 1 : LEN - 1       
     if mod(i, 1/dt) == 0
         disp(['t = ' num2str(i*dt)])
     end
-    if isnan(xb(:, i))
-        disp(['traj has NaN, i = ' num2str(i)])
-    end
-    if norm(xb(:, i)) == Inf
-        disp(['traj has Inf, i = ' num2str(i)])
+    if norm(xb(:, i)) == NaN
+        disp(['diverge, i = ' num2str(i)])
     end
 
     k1 = RK4(uav, xb(:, i), i);
@@ -97,6 +92,8 @@ for i = 1 : LEN - 1
         % xb(:, i+1)  = xb(:, i)  + (k1 + 2*k2 + 2*k3 + k4)*dt/6;
     end
     xb(:, i+1) = xb(:, i) + k1*dt;
+    uav.tr.xb(:, i+1) = xb(:, i+1);
+    % uav.tr.r(:, i+1) = 
 
     % total_K = zeros(o.DIM_U, o.DIM_X);
     % for j = 1 : fz.num
@@ -104,8 +101,7 @@ for i = 1 : LEN - 1
     % end
     % o.u(:, i+1) = total_K*(o.x(:, i+1) - o.xr(:, i+1));
 end
-uav.tr.x = xb(1:uav.DIM_X3, :);
-uav.tr.xh = xb(uav.DIM_X3 + (1:uav.DIM_X3), :);
+% uav.tr.xb = xb;
 uav.tr.t = t;
 end
 
@@ -129,13 +125,11 @@ function k = RK4(uav, xb, i) % calculate dxdt
         Mh = uav.M(Xh);
         H = uav.H(X, dX);
         Hh = uav.H(Xh, dXh);
-        u_PID = uav.K*xh;
-        u = Mh*(ddr + u_PID) + Hh; % control law
+        u = Mh*(ddr + uav.K*xh) + Hh; % control law
         f = -M\((M-Mh)*(ddr + uav.K*xh) + H-Hh);
         k = [
             uav.A*x + uav.B*(u + f)
-            % uav.A*x + uav.B*u_PID
-            uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
+            uav.A*xh + uav.B*u - uav.L*uav.C*(x-xh)
         ];
     end
 end

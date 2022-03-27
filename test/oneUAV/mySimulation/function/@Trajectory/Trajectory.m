@@ -13,17 +13,23 @@ classdef Trajectory
         % initial value
         x0
         xr0
+        xh0
 
         IS_LINEAR = 1 % run fuzzy linear system or origin nonlinear system
         IS_RK4 = 0 % run RK4 or Euler
 
         % trajectory
-        x
-        xr
-        xb
-        u
-        v
-        r
+        x % system state
+        r % reference trajectory
+        xr % reference model state
+        xh % estimated state
+
+        e % x - r
+        er % x - xr
+        eh % x - xh
+
+        u % control
+        v % distrubance
     end
     
     methods
@@ -51,7 +57,6 @@ classdef Trajectory
             %     title(['u_{' num2str(j) '}'])
             % end
         end
-
     end
 
     methods (Access = private)
