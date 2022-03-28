@@ -9,7 +9,8 @@ classdef Trajectory
         dt  = 0.001 % time step
         t % time
         T   = 10 % final time
-
+        LEN
+        
         % initial value
         x0
         xr0

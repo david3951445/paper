@@ -26,8 +26,9 @@ for i = 2 : WINDOW
     Af(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
 end
 Af = kron(Af, eye(DIM_F));
-Cf = zeros(3, WINDOW); Cf(:, 1) = 1;
+Cf = zeros(1, WINDOW); Cf(:, 1) = 1;
 Cf = kron(Cf, eye(DIM_F));
+Cf = B*Cf;
 DIM_X2 = DIM_F*WINDOW;
 
 %% augment system
@@ -80,8 +81,11 @@ if EXE.PLOT
         hold on
 %         plot(uav.tr.t, uav.tr.x(DIM_F+i, :), 'DisplayName', 'state')
 %         plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
-        plot(uav.tr.t, uav.tr.x(DIM_F+i, :)+r(i, :), 'DisplayName', 'state of ')
-        plot(uav.tr.t, r(i, :), 'DisplayName', 'reference')
+%         timeInterval = 1 : uav.tr.LEN;
+        timeInterval = 1:length(uav.tr.t);
+        t = uav.tr.t(timeInterval);
+%         plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state of ')
+        plot(t, r(i, timeInterval), 'DisplayName', 'reference')
         
         title(['x_{' num2str(i) '}'])
         legend
