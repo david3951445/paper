@@ -1,4 +1,4 @@
-function K = solveLMI6(A, B, R, Q, rho)
+function K = solveLMI6(A, B, Q, R, rho)
 %solution of "Q + P(A+BK) + (A+BK)'P + PP/rho^2 + KRK < 0, P > 0"
 %
 % This function is used to solve a control problem defined below :
@@ -26,7 +26,7 @@ eqn = [eqn, W >= 0];
 
 M11 = addSym(A*W + B*Y) + rho^(-2)*I;
 
-M12 = W*sqrtm(Q);
+M12 = W*sqrt(Q);
 M22 = -I;
 
 LMI = [
@@ -36,7 +36,7 @@ LMI = [
 
 % Consider R
 if ~isempty(R)
-    M13 = Y'*sqrtm(R);
+    M13 = Y'*sqrt(R);
     % M13 = Y';
     M23 = zeros(size(B));
     M33 = -eye(DIM_U);

@@ -16,7 +16,7 @@ C = I;
 [DIM_Y, ~] = size(C);
 
 %% A matrix for unknown signal
-WINDOW = 2;
+WINDOW = 2; uav.WINDOW = WINDOW;
 dt = 0.001;
 Af = zeros(WINDOW);
 point = zeros(WINDOW, 1); point(1:2) = [1 -1];
@@ -59,35 +59,40 @@ if EXE.LMI
 end
 % disp(norm(K))
 % disp(norm(L))
+% uav.K(:, 19:30)=0;
 
 %% trajectory
 if EXE.TRAJ
     uav.tr.dt           = dt; % Time step
-    uav.tr.T            = 5; % Final time
+    uav.tr.T            = 7; % Final time
     uav.tr.x0           = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
     uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
     uav.tr.IS_RK4       = 0; % Run RK4 or Euler method
 
-    uav = uav.trajectory();
+    uav = uav.trajectory2();
     uav.Save('tr');
 end
 
 if EXE.PLOT
-    % uav.tr.plot();
+    disp('Ploting trajectory ...')
 
     r = [uav.tr.r{1}; uav.tr.r{2}];
+    Tiledlayout = tiledlayout(3, 4);
+    TITLE = {'x', 'y', 'z', '$\phi$', '$\theta$', '$\psi$', ...
+        'dx', 'dy', 'dz', '$d\phi$', '$d\theta$', '$d\psi$'};
+    axes('Units', 'normalized', 'Position', [0 0 1 1]);
     for i = 1 : uav.DIM_X%size(o.x, 1)
-        figure
+        nexttile
         hold on
 %         plot(uav.tr.t, uav.tr.x(DIM_F+i, :), 'DisplayName', 'state')
 %         plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
 %         timeInterval = 1 : uav.tr.LEN;
-        timeInterval = 1:length(uav.tr.t);
+        timeInterval = 4:length(uav.tr.t)-1;
         t = uav.tr.t(timeInterval);
-%         plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state of ')
+        plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-', 'DisplayName', 'state')
         plot(t, r(i, timeInterval), 'DisplayName', 'reference')
         
-        title(['x_{' num2str(i) '}'])
+        title(TITLE{i}, 'Interpreter','latex')
         legend
         xlabel("t")
         % ylim([-2 2])

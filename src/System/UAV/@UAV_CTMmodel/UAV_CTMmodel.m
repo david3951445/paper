@@ -12,6 +12,9 @@ classdef UAV_CTMmodel < UAV
     
     properties
         DIM_X3
+        Dt % torque drag coefficient matrix
+        Df % force drag coefficient matrix
+        WINDOW % looking forward window of unknown signal
     end
     
     properties (Access = private)
@@ -25,19 +28,27 @@ classdef UAV_CTMmodel < UAV
             uav.PATH = [uav.DATA_FOLDER_PATH mfilename]; % Path of data
             uav = uav.load(); % load old data
 
+            uav.Dt = diag([uav.Kph, uav.Kth, uav.Kps]);
+            uav.Df = diag([uav.Kx, uav.Ky, uav.Kz]);
         end
 
         function y = M(uav, x)
+            % y = [
+            %     uav.R_inv(x(4:6))*uav.m zeros(3)
+            %     zeros(3) diag([uav.Jx, uav.Jy, uav.Jz])
+            % ];
             y = [
-                uav.R_inv(x(4:6))*uav.m zeros(3)
+                uav.m*eye(3) zeros(3)
                 zeros(3) diag([uav.Jx, uav.Jy, uav.Jz])
             ];
-            % 
         end
 
         function y = H(uav, x, dx)
-            CG = [uav.R_inv(x(4:6))*[0;0;uav.G]; cross(dx(4:6), diag([uav.Jx, uav.Jy, uav.Jz])*dx(4:6))];
-            F = [diag([uav.Kx, uav.Ky, uav.Kz]) zeros(3);zeros(3) diag([uav.Kph, uav.Kth, uav.Kps])]*dx;
+            % CG = [uav.R_inv(x(4:6))*[0;0;uav.G]; cross(dx(4:6), diag([uav.Jx, uav.Jy, uav.Jz])*dx(4:6))];
+            CG = [[0;0;uav.G]; cross(dx(4:6), diag([uav.Jx, uav.Jy, uav.Jz])*dx(4:6))];
+            % F = [uav.R_inv(x(4:6))*diag([uav.Kx, uav.Ky, uav.Kz]) zeros(3);zeros(3) diag([uav.Kph, uav.Kth, uav.Kps])]*dx;
+            F = [uav.Df zeros(3);zeros(3) uav.Dt]*dx;
+
             y = CG + F;
         end
         

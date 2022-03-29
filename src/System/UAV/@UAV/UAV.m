@@ -42,6 +42,8 @@ classdef UAV
         tr % trajectories (x, xr, t, dt, ...)
 
         tau
+        
+        debug
     end
 
     properties (Access = protected)
