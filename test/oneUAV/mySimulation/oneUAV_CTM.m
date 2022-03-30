@@ -64,8 +64,9 @@ end
 %% trajectory
 if EXE.TRAJ
     uav.tr.dt           = dt; % Time step
-    uav.tr.T            = 7; % Final time
-    uav.tr.x0           = [0.1 0 0.1 0.5 0.1 0.5 0.51 0.59 0.52 0.52 0.55 0.52]';
+    uav.tr.T            = 5; % Final time
+    uav.tr.x0           = [0 0 0 0 0 0 0.2 0.2 0 0.1 0.1 0.5 0 0 0 0 0 0 zeros(1, DIM_F*WINDOW)]';
+    uav.tr.xh0          = zeros(uav.DIM_X3, 1);
     uav.tr.IS_LINEAR    = 0; % Run fuzzy linear system or origin nonlinear system
     uav.tr.IS_RK4       = 0; % Run RK4 or Euler method
 
@@ -87,7 +88,7 @@ if EXE.PLOT
 %         plot(uav.tr.t, uav.tr.x(DIM_F+i, :), 'DisplayName', 'state')
 %         plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
 %         timeInterval = 1 : uav.tr.LEN;
-        timeInterval = 4:length(uav.tr.t)-1;
+        timeInterval = 1:length(uav.tr.t)-1;
         t = uav.tr.t(timeInterval);
         plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-', 'DisplayName', 'state')
         plot(t, r(i, timeInterval), 'DisplayName', 'reference')

@@ -15,6 +15,7 @@ classdef UAV_CTMmodel < UAV
         Dt % torque drag coefficient matrix
         Df % force drag coefficient matrix
         WINDOW % looking forward window of unknown signal
+        r4
     end
     
     properties (Access = private)
@@ -54,6 +55,16 @@ classdef UAV_CTMmodel < UAV
         
         function y = R_inv(uav, x)
             y = rotx(-x(1))*roty(-x(2))*rotz(-x(3));
+        end
+
+        function [phi, theta, F] = pos_controller(uav, x, r4, dt)
+            ddr = r4*[1 -2 1]'/dt^2;
+            u = uav.K*x(1:3*uav.DIM_F);
+            c = uav.m*eye(3)*ddr + [0; 0; -uav.m*uav.G] + u(1:3) + uav.Df*x(2*uav.DIM_F + (1:3));
+
+            F = sqrt(c(1)^2 + c(2)^2 + c(3)^2);
+            theta = atan(c(1)/c(3));
+            phi = atan(-c(2)*cos(theta)/c(3));
         end
 
         uav = trajectory(uav) % get trajectory (x, u, ...)      
