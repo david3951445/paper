@@ -1,3 +1,8 @@
+%smooth model test, with stabilized
+% Chose of WINDOM may related to method of calculate dxdt of x
+% Here use lagrange method so WINDOM size about 2~3 is good. Still needed to validate.
+% Control gain of estimated unknoen siganl should chose "[-I 0, .... 0]" rather calculated
+% by H inf theorem due to we are going to canceling f(t) term i.e. -fh + f = 0.
 clc; clear; close all
 addpath(genpath('../../src'))
 
