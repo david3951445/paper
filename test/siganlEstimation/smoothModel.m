@@ -83,8 +83,8 @@ for WINDOW = 2 : MAX_WINDOW
     x(:, 1) = [1; zeros(DIM_X2, 1)];
   
     w = randn(1, length(t));
-%     v = 0.5*cos(10*t) +0*w - 1*t + 0.001*t.^2;
-    v = 1*w;
+    v = 1*cos(20*t) +0*w - 1*t + 0.001*t.^2;
+%     v = 1*w;
     v_withInit = [zeros(1, WINDOW-1), v];
 %     xh(:, 1) = [1; v_withInit(WINDOW:-1:1)'];
     for i = 1 : length(t) - 1

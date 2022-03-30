@@ -45,17 +45,16 @@ M34 = O;
 M44 = -I;
 if ~isempty(R)
     M15 = Y1'*sqrt(R);
-    M25 = zeros(DIM_U);
-    M35 = zeros(DIM_U);
-    M45 = zeros(DIM_U);
+    M25 = zeros(DIM_X, DIM_U);
+    M35 = zeros(DIM_X, DIM_U);
+    M45 = zeros(DIM_X, DIM_U);
     M55 = -eye(DIM_U);
-
     LMI = [
         M11  M12  M13  M14  M15
         M12' M22  M23  M24  M25
-        M13' M23' M33  M34  M25
+        M13' M23' M33  M34  M35
         M14' M24' M34' M44  M45
-        M15' M25' M35' M45  M55
+        M15' M25' M35' M45' M55
     ];
 else
     LMI = [
@@ -78,14 +77,14 @@ end
 eqn = [eqn, LMI <= 0];  
 % eqn = [eqn, LMI <= d1*eye(4*DIM_X)];  
 
-% If you want to limit size of K, i.e., Y*weight*Y' <= Ub
-% weight = -eye(DIM_X); % weight of Y
-% Ub = -1000*eye(DIM_U); % upper bound
-% LMI2 = [
-%     Ub  Y1
-%     Y1'  weight
+% If you want to limit size of L, i.e., Y'*weight*Y <= Ub
+% weight = eye(DIM_X); % weight of Y
+% Ub = 10^(5)*eye(DIM_Y); % upper bound
+% LMI = [
+%     -Ub  Y2'
+%     Y2  -weight
 % ];
-% eqn = [eqn, LMI2 <= 0];
+% eqn = [eqn, LMI <= 0];
 
 sol = optimize(eqn, [], options);
 

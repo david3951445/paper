@@ -10,16 +10,16 @@ DIM_X3      = uav.DIM_X3;
 startTime   = 5;
 
 %% control gain test
-A = [0 1 0; 0 0 1; 0 0 0];
-B = [0; 0; 1];
-A = kron(A, eye(DIM_F)); 
-B = kron(B, eye(DIM_F)); 
-Q = diag(1*[.1 100 10]); % I, P, D
-Q = kron(Q, diag([1 1 1 .01 .01 .01])); % x, y, z, phi, theta, psi
-R = [];
-rho = 100;
-K = solveLMI6(A,B,Q,R,rho);
-uav.K = K;
+% A = [0 1 0; 0 0 1; 0 0 0];
+% B = [0; 0; 1];
+% A = kron(A, eye(DIM_F)); 
+% B = kron(B, eye(DIM_F)); 
+% Q = diag(1*[.1 100 10]); % I, P, D
+% Q = kron(Q, diag([1 1 1 .01 .01 .01])); % x, y, z, phi, theta, psi
+% R = [];
+% rho = 100;
+% K = solveLMI6(A,B,Q,R,rho);
+% uav.K = K;
 
 %% set xd, yd, zd, phid
 r4 = zeros(4, LEN);
@@ -36,8 +36,8 @@ for i = 1 : LEN - 1
 end
 
 %% calculate disturbance
-v           = 0.01*randn(DIM_X, LEN) + 0;
-uav.tr.v    = [zeros(DIM_X, LEN); zeros(DIM_X, LEN); v];
+v           = 0.01*randn(DIM_F, LEN) + 0;
+uav.tr.v    = v;
 
 %% initialize x, xh, r
 x           = zeros(DIM_X3, LEN);
@@ -72,7 +72,7 @@ x(:, 1:startTime) = repmat(uav.tr.x0, [1 startTime]);
 % construct r_old
 r_old = zeros(DIM_F, 2); % store r[i-1], r[i-2]
 for i = 3 : startTime-1
-    [phi, theta, ~] = uav.pos_controller(x(1:3*uav.DIM_F, i), r4(1:3, i-2:i), dt);
+    [phi, theta, ~] = uav.pos_controller(x(:, i), r4(1:3, i-2:i), dt);
     r = [
         r4(1, i)
         r4(2, i)
@@ -112,17 +112,14 @@ for i = startTime : LEN - 1
 
     %% extract x, xh, X, dX form xb
     x       = xb(1 : uav.DIM_X3, i);
-    % xh      = xb(uav.DIM_X3 + (1:uav.DIM_X3));
+    xh      = xb(uav.DIM_X3 + (1:uav.DIM_X3), i);
     X       = x(DIM_F + (1:DIM_F));
     dX      = x(2*DIM_F + (1:DIM_F));
-    % Xh      = xh(DIM_F + (1:DIM_F));
-    % dXh     = xh(2*DIM_F + (1:DIM_F));
+    Xh      = xh(DIM_F + (1:DIM_F));
+    dXh     = xh(2*DIM_F + (1:DIM_F));
 
     %% reference
-    % In practice, r([1 2 3], i) get from path planning algorithm.
-    % UAV no spin, r(6, i) is zeros.
-    % r([4 5], i) is obtain from r([1 2 3 6], i)
-    [phi, theta, F] = uav.pos_controller(x(1:3*uav.DIM_F), r4(1:3, i-2:i), dt);
+    [phi, theta, F] = uav.pos_controller(xh, r4(1:3, i-2:i), dt);
     r = [
         r4(1, i)
         r4(2, i)
@@ -131,29 +128,27 @@ for i = startTime : LEN - 1
         theta
         r4(4, i)
     ];
-
-    %% In practice, dr and ddr are obtained from numercial differentiation
+    % In practice, dr and ddr are obtained from numercial differentiation
     dr = [r r_old(:, 1)]*[1 -1]'/dt; % finite different, precision: o(h)
     ddr = [r r_old(:, 1:2)]*[1 -2 1]'/dt^2;
-
+    r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
     uav.tr.r{1}(:, i) = r;
     uav.tr.r{2}(:, i) = dr;
     uav.tr.r{3}(:, i) = ddr;
     
+    u = uav.K*xh;
     M = uav.M(X+r);
-    % Mh = uav.M(Xh+r);
-    u = uav.K*x(1:3*uav.DIM_F);
+    Mh = uav.M(Xh+r);
+    H = uav.H(X+r, dX+dr);
     Hh = uav.H(Xh+r, dXh+dr);
     u_PID = uav.K*xh;
-    u = Mh*(ddr + u_PID) + Hh; % control law
-    f = -M\((M-Mh)*(ddr + uav.K*xh) + H-Hh);
-
-    uav.tr.f(:, i) = f;
+    % u = Mh*(ddr + u_PID) + Hh; % control law
+    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u_PID) + H-Hh + v(:, i));
+    % uav.tr.f(:, i) = f;
 
     k = [
-        A*x(1:3*DIM_F) + B*(u + f)
-        zeros(DIM_X3-DIM_F*3, 1)
-        zeros(DIM_X3, 1)
+        uav.A*x + uav.B*(u + f)
+        uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
     ];
 
     % k = [
@@ -163,44 +158,45 @@ for i = startTime : LEN - 1
 
     xb(:, i+1) = xb(:, i) + k*dt;
     xb(3*DIM_F + (1:DIM_F), i+1) = f;
-    r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
 end
 
 uav.tr.x = xb(1:DIM_X3, :);
 uav.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
 % uav.tr.LEN = i;
-uav.tr.f = f
+uav.tr.f = f;
 end
 
 %% Local function
-function [k, f] = RK4(uav, xb, i) % calculate dxdt
-    % O       = zeros(uav.DIM_X);
+% function [k, f] = RK4(uav, xb, i) % calculate dxdt
+%     % O       = zeros(uav.DIM_X);
           
-    dr      = uav.tr.r{2}(:, i);
-    ddr     = uav.tr.r{3}(:, i);
-    x       = xb(1 : uav.DIM_X3);
-    xh      = xb(uav.DIM_X3 + (1:uav.DIM_X3));
-    X       = x(DIM_F + (1:DIM_F));
-    dX      = x(2*DIM_F + (1:DIM_F));
-    Xh      = xh(DIM_F + (1:DIM_F));
-    dXh     = xh(2*DIM_F + (1:DIM_F));
+%     dr      = uav.tr.r{2}(:, i);
+%     ddr     = uav.tr.r{3}(:, i);
+%     x       = xb(1 : uav.DIM_X3);
+%     xh      = xb(uav.DIM_X3 + (1:uav.DIM_X3));
+%     X       = x(DIM_F + (1:DIM_F));
+%     dX      = x(2*DIM_F + (1:DIM_F));
+%     Xh      = xh(DIM_F + (1:DIM_F));
+%     dXh     = xh(2*DIM_F + (1:DIM_F));
 
-    if uav.tr.IS_LINEAR % linear                 
-        % Eb = [eye(uav.DIM_X) O; O uav.Br];
-        % u = K*x + uav.M(X) + uav.H(X, dX) % control law
-        % k = uav.A*xb + uav.B*u + Eb*[v(t); r];
-    else % nonlinear
-        M = uav.M(X+r);
-        Mh = uav.M(Xh+r);
-        H = uav.H(X+r, dX+dr);
-        Hh = uav.H(Xh+r, dXh+dr);
-        u_PID = uav.K*xh;
-        % u = Mh*(ddr + u_PID) + Hh; % control law
-        f = -M\((M-Mh)*(ddr + uav.K*xh) + H-Hh);
-        k = [
-%             uav.A*x + uav.B*(u + f)
-            uav.A*x + uav.B*u_PID
-            uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
-        ];
-    end
-end
+%     if uav.tr.IS_LINEAR % linear                 
+%         % Eb = [eye(uav.DIM_X) O; O uav.Br];
+%         % u = K*x + uav.M(X) + uav.H(X, dX) % control law
+%         % k = uav.A*xb + uav.B*u + Eb*[v(t); r];
+%     else % nonlinear
+%         M = uav.M(X+r);
+%         Mh = uav.M(Xh+r);
+%         H = uav.H(X+r, dX+dr);
+%         Hh = uav.H(Xh+r, dXh+dr);
+%         u_PID = uav.K*xh;
+%         % u = Mh*(ddr + u_PID) + Hh; % control law
+%         norm(M-Mh)
+%         norm(H-Hh)
+%         f = -M\((M-Mh)*(ddr + uav.K*xh) + H-Hh);
+%         k = [
+% %             uav.A*x + uav.B*(u + f)
+%             uav.A*x + uav.B*u_PID
+%             uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
+%         ];
+%     end
+% end

@@ -58,8 +58,11 @@ classdef UAV_CTMmodel < UAV
         end
 
         function [phi, theta, F] = pos_controller(uav, x, r4, dt)
+            % In practice, r([1 2 3], i) get from path planning algorithm.
+            % UAV no spin, r(6, i) is zeros. r([4 5], i) is obtain from r([1 2 3 6], i)
+
             ddr = r4*[1 -2 1]'/dt^2;
-            u = uav.K*x(1:3*uav.DIM_F);
+            u = uav.K*x;
             c = uav.m*eye(3)*ddr + [0; 0; -uav.m*uav.G] + u(1:3) + uav.Df*x(2*uav.DIM_F + (1:3));
 
             F = sqrt(c(1)^2 + c(2)^2 + c(3)^2);

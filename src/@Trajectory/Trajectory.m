@@ -31,6 +31,8 @@ classdef Trajectory
 
         u % control
         v % distrubance
+
+        f % unknown signal
     end
     
     methods
