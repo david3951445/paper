@@ -57,6 +57,10 @@ classdef UAV_CTMmodel < UAV
             y = rotx(-x(1))*roty(-x(2))*rotz(-x(3));
         end
 
+        function y = R(uav, x)
+            y = rotz(x(3))*roty(x(2))*rotx(x(1));
+        end
+
         function [phi, theta, F] = pos_controller(uav, x, r4, dt)
             % In practice, r([1 2 3], i) get from path planning algorithm.
             % UAV no spin, r(6, i) is zeros. r([4 5], i) is obtain from r([1 2 3 6], i)

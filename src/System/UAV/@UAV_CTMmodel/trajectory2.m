@@ -36,11 +36,12 @@ for i = 1 : LEN - 1
 end
 
 %% calculate disturbance
-v           = 0.01*randn(DIM_F, LEN) + 0;
+v           = 0.01*randn(DIM_F, LEN) + 5;
 uav.tr.v    = v;
 
 %% initialize x, xh, r
 x           = zeros(DIM_X3, LEN);
+x2          = zeros(DIM_F*2, LEN);
 xh          = zeros(DIM_X3, LEN);
 r           = zeros(DIM_F, LEN);
 uav.tr.r    = {r, r, r};
@@ -59,6 +60,7 @@ uav.tr.f    = zeros(DIM_X3, LEN);
 % f       = -M\((M-Mh)*(ddr0 + uav.K*xh(:, 1)) + H-Hh);
 % x(3*DIM_F + (1:DIM_F), 1) = f;
 x(:, 1:startTime) = repmat(uav.tr.x0, [1 startTime]);
+x2(:, 1:startTime) = repmat(uav.tr.x0(DIM_F + (1:DIM_F*2)), [1 startTime]);
 
 %% initial value of r
 % Let r = [x y z phi theta psi]'
@@ -141,21 +143,19 @@ for i = startTime : LEN - 1
     Mh = uav.M(Xh+r);
     H = uav.H(X+r, dX+dr);
     Hh = uav.H(Xh+r, dXh+dr);
-    u_PID = uav.K*xh;
+    uav.R(X(4:6))*[0; 0; F]-u(1:3)
+    u4 = [u(1:3); u(4:6)];
     % u = Mh*(ddr + u_PID) + Hh; % control law
-    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u_PID) + H-Hh + v(:, i));
+    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u4) + H-Hh + v(:, i));
     % uav.tr.f(:, i) = f;
 
     k = [
-        uav.A*x + uav.B*(u + f)
-        uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
+        uav.A*x + uav.B*u4
+        uav.A*xh + uav.B*u4 - uav.L*uav.C*(x-xh)
     ];
 
-    % k = [
-    %     uav.A*x + uav.B*u_PID
-    %     uav.A*xh + uav.B*u_PID - uav.L*uav.C*(x-xh)
-    % ];
-
+    k2 = uav.f(x) + uav.g(x)*[F; u(4:6)];
+    x2(:, i+1) = x2(:, i) + k2*dt;
     xb(:, i+1) = xb(:, i) + k*dt;
     xb(3*DIM_F + (1:DIM_F), i+1) = f;
 end
@@ -164,6 +164,7 @@ uav.tr.x = xb(1:DIM_X3, :);
 uav.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
 % uav.tr.LEN = i;
 uav.tr.f = f;
+uav.tr.x2 = x2;
 end
 
 %% Local function

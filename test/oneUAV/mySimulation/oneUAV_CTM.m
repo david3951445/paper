@@ -59,9 +59,14 @@ rho = 10;
 
 if EXE.LMI
     disp('solving LMI ...')
-    [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
     gain = zeros(1, WINDOW); gain(1) = -1;
+    % method 1
+    [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
     uav.K(:, DIM_X + (1:DIM_F*WINDOW)) = kron(gain, eye(DIM_F));
+    % method 2
+    % [uav.K, uav.L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));
+    % uav.K = [uav.K kron(gain, eye(DIM_F))];
+    
     uav.Save('K')
     uav.Save('L') 
 end
@@ -99,7 +104,8 @@ if EXE.PLOT
 %         plot(uav.tr.t, uav.tr.xh(DIM_F+i, :), 'DisplayName', 'estimated')
 %         timeInterval = 1 : uav.tr.LEN;
         
-        plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
+%         plot(t, uav.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
+        plot(t, uav.tr.x2(i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
         plot(t, r(i, timeInterval), 'DisplayName', 'reference')
         
         title(TITLE{i}, 'Interpreter','latex')
@@ -113,8 +119,8 @@ if EXE.PLOT
     for i = 1 : DIM_F % unknown signal
         nexttile
         hold on
-        plot(t, uav.tr.x(DIM_X2 + i, timeInterval), 'DisplayName', 'state')
-        plot(t, uav.tr.xh(DIM_X2 + i, timeInterval), 'DisplayName', 'estimated')
+        plot(t, uav.tr.x(3*DIM_F + i, timeInterval), 'DisplayName', 'state')
+        plot(t, uav.tr.xh(3*DIM_F + i, timeInterval), 'DisplayName', 'estimated')
         title(TITLE{i}, 'Interpreter','latex')
         legend
         xlabel("t")

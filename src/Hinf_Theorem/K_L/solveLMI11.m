@@ -1,10 +1,10 @@
-function [K, L] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
+function [K, L] = solveLMI11(A, C, E, Q1, Q2, R, rho, Cf, A1, B1)
 %solution of "Qb + Pb*Ab + Ab'*Pb + Pb*E*E'*Pb/rho^2 < 0, Pb > 0"
 %
 % This function is used to solve a control problem defined below :
 % (1) system
 %       dxb/dt = Ab*xb + vb
-%       where xb = [x; x-xh], Ab = [A+BK -BK; 0 A+LC]
+%       where xb = [x; x-xh], Ab = [A1+B1*K, -B1*K Cf; 0, A+L*C]
 % (4) control law
 %       u = K*xh
 % (5) H infinity performance
@@ -15,38 +15,39 @@ function [K, L] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
 %       where Pb = [P1 0; 0 P2]
 
 %% solve
-[DIM_X, DIM_U]  = size(B);
-[DIM_Y, ~]      = size(C);
+[DIM_X1, DIM_U] = size(B1);
+[DIM_Y, DIM_X]  = size(C);
 O               = zeros(DIM_X);
 I               = eye(DIM_X);
 options = sdpsettings('solver', 'mosek');
 options = sdpsettings(options,'verbose', 0);
 eqn = [];
 
-W1 = sdpvar(DIM_X, DIM_X);
+W1 = sdpvar(DIM_X1, DIM_X1);
 P2 = sdpvar(DIM_X, DIM_X);
-Y1 = sdpvar(DIM_U, DIM_X);
+Y1 = sdpvar(DIM_U, DIM_X1);
 Y2 = sdpvar(DIM_X, DIM_Y);
 
 eqn = [eqn, W1 >= 0, P2 >= 0];
 
-M11 = addSym(A*W1 + B*Y1) + rho^(-2)*E*E';
+M11 = addSym(A1*W1 + B1*Y1);% + rho^(-2)*E*E';
 
-M12 = -B*Y1;
+M12 = [-B1*Y1 Cf];
 M22 = addSym(P2*A + Y2*C) + Q2;
 
 M13 = W1*sqrt(Q1);
-M23 = O;
-M33 = -I;
+M23 = zeros(DIM_X, DIM_X1);
+M33 = -eye(DIM_X1);
 
-M14 = O;
+M14 = zeros(DIM_X1, DIM_X);
 M24 = rho^(-1)*P2;%*E;
-M34 = O;
+M34 = zeros(DIM_X1, DIM_X);
 M44 = -I;
+
 if ~isempty(R)
     M15 = Y1'*sqrt(R);
     M25 = zeros(DIM_X, DIM_U);
-    M35 = zeros(DIM_X, DIM_U);
+    M35 = zeros(DIM_X1, DIM_U);
     M45 = zeros(DIM_X, DIM_U);
     M55 = -eye(DIM_U);
     LMI = [

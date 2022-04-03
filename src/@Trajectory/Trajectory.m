@@ -21,6 +21,7 @@ classdef Trajectory
 
         % trajectory
         x % system state
+        x2 % system state 2
         r % reference trajectory
         xr % reference model state
         xh % estimated state

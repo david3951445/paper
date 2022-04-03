@@ -7,7 +7,7 @@ clc; clear; close all
 addpath(genpath('../../src'))
 
 % system
-A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = eye(3);
+A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = [1 0 0; 0 1 0;0 0 1];
 DIM_F = 2;
 [DIM_X, DIM_U] = size(B);
 [DIM_Y, ~] = size(C);
@@ -28,7 +28,7 @@ for WINDOW = 2 : MAX_WINDOW
     % method 1-2
 %     point = zeros(WINDOW, 1); point(1:2) = [1 -1];
 %     Aa(1, 1:WINDOW) = point/dt;
-
+% 
 %     for i = 2 : WINDOW
 %         point = [1 0];
 %         Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
@@ -38,6 +38,7 @@ for WINDOW = 2 : MAX_WINDOW
         point = i-1 : -1 : -WINDOW+i;
         Aa(i, :) = FindFDC(point, 1)'/dt;
     end
+
 %     Aa = kron(Aa, eye(DIM_F));
     Ca = zeros(1, WINDOW); Ca(:, 1) = 1;
     Ca = B*Ca;
@@ -60,6 +61,8 @@ for WINDOW = 2 : MAX_WINDOW
     Qf = 100*ones(1, WINDOW); % Can't stablilze unknown signal
     Q1 = 100*diag([10 100 10 Qf]); % weight of integral{e}, e, de, f(k), f(k-1), ...
     Q1 = 1*kron(Q1, eye(DIM_F)); 
+    Q11 = 100*diag([10 100 10]);
+    Q11 = 1*kron(Q11, eye(DIM_F)); 
 
     % estimated weight
     Qf = 10^(-3)*ones(1, WINDOW);
@@ -67,12 +70,15 @@ for WINDOW = 2 : MAX_WINDOW
     Q2 = 1*kron(Q2, eye(DIM_F));
     R = [];
     rho = 10;
-
-    [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
-%     K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = zeros(DIM_U*DIM_F, DIM_X2);
-    gain = zeros(1, WINDOW); gain(1) = -1;
-    K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = kron(gain, eye(DIM_F));
     
+    gain = zeros(1, WINDOW); gain(1) = -1;
+    % method 1
+%     [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
+%     K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = kron(gain, eye(DIM_F));
+    % method 2, remove unknown siganl state in augment state
+    [K, L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));
+    K = [K kron(gain, eye(DIM_F))];
+
     %% trajectory
     x = zeros(DIM_X3, length(t));
     xh = zeros(DIM_X3, length(t));
@@ -81,7 +87,7 @@ for WINDOW = 2 : MAX_WINDOW
     w = randn(1, length(t));
     v = [
 %         4*cos(10*t) + 1*w - 1*t + 0.001*t.^2
-        0*ones(DIM_F, length(t)) + 10*cos(10*t) + 1*w - 1*t + 0.001*t.^2
+        0*ones(DIM_F, length(t)) + 5*cos(10*t) + 1*w - 1*t + 0.001*t.^2
      ];
 %     v = 1*w;
 %     v_withInit = [zeros(DIM_X, WINDOW-1), v];
@@ -91,7 +97,6 @@ for WINDOW = 2 : MAX_WINDOW
         k = Ab*x(:, i) + Bb*K*xh(:, i);
         x(:, i+1) = x(:, i) + dt*k;
         
-
         kh = Ab*xh(:, i) + Bb*K*xh(:, i) - L*Cb*(x(:, i) - xh(:, i));
         xh(:, i+1) = xh(:, i) + dt*kh;
         x(DIM_X*DIM_F+(1:DIM_F), i+1) = v(:, i);

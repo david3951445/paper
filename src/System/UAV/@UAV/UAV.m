@@ -75,16 +75,16 @@ classdef UAV
                 -uav.Kz*x(6)/uav.m - uav.G
                 x(8)
                 % ((uav.Jy - uav.Jz)*x(9)*x(11) - uav.Kph*x(8))/uav.Jx
-                % ((uav.Jy - uav.Jz)*x(10)*x(12) - uav.Kph*x(8))/uav.Jx
-                -uav.Kph*x(8)/uav.Jx
+                ((uav.Jy - uav.Jz)*x(10)*x(12) - uav.Kph*x(8))/uav.Jx
+                % -uav.Kph*x(8)/uav.Jx
                 x(10)
                 % ((uav.Jz - uav.Jx)*x(7)*x(11) - uav.Kth*x(10))/uav.Jy
-                % ((uav.Jz - uav.Jx)*x(8)*x(12) - uav.Kth*x(10))/uav.Jy
-                -uav.Kth*x(10)/uav.Jy
+                ((uav.Jz - uav.Jx)*x(8)*x(12) - uav.Kth*x(10))/uav.Jy
+                % -uav.Kth*x(10)/uav.Jy
                 x(12)
                 % ((uav.Jx - uav.Jy)*x(7)*x(9) - uav.Kps*x(12))/uav.Jz
-                % ((uav.Jx - uav.Jy)*x(8)*x(10) - uav.Kps*x(12))/uav.Jz
-                -uav.Kps*x(12)/uav.Jz
+                ((uav.Jx - uav.Jy)*x(8)*x(10) - uav.Kps*x(12))/uav.Jz
+                % -uav.Kps*x(12)/uav.Jz
             ];
         end
         
