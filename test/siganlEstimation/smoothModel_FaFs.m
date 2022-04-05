@@ -46,7 +46,7 @@ for WINDOW = 2 : MAX_WINDOW
     % method 2
     for i = 1 : WINDOW
         point = i-1 : -1 : -WINDOW+i;
-        Aa(i, :) = FindFDC(point, 1)'/dt/1000;
+        Aa(i, :) = FindFDC(point, 1)'/dt;
     end
     
     Ca = zeros(1, WINDOW); Ca(:, 1) = 1;
