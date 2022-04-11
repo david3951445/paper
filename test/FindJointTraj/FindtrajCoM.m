@@ -113,6 +113,7 @@ plot(zmp(1, :), zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
 plot(CoM(1, :), CoM(2, :), 'Displayname', 'CoM trajectory')
 axis equal
 title('foot trajectory')
+xlabel('x'); ylabel('y')
 legend
 
 %% remove path

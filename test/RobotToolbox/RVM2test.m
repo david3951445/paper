@@ -64,6 +64,7 @@ addBody(robot,body4,'body3')
 addBody(robot,body5,'body4')
 addBody(robot,body6,'body5')
 
+show(robot)
 config = homeConfiguration(robot);
 theta = [10 -10 -10 -10 10 -10]/180*pi;
 for i = 1 : 6  
