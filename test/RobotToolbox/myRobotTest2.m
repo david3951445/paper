@@ -4,7 +4,7 @@ JointLimit = [
     -180 180
     -90 90
 ]/180*pi;
-robot = rigidBodyTree;
+robot = rigidBodyTree;  
 robot.DataFormat = 'row';
 
 body1 = rigidBody('body1');

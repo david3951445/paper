@@ -53,13 +53,50 @@ end
 
 % Since the step length generate by spline seems to be appropriate, no need
 % to set step length (about 0.1 for this robot)
-[r_l, r_lh] = FindLRfootTraj(r_l, splineDensity, ~START_FOOT+2, len2, height_feet);
-[r_r, r_rh] = FindLRfootTraj(r_r, splineDensity, START_FOOT, len2, height_feet);
+FIRST_HIGHEST_FOOT_L = ~START_FOOT+2;
+% FIRST_HIGHEST_FOOT_R = START_FOOT;
+t = linspace(0, 1, len2);
+xx = linspace(0, 1, len3);
+
+fun(r_l, FIRST_HIGHEST_FOOT_L, len2, height_feet)
+len2_1 = len2*2-1;
+t1 = linspace(0, 1, len2_1);
+len3 = (len2-1)*splineDensity.zmp+1;
+
+r_l = [r_l; zeros(1, len2)]; % add z-component
+r_l(3, FIRST_HIGHEST_FOOT_L:2:len2) = height_feet; % set highest point of foot in a footstep
+% Left foot stand still when right foot is stepping. Thus, adding 2 points
+% between foothold to let left foot "stand longer"
+r_l = repelem(r_l, 1, 2);
+
+r_l = r_l(:, 1:len2_1);
+foothold = FIRST_HIGHEST_FOOT_L*2:4:len2_1;
+r_l(:, foothold) = r_l(:, 1+foothold);
+% spline
+
+r_lh = [
+    spline(t1, [0 r_l(1, :) 0], xx);
+    spline(t1, [0 r_l(2, :) 0], xx);
+    spline(t1, [0 r_l(3, :) 0], xx);
+];
+% The results of spline between same value isn't the same. Thus, correct it manually
+l = splineDensity.zmp/2;
+foothold = (foothold/4-1)*(4*l)+(l*(4-1)+1);
+for i = 1 : splineDensity.zmp
+    r_lh(:, i+foothold) = r_lh(:, foothold);
+end
+r_lh(:, 1:l) = repmat(r_lh(:, 1), 1, l);
+
+
+r_r = [r_r; zeros(1, len2)];
+r_r(3, 1:2:len2) = height_feet;
+r_rh = [
+    spline(t, [0 r_r(1, :) 0], xx);
+    spline(t, [0 r_r(2, :) 0], xx);
+    spline(t, [0 r_r(3, :) 0], xx);
+];
 
 %% find ZMP
-t = linspace(0, 1, len2);
-len3 = (len2-1)*splineDensity.zmp+1;
-xx = linspace(0, 1, len3);
 zmp = [
     interp1(t, r_lr(1, :), xx)
     interp1(t, r_lr(2, :), xx)
