@@ -8,6 +8,7 @@ addpath(genpath('../../src'))
 %% parameters
 rb = Robot();
 robot = rb.rbtree;
+centerOfMass(robot)
 L                   = rb.L;
 splineDensity.r     = 30;
 splineDensity.zmp   = 20;
@@ -93,42 +94,37 @@ for i = 1 : len3
 end
 
 %% [x y z phi theta psi] -> config
-ik = inverseKinematics('RigidBodyTree', robot);
+newSubtree = subtree(robot, 'body_f1');
+ik = inverseKinematics('RigidBodyTree', newSubtree);
 weights = [1 1 1 1 1 1];
-n = 100;
+n = 20;
 theta = zeros(6, n);
 
 % CoM to inertial
-frame0 = trvec2tform([0 0 0])*eul2tform([0 -rb.L(1) rb.L(2)]) % joint1 to CoM
-frame1 = eye(4)/eul2tform(frame_CoM(:, 1)')/trvec2tform(CoM(:, 1)') % inertial to CoM
-frame2 = trvec2tform(r_lh(:, 1)')*eul2tform(frame_Lfoot(:, 1)') % inertial to Lfoot
-frame3 = trvec2tform([0 0 0])*eul2tform([-pi/2 -pi/2 0]); % Lfoot to Lfoot_endeffector
+tform = cell(1, n);
+frame0 = eye(4);%trvec2tform([0 -rb.L(1) rb.L(2)]); % joint1 to CoM
+frame3 = eul2tform([-pi/2 -pi/2 0]); % Lfoot to Lfoot_endeffector
+for i = 1 : n
+    frame1 = trvec2tform(CoM(:, i)')*eul2tform(flip(frame_CoM(:, i)')); % inertial to CoM
+    frame2 = trvec2tform(r_lh(:, i)')*eul2tform(flip(frame_Lfoot(:, i)')); % inertial to Lfoot
+    tform{i} = frame0/frame1*frame2*frame3;
+end
 
-tform2eul(inv(frame2))
-tform2trvec(frame2)
-tform = frame0*frame1*frame2*frame3;
+configSol = [0 -0 -.2 .2 0 -.2];
+for i = n : n
+    if mod(i, 10) == 0
+        disp(['i = ', num2str(i)])
+    end
+    [configSol, ~] = ik('body11', tform{i}, weights, configSol);
+    % tform = getTransform(robot,configSol,'body7','base')
+    theta(:, i) = configSol;
+end
+show(newSubtree, configSol);
 
-initialguess = [0 -0 -.2 .2 0 -.2];
-[configSol,~] = ik('body7',tform,weights,initialguess);
-% configSol/pi*180
-% tform = getTransform(robot,configSol,'body7','base')
-theta(:, 1) = configSol;
-show(robot, configSol);
-
-% for i = 2 : n
-%     if mod(i, 10) == 0
-%         disp(['i = ', num2str(i)])
-%     end
-%     tform = trvec2tform(pos(:, i)')*tform_r;
-%     initialguess = configSol;
-%     [configSol,~] = ik('body7',tform,weights,initialguess);
-% %     configSol/pi*180
-%     % tform = getTransform(robot,configSol,'body7','base')
-%     theta(:, i) = configSol;
-% end
-% % show(robot, configSol);
+%% visualized robot joint traj
 
 % t = linspace(0,1,n);
+% theta = theta/pi*180;
 % figure; hold on
 % for i = 1 : 6
 %     plot(t, theta(i, :), 'DisplayName', ['theta' num2str(i)])

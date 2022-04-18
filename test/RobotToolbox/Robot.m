@@ -3,8 +3,8 @@ classdef Robot
     %   Detailed explanation goes here
     
     properties (Constant)
-        % m = [6.869 .243 .243 1.045 1.045 3.095 3.095 2.401 2.401 1.045 1.045 .223 .223];
-        m = [6.869 .243 1.045 3.095 2.401 1.045 .223];
+        % MASS = [6.869 .243 .243 1.045 1.045 3.095 3.095 2.401 2.401 1.045 1.045 .223 .223];
+        MASS = [6.869 .243 1.045 3.095 2.401 1.045 .223];
         L = [.035 .0907 .0285 .11 .11 .0305];
     end
     properties
@@ -13,6 +13,7 @@ classdef Robot
         height_CoM % height of CoM of LIPM
         height_feet = .01; % The highest point of a feet step
         rbtree % rigidbodytree
+        rbtree_f % full robot
     end
     methods
         function rb = Robot()
@@ -80,9 +81,30 @@ classdef Robot
                 end
             end
             rb.rbtree = robot;
+
+
         end
         
         function rb = get_rbtree(rb) 
+        end
+
+        function y = m(rb, i)
+            switch i
+                case 0
+                    y = rb.MASS(1);
+                case {1, 2}
+                    y = rb.MASS(2);
+                case {3, 4}
+                    y = rb.MASS(3);
+                case {5, 6}
+                    y = rb.MASS(4);
+                case {7, 8}
+                    y = rb.MASS(5);
+                case {9, 10}
+                    y = rb.MASS(6);
+                case {11, 12}
+                    y = rb.MASS(7);
+            end
         end
     end
 end
