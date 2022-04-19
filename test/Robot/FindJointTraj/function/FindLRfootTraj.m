@@ -1,4 +1,4 @@
-function [r_l, r_lh, frame] = FindLRfootTraj(r_l, splineDensity, FIRST_HIGHEST_FOOT, len2, height_feet)
+function [r_l, r_lh] = FindLRfootTraj(r_l, splineDensity, FIRST_HIGHEST_FOOT, len2, height_feet)
 %Find trajectory of left (right) foot
 
 len2_1 = len2*2-1;
@@ -38,6 +38,7 @@ end
 
 %% find frames (orientation) of sole of left-right foot
 dr_lh = my_diff(r_lh(1:2, :));
+frame = zeros(3, len3);
 for i = 1 : len3
     frame(:, i) = [0 0 atan2(dr_lh(2, i), dr_lh(1, i))]';
 end
@@ -50,5 +51,5 @@ if FIRST_HIGHEST_FOOT == 2 % this foot start from ground and end from highest
 else
     frame = frame(:, 1:len3);
 end
-
+r_lh = cat(1, r_lh, frame);
 end
