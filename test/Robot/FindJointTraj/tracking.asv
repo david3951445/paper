@@ -55,11 +55,8 @@ qr_L = cat(1, t, qr(1:2:11, :))';
 qr_R = cat(1, t, qr(2:2:12, :))';
 
 robot = rb.rbtree;
-bodyname = 'body12';
-J = geometricJacobian(robot, qr(:, 1)', bodyname);
-wrench = 1:6;
-robot.homeConfiguration
-fext = externalForce(robot,bodyname,wrench,robot.homeConfiguration)
+J = geometricJacobian(robot, qr(:, 1)', 'body11');
+J*dqr
 % showdetails(robot)
 % show(robot, [qr_L(20, 2:7) qr_R(20, 2:7)]);
 

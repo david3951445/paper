@@ -16,6 +16,17 @@ classdef Robot
         ]/180*pi;
         OFFSER_COM_STAND_WALK = .03; % remain an offset between CoM of standing and walking to let feet reach end point possibly
         height_feet = .01; % The highest point of a feet step
+        INERTIA = [
+            10^(-2)*[3.603 3.31 3.83 0 0 0]
+            10^(-4)*[2 10 9 0 0 0]
+            10^(-4)*[6 17 17 0 0 0]
+            10^(-4)*[433 404 56 -20 29 3]
+            10^(-4)*[433 404 56 20 29 -3]
+            10^(-4)*[197 196 57 -14 -29 3]
+            10^(-4)*[197 196 57 14 29 -3]
+            10^(-4)*[6 17 17 0 0 0]
+            10^(-5)*[22 99 91 0 -.1 0]
+        ];
     end
     properties
         DH % DH table of leg (joint 1 -> 11 (2 -> 12))
@@ -70,6 +81,7 @@ classdef Robot
             setFixedTransform(jnt, eye(4));
             body.Joint = jnt;
             body.Mass = rb.MASS(1);
+            body.Inertia = rb.INERTIA(1, :);
             % add body to rigidbodytree
             addBody(robot, body, 'base')
 
@@ -79,6 +91,7 @@ classdef Robot
             setFixedTransform(jnt, [rb.L(1) 0 -rb.L(2) pi/2], 'dh')
             body.Joint = jnt;
             body.Mass = 0;
+            body.Inertia = zeros(1, 6);
             addBody(robot, body, 'body0')
 
             %% base to q2 (right)
@@ -88,6 +101,7 @@ classdef Robot
             setFixedTransform(jnt, [-rb.L(1) 0 -rb.L(2) pi/2], 'dh')
             body.Joint = jnt;
             body.Mass = 0;
+            body.Inertia = zeros(1, 6);
             addBody(robot, body, 'body0')
 
             JOINT_LIMIT = [
@@ -105,6 +119,7 @@ classdef Robot
             %% left foot
             BODY_NAME = {'body1', 'body_f3', 'body3', 'body5', 'body7', 'body9', 'body11'};
             JOINT_NAME = {'jnt1', 'f3', 'jnt3', 'jnt5', 'jnt7', 'jnt9', 'jnt11'};
+            BODY_INERTIA = {rb.INERTIA(2, :), zeros(1, 6), rb.INERTIA(3, :), rb.INERTIA(4, :), rb.INERTIA(6, :), rb.INERTIA(8, :), rb.INERTIA(9, :)};
             for i = 1 : 7
                 body = rigidBody(BODY_NAME{i});
                 jnt = rigidBodyJoint(JOINT_NAME{i}, JOINT_TYPE{i});
@@ -114,6 +129,7 @@ classdef Robot
                 setFixedTransform(jnt, rb.DH(i, :), 'dh')
                 body.Joint = jnt;
                 body.Mass = BODY_MASS(i);
+                body.Inertia = BODY_INERTIA{i};
                 if i == 1
                     addBody(robot, body, 'body_f1');
                 else
@@ -125,6 +141,7 @@ classdef Robot
             %% right foot
             BODY_NAME = {'body2', 'body_f4', 'body4', 'body6', 'body8', 'body10', 'body12'};
             JOINT_NAME = {'jnt2', 'f4', 'jnt4', 'jnt6', 'jnt8', 'jnt10', 'jnt12'};
+            BODY_INERTIA = {rb.INERTIA(2, :), zeros(1, 6), rb.INERTIA(3, :), rb.INERTIA(5, :), rb.INERTIA(7, :), rb.INERTIA(8, :), rb.INERTIA(9, :)};
             for i = 1 : 7
                 body = rigidBody(BODY_NAME{i});
                 jnt = rigidBodyJoint(JOINT_NAME{i}, JOINT_TYPE{i});
@@ -134,14 +151,16 @@ classdef Robot
                 setFixedTransform(jnt, rb.DH(i, :), 'dh')
                 body.Joint = jnt;
                 body.Mass = BODY_MASS(i);
+                body.Inertia = BODY_INERTIA{i};
                 if i == 1
                     addBody(robot, body, 'body_f2');
                 else
                     addBody(robot, body, BODY_NAME{i-1});
                 end
             end
-        
+            robot.Gravity = [0 0 -9.8];
             c = centerOfMass(robot);
+
             rb.rbtree            = robot;
             rb.height_CoM0_stand = sum(rb.L(2:6));
             rb.height_CoM0_walk  = rb.height_CoM0_stand - rb.OFFSER_COM_STAND_WALK;
