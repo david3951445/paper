@@ -8,6 +8,6 @@ classdef EXE
     %   F = 0   - load output of f() and not execute f()
     
     properties (Constant)
-        QR = 0; 
+        QR = 0 
     end
 end

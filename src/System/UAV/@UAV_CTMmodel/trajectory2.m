@@ -1,4 +1,4 @@
-function uav = trajectory2(uav, fz)
+function uav = trajectory2(uav)
 %calculate trajectory
 
 dt          = uav.tr.dt;

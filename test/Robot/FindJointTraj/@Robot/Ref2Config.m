@@ -1,4 +1,4 @@
-function qr = Ref2Config(rb, r, dt)
+function rb = Ref2Config(rb)
 %Given r(t) find qr1(t)~qr12(t)
 % r(t) = [x(t); y(t)] : task space (planar) trajectory of robot
 % CoM(t)              : Center of Mass trajectory
@@ -6,7 +6,9 @@ function qr = Ref2Config(rb, r, dt)
 %% parameters
 robot               = rb.rbtree;
 L                   = rb.L;
-splineDensity.zmp   = 100;
+r                   = rb.r;
+dt                  = rb.dt;
+splineDensity.zmp   = 10;
 height_feet         = rb.height_feet;
 START_FOOT          = 1; % 1:left, 0:right
 len2                = length(r);
@@ -74,6 +76,7 @@ qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));
 newSubtree = subtree(robot, 'body_f2');
 qr(2:2:12, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_rh(:, 1:n));
 % show(newSubtree, qr(2:2:12, 1)');
+rb.qr = qr;
 
 %% fig 1
 % part = 1;

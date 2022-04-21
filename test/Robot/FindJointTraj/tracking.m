@@ -6,72 +6,40 @@
 clc; clear; close all
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
-DATA = load('data');
 
 %% parameters
 rb = Robot();
-dt = 0.01; % Introduce time parameter into a path. If dt bigger, robot move slower (The points should more denser in this case)
-splineDensity.r = 4; % relates to step length
-
-%% Set task space (x-y plane) trajectory r(t)
-% discrete waypoints for testing
-r_dc = [
-    0 0
-    0 1
-]/5;
-% r_dc = [
-%     0 0 1 1 1 2 3 3 2
-%     0 1 1 2 3 3 3 2 2
-% ];
-% r_dc = [
-%     0 1 1 0 1 2 3 4 5 5 4 4 3 2
-%     0 0 1 2 4 3 3 4 3 2 2 1 .5 0
-% ];
-
-len1 = length(r_dc);
-t = linspace(0, 1, len1);
-len2 = len1*splineDensity.r;
-xx = linspace(0, 1, len2);
-% using spline fit discrete waypoints to generate the r(t)
-r = [
-    spline(t, [0 r_dc(1, :) 0], xx)
-    spline(t, [0 r_dc(2, :) 0], xx)
-];
+rb.r = PathPlanning();
 if EXE.QR
-    qr = Ref2Config(rb, r, dt);
-    if isfile('data.mat')
-        save('data.mat', 'qr', '-append');
-    else
-        save('data.mat', 'qr');
-    end
-else
-    qr = DATA.qr;
+    rb = rb.Ref2Config();
+    rb.Save('qr');
 end
+qr = rb.qr;
 dqr = gradient(qr);
 
-% qr = zeros(size(qr));
-t = 0 : dt : dt*(length(qr)-1);
+% robot = rb.rbtree;
+% bodyname = 'body12';
+% J = geometricJacobian(robot, qr(:, 1)', bodyname);
+% wrench = 1:6;
+% robot.homeConfiguration
+% fext = externalForce(robot,bodyname,wrench,robot.homeConfiguration)
+
+%% joint ref
+t = 0 : rb.dt : rb.dt*(length(qr)-1);
 qr_L = cat(1, t, qr(1:2:11, :))';
 qr_R = cat(1, t, qr(2:2:12, :))';
 
-robot = rb.rbtree;
-bodyname = 'body12';
-J = geometricJacobian(robot, qr(:, 1)', bodyname);
-wrench = 1:6;
-robot.homeConfiguration
-fext = externalForce(robot,bodyname,wrench,robot.homeConfiguration)
-% showdetails(robot)
-% show(robot, [qr_L(20, 2:7) qr_R(20, 2:7)]);
-
-%% visualized robot joint traj
-% n = length(qr);
-% figure; hold on
-% for i = 1 : 12
-%     plot(t, qr(i, :)/pi*180, 'DisplayName', ['theta' num2str(i)])
-% end
-% legend
+%% Plot robot joint traj
+n = length(rb.qr);
+figure; hold on
+for i = 1 : 12
+    plot(t, rb.qr(i, :)/pi*180, 'DisplayName', ['theta' num2str(i)])
+end
+movegui('center')
+legend
 
 %% simulink
+
 %% Contact and friction parameters
 contact_stiffness = 40/.001;          % Approximated at weight (N) / desired displacement (m)
 contact_damping = contact_stiffness/10; % Tuned based on contact stiffness value
@@ -114,5 +82,3 @@ init_angs_L = zeros(6,1);
 %% Robot joint parameters
 joint_damping = 0;
 motion_time_constant = 0.001;
-
-
