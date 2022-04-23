@@ -68,15 +68,15 @@ CoM0 = CoM;
 CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
-n = len3;
-qr = zeros(12, n);
-newSubtree = subtree(robot, 'body_f1');
-qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));
-% show(newSubtree, qr(1:2:11, 1)');
-newSubtree = subtree(robot, 'body_f2');
-qr(2:2:12, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_rh(:, 1:n));
-% show(newSubtree, qr(2:2:12, 1)');
-rb.qr = qr;
+% n = len3;
+% qr = zeros(12, n);
+% newSubtree = subtree(robot, 'body_f1');
+% qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));
+% % show(newSubtree, qr(1:2:11, 1)');
+% newSubtree = subtree(robot, 'body_f2');
+% qr(2:2:12, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_rh(:, 1:n));
+% % show(newSubtree, qr(2:2:12, 1)');
+% rb.qr = qr;
 
 %% fig 1
 % part = 1;
@@ -94,8 +94,6 @@ rb.qr = qr;
 % axis equal
 
 %% fig 2
-figure
-hold on
 % plot(r_dc(1, :), r_dc(2, :), '-h', 'DisplayName', 'r_{dc}(t)')
 plot(r(1, :), r(2, :), '-o', 'DisplayName', 'r(t)')
 % plot(r_lr(1, 1:2:length(r_l)), r_lr(2, 1:2:length(r_l)), '-o', 'DisplayName', 'left foot')

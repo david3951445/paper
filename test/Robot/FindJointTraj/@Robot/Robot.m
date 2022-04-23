@@ -26,7 +26,7 @@ classdef Robot
             10^(-4)*[197 196 57 14 29 -3]
             10^(-4)*[6 17 17 0 0 0]
             10^(-5)*[22 99 91 0 -.1 0]
-        ]
+        ] % inertia of CoM1~12
         dt = .05
 
         PATH = ['data/' mfilename]

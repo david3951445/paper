@@ -7,9 +7,12 @@ clc; clear; close all
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
-%% parameters
+%% Find task space ref
 rb = Robot();
-rb.r = PathPlanning();
+pp = PathPlanning();
+rb.r = pp.r;
+
+%% find joint ref
 if EXE.QR
     rb = rb.Ref2Config();
     rb.Save('qr');
@@ -30,13 +33,13 @@ qr_L = cat(1, t, qr(1:2:11, :))';
 qr_R = cat(1, t, qr(2:2:12, :))';
 
 %% Plot robot joint traj
-n = length(rb.qr);
-figure; hold on
-for i = 1 : 12
-    plot(t, rb.qr(i, :)/pi*180, 'DisplayName', ['theta' num2str(i)])
-end
-movegui('center')
-legend
+% n = length(rb.qr);
+% figure; hold on
+% for i = 1 : 12
+%     plot(t, rb.qr(i, :)/pi*180, 'DisplayName', ['theta' num2str(i)])
+% end
+% movegui('center')
+% legend
 
 %% simulink
 
