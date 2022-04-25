@@ -7,7 +7,12 @@ if isfile([rb.PATH '.mat'])
     if isfield(data, 'qr')
         rb.qr = data.qr;
     end
-
+    if isfield(data, 'K')
+        rb.K = data.K;
+    end
+    if isfield(data, 'KL')
+        rb.KL = data.KL;
+    end
 end
 
 end

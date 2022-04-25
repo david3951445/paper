@@ -20,12 +20,17 @@ end
 qr = rb.qr;
 dqr = gradient(qr);
 
+%% Control
 % robot = rb.rbtree;
+% massMatrix(robot)
+% robot.massMatrix()
 % bodyname = 'body12';
 % J = geometricJacobian(robot, qr(:, 1)', bodyname);
 % wrench = 1:6;
 % robot.homeConfiguration
 % fext = externalForce(robot,bodyname,wrench,robot.homeConfiguration)
+
+%% simulink
 
 %% joint ref
 t = 0 : rb.dt : rb.dt*(length(qr)-1);
@@ -40,8 +45,6 @@ qr_R = cat(1, t, qr(2:2:12, :))';
 % end
 % movegui('center')
 % legend
-
-%% simulink
 
 %% Contact and friction parameters
 contact_stiffness = 40/.001;          % Approximated at weight (N) / desired displacement (m)

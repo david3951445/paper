@@ -1,5 +1,5 @@
 %main script
-% one UAV, fuzzy, reference model tracking control, no observer
+% one UAV, CTM, reference model tracking control, no observer
 clc; clear; close all; tic; % warning off
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
@@ -62,7 +62,7 @@ if EXE.LMI
     gain = zeros(1, WINDOW); gain(1) = -1;
     % method 1
     [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
-    uav.K(:, DIM_X + (1:DIM_F*WINDOW)) = kron(gain, eye(DIM_F));
+%     uav.K(:, DIM_X + (1:DIM_F*WINDOW)) = kron(gain, eye(DIM_F));
     % method 2
     % [uav.K, uav.L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));
     % uav.K = [uav.K kron(gain, eye(DIM_F))];

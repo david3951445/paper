@@ -3,8 +3,8 @@ function Save(rb, whichVar)
 % whichVar  : which property be saved
 
 switch whichVar
-    case 'qr'
-        qr = rb.qr;
+    % case 'qr'
+    %     qr = rb.qr;
     otherwise
         disp(['No such property in rb'])
 end

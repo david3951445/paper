@@ -143,7 +143,7 @@ for i = startTime : LEN - 1
     Mh = uav.M(Xh+r);
     H = uav.H(X+r, dX+dr);
     Hh = uav.H(Xh+r, dXh+dr);
-    uav.R(X(4:6))*[0; 0; F]-u(1:3)
+    % uav.R(X(4:6))*[0; 0; F]-u(1:3)
     u4 = [u(1:3); u(4:6)];
     % u = Mh*(ddr + u_PID) + Hh; % control law
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u4) + H-Hh + v(:, i));

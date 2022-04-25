@@ -5,6 +5,10 @@ function Save(rb, whichVar)
 switch whichVar
     case 'qr'
         qr = rb.qr;
+    case 'K'
+        K = rb.K;
+    case 'KL'
+        KL = rb.KL;
     otherwise
         disp(['No such property in rb'])
 end
