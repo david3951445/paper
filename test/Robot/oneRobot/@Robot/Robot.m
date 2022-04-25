@@ -27,10 +27,11 @@ classdef Robot
             10^(-4)*[6 17 17 0 0 0]
             10^(-5)*[22 99 91 0 -.1 0]
         ] % inertia of CoM1~12
-        dt = .05
+        dt = .001
 
-        DIM_X = 24  % dimension of state
-        DIM_F = 12
+        DIM_F = 12 % dimension of state (pos)
+
+        INTERP_DENSITY = 1000 % interp density of zmp
 
         PATH = ['data/' mfilename]
     end
@@ -55,6 +56,7 @@ classdef Robot
 
         tr % trajectories
 
+        DIM_X
         DIM_X3
         WINDOW % looking forward window of unknown signal
     end
@@ -96,6 +98,8 @@ classdef Robot
             rb.height_CoM0_stand = sum(rb.L(2:6));
             rb.height_CoM0_walk  = rb.height_CoM0_stand - rb.OFFSER_COM_STAND_WALK;
             rb = get_rbtree(rb); % Construct robot rbtree
+
+            rb.DIM_X = rb.DIM_F*2;  
         end
         
         function y = M(rb, x)

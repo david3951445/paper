@@ -41,11 +41,11 @@ classdef PathPlanning
             [pthObj, solnInfo] = planner.plan(start,goal);
 
             %% show result path
-            % show(map);
-            % hold on;
-            % plot(solnInfo.TreeData(:,1),solnInfo.TreeData(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
-            % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
-            % legend
+            show(map);
+            hold on;
+            plot(solnInfo.TreeData(:,1),solnInfo.TreeData(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
+            plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
+            legend
 
             %% Interpolate path, make it more smooth and increase density
             r1 = pthObj.States(:, 1:2)';

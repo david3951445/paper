@@ -4,8 +4,18 @@ clc; clear; close all; tic; % warning off
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
-%%
+%% Find task space ref
 rb = Robot();
+pp = PathPlanning();
+rb.r = pp.r;
+
+%% find joint ref
+if EXE.QR
+    rb = rb.Ref2Config(); % rb.r -> rb.qr
+    rb.Save('qr');
+end
+qr = rb.qr;
+% dqr = gradient(qr);
 
 %% linear matrixs after linearize feedback(based on CTM). A, B, C
 DIM_F = rb.DIM_F;
@@ -44,7 +54,7 @@ rb.A = [A Cf; zeros(DIM_X2, DIM_X) Af];
 rb.B = [B; zeros(DIM_X2, DIM_U)];
 rb.C = [C zeros(DIM_Y, DIM_X2)];
 rb.DIM_X3 = size(rb.A, 1);
-Eb = kron(diag([0 0 0 0*ones(1, WINDOW)]), eye(DIM_F)); % disturbance matrix
+Eb = kron(diag([0 0 0 ones(1, WINDOW)]), eye(DIM_F)); % disturbance matrix
 
 %% L, K
 % tracking weight
@@ -77,18 +87,6 @@ end
 % rb.K(:, 19:30)=0;
 
 %% trajectory
-% Find task space ref
-pp = PathPlanning();
-rb.r = pp.r(:, 1:10);
-
-%% find joint ref
-if EXE.QR
-    rb = rb.Ref2Config(); % rb.r -> rb.qr
-    rb.Save('qr');
-end
-qr = rb.qr;
-% dqr = gradient(qr);
-
 if EXE.TRAJ
     rb.tr.dt           = dt; % Time step
     rb.tr.T            = 10; % Final time
@@ -102,12 +100,11 @@ end
 
 if EXE.PLOT
     disp('Ploting trajectory ...')
-    
-    figure
+
     tiledlayout(3, 4);
 %     axes('Units', 'normalized', 'Position', [0 0 1 1]);
     
-    r = rb.tr.r{1};
+    r = [rb.tr.r{1}; rb.tr.r{2}];
     timeInterval = 1:length(rb.tr.t)-1;
     t = rb.tr.t(timeInterval);
     for i = 1 : DIM_F % position
@@ -118,7 +115,7 @@ if EXE.PLOT
 %         timeInterval = 1 : rb.tr.LEN;
         
 %         plot(t, rb.tr.x(DIM_F+i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
-        plot(t, rb.tr.x(i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
+        plot(t, rb.tr.x2(i, timeInterval)+r(i, timeInterval), '-o', 'DisplayName', 'state')
         plot(t, r(i, timeInterval), 'DisplayName', 'reference')
         
         title(['$q_' num2str(i) '$'], 'Interpreter','latex')

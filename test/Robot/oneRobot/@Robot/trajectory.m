@@ -2,12 +2,12 @@ function rb = trajectory(rb)
 %calculate trajectory
 
 dt          = rb.tr.dt;
-t           = 0 : dt : rb.tr.T;
-LEN         = length(t);
+LEN         = length(rb.qr);
+t           = 0 : dt : dt*(LEN-1);
 DIM_F       = rb.DIM_F;
 DIM_X       = rb.DIM_X;
 DIM_X3      = rb.DIM_X3;
-startTime   = 3;
+startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% control gain test
 % A = [0 1 0; 0 0 1; 0 0 0];
@@ -27,15 +27,15 @@ rb.tr.v    = v;
 
 %% initialize x, xh, r
 x           = zeros(DIM_X3, LEN);
-x2          = zeros(DIM_F*2, LEN);
+% x2          = zeros(DIM_F*2, LEN);
 xh          = zeros(DIM_X3, LEN);
 r           = zeros(DIM_F, LEN);
 rb.tr.r    = {r, r, r};
-rb.tr.f     = zeros(DIM_X3, LEN);
+rb.tr.f     = zeros(DIM_F, LEN);
 
 %% initial value of x
 x(:, 1:startTime) = repmat(rb.tr.x0, [1 startTime]);
-x2(:, 1:startTime) = repmat(rb.tr.x0(DIM_F + (1:DIM_F*2)), [1 startTime]);
+% x2(:, 1:startTime) = repmat(rb.tr.x0(DIM_F + (1:DIM_F*2)), [1 startTime]);
 
 %% set r from as joint ref
 qr = rb.qr;
@@ -45,9 +45,6 @@ r_old = zeros(DIM_F, 2); % store r[i-1], r[i-2]
 for i = 1 : startTime-1
     r = qr(:, i);
     % ddr(4:6) = [r(4:6) r_old(4:6, 1:2)]*coeff'/dt^2;
-    % rb.tr.r{1}(:, i) = r;
-    % rb.tr.r{2}(:, i) = dr;
-    % rb.tr.r{3}(:, i) = ddr;
     % F = sqrt(c(1)^2 + c(2)^2 + c(3)^2);
     r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
 end
@@ -96,7 +93,7 @@ for i = startTime : LEN - 1
     H = rb.H(X+r, dX+dr);
     Hh = rb.H(Xh+r, dXh+dr);
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v(:, i));
-    % rb.tr.f(:, i) = f;
+    rb.tr.f(:, i) = f;
 
     k = [
         rb.A*x + rb.B*u
@@ -104,14 +101,13 @@ for i = startTime : LEN - 1
     ];
 
     xb(:, i+1) = xb(:, i) + k*dt;
-    xb(3*DIM_F + (1:DIM_F), i+1) = f;
+    xb(3*DIM_F + (1:DIM_F), i+1) = 0;%f;
 end
 
 rb.tr.x = xb(1:DIM_X3, :);
 rb.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
 % rb.tr.LEN = i;
-rb.tr.f = f;
-rb.tr.x2 = x2;
+% rb.tr.x2 = x2;
 end
 
 %% Local function

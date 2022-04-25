@@ -4,7 +4,7 @@ function [K, L] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
 % This function is used to solve a control problem defined below :
 % (1) system
 %       dxb/dt = Ab*xb + vb
-%       where xb = [x; x-xh], Ab = [A+BK -BK; 0 A+LC]
+%       where xb = [x; x-xh], Ab = [A+B*K -B*K; 0 A+L*C]
 % (4) control law
 %       u = K*xh
 % (5) H infinity performance
@@ -98,9 +98,15 @@ P2 = value(P2);
 Y1 = value(Y1);
 Y2 = value(Y2);
 
-% P = eye(DIM_X)/W;
 K = Y1/W1;
 L = P2\Y2;
+
+% Check eig value
+P1 = I/W1;
+Pb = [P1 O; O P2];
+Ab = [A+B*K -B*K; O A+L*C];
+eig(Pb*Ab + Ab'*Pb)
+
 end
 
 %% local function
