@@ -102,10 +102,10 @@ K = Y1/W1;
 L = P2\Y2;
 
 % Check eig value
-P1 = I/W1;
-Pb = [P1 O; O P2];
-Ab = [A+B*K -B*K; O A+L*C];
-eig(Pb*Ab + Ab'*Pb)
+% P1 = I/W1;
+% Pb = [P1 O; O P2];
+% Ab = [A+B*K -B*K; O A+L*C];
+% eig(Pb*Ab + Ab'*Pb)
 
 end
 

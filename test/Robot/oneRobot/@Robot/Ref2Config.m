@@ -68,15 +68,23 @@ CoM0 = CoM;
 CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
-% n = len3;
-% qr = zeros(12, n);
-% newSubtree = subtree(robot, 'body_f1');
-% qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));
-% % show(newSubtree, qr(1:2:11, 1)');
-% newSubtree = subtree(robot, 'body_f2');
-% qr(2:2:12, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_rh(:, 1:n));
-% % show(newSubtree, qr(2:2:12, 1)');
-% rb.qr = qr;
+if EXE.IK
+    n = len3;
+    qr = zeros(12, n);
+    newSubtree = subtree(robot, 'body_f1');
+    qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));
+    % show(newSubtree, qr(1:2:11, 1)');
+    newSubtree = subtree(robot, 'body_f2');
+    qr(2:2:12, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_rh(:, 1:n));
+    % show(newSubtree, qr(2:2:12, 1)');
+    rb.qr = qr;
+    rb.Save('qr');
+end
+
+%% Save data
+rb.r_lr = r_lr;
+rb.zmp = zmp;
+rb.CoM = CoM;
 
 %% fig 1
 % part = 1;
@@ -94,17 +102,17 @@ CoM0(3, :) = rb.height_CoM0_walk;
 % axis equal
 
 %% fig 2
-% plot(r_dc(1, :), r_dc(2, :), '-h', 'DisplayName', 'r_{dc}(t)')
-plot(r(1, :), r(2, :), '-o', 'DisplayName', 'r(t)')
+% % plot(r_dc(1, :), r_dc(2, :), '-h', 'DisplayName', 'r_{dc}(t)')
+% plot(r(1, :), r(2, :), '-o', 'DisplayName', 'r(t)')
 % plot(r_lr(1, 1:2:length(r_l)), r_lr(2, 1:2:length(r_l)), '-o', 'DisplayName', 'left foot')
-plot(r_l(1, :), r_l(2, :), 'o', 'DisplayName', 'left foot2')
-plot(r_lr(1, 2:2:len2), r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
-plot(zmp(1, :), zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
-plot(CoM(1, :), CoM(2, :), 'Displayname', 'CoM trajectory')
-axis equal
-title('foot trajectory')
-xlabel('x'); ylabel('y')
-legend
+% % plot(r_l(1, :), r_l(2, :), 'o', 'DisplayName', 'left foot2')
+% plot(r_lr(1, 2:2:len2), r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
+% plot(zmp(1, :), zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
+% plot(CoM(1, :), CoM(2, :), 'Displayname', 'CoM trajectory')
+% axis equal
+% title('foot trajectory')
+% xlabel('x'); ylabel('y')
+% legend
 
 %% fig 3, debug
 % figure

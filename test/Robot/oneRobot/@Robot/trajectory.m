@@ -9,23 +9,11 @@ DIM_X       = rb.DIM_X;
 DIM_X3      = rb.DIM_X3;
 startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
-%% control gain test
-% A = [0 1 0; 0 0 1; 0 0 0];
-% B = [0; 0; 1];
-% A = kron(A, eye(DIM_F)); 
-% B = kron(B, eye(DIM_F)); 
-% Q = diag(1*[.1 100 10]); % I, P, D
-% Q = kron(Q, diag([1 1 1 .01 .01 .01])); % x, y, z, phi, theta, psi
-% R = [];
-% rho = 100;
-% K = solveLMI6(A,B,Q,R,rho);
-% rb.K = K;
-
-%% calculate disturbance
-v           = 0.01*randn(DIM_F, LEN) + 5;
+%% set disturbance
+v           = .01*randn(DIM_F, LEN) + 1;
 rb.tr.v    = v;
 
-%% initialize x, xh, r
+%% initialize x, xh, r, f
 x           = zeros(DIM_X3, LEN);
 % x2          = zeros(DIM_F*2, LEN);
 xh          = zeros(DIM_X3, LEN);
@@ -37,20 +25,16 @@ rb.tr.f     = zeros(DIM_F, LEN);
 x(:, 1:startTime) = repmat(rb.tr.x0, [1 startTime]);
 % x2(:, 1:startTime) = repmat(rb.tr.x0(DIM_F + (1:DIM_F*2)), [1 startTime]);
 
-%% set r from as joint ref
-qr = rb.qr;
-
-% construct r_old
+%% Construct previous state of r(t)
+% To calculate dr, ddr, we need perious state
 r_old = zeros(DIM_F, 2); % store r[i-1], r[i-2]
-for i = 1 : startTime-1
-    r = qr(:, i);
-    % ddr(4:6) = [r(4:6) r_old(4:6, 1:2)]*coeff'/dt^2;
-    % F = sqrt(c(1)^2 + c(2)^2 + c(3)^2);
+for i = 1 : startTime-1 % i = 2, we have dr. i = 3, we have ddr.
+    r = rb.qr(:, i);
     r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
 end
 
 %% trajectory
-disp('Calculating trajectory ...')
+disp(['Calculating trajectory ..., t = 0 ~ ' num2str(dt*(LEN-1))])
 xb = [x; xh];
 rb.tr.t = t;
 for i = startTime : LEN - 1
@@ -72,14 +56,14 @@ for i = startTime : LEN - 1
     %% extract x, xh, X, dX form xb
     x       = xb(1 : rb.DIM_X3, i);
     xh      = xb(rb.DIM_X3 + (1:rb.DIM_X3), i);
-    X       = x(DIM_F + (1:DIM_F));
-    dX      = x(2*DIM_F + (1:DIM_F));
+    X       = x(DIM_F + (1:DIM_F)); % position
+    dX      = x(2*DIM_F + (1:DIM_F)); % velocity
     Xh      = xh(DIM_F + (1:DIM_F));
     dXh     = xh(2*DIM_F + (1:DIM_F));
-    r       = qr(:, i);
-
+    
     %% reference
     % In practice, dr and ddr are obtained from numercial differentiation
+    r = rb.qr(:, i);
     dr = [r r_old(:, 1)]*[1 -1]'/dt; % finite different, precision: o(h)
     ddr = [r r_old(:, 1:2)]*[1 -2 1]'/dt^2;
     r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
@@ -87,60 +71,23 @@ for i = startTime : LEN - 1
     rb.tr.r{2}(:, i) = dr;
     rb.tr.r{3}(:, i) = ddr;
 
-    u = rb.K*xh; % PID control law
+    %% unknown signal
+    u = rb.u_PID(xh); % PID control
     M = rb.M(X+r);
     Mh = rb.M(Xh+r);
     H = rb.H(X+r, dX+dr);
     Hh = rb.H(Xh+r, dXh+dr);
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v(:, i));
+    % f = -eye(DIM_F)/M*((M-Mh)*(ddr) + v(:, i));
     rb.tr.f(:, i) = f;
 
-    k = [
-        rb.A*x + rb.B*u
-        rb.A*xh + rb.B*u - rb.KL*rb.C*(x-xh)
-    ];
+    xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');
 
-    xb(:, i+1) = xb(:, i) + k*dt;
-    xb(3*DIM_F + (1:DIM_F), i+1) = 0;%f;
+    % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;
+    xb(3*DIM_F + (1:DIM_F), i+1) = f;
 end
 
 rb.tr.x = xb(1:DIM_X3, :);
 rb.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
 % rb.tr.LEN = i;
-% rb.tr.x2 = x2;
-end
-
-%% Local function
-% function [k, f] = RK4(rb, xb, i) % calculate dxdt
-%     % O       = zeros(rb.DIM_X);
-          
-%     dr      = rb.tr.r{2}(:, i);
-%     ddr     = rb.tr.r{3}(:, i);
-%     x       = xb(1 : rb.DIM_X3);
-%     xh      = xb(rb.DIM_X3 + (1:rb.DIM_X3));
-%     X       = x(DIM_F + (1:DIM_F));
-%     dX      = x(2*DIM_F + (1:DIM_F));
-%     Xh      = xh(DIM_F + (1:DIM_F));
-%     dXh     = xh(2*DIM_F + (1:DIM_F));
-
-%     if rb.tr.IS_LINEAR % linear                 
-%         % Eb = [eye(rb.DIM_X) O; O rb.Br];
-%         % u = K*x + rb.M(X) + rb.H(X, dX) % control law
-%         % k = rb.A*xb + rb.B*u + Eb*[v(t); r];
-%     else % nonlinear
-%         M = rb.M(X+r);
-%         Mh = rb.M(Xh+r);
-%         H = rb.H(X+r, dX+dr);
-%         Hh = rb.H(Xh+r, dXh+dr);
-%         u_PID = rb.K*xh;
-%         % u = Mh*(ddr + u_PID) + Hh; % control law
-%         norm(M-Mh)
-%         norm(H-Hh)
-%         f = -M\((M-Mh)*(ddr + rb.K*xh) + H-Hh);
-%         k = [
-% %             rb.A*x + rb.B*(u + f)
-%             rb.A*x + rb.B*u_PID
-%             rb.A*xh + rb.B*u_PID - rb.KL*rb.C*(x-xh)
-%         ];
-%     end
-% end
+end 

@@ -30,12 +30,14 @@ classdef Robot
         dt = .001
 
         DIM_F = 12 % dimension of state (pos)
+        WINDOW = 3 % looking forward window of unknown signal
 
-        INTERP_DENSITY = 1000 % interp density of zmp
+        INTERP_DENSITY = 2500 % interp density of zmp
 
         PATH = ['data/' mfilename]
     end
     properties
+        %% rigidbodytree
         DH % DH table of leg (joint 1 -> 11 (2 -> 12))
         DH_f2 % DH table of leg (joint 7 -> 3 (8 -> 4))
         
@@ -45,20 +47,24 @@ classdef Robot
 
         rbtree % rigidbodytree of robot
 
+        %% reference design
         r % task space ref traj
+        r_lr
+        zmp
+        CoM
         qr % joint space ref traj
 
+        % Control design
         A  % System matrix
         B  % Input matrix
         C  % output matrix
         K  % Control gain matrix
         KL  % Observer gain matrix
-
-        tr % trajectories
-
         DIM_X
         DIM_X3
-        WINDOW % looking forward window of unknown signal
+
+        %% trajectories
+        tr 
     end
 
     methods
@@ -107,8 +113,24 @@ classdef Robot
         end
 
         function y = H(rb, x, dx)
-            CG = rb.rbtree.velocityProduct(x', dx')*dx + rb.rbtree.gravityTorque(x');
+            CG = rb.rbtree.velocityProduct(x', dx') + rb.rbtree.gravityTorque(x');
             y = CG';
+        end
+
+        function y = f_aug(rb, t, xb)
+            x = xb(1 : rb.DIM_X3);
+            xh = xb(rb.DIM_X3 + (1:rb.DIM_X3));
+            u = rb.u_PID(xh);
+            y = [
+                rb.A*x + rb.B*u
+                rb.A*xh + rb.B*u - rb.KL*rb.C*(x-xh)
+            ];
+        end
+
+        function y = u_PID(rb, xh)
+            % range = 1 : rb.DIM_F*3; 
+            % y = rb.K(:, range)*xh(range); % without unknown sigal info
+            y = rb.K*xh; 
         end
 
         rb = get_rbtree(rb) % rigidBodyTree setting

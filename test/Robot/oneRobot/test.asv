@@ -1,0 +1,11 @@
+clc; clear; close all
+t = 0 : 10;
+x = sin(t);
+fig = figure;
+plot(t, x);
+FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
+saveas(fig, FILE_NAME)
+fig = figure
+FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
+plot(t, 2*x);
+saveas(fig, FILE_NAME)

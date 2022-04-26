@@ -4,6 +4,9 @@ function rb = Load(rb)
 if isfile([rb.PATH '.mat'])
     data = load(rb.PATH);
 
+    if isfield(data, 'tr')
+        rb.tr = data.tr;
+    end
     if isfield(data, 'qr')
         rb.qr = data.qr;
     end

@@ -3,6 +3,8 @@ function Save(rb, whichVar)
 % whichVar  : which property be saved
 
 switch whichVar
+    case 'tr'
+        tr = rb.tr;
     case 'qr'
         qr = rb.qr;
     case 'K'

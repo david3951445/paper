@@ -11,6 +11,7 @@ classdef PathPlanning
     properties
         r % path
         tree % span tree of RRT
+        map % occupancy Map
         start % start point
         goal % goal point
     end
@@ -40,13 +41,6 @@ classdef PathPlanning
             rng(1); % repeatable result
             [pthObj, solnInfo] = planner.plan(start,goal);
 
-            %% show result path
-            show(map);
-            hold on;
-            plot(solnInfo.TreeData(:,1),solnInfo.TreeData(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
-            plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
-            legend
-
             %% Interpolate path, make it more smooth and increase density
             r1 = pthObj.States(:, 1:2)';
             len1 = length(r1);
@@ -72,8 +66,21 @@ classdef PathPlanning
             pp.start = start;
             pp.goal = goal;
             pp.r = r3;
+            pp.map = map;
             pp.tree = solnInfo.TreeData;
         end 
+
+        function Plot(pp)
+            %% show result path
+            fig = figure;
+            show(pp.map);
+            hold on;
+            plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
+            % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
+            legend
+            FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
+            saveas(fig, FILE_NAME)
+        end
 
         Save(pp, filename, whichVar) % Save property
         pp = Load(pp, filename) % Load property
