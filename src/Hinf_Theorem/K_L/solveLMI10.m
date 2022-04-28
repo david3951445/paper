@@ -40,9 +40,10 @@ M23 = O;
 M33 = -I;
 
 M14 = O;
-M24 = rho^(-1)*P2;%*E;
+M24 = rho^(-1)*P2*E;
 M34 = O;
 M44 = -I;
+
 if ~isempty(R)
     M15 = Y1'*sqrt(R);
     M25 = zeros(DIM_X, DIM_U);

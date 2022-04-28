@@ -107,7 +107,6 @@ if EXE.TRAJ
     x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     rb.tr.x0           = [zeros(1,12) x0_pos zeros(1,12) zeros(1, DIM_F*WINDOW)]';
     rb.tr.xh0          = zeros(rb.DIM_X3, 1);
-    rb.tr.IS_RK4       = 0; % Run RK4 or Euler method
 
     rb = rb.trajectory();
     rb.Save('tr');
@@ -133,7 +132,7 @@ if EXE.PLOT
     xlabel('x'); ylabel('y')
     legend
     
-    FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
+    FILE_NAME = ['data/fig' num2str(fig.Number) '.pdf'];
     saveas(fig, FILE_NAME)
     FILE_NAME = ['results/fig/fig' num2str(fig.Number) '.fig'];
     savefig(FILE_NAME)
@@ -161,7 +160,7 @@ if EXE.PLOT
     
     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
     saveas(fig, FILE_NAME)
-    FILE_NAME = ['results/fig/fig' num2str(fig.Number) '.fig'];
+    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
     savefig(FILE_NAME)
     
     %% fig
@@ -183,7 +182,7 @@ if EXE.PLOT
     
     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
     saveas(fig, FILE_NAME)
-    FILE_NAME = ['results/fig/fig' num2str(fig.Number) '.fig'];
+    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
     savefig(FILE_NAME)
 end
 

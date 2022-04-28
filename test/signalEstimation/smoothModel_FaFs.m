@@ -1,16 +1,16 @@
 %smooth model test, with stabilized
 % Chose of WINDOM may related to method of calculate dxdt of x
 % Here use lagrange method so WINDOM size about 2~3 is good. Still needed to validate.
-% Control gain of estimated unknoen siganl should chose "[-I 0, .... 0]" rather calculated
+% Control gain of estimated unknoen siganl could chose "[-I 0, .... 0]" rather calculated
 % by H inf theorem due to we are going to canceling f(t) term i.e. -fh + f = 0.
 % Add sensor fault Fs
+
 clc; clear; close all
 addpath(genpath('../../src'))
 
 % system
-O = zeros(3); I = eye(3);
 dt = 0.001; T = 5; t = 0 : dt : T;
-A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = I;
+A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = eye(3);
 % A = [1 dt dt^2/2; 0 1 dt; 0 0 1];
 % B = [dt^3/6; dt^2/2; dt];
 % C = I;
@@ -19,72 +19,61 @@ DIM_F = 1;
 [DIM_X, DIM_U] = size(B);
 [DIM_Y, ~] = size(C);
 I = eye(DIM_X);
+O = zeros(DIM_X);
 
+WINDOW_s = 2; % Window of smooth model of sensor
+MIN_WINDOW = 3; % Window of smooth model of acuator
+MAX_WINDOW = MIN_WINDOW;
+% Findind best Window
 MIN_e = realmax;
-MIN_e_WINDOW = 2;
-MAX_WINDOW = 5;
+MIN_e_WINDOW = MIN_WINDOW;
+
 e = zeros(1, MAX_WINDOW-1);
 x_log = cell(1, MAX_WINDOW-1);
 xh_log = cell(1, MAX_WINDOW-1);
-for WINDOW = 2 : MAX_WINDOW
-    Aa = zeros(WINDOW);
-    % method 1-1
-%     point = 0 : -1 : -WINDOW+1;
-%     Aa(1, 1:WINDOW) = FindFDC(point, 1)'/dt;
-    % method 1-2
-%     point = zeros(WINDOW, 1); point(1:2) = [1 -1];
-%     Aa(1, 1:WINDOW) = point/dt;
-    % method 1-3
-%     coeff2 = 0.1.^(0:WINDOW-1);
-%     coeff2 = coeff2/sum(coeff2);
-%     Aa(1, 1:WINDOW) = zeros(1, WINDOW); Aa(1,1) = -1;
-%     Aa(1, 1:WINDOW) = (Aa(1, 1:WINDOW) + coeff2)/dt;
-    for i = 2 : WINDOW
-        point = [1 0];
-        Aa(i, i-1:i) = FindFDC(point, 1)'/dt; % obtain coefficient
-    end
-    % method 2
-    for i = 1 : WINDOW
-        point = i-1 : -1 : -WINDOW+i;
-        Aa(i, :) = FindFDC(point, 1)'/dt;
-    end
+for WINDOW = MIN_WINDOW : MAX_WINDOW
+    dt1 = dt;
+    Aa = ConstructSM_A(WINDOW, dt1);
+    As = ConstructSM_A(WINDOW_s, dt1);
     
     Ca = zeros(1, WINDOW); Ca(:, 1) = 1;
-    Cs = [1;1;1]*Ca;
+    
+    Cs = zeros(1, WINDOW_s); Cs(:, 1) = 1;
+    Cs = [1;1;1]*Cs;
     DIM_Ys = size([1;1;1], 2);
-    As = kron(Aa/1, eye(DIM_Ys));
+    As = kron(As, eye(DIM_Ys));
     
     DIM_X2 = DIM_F*WINDOW;
-    DIM_X2_Y = DIM_F*DIM_Ys*WINDOW;
+    DIM_X2_Y = DIM_F*DIM_Ys*WINDOW_s;
     
     %% augment system
-    Ab = [A B*Ca zeros(DIM_X, WINDOW*DIM_Ys); zeros(WINDOW, DIM_X) Aa zeros(WINDOW, WINDOW*DIM_Ys); zeros(WINDOW*DIM_Ys, DIM_X) zeros(WINDOW*DIM_Ys, WINDOW) As];
-    Bb = [B; zeros(WINDOW, DIM_U); zeros(WINDOW*DIM_Ys, DIM_U)];
+    Ab = [A B*Ca zeros(DIM_X, WINDOW_s*DIM_Ys); zeros(WINDOW, DIM_X) Aa zeros(WINDOW, WINDOW_s*DIM_Ys); zeros(WINDOW_s*DIM_Ys, DIM_X) zeros(WINDOW_s*DIM_Ys, WINDOW) As];
+    Bb = [B; zeros(WINDOW, DIM_U); zeros(WINDOW_s*DIM_Ys, DIM_U)];
     Cb = [C zeros(DIM_Y, WINDOW) Cs];
     Ab = kron(Ab, eye(DIM_F));
     Bb = kron(Bb, eye(DIM_F));
     Cb = kron(Cb, eye(DIM_F));
     DIM_X3 = size(Ab, 1);
-    Eb = 0*kron(diag([1 1 1 ones(1, WINDOW) ones(1, WINDOW*DIM_Ys)]), eye(DIM_F)); % disturbance matrix
+    Eb = 0*kron(diag([1 1 1 ones(1, WINDOW) ones(1, WINDOW_s*DIM_Ys)]), eye(DIM_F)); % disturbance matrix
 
     %% L, K
     % tracking weight
-    Qf = 0*ones(1, WINDOW*(1+DIM_Ys)); % Can't stablilze unknown signal
-    Q1 = 10^(0)*diag([1 1 1 Qf]); % weight of integral{e}, e, de, f(k), f(k-1), ...
+    Qf = 10^(0)*(.1.^(0:WINDOW*1+WINDOW_s*DIM_Ys-1)); % Can't stablilze unknown signal
+    Q1 = 10^(-1)*diag([1 1 1 Qf]); % weight of integral{e}, e, de, f(k), f(k-1), ...
     Q1 = kron(Q1, eye(DIM_F)); 
-%     Q11 = 100*diag([10 100 10]);
-%     Q11 = 1*kron(Q11, eye(DIM_F)); 
 
     % estimated weight
-    Qf = 1*ones(1, WINDOW*(1+DIM_Ys));
-    Q2 = 10^(3)*diag([1 1 1 Qf]); % weight of integral{e}, e, de, f(k), f(k-1), ...
+    Qf = 10^(0)*(.1.^(0:WINDOW*1+WINDOW_s*DIM_Ys-1));
+    Q2 = 10^(2)*diag([1 1 1 Qf]); % weight of integral{e}, e, de, f(k), f(k-1), ...
     Q2 = kron(Q2, eye(DIM_F));
     R = [];
-    rho = 100;
+    rho = 1;
    
     gain = zeros(1, WINDOW); gain(1) = -1;
     % method 1
     [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
+%     L(1:2) = [-100; -200]*10;
+%     L(7:8) = [500; 1000];
 %     K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = kron(gain, eye(DIM_F));
     % method 2, remove unknown siganl state in augment state
 %     [K, L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(B*Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));
@@ -97,13 +86,13 @@ for WINDOW = 2 : MAX_WINDOW
     x(:, 1) = [ones(1, DIM_X*DIM_F) zeros(1, DIM_X2) zeros(1, DIM_X2_Y)]';
 
     w = randn(1, length(t));
-    v = 0*ones(DIM_F, length(t)) + 2*cos(5*t) + 1*w - 1*t + 0.001*t.^2;
-    v2 = 0*ones(DIM_F*DIM_Ys, length(t)) + 1*cos(5*t);
+    v = 0.5*ones(DIM_F, length(t));% + 2*cos(5*t) + 1*w - 1*t + 0.001*t.^2;
+    v2 = 0.1*ones(DIM_F*DIM_Ys, length(t));% + 1*cos(5*t);
         
-    fun = @(t, p) [Ab Bb*K; -L*Cb Ab+Bb*K+L*Cb]*p;
+    fun = @(t, p) [Ab, Bb*K; -L*Cb, Ab+Bb*K+L*Cb]*p;
     for i = 1 : length(t) - 1
         xb = [x(:, i); xh(:, i)];
-        xb = RKF(fun, dt, xb, t(i), 'RK4');
+        xb = ODE_solver(fun, dt, xb, t(i), 'RK4');
         x(:, i+1) = xb(1:DIM_X3);
         xh(:, i+1) = xb(DIM_X3+(1:DIM_X3));
         
@@ -135,9 +124,9 @@ end
 for i = 1 : DIM_F
     TITLE{DIM_F*DIM_X+i} = ['v_' num2str(i)];
 end
+
 figure
 Layout = tiledlayout(DIM_X+1, DIM_F);
-
 for i = 1 : DIM_F*DIM_X+DIM_F
     nexttile
     hold on
@@ -151,10 +140,10 @@ for i = 1 : DIM_F*DIM_X+DIM_F
     legend
     title(TITLE{i})
 end
-title(Layout, ['state, Fa trajectory with best window size ' num2str(MIN_e_WINDOW)])
+title(Layout, ['trajectory of state and Fa with best window size ' num2str(MIN_e_WINDOW)])
 
 figure
-tiledlayout(DIM_Ys, DIM_F);
+Layout = tiledlayout(DIM_Ys, DIM_F);
 for i = 1 : DIM_F*DIM_Ys
     nexttile
     hold on
@@ -163,4 +152,6 @@ for i = 1 : DIM_F*DIM_Ys
     plot(t, xh_log{MIN_e_WINDOW}(index, :), 'DisplayName', 'estimated')
     grid on
     legend
+    title('v_2')
 end
+title(Layout, ['trajectory of state and Fs with best window size ' num2str(MIN_e_WINDOW)])
