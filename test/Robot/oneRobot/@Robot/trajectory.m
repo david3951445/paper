@@ -13,9 +13,9 @@ DIM_X3      = rb.sys_aug.DIM_X;
 startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% set disturbance
-v1 = repmat(.5*cos(1*t), sys_a.DIM, 1);
+v1 = repmat(0.2*cos(1*t), sys_a.DIM, 1);
 v1_init = [repmat(v1(:, 1), 1, sys_a.WINDOW) v1];
-v2 = repmat(.1*sin(1*t), sys_s.DIM, 1);
+v2 = repmat(0.1*sin(1*t), sys_s.DIM, 1);
 v2_init = [repmat(v2(:, 1), 1, sys_s.WINDOW) v2];
 rb.tr.v1    = v1;
 rb.tr.v2    = v2;

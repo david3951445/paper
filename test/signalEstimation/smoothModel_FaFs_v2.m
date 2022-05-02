@@ -6,7 +6,7 @@ addpath(genpath('../../src'))
 dt = .001; t = 0 : dt : 10;
 %% sys
 A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = eye(3); % Intergral{e}, e, de
-DIM_F = 2; % Dimension of e
+DIM_F = 1; % Dimension of e
 A = kron(A, eye(DIM_F));
 B = kron(B, eye(DIM_F));
 C = kron(C, eye(DIM_F));
@@ -60,7 +60,7 @@ sys_aug.rho = 10;
 %% trajectory
 x = zeros(sys_aug.DIM_X, length(t));
 xh = zeros(sys_aug.DIM_X, length(t));
-x(:, 1) = [ones(1, sys.DIM_X) zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
+x(:, 1) = [zeros(1, sys.DIM_X) zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
 
 w = randn(1, length(t));
 % v = 0.5*ones(sys_a.DIM, length(t)) + .5*cos(5*t);% + 1*w - 1*t + 0.001*t.^2;
@@ -120,22 +120,3 @@ Plot(t, x, xh, index, sys_s.DIM, 's')
 %     title(['vs_' num2str(i)])
 % end
 % title(Layout, 'Fs')
-
-%% functions
-function Plot(t, x, xh, j, DIM, TITLE)
-figure
-Layout = tiledlayout(DIM, 1);
-for i = 1 : DIM
-    nexttile
-    hold on
-    index = j + i;
-    plot(t, x(index, :), 'Displayname', 'state', 'LineWidth', 3)
-    plot(t, xh(index, :), 'DisplayName', 'estimated', 'LineWidth', 3)
-%     plot(t, x(index, :)-xh(index, :), 'Displayname', 'error', 'LineWidth', 3)
-    grid on
-    legend
-    ylim([-1 1])
-    title(['v' TITLE '_' num2str(i)])
-end
-title(Layout, ['F' TITLE])
-end

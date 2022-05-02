@@ -6,7 +6,7 @@ addpath(genpath('function'))
 
 rb = Robot();
 
-dt = .001; t = 0:dt:10;
+dt = .001;
 %% sys
 DIM_F = 1; % Dimension of e
 A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = eye(3); % Intergral{e}, e, de
@@ -15,16 +15,16 @@ B = kron(B, eye(DIM_F));
 C = kron(C, eye(DIM_F));
 sys = LinearModel(A, B, C);
 % Error weighting. Tracking:1, Estimation:2
-Q1 = [1 1 1]; % corresponding to [Intergral{e}, e, de]
+Q1 = 10^(3)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
 Q1 = repelem(Q1, DIM_F); % Not nessasry for using repelem, assign to every element is ok.
 sys.Q1 = diag(Q1);
-Q2 = [1 1 1]; % corresponding to [Intergral{e}, e, de]
+Q2 = 10^(0)*[1 1 1]; % corresponding to [Intergral{e}, e, de]
 Q2 = repelem(Q2, DIM_F);
 sys.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 2; DIM = DIM_F;
-sys_a = SmoothModel(WINDOW, DIM, 1*dt, '1-3');
+WINDOW = 5; DIM = DIM_F;
+sys_a = SmoothModel(WINDOW, DIM, 1000*dt, '2');
 sys_a.B = sys.B;
 
 Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
@@ -99,6 +99,7 @@ rb.r = pp.r;
 rb = rb.Ref2Config(); % rb.r -> rb.qr
 
 % testing ref
+t = 0 : dt : 10;
 ref = zeros(DIM_F, length(t));
 ref = .1*cos(t);
 % ref(1:DIM_F/2, :) = repmat(.1*cos(t), DIM_F/2, 1);
@@ -112,8 +113,9 @@ if EXE.TRAJ
 %     rb.tr.T            = T; % Final time
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
-    x0_pos = 0;
-    rb.tr.x0           = [zeros(1,DIM_F) x0_pos zeros(DIM_F) zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
+    x0_pos = zeros(1, sys.DIM_X);
+%     x0_pos = [zeros(1,DIM_F) x0_pos zeros(DIM_F)]
+    rb.tr.x0           = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
     rb.tr.xh0          = zeros(rb.sys_aug.DIM_X, 1);
 
     rb = rb.trajectory();
@@ -147,18 +149,21 @@ if EXE.PLOT
     
     %% fig
     fig = figure;
-    tiledlayout(3, 4);
+    tiledlayout(DIM_F, 1);
     
     r = rb.tr.r{1};
-    timeInterval = 1:length(rb.tr.t)-1;
-    t = rb.tr.t(timeInterval);
+    % timeInterval = 1:length(rb.tr.t)-1;
+    t = rb.tr.t;
     for i = 1 : DIM_F % position
         nexttile
         hold on
 %         plot(rb.tr.t, rb.tr.x(DIM_F+i, :), 'DisplayName', 'state')
-        plot(t, rb.tr.xh(i, timeInterval)+r(i, timeInterval), 'DisplayName', 'estimated')        
-        plot(t, rb.tr.x(i, timeInterval)+r(i, timeInterval), 'DisplayName', 'state')
-        plot(t, r(i, timeInterval), 'DisplayName', 'reference')
+        index = DIM_F + i;
+%         plot(t, rb.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)        
+        plot(t, rb.tr.x(1, :), 'DisplayName', 'state1', 'LineWidth', 2)
+        plot(t, rb.tr.x(2, :), 'DisplayName', 'state2', 'LineWidth', 2)
+        plot(t, rb.tr.x(3, :), 'DisplayName', 'state3', 'LineWidth', 2)
+        plot(t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
         
         title(['$q_' num2str(i) '$'], 'Interpreter','latex')
         legend
@@ -171,27 +176,32 @@ if EXE.PLOT
     FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
     savefig(FILE_NAME)
     
-    %% fig
-    fig = figure;
-    Tiledlayout = tiledlayout(4, 3);
-    for i = 1 : DIM_F % unknown signal
-        index = 3*DIM_F + i;
+    %% fig, Fa and Fs
+    index = sys.DIM_X;
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
+    index = sys.DIM_X + sys_a.DIM_X;
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
 
-        nexttile
-        hold on
-%         plot(t, rb.tr.f(i, timeInterval), 'DisplayName', 'state')
-        plot(t, rb.tr.x(index, timeInterval), 'DisplayName', 'state')
-        plot(t, rb.tr.xh(index, timeInterval), 'DisplayName', 'estimated')
-        title(['$q_' num2str(i) '$'], 'Interpreter','latex')
-        legend
-        xlabel("t")
-    end
-    title(Tiledlayout, 'unknown siganl')
+%     fig = figure;
+%     Tiledlayout = tiledlayout(4, 3);
+%     for i = 1 : DIM_F % unknown signal
+%         index = 3*DIM_F + i;
+
+%         nexttile
+%         hold on
+% %         plot(t, rb.tr.f(i, timeInterval), 'DisplayName', 'state')
+%         plot(t, rb.tr.x(index, timeInterval), 'DisplayName', 'state')
+%         plot(t, rb.tr.xh(index, timeInterval), 'DisplayName', 'estimated')
+%         title(['$q_' num2str(i) '$'], 'Interpreter','latex')
+%         legend
+%         xlabel("t")
+%     end
+%     title(Tiledlayout, 'unknown siganl')
     
-    FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
-    saveas(fig, FILE_NAME)
-    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
-    savefig(FILE_NAME)
+%     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
+%     saveas(fig, FILE_NAME)
+%     FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
+%     savefig(FILE_NAME)
 end
 
 
