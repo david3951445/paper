@@ -50,21 +50,24 @@ zmp = [
 %% find CoM traj
 % x, y, z of CoM
 % t = 0 : dt : (length(zmp)-1)*dt;
-CoM = ZMP2CoM(zmp, dt, rb.height_CoM); % x, y
-CoM(3, :) = rb.height_CoM; % z
+if EXE.Z2C
+    CoM = ZMP2CoM(zmp, dt, rb.height_CoM); % x, y
+    CoM(3, :) = rb.height_CoM; % z
 
-% phi, theta, psi of CoM
-r1 = [
-    spline(t, [0 r(1, :) 0], xx)
-    spline(t, [0 r(2, :) 0], xx)
-];
-dr1 = my_diff(r1);
-frame_CoM = zeros(3, len3);
-for i = 1 : len3
-    frame_CoM(:, i) = [0 0 atan2(dr1(2, i), dr1(1, i))]';  % angle of z-axis between body and inertial
+    % phi, theta, psi of CoM
+    r1 = [
+        spline(t, [0 r(1, :) 0], xx)
+        spline(t, [0 r(2, :) 0], xx)
+    ];
+    dr1 = my_diff(r1);
+    frame_CoM = zeros(3, len3);
+    for i = 1 : len3
+        frame_CoM(:, i) = [0 0 atan2(dr1(2, i), dr1(1, i))]';  % angle of z-axis between body and inertial
+    end
+    rb.CoM = cat(1, CoM, frame_CoM);
+    rb.Save('CoM');
 end
-CoM = cat(1, CoM, frame_CoM);
-CoM0 = CoM;
+CoM0 = rb.CoM;
 CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
@@ -84,7 +87,6 @@ end
 %% Save data
 rb.r_lr = r_lr;
 rb.zmp = zmp;
-rb.CoM = CoM;
 
 %% fig 1
 % part = 1;

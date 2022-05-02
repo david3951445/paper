@@ -7,6 +7,8 @@ switch whichVar
         tr = rb.tr;
     case 'qr'
         qr = rb.qr;
+    case 'CoM'
+        CoM = rb.CoM;
     case 'K'
         K = rb.K;
     case 'KL'

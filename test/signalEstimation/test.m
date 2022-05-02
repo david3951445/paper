@@ -18,19 +18,22 @@ DIM_Ys = 1;
 
 I = eye(DIM_X);
 E = zeros(DIM_X*DIM_F+DIM_F+DIM_F*DIM_Ys);
-Q1 = 10^(3)*diag([1 1 1 1 1]);
-Q2 = 10^(3)*diag([1 1 1 1 1]);
+Q1 = 10^(3)*diag([1 1 1 0 0]);
+Q2 = 10^(2)*diag([1 1 1 100 100]);
 R = [];
 rho = 1;
 [K, L] = solveLMI10(Ab, Bb, Cb, E, Q1, Q2, R, rho);
+L = L*10;
 
 %% traj
 x = zeros(DIM_X3, length(t));
 xh = zeros(DIM_X3, length(t));
-x(:, 1) = [1 1 1 0 0]';
+x(:, 1) = [1 1 1 .5 0]';
 
-v1 = 0.1*ones(DIM_F, length(t)) + 0*cos(t);
-v2 = 0.2*ones(DIM_F*DIM_Ys, length(t));
+% v1 = 0.1*ones(DIM_F, length(t)) + 0.1*cos(t);
+% v2 = 0.2*ones(DIM_F*DIM_Ys, length(t));
+v1 = 0.5*cos(t);
+v2 = 0.1*sin(t);
 
 fun = @(t, p) [Ab, Bb*K; -L*Cb, Ab+Bb*K+L*Cb]*p;
 for i = 1 : length(t) - 1

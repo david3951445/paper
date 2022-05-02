@@ -31,6 +31,7 @@ C           = [1 0 -h/g];
 [DIM_Y, ~]  = size(C);
 
 CoM = zeros(2, N);
+disp('ZMP to CoM ...')
 for i = 1 : 2 % x, y
     r       = zmp(i, :); % zmp
     S       = cell(1, N);

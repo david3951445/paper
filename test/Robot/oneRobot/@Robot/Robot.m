@@ -54,14 +54,17 @@ classdef Robot
         CoM
         qr % joint space ref traj
 
-        % Control design
+        %% Control design
+        sys
+        sys_a
+        sys_s
+        sys_aug
+
         A  % System matrix
         B  % Input matrix
         C  % output matrix
         K  % Control gain matrix
         KL  % Observer gain matrix
-        DIM_X
-        DIM_X3
 
         %% trajectories
         tr 
@@ -104,8 +107,6 @@ classdef Robot
             rb.height_CoM0_stand = sum(rb.L(2:6));
             rb.height_CoM0_walk  = rb.height_CoM0_stand - rb.OFFSER_COM_STAND_WALK;
             rb = get_rbtree(rb); % Construct robot rbtree
-
-            rb.DIM_X = rb.DIM_F*2;  
         end
         
         function y = M(rb, x)
@@ -118,8 +119,9 @@ classdef Robot
         end
 
         function y = f_aug(rb, t, xb)
-            x = xb(1 : rb.DIM_X3);
-            xh = xb(rb.DIM_X3 + (1:rb.DIM_X3));
+            DIM_X3 = rb.sys_aug.DIM_X;
+            x = xb(1 : DIM_X3);
+            xh = xb(DIM_X3 + (1:DIM_X3));
             u = rb.u_PID(xh);
             y = [
                 rb.A*x + rb.B*u

@@ -1,25 +1,33 @@
 function rb = trajectory(rb)
 %calculate trajectory
 
+sys         = rb.sys;
+sys_a       = rb.sys_a;
+sys_s       = rb.sys_s;
 dt          = rb.tr.dt;
 LEN         = length(rb.qr);
 t           = 0 : dt : dt*(LEN-1);
-DIM_F       = rb.DIM_F;
-DIM_X       = rb.DIM_X;
-DIM_X3      = rb.DIM_X3;
+DIM_F       = 1;
+DIM_X       = rb.sys.DIM_X;
+DIM_X3      = rb.sys_aug.DIM_X;
 startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% set disturbance
-v           = .01*randn(DIM_F, LEN) + 1;
-rb.tr.v    = v;
+v1 = repmat(.5*cos(1*t), sys_a.DIM, 1);
+v1_init = [repmat(v1(:, 1), 1, sys_a.WINDOW) v1];
+v2 = repmat(.1*sin(1*t), sys_s.DIM, 1);
+v2_init = [repmat(v2(:, 1), 1, sys_s.WINDOW) v2];
+rb.tr.v1    = v1;
+rb.tr.v2    = v2;
 
 %% initialize x, xh, r, f
 x           = zeros(DIM_X3, LEN);
 % x2          = zeros(DIM_F*2, LEN);
 xh          = zeros(DIM_X3, LEN);
 r           = zeros(DIM_F, LEN);
-rb.tr.r    = {r, r, r};
-rb.tr.f     = zeros(DIM_F, LEN);
+rb.tr.r     = {r, r, r};
+rb.tr.f1    = zeros(sys_a.DIM, LEN);
+rb.tr.f2    = zeros(sys_s.DIM, LEN);
 
 %% initial value of x
 x(:, 1:startTime) = repmat(rb.tr.x0, [1 startTime]);
@@ -54,8 +62,8 @@ for i = startTime : LEN - 1
     end
 
     %% extract x, xh, X, dX form xb
-    x       = xb(1 : rb.DIM_X3, i);
-    xh      = xb(rb.DIM_X3 + (1:rb.DIM_X3), i);
+    x       = xb(1 : DIM_X3, i);
+    xh      = xb(DIM_X3 + (1:DIM_X3), i);
     X       = x(DIM_F + (1:DIM_F)); % position
     dX      = x(2*DIM_F + (1:DIM_F)); % velocity
     Xh      = xh(DIM_F + (1:DIM_F));
@@ -73,18 +81,23 @@ for i = startTime : LEN - 1
 
     %% unknown signal
     u = rb.u_PID(xh); % PID control
-    M = rb.M(X+r);
-    Mh = rb.M(Xh+r);
-    H = rb.H(X+r, dX+dr);
-    Hh = rb.H(Xh+r, dXh+dr);
-    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v(:, i));
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr) + v(:, i));
-    rb.tr.f(:, i) = f;
+    % M = rb.M(X+r);
+    % Mh = rb.M(Xh+r);
+    % H = rb.H(X+r, dX+dr);
+    % Hh = rb.H(Xh+r, dXh+dr);
+    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v(:, i));
+    rb.tr.f1(:, i) = v1(:, i);
+    rb.tr.f2(:, i) = v2(:, i);
 
     xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');
 
     % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;
-    xb(3*DIM_F + (1:DIM_F), i+1) = f;
+    range = i : i + sys_a.WINDOW-1;
+    v1_ = flip(reshape(v1_init(:, range)', [], 1));
+    xb(sys.DIM_X+(1:sys_a.DIM_X), i+1) = v1_;
+    range = i : i + sys_s.WINDOW-1;
+    v2_ = flip(reshape(v2_init(:, range)', [], 1));
+    xb(sys.DIM_X+sys_a.DIM_X+(1:sys_s.DIM_X), i+1) = v2_;
 end
 
 rb.tr.x = xb(1:DIM_X3, :);

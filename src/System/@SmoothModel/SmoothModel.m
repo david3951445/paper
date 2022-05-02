@@ -4,6 +4,7 @@ classdef SmoothModel
     % 
 
     properties
+        METHOD % method for construct A
         WINDOW % window size
         A % system matrix
         B % input matrix
@@ -16,10 +17,11 @@ classdef SmoothModel
     end
     
     methods
-        function obj = SmoothModel(WINDOW, DIM, dt)
+        function obj = SmoothModel(WINDOW, DIM, dt, method)
             obj.WINDOW = WINDOW;
             obj.DIM = DIM;
             obj.DIM_X = DIM*WINDOW;
+            obj.METHOD = method;
 
             % A
             if isempty(dt) % DT
