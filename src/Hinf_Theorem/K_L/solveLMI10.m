@@ -40,11 +40,18 @@ M23 = O;
 M33 = -I;
 
 M14 = O;
-M24 = rho^(-1)*P2*E;
+M24 = P2*E;
 M34 = O;
-M44 = -I;
+M44 = -rho^(2)*I;
 
-if ~isempty(R)
+if isempty(R)
+    LMI = [
+        M11  M12  M13  M14
+        M12' M22  M23  M24
+        M13' M23' M33  M34
+        M14' M24' M34' M44
+    ];
+else
     M15 = Y1'*sqrt(R);
     M25 = zeros(DIM_X, DIM_U);
     M35 = zeros(DIM_X, DIM_U);
@@ -56,13 +63,6 @@ if ~isempty(R)
         M13' M23' M33  M34  M35
         M14' M24' M34' M44  M45
         M15' M25' M35' M45' M55
-    ];
-else
-    LMI = [
-        M11  M12  M13  M14
-        M12' M22  M23  M24
-        M13' M23' M33  M34
-        M14' M24' M34' M44
     ];
 end
 % LMI = [

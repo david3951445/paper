@@ -60,9 +60,6 @@ classdef Robot
         sys_s
         sys_aug
 
-        A  % System matrix
-        B  % Input matrix
-        C  % output matrix
         K  % Control gain matrix
         KL  % Observer gain matrix
 
@@ -124,8 +121,8 @@ classdef Robot
             xh = xb(DIM_X3 + (1:DIM_X3));
             u = rb.u_PID(xh);
             y = [
-                rb.A*x + rb.B*u
-                rb.A*xh + rb.B*u - rb.KL*rb.C*(x-xh)
+                rb.sys_aug.A*x + rb.sys_aug.B*u
+                rb.sys_aug.A*xh + rb.sys_aug.B*u - rb.KL*rb.sys_aug.C*(x-xh)
             ];
         end
 

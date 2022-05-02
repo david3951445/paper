@@ -1,6 +1,6 @@
 function Plot(t, x, xh, j, DIM, TITLE)
 figure
-Layout = tiledlayout(DIM, 1);
+Layout = tiledlayout(DIM/3, 3);
 for i = 1 : DIM
     nexttile
     hold on
@@ -10,7 +10,7 @@ for i = 1 : DIM
 %     plot(t, x(index, :)-xh(index, :), 'Displayname', 'error', 'LineWidth', 3)
     grid on
     legend
-    ylim([-1 1])
+    % ylim([-1 1])
     title(['v' TITLE '_' num2str(i)])
 end
 title(Layout, ['F' TITLE])
