@@ -12,28 +12,28 @@ B = kron(B, eye(DIM_F));
 C = kron(C, eye(DIM_F));
 sys = LinearModel(A, B, C);
 % Error weighting. Tracking:1, Estimation:2
-Q1 = [1 1 1]; % corresponding to [Intergral{e}, e, de]
+Q1 = 10^3*[1 1 1]; % corresponding to [Intergral{e}, e, de]
 Q1 = repelem(Q1, DIM_F); % Not nessasry for using repelem, assign to every element is ok.
 sys.Q1 = diag(Q1);
-Q2 = [1 1 1]; % corresponding to [Intergral{e}, e, de]
+Q2 = 10^3*[1 100 100]; % corresponding to [Intergral{e}, e, de]
 Q2 = repelem(Q2, DIM_F);
 sys.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 2; DIM = DIM_F;
-sys_a = SmoothModel(WINDOW, DIM, 1*dt, '1-3');
+WINDOW = 6; DIM = DIM_F;
+sys_a = SmoothModel(WINDOW, DIM, 1000*dt, '2');
 sys_a.B = sys.B;
 
 Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
 Q1 = repelem(Q1, sys_a.DIM);
 sys_a.Q1 = diag(Q1);
-Q2 = 10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
+Q2 = 10^(0)*(.1.^(0 : sys_a.WINDOW-1));
 Q2 = repelem(Q2, sys_a.DIM);
 sys_a.Q2 = diag(Q2);
 
 %% smooth model (sensor)
 WINDOW = 2; DIM = DIM_F;
-sys_s = SmoothModel(WINDOW, DIM, 1*dt, '1-3');
+sys_s = SmoothModel(WINDOW, DIM, 1000*dt, '2');
 sys_s.B = kron([1;1;1], eye(DIM_F));
 
 Q1 = 0*10^(-3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
@@ -54,6 +54,8 @@ sys_aug.rho = 10;
 
 %% L, K
 [K, L] = solveLMI10(sys_aug.A, sys_aug.B, sys_aug.C, sys_aug.E, sys_aug.Q1, sys_aug.Q2, sys_aug.R, sys_aug.rho);
+gain = zeros(1, sys_a.WINDOW); gain(1) = -1;
+K(:, sys.DIM_X + (1:sys_a.DIM_X)) = kron(gain, eye(DIM_F));
 %     L(1:2) = [-100; -200]*10;
 %     L(7:8) = [500; 1000];
 

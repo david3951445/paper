@@ -1,6 +1,6 @@
 %main script
-% one Robot, CTM, reference model tracking control, Fa + Fs
-clc; clear; close all; tic; % warning off
+% one Robot, CTM, reference model tracking control, Fa + Fs, K solved by DIM = 1
+clc; clear; close all; tic;
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
@@ -9,53 +9,55 @@ rb = Robot();
 dt = .001;
 %% sys
 DIM_F = rb.DIM_F; % Dimension of e
-DIM = DIM_F; % dimension of f1(t) and f2(t)
-A = [0 1 0; 0 0 1; 0 0 0]; B = [0; 0; 1]; C = eye(3); % Intergral{e}, e, de
-A = kron(A, eye(DIM));
-B = kron(B, eye(DIM));
-C = kron(C, eye(DIM));
+DIM_SOLVE_K = 1; 
+A1 = [0 1 0; 0 0 1; 0 0 0]; B1 = [0; 0; 1]; C1 = eye(3); % Intergral{e}, e, de
+A = kron(A1, eye(DIM_F));
+B = kron(B1, eye(DIM_F));
+C = kron(C1, eye(DIM_F));
 sys = LinearModel(A, B, C);
+A = kron(A1, eye(DIM_SOLVE_K));
+B = kron(B1, eye(DIM_SOLVE_K));
+C = kron(C1, eye(DIM_SOLVE_K));
+sys1 = LinearModel(A, B, C);
 % Error weighting. Tracking:1, Estimation:2
-Q1 = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
-Q1 = repelem(Q1, DIM); % Not nessasry for using repelem, assign to every element is ok.
-sys.Q1 = diag(Q1);
-Q2 = 10^(2)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
-Q2 = repelem(Q2, DIM);
-sys.Q2 = diag(Q2);
+Q1 = 10^(0)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
+sys1.Q1 = diag(Q1);
+Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
+sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 5;
-sys_a = SmoothModel(WINDOW, DIM, 1000*dt, '2');
+WINDOW = 6;
+sys_a = SmoothModel(WINDOW, DIM_F, 1000*dt, '2');
+sys_a.B1 = sys1.B;
 sys_a.B = sys.B;
 
 Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-Q1 = repelem(Q1, sys_a.DIM);
 sys_a.Q1 = diag(Q1);
-Q2 = 10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-Q2 = repelem(Q2, sys_a.DIM);
+Q2 = 10^(2)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
 sys_a.Q2 = diag(Q2);
 
 %% smooth model (sensor)
 WINDOW = 2;
-sys_s = SmoothModel(WINDOW, DIM, 1*dt, '1-3');
-sys_s.B = kron([1;1;1], eye(DIM));
+sys_s = SmoothModel(WINDOW, DIM_F, 1000*dt, '2');
+sys_s.B1 = [1;1;1];
+sys_s.B = kron(sys_s.B1, eye(DIM_F));
 
 Q1 = 0*10^(-3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
-Q1 = repelem(Q1, sys_s.DIM);
 sys_s.Q1 = diag(Q1);
 Q2 = 10^(3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
-Q2 = repelem(Q2, sys_s.DIM);
 sys_s.Q2 = diag(Q2);
 
 %% augment sys
 [A, B, C] = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug = LinearModel(A, B, C);
+[A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a.A1, sys_a.B1, sys_a.C1, sys_s.A1, sys_s.B1, sys_s.C1);
+sys_aug1 = LinearModel(A, B, C);
 
-sys_aug.Q1 = 10^(-3)*blkdiag(sys.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug.Q2 = 10^(-3)*blkdiag(sys.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
-sys_aug.E = .1*eye(sys_aug.DIM_X);
-sys_aug.R = [];
-sys_aug.rho = 100;
+sys_aug1.Q1 = 10^(-3)*blkdiag(sys1.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2 = 10^(-3)*blkdiag(sys1.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.E = 1*eye(sys_aug1.DIM_X);
+sys_aug1.R = [];
+sys_aug1.rho = 10;
 
 %% mapping
 rb.sys = sys;
@@ -63,28 +65,21 @@ rb.sys_a = sys_a;
 rb.sys_s = sys_s;
 rb.sys_aug = sys_aug;
 
-Q1 = sys_aug.Q1;
-Q2 = sys_aug.Q2;
-R = sys_aug.R;
-rho = sys_aug.rho;
-
 if EXE.LMI
     disp('solving LMI ...')
-    % method 1
-    [rb.K, rb.KL] = solveLMI10(rb.sys_aug.A, rb.sys_aug.B, rb.sys_aug.C, sys_aug.E, Q1, Q2, R, rho);
-    % method 2
-    % gain = zeros(1, WINDOW); gain(1) = -1;
-    % [rb.K, rb.L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));
-    % rb.K = [rb.K kron(gain, eye(DIM_F))];
+    [rb.K, rb.KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     
     rb.Save('K') 
     rb.Save('KL') 
 end
 % Fine tune of gain
-gain = zeros(1, sys_a.WINDOW); gain(1) = -1;
-rb.K(:, sys.DIM_X + (1:sys_a.DIM_X)) = kron(gain, eye(DIM_F));
-% rb.K(:, sys.DIM_X + sys_a.DIM_X + (1:sys_s.DIM_X)) = [0 0];
-% rb.K = -[100 1000 100 1 0 0 0 0 0 0];
+gain = [-1 zeros(1, sys_a.WINDOW-1)];
+rb.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
+% rb.K(:, sys1.DIM_X + sys_a.WINDOW + (1:sys_s.WINDOW)) = zeros(1, sys_s.WINDOW);
+I0 = diag(1.1.^(0:rb.DIM_F-1));
+I = eye(DIM_F);
+rb.K = kron(rb.K, I);
+rb.KL = kron(rb.KL, I0);
 % disp(norm(K))
 % disp(norm(L))
 
@@ -209,8 +204,3 @@ toc
 % rank(ctrb(rb.A, rb.B))
 
 %% Debug
-
-%% functions
-function y = symmetric(x)
-    y = x + x';
-end

@@ -37,6 +37,7 @@ otherwise
     error('no such method in getA_CT()')
 end
 
+obj.A1 = A; % origin A
 %% extend to correct dimension
 obj.A = kron(A, eye(obj.DIM));
 end

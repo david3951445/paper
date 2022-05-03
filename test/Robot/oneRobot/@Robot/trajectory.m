@@ -13,8 +13,9 @@ DIM_X3      = rb.sys_aug.DIM_X;
 startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% set disturbance
-v1 = repmat(.2*ones(1, length(t)), sys_a.DIM, 1);
-v2 = repmat(0.05*sin(1*t), sys_s.DIM, 1);
+v1 = repmat(.2*sin(t), sys_a.DIM, 1) ;
+% v2 = repmat(.05*sin(1*t), sys_s.DIM, 1);
+v2 = 0.05*ones(sys_s.DIM, length(t));
 rb.tr.v1    = v1;
 rb.tr.v2    = v2;
 
@@ -80,11 +81,16 @@ for i = startTime : LEN - 1
     %% fault signal
     u = rb.u_PID(xh); % PID control
     M = rb.M(X+r);
-    Mh = rb.M(Xh+r);
+    % Mh = rb.M(Xh+r);
     % H = rb.H(X+r, dX+dr);
     % Hh = rb.H(Xh+r, dXh+dr);
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v1(:, i))
+    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + v1(:, i));
+    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + v1(:, i));
     f = -eye(DIM_F)/M*(v1(:, i));
+    % if mod(i, 100) == 0
+    %     disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+    % end
+    % f = v1(:, i);
     
     xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');
     % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;

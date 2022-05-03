@@ -62,6 +62,7 @@ classdef Robot
 
         K  % Control gain matrix
         KL  % Observer gain matrix
+        DIM
 
         %% trajectories
         tr 

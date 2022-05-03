@@ -14,6 +14,10 @@ classdef SmoothModel
         dt % smapling time
         DIM % dimension of fault signal
         DIM_X % dimension of A
+        % origin size
+        A1 % system matrix
+        B1 % input matrix
+        C1 % mapping matrix
     end
     
     methods
@@ -32,6 +36,7 @@ classdef SmoothModel
             end
             % C
             C = [1 zeros(1, WINDOW-1)];
+            obj.C1 = C;
             obj.C = kron(C, eye(obj.DIM));
         end
         
