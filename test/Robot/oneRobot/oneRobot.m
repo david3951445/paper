@@ -104,8 +104,6 @@ rb = rb.Ref2Config(); % rb.r -> rb.qr
 % ref(DIM_F/2+1:DIM_F, :) = repmat(.1*sin(t), DIM_F/2, 1);
 % rb.qr = ref;
 
-% dqr = gradient(qr);
-
 if EXE.TRAJ
     rb.tr.dt           = dt; % Time step
 %     rb.tr.T            = T; % Final time
