@@ -13,12 +13,9 @@ pp = PathPlanning();
 rb.r = pp.r;
 
 %% find joint ref
-if EXE.QR
-    rb = rb.Ref2Config();
-    rb.Save('qr');
-end
+rb = rb.Ref2Config();
 qr = rb.qr;
-dqr = gradient(qr);
+% dqr = gradient(qr);
 
 %% Control
 % robot = rb.rbtree;

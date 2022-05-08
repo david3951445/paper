@@ -100,14 +100,21 @@ rb = rb.Ref2Config(); % rb.r -> rb.qr
 % rb.qr = ref;
 
 if EXE.TRAJ
-    rb.tr.dt           = dt; % Time step
-%     rb.tr.T            = T; % Final time
+    rb.tr.dt    = dt; % Time step
+    rb.tr.LEN   = length(rb.qr);
+    rb.tr.T     = dt*(rb.tr.LEN-1); % Final time
+    rb.tr.t     = 0 : dt : rb.tr.T;
+    %% set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     x0_pos = zeros(1, sys.DIM_X);
 %     x0_pos = [zeros(1,DIM_F) x0_pos zeros(DIM_F)]
-    rb.tr.x0           = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
-    rb.tr.xh0          = zeros(rb.sys_aug.DIM_X, 1);
+    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
+    rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
+    %% set disturbance
+    rb.tr.f1    = repmat(.2*sin(5*rb.tr.t), sys_a.DIM, 1) ;
+    % rb.tr.f2 = repmat(.05*sin(1*t), sys_s.DIM, 1);
+    rb.tr.f2    = 0.05*ones(sys_s.DIM, rb.tr.LEN);
 
     rb = rb.trajectory();
     rb.Save('tr');
