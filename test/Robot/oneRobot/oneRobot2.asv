@@ -26,25 +26,25 @@ Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 3;
-sys_a = SmoothModel(WINDOW, DIM_F, 1*dt, '1-3');
+WINDOW = 6;
+sys_a = SmoothModel(WINDOW, DIM_F, 1000*dt, '2');
 sys_a.B1 = sys1.B;
 sys_a.B = sys.B;
 
-Q1 = 0*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
+Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
 sys_a.Q1 = diag(Q1);
-Q2 = 10^(3)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
+Q2 = 10^(2)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
 sys_a.Q2 = diag(Q2);
 
 %% smooth model (sensor)
-WINDOW = 3;
-sys_s = SmoothModel(WINDOW, DIM_F, 1*dt, '1-3');
+WINDOW = 2;
+sys_s = SmoothModel(WINDOW, DIM_F, 1000*dt, '2');
 sys_s.B1 = [1;1;1];
 sys_s.B = kron(sys_s.B1, eye(DIM_F));
 
-Q1 = 0*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
+Q1 = 0*10^(-3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
 sys_s.Q1 = diag(Q1);
-Q2 = 10^(1)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
+Q2 = 10^(3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
 sys_s.Q2 = diag(Q2);
 
 %% augment sys
@@ -53,11 +53,11 @@ sys_aug = LinearModel(A, B, C);
 [A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a.A1, sys_a.B1, sys_a.C1, sys_s.A1, sys_s.B1, sys_s.C1);
 sys_aug1 = LinearModel(A, B, C);
 
-sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
-sys_aug1.E = .1*eye(sys_aug1.DIM_X);
+sys_aug1.Q1 = 10^(-3)*blkdiag(sys1.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2 = 10^(-3)*blkdiag(sys1.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.E = 1*eye(sys_aug1.DIM_X);
 sys_aug1.R = [];
-sys_aug1.rho = 100;
+sys_aug1.rho = 10;
 
 %% mapping
 rb.sys = sys;
@@ -73,14 +73,14 @@ if EXE.LMI
     rb.Save('KL') 
 end
 % Fine tune of gain
-% gain = [-1 zeros(1, sys_a.WINDOW-1)];
-% K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
-% KL(10:11,:) = [0 100 0; 0 0 -400];
+gain = [-1 zeros(1, sys_a.WINDOW-1)];
+K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
+KL(10:11,:) = [0 100 0; ];
 % rb.K(:, sys1.DIM_X + sys_a.WINDOW + (1:sys_s.WINDOW)) = zeros(1, sys_s.WINDOW);
-% I0 = diag(1.1.^(0:rb.DIM_F-1));
+I0 = diag(1.1.^(0:rb.DIM_F-1));
 I = eye(DIM_F);
 rb.K = kron(K, I);
-rb.KL = kron(KL, I);
+rb.KL = kron(KL, I0);
 % disp(norm(K))
 % disp(norm(L))
 
@@ -113,8 +113,8 @@ if EXE.TRAJ
     rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
     %% set disturbance
-    rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1) ;
-    rb.tr.f2 = repmat(.1*sin(1*rb.tr.t), sys_s.DIM, 1);
+    rb.tr.f1    = repmat(.2*sin(5*rb.tr.t), sys_a.DIM, 1) ;
+    rb.tr.f2 = repmat(.1*sin(2*rb.tr.t), sys_s.DIM, 1);
     % rb.tr.f2    = 0.05*ones(sys_s.DIM, rb.tr.LEN);
 
     rb = rb.trajectory();
@@ -148,15 +148,12 @@ if EXE.PLOT
     
     %% fig
     fig = figure;
-    DIM = 1;%sys.DIM_X/div(i);
-    div = divisors(DIM);
-    i = ceil((length(div))/2);
-    Layout = tiledlayout(DIM, div(i));
+    tiledlayout(DIM_F/3, 3);
     
     r = rb.tr.r{1};
     % timeInterval = 1:length(rb.tr.t)-1;
 %     rb.tr.t = rb.tr.t(1:length(rb.tr.t)-1); % state have one more step than reference
-    for i = 1 : 1%DIM_F % position
+    for i = 1 : DIM_F % position
         nexttile
         hold on
 %         plot(rb.tr.t, rb.tr.x(DIM_F+i, :), 'DisplayName', 'state')
@@ -181,11 +178,25 @@ if EXE.PLOT
     
     %% fig, Fa and Fs
     index = sys.DIM_X;
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
     index = sys.DIM_X + sys_a.DIM_X;
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
+
+%     fig = figure;
+%     Tiledlayout = tiledlayout(4, 3);
+%     for i = 1 : DIM_F % unknown signal
+%         index = 3*DIM_F + i;
+
+%         nexttile
+%         hold on
+% %         plot(t, rb.tr.f(i, timeInterval), 'DisplayName', 'state')
+%         plot(t, rb.tr.x(index, timeInterval), 'DisplayName', 'state')
+%         plot(t, rb.tr.xh(index, timeInterval), 'DisplayName', 'estimated')
+%         title(['$q_' num2str(i) '$'], 'Interpreter','latex')
+%         legend
+%         xlabel("t")
+%     end
+%     title(Tiledlayout, 'unknown siganl')
     
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
 %     saveas(fig, FILE_NAME)

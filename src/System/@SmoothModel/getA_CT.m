@@ -14,7 +14,7 @@ case '1-2'
     point = zeros(WINDOW, 1); point(1:2) = [1 -1];
     A(1, 1:WINDOW) = point/dt;
 case '1-3'
-    coeff2 = 0.5.^(0:WINDOW-1);
+    coeff2 = 0.3.^(0:WINDOW-1);
     coeff2 = coeff2/sum(coeff2);
     A(1, 1:WINDOW) = [-1 zeros(1, WINDOW-1)];
     A(1, 1:WINDOW) = (A(1, 1:WINDOW) + coeff2)/dt;

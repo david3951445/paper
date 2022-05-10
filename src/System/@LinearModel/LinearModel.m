@@ -28,7 +28,7 @@ classdef LinearModel
             [obj.DIM_X, obj.DIM_U] = size(B);
             [obj.DIM_Y, ~] = size(C);
             
-            obj.E = zeros(obj.DIM_X);
+            obj.E = eye(obj.DIM_X);
         end
     end
 end

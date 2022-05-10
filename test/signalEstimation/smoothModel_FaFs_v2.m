@@ -20,26 +20,26 @@ Q2 = repelem(Q2, DIM_F);
 sys.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 6; DIM = DIM_F;
-sys_a = SmoothModel(WINDOW, DIM, 1000*dt, '2');
+WINDOW = 3; DIM = DIM_F;
+sys_a = SmoothModel(WINDOW, DIM, dt, '1-3');
 sys_a.B = sys.B;
 
-Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
+Q1 = 0*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
 Q1 = repelem(Q1, sys_a.DIM);
 sys_a.Q1 = diag(Q1);
-Q2 = 10^(0)*(.1.^(0 : sys_a.WINDOW-1));
+Q2 = 10^(3)*(.1.^(0 : sys_a.WINDOW-1));
 Q2 = repelem(Q2, sys_a.DIM);
 sys_a.Q2 = diag(Q2);
 
 %% smooth model (sensor)
-WINDOW = 2; DIM = DIM_F;
-sys_s = SmoothModel(WINDOW, DIM, 1000*dt, '2');
-sys_s.B = kron([1;1;1], eye(DIM_F));
+WINDOW = 3; DIM = DIM_F;
+sys_s = SmoothModel(WINDOW, DIM, dt, '1-3');
+sys_s.B = kron([1; 1; 1], eye(DIM_F));
 
-Q1 = 0*10^(-3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
+Q1 = 0*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
 Q1 = repelem(Q1, sys_s.DIM);
 sys_s.Q1 = diag(Q1);
-Q2 = 10^(3)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
+Q2 = 10^(1)*(.1.^(0 : sys_s.WINDOW-1));
 Q2 = repelem(Q2, sys_s.DIM);
 sys_s.Q2 = diag(Q2);
 
@@ -49,15 +49,16 @@ sys_aug = LinearModel(A, B, C);
 
 sys_aug.Q1 = 10^(-1)*blkdiag(sys.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
 sys_aug.Q2 = 10^(-1)*blkdiag(sys.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug.E = .1*eye(sys_aug.DIM_X);
 sys_aug.R = [];
-sys_aug.rho = 10;
+sys_aug.rho = 100;
 
 %% L, K
 [K, L] = solveLMI10(sys_aug.A, sys_aug.B, sys_aug.C, sys_aug.E, sys_aug.Q1, sys_aug.Q2, sys_aug.R, sys_aug.rho);
-gain = zeros(1, sys_a.WINDOW); gain(1) = -1;
-K(:, sys.DIM_X + (1:sys_a.DIM_X)) = kron(gain, eye(DIM_F));
-%     L(1:2) = [-100; -200]*10;
-%     L(7:8) = [500; 1000];
+% gain = zeros(1, sys_a.WINDOW); gain(1) = -1;
+% K(:, sys.DIM_X + (1:sys_a.DIM_X)) = kron(gain, eye(DIM_F));
+% L(sys.DIM_X+(1:sys_a.DIM_X), :) = -diag([100,200,700]);
+% L(7:9,:) = -diag([10,100,100]);
 
 %% trajectory
 x = zeros(sys_aug.DIM_X, length(t));
@@ -67,7 +68,7 @@ x(:, 1) = [zeros(1, sys.DIM_X) zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
 w = randn(1, length(t));
 % v = 0.5*ones(sys_a.DIM, length(t)) + .5*cos(5*t);% + 1*w - 1*t + 0.001*t.^2;
 % v2 = 0.1*ones(sys_s.DIM, length(t)) + .1*cos(5*t);
-v1 = repmat(.5*cos(1*t), sys_a.DIM, 1);
+v1 = repmat(.2*cos(1*t), sys_a.DIM, 1);
 v1_init = [repmat(v1(:, 1), 1, sys_a.WINDOW) v1];
 v2 = repmat(.1*sin(1*t), sys_s.DIM, 1);
 v2_init = [repmat(v2(:, 1), 1, sys_s.WINDOW) v2];
