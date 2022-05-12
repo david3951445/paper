@@ -40,9 +40,9 @@ M23 = O;
 M33 = -I;
 
 M14 = O;
-M24 = P2*E;
+M24 = P2*E*rho^(-1);
 M34 = O;
-M44 = -rho^(2)*I;
+M44 = -I;
 
 if isempty(R)
     LMI = [

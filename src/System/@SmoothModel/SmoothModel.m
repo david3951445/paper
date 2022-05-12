@@ -1,23 +1,24 @@
 classdef SmoothModel
     %Smooth model
-    % dx/dt = Ax = v
+    % dx/dt = Ax + Ev
     % 
 
     properties
         METHOD % method for construct A
-        WINDOW % window size
+        WINDOW % window size  
+        dt % smapling time
+
         A % system matrix
         B % input matrix
         C % mapping matrix
+        E % disturbance matrix
+
         Q1 % tracking weighting matrix of state in H infinity performance index
         Q2 % estimation weighting matrix of state in H infinity performance index
-        dt % smapling time
+        rho
+
         DIM % dimension of fault signal
         DIM_X % dimension of A
-        % origin size
-        A1 % system matrix
-        B1 % input matrix
-        C1 % mapping matrix
     end
     
     methods
@@ -36,8 +37,9 @@ classdef SmoothModel
             end
             % C
             C = [1 zeros(1, WINDOW-1)];
-            obj.C1 = C;
             obj.C = kron(C, eye(obj.DIM));
+
+            obj.E = eye(obj.DIM_X);
         end
         
         obj = getA_CT(obj);

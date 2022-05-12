@@ -26,35 +26,37 @@ Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 3;
-sys_a = SmoothModel(WINDOW, DIM_F, 1*dt, '1-3');
-sys_a.B1 = sys1.B;
+WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
+sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_a1.B = sys1.B;
 sys_a.B = sys.B;
 
-Q1 = 0*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-sys_a.Q1 = diag(Q1);
-Q2 = 10^(3)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-sys_a.Q2 = diag(Q2);
+Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+sys_a1.Q1 = diag(Q1);
+Q2 = 10^(3)*(.1.^(0 : WINDOW-1));
+sys_a1.Q2 = diag(Q2);
 
 %% smooth model (sensor)
-WINDOW = 3;
-sys_s = SmoothModel(WINDOW, DIM_F, 1*dt, '1-3');
-sys_s.B1 = [1;1;1];
-sys_s.B = kron(sys_s.B1, eye(DIM_F));
+WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
+sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_s1.B = [1;1;1];
+sys_s.B = kron(sys_s1.B, eye(DIM_F));
 
-Q1 = 0*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
-sys_s.Q1 = diag(Q1);
-Q2 = 10^(1)*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
-sys_s.Q2 = diag(Q2);
+Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+sys_s1.Q1 = diag(Q1);
+Q2 = 10^(1)*(.1.^(0 : WINDOW-1));
+sys_s1.Q2 = diag(Q2);
 
 %% augment sys
 [A, B, C] = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug = LinearModel(A, B, C);
-[A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a.A1, sys_a.B1, sys_a.C1, sys_s.A1, sys_s.B1, sys_s.C1);
+[A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
 sys_aug1 = LinearModel(A, B, C);
 
-sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a.Q1, sys_s.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a.Q2, sys_s.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E = .1*eye(sys_aug1.DIM_X);
 sys_aug1.R = [];
 sys_aug1.rho = 100;
