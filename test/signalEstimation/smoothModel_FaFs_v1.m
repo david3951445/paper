@@ -33,7 +33,7 @@ sys_a.Q2 = diag(Q2);
 
 %% smooth model (sensor)
 WINDOW = 3; DIM = DIM_F;
-sys_s = SmoothModel(WINDOW, DIM, 2000*dt, '2');
+sys_s = SmoothModel(WINDOW, DIM, 1500*dt, '2');
 sys_s.B = kron([1; 1; 1], eye(DIM_F));
 
 Q1 = 0*(.1.^(0 : sys_s.WINDOW-1)); % Can't stablilze unknown signal
@@ -70,8 +70,8 @@ w = randn(1, length(t));
 % v2 = 0.1*ones(sys_s.DIM, length(t)) + .1*cos(5*t);
 v1 = repmat(.2*cos(1*t), sys_a.DIM, 1);
 v1_init = [repmat(v1(:, 1), 1, sys_a.WINDOW) v1];
-v2 = repmat(.1*ones(1, length(t)), sys_s.DIM, 1);
-% v2 = repmat(.1*sin(1*t), sys_s.DIM, 1);
+% v2 = repmat(.1*ones(1, length(t)), sys_s.DIM, 1);
+v2 = repmat(.1*sin(1*t), sys_s.DIM, 1);
 v2_init = [repmat(v2(:, 1), 1, sys_s.WINDOW) v2];
 
 i = 0;

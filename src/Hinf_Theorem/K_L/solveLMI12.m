@@ -23,7 +23,7 @@ function [K, L] = solveLMI12(sys, sys1, sys2)
 % it can be remove from LMI. That is, NO Ka, Qs1, Ps1, and 6*6 block matrix will become 5*5 block matrix.
 %
 % By testing, this method will let LMI more difficult to solve. The reason could be the increasing of conservative in Pbs, Pbe
-% due to let Pbs = blkdiag(Ps, Ps1, Ps2) rather origin Pbs
+% due to let Pbs = blkdiag(Ps, Ps1, Ps2) rather origin Pbs.
 
 %% solve
 I = eye(sys.DIM_X);
