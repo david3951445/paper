@@ -1,11 +1,19 @@
+%post processing of waypoint found by Path Plaing Algorithm
+% The reason is make reference trajectory more smooth and continous so
+% robot can track more eazy. It's under the assumption that robot just "walk"
+% within all path. If the robot can do a behavior like "rotate in place",
+% this is not the necessary part
+
 clc; clear; close all
 r_dc = [
     0 1 1 0 1 2 3 4 5 5 4 4 3 2
     0 0 1 2 4 3 3 4 3 2 2 1 .5 0
-];
+]; % waypoints
+
 t = linspace(0,1,length(r_dc));
 x0 = r_dc(1, :);
 y0 = r_dc(2, :);
+
 t3 = linspace(0,1,(length(r_dc)-1)*4+1);
 x = interp1(t, x0, t3);
 y = interp1(t, y0, t3);
@@ -22,10 +30,8 @@ t2 = linspace(0,1,length(r_dc)*15);
 x2 = feval(f1,t2);
 y2 = feval(f2,t2);
 
-figure
-plot(f1,t3,x)
 figure; hold on
-plot(x0,y0)
-plot(x,y)
-plot(x2,y2)
+plot(x0,y0, 'DisplayName','Origin Waypoints', 'LineWidth', 2)
+plot(x,y,'-o', 'DisplayName','first fit, interp1', 'LineWidth', 2)
+plot(x2,y2, 'DisplayName','second fit, SmoothingSpline', 'LineWidth', 2)
 legend
