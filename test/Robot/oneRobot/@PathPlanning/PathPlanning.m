@@ -40,7 +40,7 @@ classdef PathPlanning
             goal = [map.XWorldLimits(2) map.YWorldLimits(2) 0];
             rng(1); % repeatable result
             [pthObj, solnInfo] = planner.plan(start,goal);
-            r3 = post_processing(pthObj.States(:, 1:2)', pp.INTERP_DENSITY) % Interpolate path, make it more smooth and increase density
+            r3 = pp.Post_processing(pthObj.States(:, 1:2)'); % Interpolate path, make it more smooth and increase density
 
             pp.start = start;
             pp.goal = goal;
@@ -61,7 +61,7 @@ classdef PathPlanning
             saveas(fig, FILE_NAME)
         end
 
-        r3 = post_processing(r1, INTERP_DENSITY) % post processing of ref traj after planning
+        r3 = Post_processing(pp, r1) % post processing of ref traj after planning
         Save(pp, filename, whichVar) % Save property
         pp = Load(pp, filename) % Load property
     end

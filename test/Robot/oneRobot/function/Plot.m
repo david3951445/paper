@@ -4,7 +4,7 @@ figure
 div = divisors(DIM);
 i = ceil((length(div))/2);
 Layout = tiledlayout(DIM/div(i), div(i));
-for i = 1 : 1%DIM
+for i = 1 : DIM
     nexttile
     hold on
     index = j + i;

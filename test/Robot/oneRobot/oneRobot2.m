@@ -26,7 +26,7 @@ Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
+WINDOW = 3; dt_ = 1*dt; METHOD = '2';
 sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a1.B = sys1.B;
@@ -41,7 +41,7 @@ sys_a1.Q2 = diag(Q2);
 WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
 sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s1.B = [1;1;1];
+sys_s1.B = [0; .1; 1];
 sys_s.B = kron(sys_s1.B, eye(DIM_F));
 
 Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
@@ -59,9 +59,9 @@ sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integr
 sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E = .1*eye(sys_aug1.DIM_X);
 sys_aug1.R = [];
-sys_aug1.rho = 100;
+sys_aug1.rho = 5;
 
-%% mapping
+%% some mapping
 rb.sys = sys;
 rb.sys_a = sys_a;
 rb.sys_s = sys_s;
@@ -70,19 +70,22 @@ rb.sys_aug = sys_aug;
 if EXE.LMI
     disp('solving LMI ...')
     [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
-    
+    rb.K = K;
+    rb.KL = KL;
+
     rb.Save('K') 
     rb.Save('KL') 
 end
 % Fine tune of gain
 % gain = [-1 zeros(1, sys_a.WINDOW-1)];
-% K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
-% KL(10:11,:) = [0 100 0; 0 0 -400];
+% rb.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
+% rb.KL(4:6, :) = [1000 0 0; 0 100 0; 0 0 10];
+% rb.KL(7:9,:) = [1000 0 0; 0 100 0; 0 0 10];
 % rb.K(:, sys1.DIM_X + sys_a.WINDOW + (1:sys_s.WINDOW)) = zeros(1, sys_s.WINDOW);
 % I0 = diag(1.1.^(0:rb.DIM_F-1));
 I = eye(DIM_F);
-rb.K = kron(K, I);
-rb.KL = kron(KL, I);
+rb.K = kron(rb.K, I);
+rb.KL = kron(rb.KL, I);
 % disp(norm(K))
 % disp(norm(L))
 
@@ -115,9 +118,9 @@ if EXE.TRAJ
     rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
     %% set disturbance
-    rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1) ;
-    rb.tr.f2 = repmat(.1*sin(1*rb.tr.t), sys_s.DIM, 1);
-    % rb.tr.f2    = 0.05*ones(sys_s.DIM, rb.tr.LEN);
+    rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1);
+    % rb.tr.f2    = repmat(.01*sin(1*rb.tr.t), sys_s.DIM, 1);
+    rb.tr.f2    = 0.01*ones(sys_s.DIM, rb.tr.LEN);
 
     rb = rb.trajectory();
     rb.Save('tr');
@@ -183,11 +186,11 @@ if EXE.PLOT
     
     %% fig, Fa and Fs
     index = sys.DIM_X;
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
+    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
     index = sys.DIM_X + sys_a.DIM_X;
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
+    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
     
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
 %     saveas(fig, FILE_NAME)

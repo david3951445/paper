@@ -78,18 +78,22 @@ for i = startTime : LEN - 1
     dXh     = xh(2*DIM_F + (1:DIM_F));
 
     %% fault signal
-    % u = rb.u_PID(xh); % PID control
-    % M = rb.M(X+r);
-    % Mh = rb.M(Xh+r);
-    % H = rb.H(X+r, dX+dr);
-    % Hh = rb.H(Xh+r, dXh+dr);
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
+    u = rb.u_PID(xh); % PID control
+    M = rb.M(X+r);
+    Mh = rb.M(Xh+r);
+    H = rb.H(X+r, dX+dr);
+    % Hh = rb.H(Xh+r, dXh+dr); % diverge
+    Hh = rb.H(X+r, dXh+dr);
+    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*(rb.tr.f1(:, i));
-    % if mod(i, 100) == 0
-    %     disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+
+    % Show norm of error terms
+    % if mod(i, 100) == 0 
+        % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     % end
-    % rb.tr.f1(:, i) = f;
+    rb.tr.f1(:, i) = f;
     
     xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');
     % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;
@@ -101,9 +105,9 @@ for i = startTime : LEN - 1
     range = 1 : sys_a.DIM;
     for j = 1 : sys_a.WINDOW-1
         j1 = j0 + j*sys_a.DIM;
-        xb(j1+range, i+1) = xb(j1-sys_a.DIM+range, i);
+        xb(j1+range, i+1) = xb(j1+range-sys_a.DIM, i); % Since Fa(i) = [fa(i), fa(i-1), fa(i-2), ...], so Fa(i+1) = ["new fa", fa(i), f(i-1)]
     end
-    xb(j0+range, i+1) = rb.tr.f1(:, i);
+    xb(j0+range, i+1) = rb.tr.f1(:, i); % assign "new fa"
     % sensor fault
     if ~isempty(sys_s)
         j0 = sys.DIM_X + sys_a.DIM_X;

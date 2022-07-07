@@ -1,5 +1,6 @@
 %main script
 % one Robot, CTM, reference model tracking control, Fa, K solved by DIM = 1
+% Not fininsh, 
 clc; clear; close all; tic;
 addpath(genpath('../../../src'))
 addpath(genpath('function'))
@@ -26,24 +27,25 @@ Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 6;
-sys_a = SmoothModel(WINDOW, DIM_F, 1000*dt, '2');
-sys_a.B1 = sys1.B;
+WINDOW = 6; dt_ = 1000*dt; METHOD = '2';
+sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_a1.B = sys1.B;
 sys_a.B = sys.B;
 
-Q1 = 0*10^(0)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-sys_a.Q1 = diag(Q1);
-Q2 = 10^(2)*(.1.^(0 : sys_a.WINDOW-1)); % Can't stablilze unknown signal
-sys_a.Q2 = diag(Q2);
+Q1 = 0*10^(0)*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+sys_a1.Q1 = diag(Q1);
+Q2 = 10^(2)*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+sys_a1.Q2 = diag(Q2);
 
 %% augment sys
 [A, B, C] = AugmentSystem1(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C);
 sys_aug = LinearModel(A, B, C);
-[A, B, C] = AugmentSystem1(sys1.A, sys1.B, sys1.C, sys_a.A1, sys_a.B1, sys_a.C1);
+[A, B, C] = AugmentSystem1(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C);
 sys_aug1 = LinearModel(A, B, C);
 
-sys_aug1.Q1 = 10^(-3)*blkdiag(sys1.Q1, sys_a.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-3)*blkdiag(sys1.Q2, sys_a.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q1 = 10^(-3)*blkdiag(sys1.Q1, sys_a1.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2 = 10^(-3)*blkdiag(sys1.Q2, sys_a1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E = 1*eye(sys_aug1.DIM_X);
 sys_aug1.R = [];
 sys_aug1.rho = 10;
@@ -57,18 +59,20 @@ if EXE.LMI
     disp('solving LMI ...')
     [rb.K, rb.KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     
+    % Fine tune of gain
+    % gain = [-1 zeros(1, sys_a.WINDOW-1)];
+    % rb.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
+    % I0 = diag(1.1.^(0:rb.DIM_F-1)); % increase size of gain as i increase
+    I = eye(DIM_F);
+    rb.K = kron(rb.K, I);
+    rb.KL = kron(rb.KL, I);
+    % disp(norm(K))
+    % disp(norm(L))
+
     rb.Save('K') 
     rb.Save('KL') 
 end
-% Fine tune of gain
-gain = [-1 zeros(1, sys_a.WINDOW-1)];
-rb.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
-I0 = diag(1.1.^(0:rb.DIM_F-1)); % increase size of gain as i increase
-I = eye(DIM_F);
-rb.K = kron(rb.K, I);
-rb.KL = kron(rb.KL, I);
-% disp(norm(K))
-% disp(norm(L))
+
 
 %% trajectory
 % Find task space ref

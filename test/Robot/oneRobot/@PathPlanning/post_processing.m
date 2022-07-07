@@ -1,8 +1,8 @@
-function r3 = post_processing(r1, INTERP_DENSITY)
+function r3 = Post_processing(pp, r1, INTERP_DENSITY)
     len1 = length(r1);
     t1 = linspace(0,1,len1);
 
-    len2 = (len1-1)*INTERP_DENSITY(1)+1;
+    len2 = (len1-1)*pp.INTERP_DENSITY(1)+1;
     t2 = linspace(0,1,len2);
     r2 = zeros(2, len2);
     r2 = [
@@ -12,7 +12,7 @@ function r3 = post_processing(r1, INTERP_DENSITY)
 
     fx = fit(t2', r2(1,:)', 'SmoothingSpline');
     fy = fit(t2', r2(2,:)', 'SmoothingSpline');
-    len3 = len2*INTERP_DENSITY(2);
+    len3 = len2*pp.INTERP_DENSITY(2);
     t3 = linspace(0,1,len3);
     r3 = [
         feval(fx, t3)';

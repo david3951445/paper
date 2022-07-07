@@ -1,5 +1,5 @@
 function [Ab, Bb, Cb] = AugmentSystem1(A, B, C, Aa, Ba, Ca)
-    %construct augment system, Fa + Fs
+    %construct augment system, Fa
     % Ab = [A Ba*Ca; 0 Aa]
     % Bb = [B; 0]
     % Cb = [C 0]
