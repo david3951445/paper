@@ -123,7 +123,7 @@ $A^T$: transpose of A. $(a_n)$: sequence. $(a_{k_n})$: subsequence. $\vert{S}\ve
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$.
 
 \section{PRELIMINARIES OF search and rescue URTS}
-The URTS will start with a given search and rescue area, and ends with searching task completed. The URTS is composed of $N$ teams and a ground station. Each team contains $1$ UAV and $M-1$ robots. The $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,M$ and $j=1,2,...,N$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
+The URTS will start with a given search and rescue area, and ends with searching task completed. The URTS is composed of $N_j$ teams and a ground station. Each team contains $1$ UAV and $N_i-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,N_i$ and $j=1,2,...,N_j$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
 % The system architecture if URTS is shown in Fig. \ref{fig:1}.
 % \begin{figure}[htbp]
 % \centering
@@ -378,27 +378,27 @@ where $\bar{x} = \begin{bmatrix}
 By combining the CoM position and orientation path, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]$ of robot is found by solving IK.
 
 \section{Reference Tracking control}
-After the reference trajectory $r(t)$ is set, the last step is to design a controller for a agent to track it. To analyze the tracking control problem of UAV model in (\ref{eq:uav}) and robot model in (\ref{eq:robot}) together, we represent them by the same form called agent model through some appropriate variable transformations:
+After the reference trajectory $r(t)$ is set, the last step is to design a controller for an agent to track it. To analyze the tracking control problem of UAV model in (\ref{eq:uav}) and robot model in (\ref{eq:robot}) together, we represent them by the same form called agent model through some appropriate variable transformations:
 \begin{equation} \label{eq:agent} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t)
 \end{equation}
-where $u(t)\in\mathbb{R}^m$ is control input vector, $x(t)\in\mathbb{R}^n$ is state vector, $M(\cdot)\in\mathbb{R}^{n\times n}$ is inertia matrix, and $H(\cdot, \cdot)\in\mathbb{R}^n$ is non-inertial force vector. In order to transform the tracking control problem into a stability problem, we define the tracking error $e(t)\triangleq x(t)-r(t)$.
-Suppose the state $x(t)$ is unavailable, i.e., $x(t)$ needs to be obtained by sensor. Besides, its integration $\int_{0}^{t} x(\tau) d\tau$ and differentiation $\dot{x}(t)$ can also be measured by sensor respectively for PID control. Then, the output equation can be formulated as:
-\begin{equation} \label{eq:agent output}
-    y(t) = C\pmb{x}(t)
+where $u(t)\in\mathbb{R}^m$ is control input vector, $x(t)\in\mathbb{R}^n$ is state vector, $M(\cdot)\in\mathbb{R}^{n\times n}$ is inertia matrix, and $H(\cdot, \cdot)\in\mathbb{R}^n$ is non-inertial force vector. The control law is given as:
+\begin{equation} \label{eq:control}
+    u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t)) 
 \end{equation}
-where $y(t)\in\mathbb{R}^l$ is output vector, $C\in\mathbb{R}^{l\times 3n}$ is a known output matrix, and $\pmb{x}(t)=\begin{bmatrix}
-    \int_{0}^{t} x^T(\tau) d\tau & x^T(t) & \dot{x}^T(t)
-\end{bmatrix}^T$. Futhermore, to make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
+where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms to canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law. To make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
 \begin{enumerate}
-    \item For agent, there exists
-    \begin{enumerate*}
-        \item coupling effect due to co-channel interference in communication between agents and
-        \item cyber-attack on communication network between agents and ground station.
-    \end{enumerate*}
+    \item For agent, there exists coupling effect due to co-channel interference in communication between agents \cite{9448458}.
+    \item For agent, there exists cyber-attack on communication network between agents and ground station.
+    \item For agent, there exists sensor noise.
     \item For UAV, there exists wind disturbance \cite{9075385}.
     \item For robot, there exists ground reaction force \cite{chen2013human}. 
 \end{enumerate}
+Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to an disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the real system:
+% The coupling effect for an agent \textit{$agent_{i,j}$} in URTS can be expressed as the form $\sum_{i'=1,i'\neq i}^{N_i}\sum_{j'=1,j'\neq j}^{N_j}\textit{c}_{i,j}(x_{i,j}(t))\times x_{i',j'}(t)$ where $x_{i,j}(t)$ is the own state.
+\begin{equation} \label{eq:agent d1} 
+    M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t) + d_1(t)
+\end{equation}
 % \subsubsection{Internal uncertainties}
 % In practice, there is uncertaintiey in the parameters of inertia matrix $M$, Coriolis and centripetal force vector $C$, gravitational force vector $G$, and friction vector $F$. Its effect can be expressed as:
 % \begin{equation} \label{eq:internal}
@@ -409,25 +409,50 @@ where $y(t)\in\mathbb{R}^l$ is output vector, $C\in\mathbb{R}^{l\times 3n}$ is a
 %     \end{split}
 % \end{equation}
 % where $M_0, C_0, G_0$ and  $F_0$ is the nominal part and $\Delta M,\Delta C,\Delta G$ and $\Delta F$ is the uncertain part.
-Suppose the above disturbances can be equivalently expressed as the disturbances $d_i(t), i=1,2$ in the nominal model (\ref{eq:agent}) and (\ref{eq:agent output}), the real agent model is given as:
-\begin{equation} \label{eq:nonlinear sys} 
+Now, substituting (\ref{eq:control}) into (\ref{eq:agent d1}) and subtracting $M(r(t))\ddot{x}(t)$ from the left and right sides, we have:
+\begin{equation} \label{eq:agent1}
     \begin{split}
-        & M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) + d_1(t) = u(t)\\
-        & y(t) = C\pmb{x}(t) + d_2(t)
+        & (M(x(t))-M(r(t)))\ddot{x}(t) + H(x(t),\dot{x}(t)) \\
+        & =(M(r(t))(\ddot{r}(t)-\ddot{x}(t)) + M(r(t))u_{fb}(t) \\
+        & + H(r(t),\dot{r}(t)) + d_1(t)
     \end{split}
 \end{equation}
-For designing a tracking controller under unknown external disturbance and making the tracking performance of the agent system (\ref{eq:nonlinear sys}) meet a specified specification, an $H_\infty$ observer-based feedback linearization-based PID(FL-PID) fault tolerance control(FTC) is proposed. Before continuing, the analysis of a linear system version, i.e., after feedback linearization is given first.
+By Multipling $M(r(t))^{-1}$ from the left and right sides and with some arrangments, we have:
+\begin{equation} \label{eq:23}
+    \ddot{e}(t) = u_{fb}(t) + f_1(t)
+\end{equation}
+where $f_1(t) = M(r(t))^{-1}(-\Delta M(\ddot{x}(t)) -\Delta H + d_1(t))$ is the actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensationand, and $e(t)= x(t)-r(t)$ is the tracking error.
+% \textit{
+%     \begin{remark}
+%         Although the error terms $\Delta e$, $\Delta M$ and $\Delta H$ caused by the difference between state $x(t)$ and estimated state $\hat{x}(t)$ are not necessarily bounded, they can still be estimated as long as they are smooth.
+%     \end{remark}
+% }
+Let $\pmb{e}(t)=\begin{bmatrix}
+    \int_{0}^{t}e(\tau)d\tau & e(t) & \dot{e}(t)
+\end{bmatrix}\in\mathbb{R}^{3n}$, (\ref{eq:23}) can be rewrited as:
+\begin{equation} \label{eq:linear f1}
+    \dot{\pmb{e}}(t)=A\pmb{e}(t)+B(u_{fb}(t)+f_1(t))
+\end{equation}
+where $ A = A_0\otimes I_n, B = B_0\otimes I_n$
+with $A_0 = \begin{bmatrix}
+    0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0
+\end{bmatrix}, B_0 = \begin{bmatrix}
+0 \\ 0 \\ 1
+\end{bmatrix}$. 
 
-\subsection{$H_\infty$ observer-based PID FTC for linear system}
-Given a linear system with fault signals:
+Through above analysis, the tracking control problem of the nonlinear system with external disturbance (\ref{eq:agent d1}) is transformed into the fault tolerance stable control problem of linear system (\ref{eq:linear f1}). The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make it stable. In a real system, the feedback information is measured by sensor, i.e, the state $\pmb{e}(t)$ in (\ref{eq:linear f1}) is unavailable. As mentioned before, the external disturbances on sensor also need to be considered. Since the sensor information (\ref{eq:agent output}) will transmitted back to the ground station through the network channel in URTS, not only the sensor noise but also the coupling effect due to co-channel interference and the cyber-attack signal are considered. The total effect can be equivalent to an sensor fault signal $f_2(t)$. The measurement output equation is formulated as:
+\begin{equation} \label{eq:agent output}
+    y(t) = C\pmb{e}(t) + f_2(t)
+\end{equation}
+where $y(t)\in\mathbb{R}^l$ is output vector, $C\in\mathbb{R}^{l\times 3n}$ is output matrix. By combining (\ref{eq:linear f1}) and (\ref{eq:agent output}) together, we have:
 \begin{equation} \label{eq:4}
     \begin{split}
-        & \dot{x}(t)=Ax(t)+B(u(t)+f_1(t)) \\
-        & y(t)=Cx(t)+f_2(t)   
+        & \dot{\pmb{e}}(t)=A\pmb{e}(t)+B(u_{fb}(t)+f_1(t)) \\
+        & y(t) = C\pmb{e}(t) + f_2(t)   
     \end{split}  
 \end{equation}
 where $x(t)\in\mathbb{R}^n$, $u(t)\in\mathbb{R}^m$, $y(t)\in\mathbb{R}^l$, and $f_i:\mathbb{R}\rightarrow \mathbb{R}^{n_i}, f_i(t)\in C^{1}, i=1,2$ with $n_1=m$ and $n_2 = l$.
-
+% For designing a tracking controller under unknown external disturbance and making the tracking performance of the agent system (\ref{eq:nonlinear sys}) meet a specified specification, an $H_\infty$ observer-based feedback linearization-based PID(FL-PID) fault tolerance control(FTC) is proposed. Before continuing, the analysis of a linear system version, i.e., after feedback linearization is given first.
 \textit{
     \begin{remark}
         The fault signal $f_i(t), i=1,2$ are assumed to be smooth rather than bounded, which will make the proposed method more general for practical scenario.
@@ -461,12 +486,12 @@ where $C_i=\begin{bmatrix}
 \end{bmatrix}\otimes I_{n_i}$. Sub. (\ref{eq:7}) and (\ref{eq:8}) into (\ref{eq:4}), we get:
 \begin{equation} \label{eq:9}
     \begin{split}
-        & \dot{\bar{x}} = \bar{A}\bar{x}+\bar{B}u+\bar{v} \\
-        & y=\bar{C}\bar{x}
+        & \dot{\bar{e}}(t) = \bar{A}\bar{e}(t)+\bar{B}u_{fb}(t)+\bar{v}(t) \\
+        & y(t)=\bar{C}\bar{e}(t)
     \end{split}
 \end{equation}
-where $\bar{x} = \begin{bmatrix}
-    x \\ F_1 \\ F_2
+where $\bar{e}(t) = \begin{bmatrix}
+    \pmb{e}(t) \\ F_1 \\ F_2
 \end{bmatrix}$, $\bar{A}=\begin{bmatrix}
     A & BC_1 & 0 \\
     0 & A_1 & 0 \\
@@ -475,13 +500,13 @@ where $\bar{x} = \begin{bmatrix}
     B \\ 0 \\ 0
 \end{bmatrix}$, $\bar{C}=\begin{bmatrix}
     C & 0 & C_2
-\end{bmatrix}$, and $\bar{v}=\begin{bmatrix}
-    0 \\ v_1 \\ v_2
+\end{bmatrix}$, and $\bar{v}(t)=\begin{bmatrix}
+    0 \\ v_1(t) \\ v_2(t)
 \end{bmatrix}$. Since the fault signals become a state variable of the augment system in (\ref{eq:9}), a Luenberger observer is proposed to estimat them and origin state simutaniously:
 \begin{equation} \label{eq:10}
     \begin{split}
-        & \dot{\hat{\bar{x}}}=\bar{A}\hat{\bar{x}}+\bar{B}u+{L}(y-\hat{y}) \\
-        & \hat{y}=\bar{C}\hat{\bar{x}}  
+        & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{x}}(t)+\bar{B}u_{fb}(t)+{L}(y(t)-\hat{y}(t)) \\
+        & \hat{y}(t)=\bar{C}\hat{\bar{x}}(t)  
     \end{split}
 \end{equation}
 \begin{assumption}
@@ -489,27 +514,27 @@ where $\bar{x} = \begin{bmatrix}
 \end{assumption}
 The PID FTC law is given as:
 \begin{equation} \label{eq:11}
-    u=K\hat{\bar{x}}
+    u_{fd}(t)=K\hat{\bar{e}}(t)
 \end{equation}
 where $K = \begin{bmatrix}
     K_I & K_P & K_D & K_{F_1} & K_{F_2}
-\end{bmatrix}$ is total control gain, $K_P,K_I,K_D$ are PID control gain, and $K_{F_i}, i=1,2$ are fault control gain. Let us define the estimation error $\hat{\bar{e}}=\bar{x}-\hat{\bar{x}}$, then an new augmented system can be obtained from (\ref{eq:9}), (\ref{eq:10}) and (\ref{eq:11}):
+\end{bmatrix}$ is total control gain, $K_P,K_I,K_D$ are PID control gain, and $K_{F_i}, i=1,2$ are fault control gain. Let us define the estimation error $\tilde{e}=\bar{e}(t)-\hat{\bar{e}}(t)$, then an new augmented system can be obtained from (\ref{eq:9}), (\ref{eq:10}) and (\ref{eq:11}):
 \begin{equation} \label{eq:aug}
-    \dot{\tilde{x}} = \tilde{A}\tilde{x}+\tilde{v}
+    \dot{\tilde{x}}(t) = \tilde{A}\tilde{x}(t)+\tilde{v}(t)
 \end{equation}
-where $\tilde{x}=\begin{bmatrix}
-    \bar{x} \\ \hat{\bar{e}}
+where $\tilde{x}(t)=\begin{bmatrix}
+    \bar{e}(t) \\ \tilde{e}(t)
 \end{bmatrix}$, $\tilde{A}=\begin{bmatrix}
     \bar{A}+\bar{B}K & -\bar{B}K \\ 0 & \bar{A}+L\bar{C}
-\end{bmatrix}$, and $\tilde{v}=\begin{bmatrix}
-    \bar{v} \\ 0
+\end{bmatrix}$, and $\tilde{v}(t)=\begin{bmatrix}
+    \bar{v}(t) \\ 0
 \end{bmatrix}$
 
 The tracking control performance below a prescribed disturbance attenuation level $\rho^2$ is given as:
 \begin{equation} \label{Hinf}
     H_{\infty}(K, L) = \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u^T(t)Ru(t))dt - V(\tilde{x}_0)}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2 
 \end{equation}
-where $t_f$ is the final time, $Q > 0$ is the weighting matrix of tracking and estimation error, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on tracking and estimation error $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. To find these gains, the following theroem is given.
+where $t_f$ is the final time, $Q > 0$ is the weighting matrix of state and estimation error, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on tracking and estimation error $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. To find these gains, the following theroem is given.
 \begin{theorem} \label{theorem1}
     If
     $$\begin{bmatrix}
@@ -524,84 +549,9 @@ where $t_f$ is the final time, $Q > 0$ is the weighting matrix of tracking and e
     proof...
 \end{proof}
 
-\subsection{$H_\infty$ observer-based feedback linearization-based PID FTC for agents}
-If we can transform the nonlinear system (\ref{eq:nonlinear sys}) to a linear system, the tracking problems for UAV and robot can be solved by Theorem \ref{theorem1}. An feedback linearization-based control law is uesd to solve this issue, which is given as follow:
-% To obtain state variable by output measurement, an observer is proposed:
-% \begin{equation} \label{eq:nonlinear obs} 
-%     \begin{split}
-%         & u(t) = M(\hat{x}(t))\ddot{\hat{x}(t)} + H(\hat{x}(t),\dot{\hat{x}(t)})\\
-%         & \hat{y}(t) = C\hat{x}(t)
-%     \end{split}
+% \begin{equation}      
+%     u_{fb} = K_I\int_{0}^{t} e(\tau) d\tau + K_P e(t) + K_D \dot{e}(t) + K_F\hat{F}
 % \end{equation}
-\begin{equation} \label{eq:control}
-    u(t)= M(x_e(t))(\ddot{r}(t) + u_{fb}(t)) + H(x_e(t),\dot{x}_e(t))    
-    % & u_{fb} = K_I\int_{0}^{t} e(\tau) d\tau + K_P e(t) + K_D \dot{e}(t) + K_F\hat{F} \\ 
-\end{equation}
-where $x_e(t)=x(t) + \Delta e(t)$, $\Delta e(t)=e(t)-\hat{e}(t)$ is the error between tracking error $e(t) = x(t) - r(t)\in\mathbb{R}^n$ and estimation of tracking error $\hat{e}(t)$, $u_{fb}(t)$ is feedback control law, and the other term in (\ref{eq:control}) is feed-foward control law for canceling nonlinearity. Substitute (\ref{eq:control}) into state equation (\ref{eq:nonlinear sys}), we get:
-\begin{equation}\begin{split} \label{eq:21}
-    & M(x_e(t))(\ddot{r}(t) + u_{fb}) + H(x_e(t),\dot{x}_e(t)) \\
-    & = M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) + d_1(t)       
-\end{split}
-\end{equation}
-By subtracting $M(x(t))\ddot{r}(t)$ from the left and right sides of (\ref{eq:21}):
-\begin{equation} \label{eq:22}
-    -\Delta M \ddot{r}(t) + M(x_e(t))u_{fb} = M(x(t))\ddot{e}(t) + \Delta H + d_1(t)
-\end{equation}
-where $\Delta M = M(x(t)) - M(x_e(t)), \Delta H = H(x(t),\dot{x}(t)) - H(x_e(t),\dot{x}_e(t))$ is the error terms due to difference between true state and estimated state. By Multipling $M(x(t))^{-1}$ from the left and right sides of (\ref{eq:22}) with arrangment, we have:
-\begin{equation} \label{eq:23}
-    \ddot{e}(t) = u_{fb}(t) + d_3(t)
-\end{equation}
-where $d_3(t) = -M(x(t))^{-1}(\Delta M(\ddot{r}(t)+u_{fb}) + \Delta H + d_1(t))$. Let $\pmb{e}(t)=\begin{bmatrix}
-    \int_{0}^{t}e(\tau)d\tau & e(t) & \dot{e}(t)
-\end{bmatrix}\in\mathbb{R}^{3n}$, (\ref{eq:23}) can be rewrited as:
-\begin{equation} \label{eq:24}
-    \dot{\pmb{e}}(t)=A\pmb{e}(t)+B(u_{fb}(t)+d_3(t))
-\end{equation}
-where $ A = A_0\otimes I_n, B = B_0\otimes I_n$
-with $A_0 = \begin{bmatrix}
-    0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0
-\end{bmatrix}, B_0 = \begin{bmatrix}
-0 \\ 0 \\ 1
-\end{bmatrix} $. Since $C$ is known, we can let $\pmb{y}(t) = y(t) - C\pmb{r}(t)\in\mathbb{R}^{ln}$ where $\pmb{r}(t) = \begin{bmatrix}
-    \int_{0}^{t} r^T(\tau) d\tau & r^T(t) & \dot{r}^T(t)
-\end{bmatrix}^T$. Then, the output equation in (\ref{eq:nonlinear sys}) can be modified as:
-\begin{equation} \label{eq:25}
-    \pmb{y}(t) = C\pmb{e}(t) + d_2(t)
-\end{equation}
-% where $d_4(t) = \Delta C + d_3(t)$ with $\Delta C = C(x(t)-\hat{x}(t))$. 
-Combining (\ref{eq:24}) and (\ref{eq:25}), we obtain the linearized system:
-\begin{equation} \label{eq:linear sys}
-    \begin{split}
-        & \dot{\pmb{e}}(t)=A\pmb{e}(t)+B(u_{fb}(t)+d_3(t)) \\
-        & \pmb{y}(t)=C\pmb{e}(t)+d_2(t)   
-    \end{split}  
-\end{equation}
-By Theorem \ref{theorem1}, the form show that the system (\ref{eq:nonlinear sys}) can achieve $H_\infty$ performance with the observer
-\begin{equation} \label{eq:linear obs}
-    \begin{split}
-        & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{e}}(t) + \bar{B}u_{fb}(t) + L(\pmb{y}(t)-\hat{y}(t)) \\
-        & \hat{y}(t)=\bar{C}\hat{\bar{e}}(t)   
-    \end{split}  
-\end{equation}
-and the control law (\ref{eq:control})
-where $\hat{\bar{e}}(t)=\begin{bmatrix}
-    \hat{\pmb{e}} \\ \hat{F}_1 \\ \hat{F}_2
-\end{bmatrix}$, $\hat{\pmb{e}} = \begin{bmatrix}
-    \int_{0}^{t} \hat{e}(\tau) d\tau \\ \hat{e}(t) \\ \dot{\hat{e}}(t)
-\end{bmatrix}$, $\bar{A}=\begin{bmatrix}
-    A & BC_1 & 0 \\
-    0 & A_1 & 0 \\
-    0 & 0 & A_2
-\end{bmatrix}$, $\bar{B}=\begin{bmatrix}
-    B \\ 0 \\ 0
-\end{bmatrix}$, $\bar{C}=\begin{bmatrix}
-    C & 0 & C_2
-\end{bmatrix}$, and $u_{fb}=K\hat{\bar{e}}$.
-\textit{
-    \begin{remark}
-        Although the error terms $\Delta e$, $\Delta M$ and $\Delta H$ caused by the difference between state $x(t)$ and estimated state $\hat{x}(t)$ are not necessarily bounded, they can still be estimated as long as they are smooth.
-    \end{remark}
-}
 
 Although the control gain and observer gain that satisfy the specification can already be found by Theorem \ref{theorem1}, the calculation speed can be further improved by reducing the dimensionality of the system. Since the feedback linearization eliminates the nonlinearity and some degree of coupling of the system (\ref{eq:4}), it can be further split into $n$ subsystems if the output matrix $C$ have the same form to $A$ and $B$, i.e., $C = C_0\otimes I_n$, where $n$ is dimension of state vector and $C_0\in\mathbb{R}^{l\times 3}$.
 Due to the fact that $d_3(t)\in\mathbb{R}^n, d_4(t)\in\mathbb{R}^{ln}$, the n subsystems are obtained from (\ref{eq:linear sys}):

@@ -62,6 +62,14 @@ Frank~L Lewis, Draguna Vrabie, and Vassilis~L Syrmos.
 \newblock {\em Optimal control}.
 \newblock John Wiley \& Sons, 2012.
 
+\bibitem{9448458}
+Bor-Sen Chen, Yueh-Yu Tsai, and Min-Yen Lee.
+\newblock Robust decentralized formation tracking control for stochastic
+  large-scale biped robot team system under external disturbance and
+  communication requirements.
+\newblock {\em IEEE Transactions on Control of Network Systems}, 8(2):654--666,
+  2021.
+
 \bibitem{9075385}
 Jun Yang, Cunjia Liu, Matthew Coombes, Yunda Yan, and Wen-Hua Chen.
 \newblock Optimal path following for small fixed-wing uavs under wind
