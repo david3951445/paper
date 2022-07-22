@@ -120,7 +120,7 @@ if EXE.TRAJ
     %% set disturbance
     rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1);
     % rb.tr.f2    = repmat(.01*sin(1*rb.tr.t), sys_s.DIM, 1);
-    rb.tr.f2    = 0.01*ones(sys_s.DIM, rb.tr.LEN);
+    rb.tr.f2    = 0.1*ones(sys_s.DIM, rb.tr.LEN);
 
     rb = rb.trajectory();
     rb.Save('tr');

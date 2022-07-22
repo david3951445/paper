@@ -8,10 +8,10 @@ classdef EXE
     %   F = 0   - load output of f() and not execute f()
     
     properties (Constant)
-        LMI = 1;
+        LMI = 0;
         Z2C = 0;
         IK = 0;
-        TRAJ = 0;
-        PLOT = 0; 
+        TRAJ = 1;
+        PLOT = 1; 
     end
 end

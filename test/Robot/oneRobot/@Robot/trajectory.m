@@ -78,21 +78,29 @@ for i = startTime : LEN - 1
     dXh     = xh(2*DIM_F + (1:DIM_F));
 
     %% fault signal
+    % feedback linearized term: Mh(), Hh(). By testing, using feedforward only ( Mh(r(t)) ) is more stable then feedback + feedforward ( Mh(xh(t)+r(t)) ).
     u = rb.u_PID(xh); % PID control
     M = rb.M(X+r);
-    Mh = rb.M(Xh+r);
+    % Mh = rb.M(Xh+r);
+    Mh = rb.M(r);
+    % Mh = 0;
+    
     H = rb.H(X+r, dX+dr);
     % Hh = rb.H(Xh+r, dXh+dr); % diverge
-    Hh = rb.H(X+r, dXh+dr);
+    % Hh = rb.H(Xh+r, dr);
+    % Hh = rb.H(X+r, dXh+dr);
+    Hh = rb.H(r, dr);
+    % Hh = 0;
+    
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*(rb.tr.f1(:, i));
 
     % Show norm of error terms
-    % if mod(i, 100) == 0 
+    if mod(i, 100) == 0 
         % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
-        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
-    % end
+        disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
+    end
     rb.tr.f1(:, i) = f;
     
     xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');

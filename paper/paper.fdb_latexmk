@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex paper"] 1658466753 "paper.aux" "paper.bbl" "paper" 1658467329
+["bibtex paper"] 1658469921 "paper.aux" "paper.bbl" "paper" 1658469942
   "C:/Users/david/AppData/Local/Programs/MiKTeX/bibtex/bst/bibtex/unsrt.bst" 1291864736 18030 1376b4b231b50c66211e47e42eda2875 ""
   "citation.bib" 1656386741 5648 df2b5fa445a371a3a34023a05bf9669d ""
-  "paper.aux" 1658467328 5547 4a32799825f077d770dda3be9ead407f "pdflatex"
+  "paper.aux" 1658469941 5547 4a32799825f077d770dda3be9ead407f "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
-["pdflatex"] 1658467327 "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" "paper.pdf" "paper" 1658467329
+["pdflatex"] 1658469940 "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" "paper.pdf" "paper" 1658469942
   "C:/Users/david/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1657502786 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/david/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1646205648 9769966 c0a427c38caac30a51c1b5d22a5c80e6 ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -71,6 +71,7 @@
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1247596667 32587 65067f817f408bc71a7312f3d9828a9b ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1247596667 37944 359e864bd06cde3b1cf57bb20757fb06 ""
+  "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1247596673 31764 459c573c03a4949a528c2cc7f557e217 ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247596673 34694 870c211f62cb72718a00e353f14f254d ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb" 1136824548 35941 adef23a721dd8354a4a2bf4434f1c484 ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb" 1136824548 39013 e6ce984d70e653b894670e538a7f0667 ""
@@ -137,7 +138,7 @@
   "C:/Users/david/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1623005690 4902 efb3d66683a2da2a232f71e3a571a899 ""
   "IEEEtran.cls" 1503968122 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
   "bullet.png" 1503602906 430 52cae30161d5cfcd05478f00cc70e956 ""
-  "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" 1658467326 59171 6fdb9d91473f04a218120674f12287a5 ""
+  "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" 1658469939 59309 1e2260fa2a6660382a329721622910b1 ""
   "fig/FandW.pdf" 1658392372 56999 ff1ce2e419d6d3e307401ddaed1a53e8 ""
   "fig/LMP.pdf" 1658392183 68540 6026657a0a1a87afd7da949465c7e1d4 ""
   "fig/behavior.pdf" 1657682276 51106 e3afdbc0b0e69a8f401568d6adbb8f53 ""
@@ -145,9 +146,9 @@
   "fig/tracking.pdf" 1657684030 110302 5bd19905494f9b1bac49c1db24fccaba ""
   "ieeeaccess.cls" 1594231121 43094 49cbff3ffeca3e0b46cef8ccff383982 ""
   "notaglinelogo.png" 1503603228 3150 09e11acc4d6224bb6d89a97a56b59fb4 ""
-  "paper.aux" 1658467328 5547 4a32799825f077d770dda3be9ead407f "pdflatex"
-  "paper.bbl" 1658466753 3215 6c2d3858482f581224a77b0509d02bbb "bibtex paper"
-  "paper.tex" 1658467326 59171 6fdb9d91473f04a218120674f12287a5 ""
+  "paper.aux" 1658469941 5547 4a32799825f077d770dda3be9ead407f "pdflatex"
+  "paper.bbl" 1658469921 3215 6c2d3858482f581224a77b0509d02bbb "bibtex paper"
+  "paper.tex" 1658469939 59309 1e2260fa2a6660382a329721622910b1 ""
   "spotcolor.sty" 1594231244 2231 765ae5e8d6893fdf438e03d9be453864 ""
   (generated)
   "paper.aux"

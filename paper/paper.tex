@@ -378,12 +378,12 @@ where $\bar{x} = \begin{bmatrix}
 By combining the CoM position and orientation path, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]$ of robot is found by solving IK.
 
 \section{Reference Tracking control}
-11
-After the reference trajectory is set, the last step is to design a controller for a agent to track it. To analyze the tracking control problem of UAV model in (\ref{eq:uav}) and robot model in (\ref{eq:robot}) together, we represent them by the same form called agent model through some appropriate variable transformations:
+After the reference trajectory $r(t)$ is set, the last step is to design a controller for a agent to track it. To analyze the tracking control problem of UAV model in (\ref{eq:uav}) and robot model in (\ref{eq:robot}) together, we represent them by the same form called agent model through some appropriate variable transformations:
 \begin{equation} \label{eq:agent} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t)
 \end{equation}
-where $u(t)\in\mathbb{R}^m$ is control input vector, $x(t)\in\mathbb{R}^n$ is state vector, $M(\cdot)\in\mathbb{R}^{n\times n}$ is inertia matrix, and $H(\cdot, \cdot)\in\mathbb{R}^n$ is non-inertial force vector. Suppose the state $x(t)$ is unavailable, i.e., $x(t)$ needs to be obtained by sensor. Besides, its integration $\int_{0}^{t} x(\tau) d\tau$ and differentiation $\dot{x}(t)$ can also be measured by sensor respectively for PID control. Then, the output equation can be formulated as:
+where $u(t)\in\mathbb{R}^m$ is control input vector, $x(t)\in\mathbb{R}^n$ is state vector, $M(\cdot)\in\mathbb{R}^{n\times n}$ is inertia matrix, and $H(\cdot, \cdot)\in\mathbb{R}^n$ is non-inertial force vector. In order to transform the tracking control problem into a stability problem, we define the tracking error $e(t)\triangleq x(t)-r(t)$.
+Suppose the state $x(t)$ is unavailable, i.e., $x(t)$ needs to be obtained by sensor. Besides, its integration $\int_{0}^{t} x(\tau) d\tau$ and differentiation $\dot{x}(t)$ can also be measured by sensor respectively for PID control. Then, the output equation can be formulated as:
 \begin{equation} \label{eq:agent output}
     y(t) = C\pmb{x}(t)
 \end{equation}
