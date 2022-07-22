@@ -1,6 +1,6 @@
-PWD c:\Users\david\OneDrive\文件\清大\paper\doc\paper
+PWD c:\Users\david\OneDrive\文件\清大\paper\paper
 INPUT C:\Users\david\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\david\OneDrive\文件\清大\paper\doc\paper\paper.tex
+INPUT c:\Users\david\OneDrive\文件\清大\paper\paper\paper.tex
 OUTPUT paper.log
 INPUT .\ieeeaccess.cls
 INPUT .\ieeeaccess.cls
