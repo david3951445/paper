@@ -11,7 +11,7 @@ classdef EXE
         LMI = 1;
         Z2C = 0;
         IK = 0;
-        TRAJ = 1;
-        PLOT = 1; 
+        TRAJ = 0;
+        PLOT = 0; 
     end
 end
