@@ -5,12 +5,31 @@ Ali Dorri, Salil~S. Kanhere, and Raja Jurdak.
 \newblock Multi-agent systems: A survey.
 \newblock {\em IEEE Access}, 6:28573--28593, 2018.
 
+\bibitem{9476736}
+George~Marios Skaltsis, Hyo-Sang Shin, and Antonios Tsourdos.
+\newblock A survey of task allocation techniques in mas.
+\newblock In {\em 2021 International Conference on Unmanned Aircraft Systems
+  (ICUAS)}, pages 488--497, 2021.
+
 \bibitem{9108245}
 Jawad~N. Yasin, Sherif A.~S. Mohamed, Mohammad-Hashem Haghbayan, Jukka
   Heikkonen, Hannu Tenhunen, and Juha Plosila.
 \newblock Unmanned aerial vehicles (uavs): Collision avoidance systems and
   approaches.
 \newblock {\em IEEE Access}, 8:105139--105155, 2020.
+
+\bibitem{9384209}
+Linjun Li, Yinglong Miao, Ahmed~H. Qureshi, and Michael~C. Yip.
+\newblock Mpc-mpnet: Model-predictive motion planning networks for fast,
+  near-optimal planning under kinodynamic constraints.
+\newblock {\em IEEE Robotics and Automation Letters}, 6(3):4496--4503, 2021.
+
+\bibitem{8931370}
+Yassine Sabri, Najib El~Kamoun, and Fatima Lakrami.
+\newblock A survey: Centralized, decentralized, and distributed control scheme
+  in smart grid systems.
+\newblock In {\em 2019 7th Mediterranean Congress of Telecommunications (CMT)},
+  pages 1--11, 2019.
 
 \bibitem{paden2016survey}
 Brian Paden, Michal {\v{C}}{\'a}p, Sze~Zheng Yong, Dmitry Yershov, and Emilio
@@ -100,5 +119,10 @@ Bor-Sen Chen, Min-Yen Lee, Wei-Yu Chen, and Weihai Zhang.
 \newblock Reverse-order multi-objective evolution algorithm for multi-objective
   observer-based fault-tolerant control of t-s fuzzy systems.
 \newblock {\em IEEE Access}, 9:1556--1574, 2021.
+
+\bibitem{boyd1994linear}
+Stephen Boyd, Laurent El~Ghaoui, Eric Feron, and Venkataramanan Balakrishnan.
+\newblock {\em Linear matrix inequalities in system and control theory}.
+\newblock SIAM, 1994.
 
 \end{thebibliography}

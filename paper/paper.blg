@@ -1,5 +1,50 @@
-This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: unsrt.bst
+Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: citation.bib
 Warning--can't use both author and editor fields in Khamis2015
+You've used 20 entries,
+            1791 wiz_defined-function locations,
+            563 strings with 7520 characters,
+and the built_in function-call counts, 5452 in all, are:
+= -- 474
+> -- 254
+< -- 7
++ -- 92
+- -- 72
+* -- 388
+:= -- 828
+add.period$ -- 60
+call.type$ -- 20
+change.case$ -- 17
+chr.to.int$ -- 0
+cite$ -- 21
+duplicate$ -- 230
+empty$ -- 530
+format.name$ -- 72
+if$ -- 1244
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 21
+newline$ -- 102
+num.names$ -- 20
+pop$ -- 64
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 124
+stack$ -- 0
+substring$ -- 426
+swap$ -- 70
+text.length$ -- 7
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 46
+width$ -- 22
+write$ -- 219
 (There was 1 warning)

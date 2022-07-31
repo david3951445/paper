@@ -92,17 +92,22 @@
 % unmanned vvehcile
 \PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as search and rescue, battlefield, logistics and transportation, and surveillance, etc (cite:UV). Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued (cite:HMAS). Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios. Although there are many types of UVs to make up such a system, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability (cite:UAV-UGV). Additionally, the complementarity between them also makes such a system more potential. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing.
 
-To construct an unmanned HMAS, the three key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision-making content through the actuator. To limit the scope of this paper, we focus on decision-making and control only. The three main problem of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent, subject to constraints such as agent capabilities, fuel cost, time cost, etc (cite: task allocation). Path planning is to optimally plan paths to each agent, subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc (cite: path planning). Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning part, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
+To construct an unmanned HMAS, the three key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision-making content through the actuator. To limit the scope of this paper, we focus on decision-making and control only. The three main problem of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent, subject to constraints such as agent capabilities, fuel cost, time cost, etc \cite{9476736}. Path planning is to optimally plan paths to each agent, subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc (cite: path planning). Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning part, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
 
 To discuss an unmanned HMAS more concretely, we consider an UAVs-UGVs team system for search and rescue. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system.
 
-To the best of the authors' knowledge, most of the literature focus on only one specific problem, and few literatures illustrate the relationship between these problems for an unmanned HMAS. This leads us to propose an system architecture of UAV-robot team system (URTS) for search and rescue usage. The flowchart of decision-making and control process of URTS is given. We divide it into five hierarchical blocks, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. First, the UTRS needs to be able to assign different tasks to agents to perform. After a task is assigned, if the task is to reach a target location, a path needs to be planned to reach it. To make agent move on the path, a behavior corresponding to the environment needs to be determined. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two problems. But to illustrate how the whole system works, the first two problems are also briefly stated.
+To the best of the authors' knowledge, most of the literature focus on only one specific problem, and few literatures illustrate the relationship between these problems for an unmanned HMAS. This leads us to propose an system architecture of UAV-robot team system (URTS) for search and rescue usage. The flowchart of decision-making and control process of URTS is also given. We divide it into five main hierarchical blocks, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. It is because the UTRS needs to be able to assign different tasks to agents to perform first. After a task is assigned, if the task is to reach a target location, a path needs to be planned to reach it. To make agent move on the path, a behavior corresponding to the environment needs to be determined. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two blocks. But to illustrate how the whole system works, the first three problems are also briefly stated.
 
 % To discuss the local motion planning problem and tracking control problem, the real mechanical system for each agent corresponds must be considered. To meet the need for search mobility, we choose quadrotor aircraft as UAV. The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control). In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system. However, to let the biped robot moving, not only the control problem (cite: robot control) but also the local motion planning problem need to be solved. The local motion planning of the walking of biped robot, i.e., stable walking parttern generation, is discussed in this paper. Related researches can be found in (cite: walking parttern).
 
-The local motion planning is the bridge between path planning and tracking control since the path found by path planning algorithm and the path enforced to follow by a controller are not necessarily the same. The reason is that path planning algorithm usually treats the agent as a point, while the actual agent is a mechanical system for the tracking control design. Although there are some literatures (ref:kinodynamic path planning) about path planning with the constraints of kinodynamic of the actual mechanical system, this paper splits the step of path planning into three steps, i.e., (i) path planning, (ii) behavior layer and (iii) local motion planning for clarity. Through this decomposition, we can focus on the local motion design of specific behaviors. The planning of flying motion for UAV and walking motion for robot is studied in this paper, especially the latter. Due to the challenge of the local motion planning of the walking of biped robot, i.e., stable walking parttern generation, it is a popular research topic (cite: walking parttern).
+The local motion planning is the bridge between path planning and tracking control since the path found by path planning algorithm and the path enforced to follow by a controller are not necessarily the same. The reason is that path planning algorithm usually treats the agent as a point, while the actual agent is a mechanical system for the tracking control design. A mechanical system means that there exist kinodynamic constraints. It makes certain paths impossible to follow for an agent, such as paths that are not smooth, have too large curvature, or require too large velocity and acceleration. Although there are some literatures tackle the path planning with the kinodynamic constraints of an actual mechanical system \cite{9384209}, this paper splits the step of path planning into three steps, i.e., (i) path planning, (ii) behavior layer and (iii) local motion planning for clarity. Through this decomposition, we can focus on the local motion design of specific behaviors. The motion planning of flying behavior for UAV and walking behavior for robot is studied in this paper, especially the latter. Due to the challenge of the local motion planning of the walking of biped robot, i.e., stable walking parttern generation, it is a popular research topic (cite: walking parttern).
 
-The tracking control is ...
+The tracking control is to control an agent to follow a desired trajectory. There are many control strategy for MAS. According to the way of the design of controller, it can be divided into centralized control and decentralized control in control field \cite{8931370}. Centralized control means there exist a powerful central controller in MAS to gather the state information and sent the control command back to each agent to reach a global goal. Due to the powerful nature of the central controller, control commands can be determined well and quickly. But when it fails, the whole system will be completely paralyzed. In contrast, decentralized control means that each agent has its own controller to collect and control the agent's own state information. Under this architecture, although the global goal cannot be achieved, the possibility of paralyzing the entire system due to the failure of the controller is avoided
+
+Besides, the formation control is also a topic in MAS (cite:formation control). Its purpose is to keep a MAS in a formation while moving. Although formation control provides a simple framework for the control of a large number of agents, considering the complexity of the disaster relief environment, formation will make the application of URTS inflexible. Because there are many different sacles and types of tasks that must be handled in a disaster relief environment, agents in URTS need to organize multiple teams of different sacles and types to deal with. In this situation, it is more reasonable to treat each agent as an independent individual and design an independent trajectory for the agent to follow.
+
+The external disturbances during tracking control must also be considered. The agent
+
 The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control)
 the control problem of robot
 FTC
@@ -121,9 +126,9 @@ The remainder of the paper is organized as follows. In Section II, ...
 
 \textbf{Notation 1:} 
 % $diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks $A_1, A_2, \dots, A_n$.
-$A^T$: transpose of A. $(a_n)$: sequence. $(a_{k_n})$: subsequence. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
+$A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: sequence. $(a_{k_n})$: subsequence. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
     0,t_f 
-\end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$.
+\end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
 \section{PRELIMINARIES OF search and rescue URTS}
 The URTS will start with a given search and rescue area, and ends with searching task completed. The URTS is composed of $N_j$ teams and a ground station. Each team contains $1$ UAV and $N_i-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,N_i$ and $j=1,2,...,N_j$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
@@ -194,13 +199,12 @@ It is to say that the path $(\sigma_n)$ is divided into many segments which corr
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.5]{fig/behavior.pdf}\caption{The structure of Behavior Layer. The leaf of the tree structure are the possible behaviors an agent can take. The behavior to be take at every moment will be decided in this block.}%
+    \includegraphics[scale=.5]{fig/behavior.pdf}\caption{The structure of behavior layer. The leaf of the tree structure are the possible behaviors an agent can take. The behavior to be take at every moment will be decided in this block.}%
     \label{fig:behavior}
 \end{figure*}
 
 \subsection{Local Motion Planning}
 After a specific behavior is determined, the next step is to design a motion to achieve that behavior. Local Motion Planning is like Path Planning but its scale is smaller and its resolution and precision must be higher. Collision checking is needed since we consider agent as a point or a cube in Path Planning and it's a real body here. Furthermore, the kinodynamic constraint is handled in this block. Although motion planning and path planning are separated into two blocks, the technologies involved are similar and often the same notion in other literature. Therefore, the output of this block is also a path but with a sampling period which often be referred as a reference trajectory $r(t)$. $r(t)$ describes the position and orientation that needed to be reach by a machine system govern by a dynamic equation. Then, Tracking Control block will track $r(t)$ to really do that behavior. Note that the path and trajectory are distinguished in some literature. Different from path (e.g., $(\sigma_n)$), a trajectory (e.g., $r(t)$) has consider the time in physic world. The flowchart of Local Motion Planning block is shown in Fig. \ref{fig:LocalMotionPlanning}
-
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.4]{fig/LMP.pdf}\caption{The flowchart of local motion planning. The corresponding motion design will be executed according to the behavior determined by the behavior layer.}
@@ -211,13 +215,11 @@ In Fig. \ref{fig:LocalMotionPlanning}, some basic behaviors of UAV and robot men
 
 \section{system description of UAV-Robot Team System}
 In order to design a reference trajectory $r(t)$ for the motion of UAV and robot, their dynamic models must be given first. After the system description of UAV and robot, the motion design of Flying and Walking as shown in Fig. \ref{fig:FandW} will be discussed subsequently and separately in the next two subsections.
-
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.4]{fig/FandW.pdf}\caption{The flowchart of Flying and Walking. In both two blocks, a smoothed path is obtained by post-processing first. Then the respective motion of behavior is designed. The final outputs of Flying and Walking are all reference path $r[k]$, but its value and dimension will vary according to the dimension of the system model.}
     \label{fig:FandW}
 \end{figure*}
-
 Before the discussion of the motion design of these two behavior, the following assumption is maded.
 \textit{
     \begin{assumption} \label{asm:cc again}
@@ -498,7 +500,7 @@ where $\bar{e}(t) = \begin{bmatrix}
 \end{bmatrix}$, $\bar{B}=\begin{bmatrix}
     B \\ 0 \\ 0
 \end{bmatrix}$, $\bar{C}=\begin{bmatrix}
-    C & 0 & C_2
+    C & 0 & B_2C_2
 \end{bmatrix}$, and $\bar{v}(t)=\begin{bmatrix}
     0 \\ v_1(t) \\ v_2(t)
 \end{bmatrix}$.
@@ -510,7 +512,7 @@ where $\bar{e}(t) = \begin{bmatrix}
 Since the fault signals become a state variable of the augment system in (\ref{eq:9}), a Luenberger observer is proposed to estimate them and origin state simutaniously to achieve active FTC:
 \begin{equation} \label{eq:10}
     \begin{split}
-        & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{e}}(t)+\bar{B}u_{fb}(t)+{L}(y(t)-\hat{y}(t)) \\
+        & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{e}}(t)+\bar{B}u_{fb}(t)-{L}(y(t)-\hat{y}(t)) \\
         & \hat{y}(t)=\bar{C}\hat{\bar{e}}(t)  
     \end{split}
 \end{equation}
@@ -518,12 +520,12 @@ Since the fault signals become a state variable of the augment system in (\ref{e
     The augmented system (\ref{eq:9}) is observable.
 \end{assumption}
 The PID FTC law is given as:
-\begin{equation} \label{eq:11}
-    u_{fd}(t)=K\hat{\bar{e}}(t)
+\begin{equation} \label{eq:Kx}
+    u_{fb}(t)=K\hat{\bar{e}}(t)
 \end{equation}
 where $K = \begin{bmatrix}
     K_I & K_P & K_D & K_{F_1} & K_{F_2}
-\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the estimation error $\tilde{e}=\bar{e}(t)-\hat{\bar{e}}(t)$, then an new augmented system can be obtained from (\ref{eq:9}), (\ref{eq:10}) and (\ref{eq:11}):
+\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the estimation error $\tilde{e}(t)=\bar{e}(t)-\hat{\bar{e}}(t)$, then an new augmented system can be obtained from (\ref{eq:9}), (\ref{eq:10}) and (\ref{eq:Kx}):
 \begin{equation} \label{eq:aug}
     \dot{\tilde{x}}(t) = \tilde{A}\tilde{x}(t)+\tilde{v}(t)
 \end{equation}
@@ -532,55 +534,171 @@ where $\tilde{x}(t)=\begin{bmatrix}
 \end{bmatrix}$, $\tilde{A}=\begin{bmatrix}
     \bar{A}+\bar{B}K & -\bar{B}K \\ 0 & \bar{A}+L\bar{C}
 \end{bmatrix}$, and $\tilde{v}(t)=\begin{bmatrix}
-    \bar{v}(t) \\ 0
+    \bar{v}(t) \\ \bar{v}(t)
 \end{bmatrix}$
 
-In order to enable the designed control gain $K$ and observer gain $L$ to achieve a specific stablized performance for the system (\ref{eq:aug}) under the disturbance $\bar{v}(t)$, the $H_\infty$ observer-based stabilized control performance below a prescribed disturbance attenuation level $\rho^2$ is given as:
+In order to enable the designed control gain $K$ and observer gain $L$ to achieve a specific stablized performance for the system (\ref{eq:aug}) under the disturbance $\bar{v}(t)$, the $H_\infty$ observer-based stablized control performance below a prescribed disturbance attenuation level $\rho^2$ is given as:
 \begin{equation} \label{Hinf}
     \begin{split}     
         & H_{\infty}(K, L) \\
-        & = \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u^T(t)Ru(t))dt - V(\tilde{x}_0)}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2
+        & = \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt - V(\tilde{x}(0))}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2
     \end{split}
 \end{equation}
-where $t_f$ is the final time, $Q > 0$ is the weighting matrix of state and estimation error, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on tracking and estimation error $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. To find these gains, the following theroem is given.
-\begin{theorem} \label{theorem1}
-    If
-    \begin{equation} \label{LMI}
+where $t_f$ is the final time, $Q \leq 0$ is the weighting matrix of state and estimation error, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on tracking and estimation error $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the $H_\infty$ observer-based stablized control problem in (\ref{Hinf}), the following lemmas are given:
+\begin{lemma}[\cite{boyd1994linear}] \label{lemma1}
+    For any matriices $X$ and $Y$ with appropriate dimensions, and matrix $R=R^T>0$ the following inequality holds:
+    \begin{equation} \label{}
+        X^T Y + Y^T X \leq X^T R^{-1}X + Y^T R Y
+    \end{equation}  
+\end{lemma}
+\begin{lemma}[Schur Complement\cite{boyd1994linear}] \label{lemma2}
+    For the matrices $X=X^T,Y=Y^T$ and matrix $R$ with appropriate dimensions the following statement is true:
+    \begin{equation} \label{}
         \begin{bmatrix}
-            & M_{11} & -\bar{B}Y1 & W_1\sqrt{Q_1} & 0 \\
-            & \ast  & M_{22} & 0 & P_2 \\
-            & \ast & \ast & -I & 0 \\
-            & \ast & \ast & \ast & -\rho^2 
-        \end{bmatrix}\leq 0
+            X & R \\ R^T & Y 
+        \end{bmatrix} > 0 \Leftrightarrow Y>0, X-RY^{-1}R^T>0
     \end{equation}
-    where $M_{11}=\bar{A}W_1+\bar{B}Y_1 + (\bar{A}W_1+\bar{B}Y_1)^T + \frac{1}{\rho^1}I$, $M_{22}=P_2\bar{A}+Y_2\bar{C} + (P_2\bar{A}+Y_2\bar{C})^T+Q_2$. Then system (\ref{eq:aug}) achieve the $H_\infty$ observer-based stabilized control performance (\ref{Hinf}).
+\end{lemma}
+Then, the following theorem is given.
+\begin{theorem} \label{theorem1}
+    If there exists matrices $P=P^T>0, K$ and a scalar $\rho>0$ such that the following matrix inequality hold:
+    \begin{equation} \label{BMI1}
+        Q + P\tilde{A} + \tilde{A}^T P + \tilde{K}^TR\tilde{K} + \frac{1}{\rho^2}PP \leq 0
+    \end{equation}
+    where $\tilde{K}=\begin{bmatrix}
+        K & -K
+    \end{bmatrix}$, then the $H_\infty$ observer-based stablized control specification (\ref{Hinf}) holds.
 \end{theorem}
 \begin{proof}
-    proof...
+    Choose the Lyapunov function $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)$ for the augmented system (\ref{eq:aug}) with $P=P^T>0$, we have:
+    \begin{equation} \label{pf:1}
+        \begin{split}
+            & \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt \\
+            & = V(\tilde{x}(0)) - V(\tilde{x}(t_f)) + \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) \\
+            & + u_{fb}^T(t)Ru_{fb}(t) + \dot{V}(\tilde{x}(t)))dt \\
+            & \leq V(\tilde{x}(0)) + \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + \\
+            & u_{fb}^T(t)Ru_{fb}(t) + Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)))dt
+        \end{split}
+    \end{equation}. By (\ref{eq:aug}) and Lemma \ref{lemma1}, we have:
+    \begin{equation} \label{pf:2}
+        \begin{split}
+            & Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)) \\
+            & = Sym((\tilde{A}\tilde{x}(t)+\tilde{v}(t))^TP\tilde{x}(t)) \\
+            & = \tilde{x}^T(t)(P\tilde{A} + \tilde{A}^T P + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t)
+        \end{split}
+    \end{equation}. Substituting (\ref{pf:2}) and (\ref{eq:Kx}) into (\ref{pf:1}), we get:
+    \begin{equation*} \label{pf:3}
+        \begin{split}
+            & \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t))dt + u_{fb}^T(t)Ru_{fb}(t))dt \\
+            & \leq V(\tilde{x}(0)) + \int_{0}^{t_f}(\tilde{x}^T(t)(Q + P\tilde{A} + \tilde{A}^T P +\tilde{K}^TR\tilde{K}\\
+            & + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t))dt
+        \end{split}
+    \end{equation*}. Thus, if (\ref{BMI1}) holds then (\ref{Hinf}) holds
 \end{proof}
 
-% \begin{equation}      
-%     u_{fb} = K_I\int_{0}^{t} e(\tau) d\tau + K_P e(t) + K_D \dot{e}(t) + K_F\hat{F}
-% \end{equation}
+Although the sufficient condition (\ref{BMI1}) for the existence of the $H_\infty$ observer-based stablized control specification (\ref{Hinf}) have been found, it can not be solved easily since it is a bilinear matrix inequality (BMI) and exists strong coupling between the variables. To solve the issue, a two-step design is exploit.
 
-Although the control gain and observer gain that satisfy with the specification can already be found by Theorem \ref{theorem1}, the calculation speed can be further improved by reducing the dimensionality of the LMI (\ref{LMI}). Observing the matrices $A,B,C,B_2$ in linear system (\ref{eq:error}), it can be further split into $n$ subsystems if the matrices $C,B_2$ have the same form to $A,B$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l\times 3},B_{2,0}\in\mathbb{R}^{l\times 1}$.
+\textit{Step 1:} First, let $P=\begin{bmatrix}
+        P_1 & 0 \\ 0 & P_2
+\end{bmatrix}, Q=\begin{bmatrix}
+        Q_1 & 0 \\ 0 & Q_2
+\end{bmatrix}$ where $P_1,Q_1$ are for stablized control error and $P_2,Q_2$ are for estimated error. Substituting it into (\ref{BMI1}), we get:
+\begin{equation} \label{eq:M}
+    \begin{split}
+        & \begin{bmatrix}
+            Q_1 & 0 \\ 0 & Q_2
+        \end{bmatrix} + Sym(\begin{bmatrix}
+            P_1 & 0 \\ 0 & P_2
+        \end{bmatrix}\begin{bmatrix}
+            \bar{A}+\bar{B}K & -\bar{B}K \\ 0 & \bar{A}+L\bar{C}
+        \end{bmatrix})  \\
+        & + \begin{bmatrix}
+            K^TRK & -K^TRK \\ -K^TRK & K^TRK
+        \end{bmatrix} + \frac{1}{\rho^2}\begin{bmatrix}
+            P_1P_1 & 0 \\ 0 & P_2P_2
+        \end{bmatrix} \\
+        & = \begin{bmatrix}
+            M_{11} & -P_1\bar{B}K - K^TRK \\ * & M_{22}
+        \end{bmatrix} < 0
+    \end{split}
+\end{equation}
+where $M_{11}=Q_1+Sym(P_1(\bar{A}+\bar{B}K)) + K^TRK + \frac{1}{\rho^2}P_1P_1$, $M_{22}=Q_2+Sym(P_2(\bar{A}+L\bar{C})) + K^TRK + \frac{1}{\rho^2}P_2P_2$. By the fact that $\begin{bmatrix}
+    M_{11} & -P_1\bar{B}K - K^TRK \\ * & M_{22}
+\end{bmatrix} < 0 \Rightarrow M_{11}<0, M_{22}<0$, the inequality $M_{11}<0$ is used to find $P_1,K,\rho$. Premultiplying and
+postmultiplying $M_{11}<0$ by $W_1=P_1^{-1}$ and applying Lemma \ref{lemma2}, we obtain:
+\begin{equation} \label{eq:step1}
+    \begin{bmatrix}
+        Sym(\bar{A}W_1+\bar{B}Y_1) & W_1\sqrt[1/2]{Q_1} & Y_1^T & I \\
+        * & -I & 0 & 0 \\
+        * & * & -R^{-1} & 0 \\
+        * & * & * & -\rho^2I\\
+    \end{bmatrix} < 0
+\end{equation}
+where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1,\rho$.
+
+\textit{Step 2:} Substituting $P_1=W^{-1}$, $K=Y_1W_1^{-1}$ and $\rho$ found in \textit{Step 1} into (\ref{eq:M}) and applying Lemma \ref{lemma2}, we obtain:
+\begin{equation} \label{eq:step2}
+    \begin{bmatrix}
+        M_{11} & -P_1\bar{B}K - K^TRK & P_2 \\
+        * & Q_2+Sym(P_2\bar{A}+Y_2\bar{C}) + K^TRK & 0 \\
+        * & * & -\rho^2I
+    \end{bmatrix} < 0
+\end{equation}
+where $Y_2=P_2L$. By solving the LMI (\ref{eq:step2}), we can obtain $P_2,Y_2$.
+
+Finally, we can find the gains $K$ and $L=P_2^{-1}Y_2$ that achieve the $H_\infty$ observer-based stablized control performance in (\ref{Hinf}) of the augmented system (\ref{eq:aug}).
+
+% The design procedure of the $H_\infty$ observer-based stablized control scheme for the augmented system (\ref{eq:aug}) is organized as follows.
+% \begin{enumerate}
+%     \item ...
+% \end{enumerate}
+% \begin{theorem} \label{theorem2}
+%     Given matrices $W_1=W_1^T>0,Q_1=Q_1^T>0,Q_2=Q_2^T>0,K$,$L$ and a scalar $\rho>0$, the following LMI:
+%     \begin{equation} \label{LMI2}
+%         \begin{bmatrix}
+%             & M_{11} & -\bar{B}Y1 & W_1\sqrt{Q_1} & 0 \\
+%             & \ast  & M_{22} & 0 & P_2 \\
+%             & \ast & \ast & -I & 0 \\
+%             & \ast & \ast & \ast & -\rho^2 
+%         \end{bmatrix}\leq 0
+%     \end{equation}
+%     where $M_{11}=\bar{A}W_1+\bar{B}Y_1 + (\bar{A}W_1+\bar{B}Y_1)^T + \frac{1}{\rho^1}I$, $M_{22}=P_2\bar{A}+Y_2\bar{C} + (P_2\bar{A}+Y_2\bar{C})^T+Q_2$, is equivalent to the BMI (\ref{BMI1})
+% \end{theorem}
+% \begin{proof}
+%     Let $W_1=P_1^{-1}$. By $\tilde{A}$ in (\ref{eq:aug}) and (\ref{eq:PQ}), and multiplying (\ref{BMI1}) left and right by $\begin{bmatrix}
+%         W_1 & 0 \\ 0 & I
+%     \end{bmatrix}$, we have:
+%     \begin{equation} \label{}
+%         \begin{bmatrix}
+%             W_1Q_1W_1 & 0 \\ 0 & Q_2
+%         \end{bmatrix})
+%         Sym(\begin{bmatrix}
+%             I & 0 \\ 0 & P_2
+%         \end{bmatrix})\begin{bmatrix}
+%             \bar{A}+\bar{B}K & -\bar{B}K \\ 0 & \bar{A}+L\bar{C}
+%         \end{bmatrix} + \frac{1}{\rho^2}\begin{bmatrix}
+%             I & 0 \\ 0 & P_2P_2
+%         \end{bmatrix} + 
+%     \end{equation}
+% \end{proof}
+Although the control gain and observer gain that satisfy with the specification can already be found through the previous steps, the calculation speed can be further improved by reducing the dimensionality of the LMI (\ref{BMI1}). Observing the matrices $A,B,C,B_2$ in linear system (\ref{eq:error}), it can be further split into $n$ subsystems if the matrices $C,B_2$ have the same form to $A,B$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l\times 3},B_{2,0}\in\mathbb{R}^{l\times 1}$.
 Due to the fact that $f_1(t)\in\mathbb{R}^n, f_2(t)\in\mathbb{R}^{n}$, the n subsystems are obtained from (\ref{eq:error}):
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
-        & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fd,i}(t)+f_{1,i}(t)) \\
+        & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
         & \pmb{y}_i(t)=C_0\pmb{e}_i(t)+B_{2,0}f_{2,i}(t)   
     \end{split}
 \end{equation}
-where subscript $i = 1, 2, ..., n$ denote the element in the corresponding vector. By Theorem \ref{theorem1} again, the form shows that the subsystems (\ref{eq:linear subsys}) can achieve the $H_\infty$ observer-based stabilized control performance. Let $K_i$ be the control gain of the $i$th subsystems, the origin control gain $K$ of the origin agent system can be obtained by $K = \begin{bmatrix}
+where subscript $i = 1, 2, ..., n$ denote the element in the corresponding vector. By Theorem \ref{theorem1} again, the form shows that the subsystems (\ref{eq:linear subsys}) can achieve the $H_\infty$ observer-based stablized control performance. Let $K_i$ be the control gain of the $i$th subsystems, the origin control gain $K$ of the origin agent system can be obtained by $K = \begin{bmatrix}
     \mathit{v}_1 & \mathit{v}_2 & ... & \mathit{v}_n
 \end{bmatrix}^T, \mathit{v}_i=K_i^T\otimes\mathbf{e}_i$ where $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$. The origin observer gain $L$ can be obtained in the same way. In this case, the calculate speed can be improved since the dimensionality is decrease.
 \textit{
     \begin{remark}
-        This method can regard as designing the control and observer gain to each state variable, which is a common control method in practice. However, the gains are not directly adjusted but indirectly designed through prescribed specifications (\ref{Hinf}). Besides, $K_i, i=1,2,\dots,n$ do not have to be the same value (so do $L_i, i=1,2,\dots,n$). Dependent on the actual system situation, the appropriate $L_i$ and $K_i$ can be designed for each state variable by adjusting the weighting matrix $Q_i,R_i$ and attenuation levels $\rho_i$ for each subsystem.
+        This method can regard as designing the control and observer gain to each state variable, which is a common control method in practice. However, the gains are not directly adjusted but indirectly designed through prescribed specifications (\ref{Hinf}). Besides, $K_i, i=1,2,\dots,n$ do not have to be the same value (so do $L_i, i=1,2,\dots,n$). Dependent on the actual system situation, the appropriate $L_i$ and $K_i$ can be designed for each state variable by adjusting the weighting matrix $Q_i,R_i$ and attenuation level $\rho_i$ for each subsystem.
     \end{remark}
 }
 
-Although the design of the agent controller and observer has been completed, the trajectory design of UAV is not done yet. Since the UAV is an underactuated system, the "virtual" control input for UAV $u(t)=\begin{bmatrix}
+Even though the design of the agent controller and observer has been completed, the trajectory design of UAV is not done yet. Since the UAV is an underactuated system, the "virtual" control input for UAV $u(t)=\begin{bmatrix}
     f_x & f_y & f_z & \tau_x & \tau_y & \tau_z 
 \end{bmatrix}^T\in\mathbb{R}^6$ obtained from Theorem \ref{theorem1} needs to convert to actual control input $u'(t)=\begin{bmatrix}
     F & \tau_x & \tau_y & \tau_z 
