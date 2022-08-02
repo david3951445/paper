@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex paper"] 1659251431 "paper.aux" "paper.bbl" "paper" 1659251531
+["bibtex paper"] 1659411966 "paper.aux" "paper.bbl" "paper" 1659411999
   "C:/Users/david/AppData/Local/Programs/MiKTeX/bibtex/bst/bibtex/unsrt.bst" 1291864736 18030 1376b4b231b50c66211e47e42eda2875 ""
   "citation.bib" 1659165535 7970 881cb3b67440de4bd75320dd34729ad1 ""
-  "paper.aux" 1659251530 5939 bf6b52c327003ad0dfce99d0ee446a68 "pdflatex"
+  "paper.aux" 1659411998 6250 a8802d7576b96a2faaf7b404e9546dc2 "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
-["pdflatex"] 1659251529 "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" "paper.pdf" "paper" 1659251531
+["pdflatex"] 1659411997 "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" "paper.pdf" "paper" 1659411999
   "C:/Users/david/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1657502786 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/david/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1646205648 9769966 c0a427c38caac30a51c1b5d22a5c80e6 ""
   "C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -122,17 +122,18 @@
   "C:/Users/david/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1623005690 4902 efb3d66683a2da2a232f71e3a571a899 ""
   "IEEEtran.cls" 1503968122 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
   "bullet.png" 1503602906 430 52cae30161d5cfcd05478f00cc70e956 ""
-  "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" 1659251528 69259 67d1a38fb6169536b60a37a58374f8bc ""
-  "fig/FandW.pdf" 1658392372 56999 ff1ce2e419d6d3e307401ddaed1a53e8 ""
+  "c:/Users/david/OneDrive/文件/清大/paper/paper/paper.tex" 1659411996 72043 6832e5bca6574c38699ed31411c07616 ""
+  "fig/FandW.pdf" 1659343022 60315 e679f554bd02aa10b4d007b9478abd61 ""
   "fig/LMP.pdf" 1658392183 68540 6026657a0a1a87afd7da949465c7e1d4 ""
   "fig/behavior.pdf" 1657682276 51106 e3afdbc0b0e69a8f401568d6adbb8f53 ""
-  "fig/sys.pdf" 1657680602 44488 7c06d4fafcca724e771e417f036f3e92 ""
-  "fig/tracking.pdf" 1657684030 110302 5bd19905494f9b1bac49c1db24fccaba ""
+  "fig/sys.pdf" 1659315249 41379 0216cfb148b11494c37982050ae02011 ""
+  "fig/tracking.pdf" 1659316660 106160 711c62c1d30ac73da692d9e95ee67788 ""
   "ieeeaccess.cls" 1594231121 43094 49cbff3ffeca3e0b46cef8ccff383982 ""
+  "logo.png" 1503602950 9705 f6e56955b0b8a334759253caf7856307 ""
   "notaglinelogo.png" 1503603228 3150 09e11acc4d6224bb6d89a97a56b59fb4 ""
-  "paper.aux" 1659251530 5939 bf6b52c327003ad0dfce99d0ee446a68 "pdflatex"
-  "paper.bbl" 1659251431 5031 4caeba19e452c0dbcb642144a7eac15d "bibtex paper"
-  "paper.tex" 1659251528 69259 67d1a38fb6169536b60a37a58374f8bc ""
+  "paper.aux" 1659411998 6250 a8802d7576b96a2faaf7b404e9546dc2 "pdflatex"
+  "paper.bbl" 1659411967 5031 4caeba19e452c0dbcb642144a7eac15d "bibtex paper"
+  "paper.tex" 1659411996 72043 6832e5bca6574c38699ed31411c07616 ""
   "spotcolor.sty" 1594231244 2231 765ae5e8d6893fdf438e03d9be453864 ""
   (generated)
   "paper.aux"

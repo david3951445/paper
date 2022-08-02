@@ -47,10 +47,11 @@
     
 \begin{document}
 % \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
-% \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
-% \doi{10.1109/ACCESS.2017.DOI}
 
-% \title{Preparation of Papers for IEEE ACCESS}
+\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.2017.DOI}
+
+\title{Robust Fault-Tolerant Control and Motion Planning of UAVs and Biped Robots Team System for Search and Rescue Usage}
 % \author{\uppercase{First A. Author}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
 % \uppercase{Second B. Author\authorrefmark{2}, and Third C. Author,
 % Jr}.\authorrefmark{3},
@@ -73,49 +74,45 @@
 % \corresp{Corresponding author: First A. Author (e-mail: author@ boulder.nist.gov).}
 % .
 
-% \begin{abstract}
+\begin{abstract}
+In this study, we investigate a UAVs and biped robots team system (URTS) for search and rescue usage. The system architecture of URTS is proposed to illustrate the issues that need to be addressed in URTS and the relationships between them. Then we focus on two issues, local motion planning and tracking control. We discuss the methods of local motion planning for UAV flying behavior and robot walking behavior, and then give the control methods for UAV and robot. The relationship between the two issues, the transformation of the reference trajectory, is also explored in detail. By converting the dynamics model of UAV and robot into a unified agent model, a design method for a $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) is proposed for the agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to active FTC through observer estimation. The design of this $H_\infty$ observer-based FTC is transformed into a linear matrix inequality (LMI) -constrained optimization problem by a two-step design procedure. Finally, with the help of MATLAB LMI Toolbox, the tracking problem of UAV and robot in URTS is effectively solved. Simulations are given ...
+\end{abstract}
 
-% \end{abstract}
+\begin{keywords}
+biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H_\infty$ control, search and rescue, smoothing signal model, UAV, UAVs-UGVs team system
+\end{keywords}
 
-% \begin{keywords}
-% Enter key words or phrases in alphabetical 
-% order, separated by commas. For a list of suggested keywords, send a blank 
-% e-mail to keywords@ieee.org or visit \underline
-% {http://www.ieee.org/organizations/pubs/ani\_prod/keywrd98.txt}
-% \end{keywords}
+\titlepgskip=-15pt
 
-% \titlepgskip=-15pt
-
-% \maketitle
+\maketitle
 
 \section{Introduction}
 % unmanned vvehcile
-\PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as search and rescue, battlefield, logistics and transportation, and surveillance, etc (cite:UV). Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued (cite:HMAS). Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios. Although there are many types of UVs to make up such a system, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability (cite:UAV-UGV). Additionally, the complementarity between them also makes such a system more potential. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing.
+\PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as search and rescue, battlefield, logistics and transportation, and surveillance, etc (cite:UV). Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system (MAS) becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued (cite:HMAS). Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios because each agent has different aptitudes.
 
-To construct an unmanned HMAS, the three key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision-making content through the actuator. To limit the scope of this paper, we focus on decision-making and control only. The three main problem of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent, subject to constraints such as agent capabilities, fuel cost, time cost, etc \cite{9476736}. Path planning is to optimally plan paths to each agent, subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc (cite: path planning). Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning part, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
+To construct an unmanned HMAS, the three required key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision-making content through the actuator. To limit the scope of this paper, we focus on decision-making and control only. The three main problem of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent, subject to constraints such as agent capabilities, fuel cost, time cost, etc \cite{9476736}. Path planning is to optimally plan paths to each agent, subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc (cite: path planning). Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning part, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
 
-To discuss an unmanned HMAS more concretely, we consider an UAVs-UGVs team system for search and rescue. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system.
+Although there are many types of UVs to make up an unmanned HMAS, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability (cite:UAV-UGV). Additionally, the complementarity between them also makes such a system more potential. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing. To discuss more concretely, we consider an UAVs-UGVs team system for search and rescue. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the search and rescue environment, we choose biped robot as UGV. Even though other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system.
 
-To the best of the authors' knowledge, most of the literature focus on only one specific problem, and few literatures illustrate the relationship between these problems for an unmanned HMAS. This leads us to propose an system architecture of UAV-robot team system (URTS) for search and rescue usage. The flowchart of decision-making and control process of URTS is also given. We divide it into five main hierarchical blocks, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. It is because the UTRS needs to be able to assign different tasks to agents to perform first. After a task is assigned, if the task is to reach a target location, a path needs to be planned to reach it. To make agent move on the path, a behavior corresponding to the environment needs to be determined. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two blocks. But to illustrate how the whole system works, the first three problems are also briefly stated.
+To the best of the authors' knowledge, most of the literature focus on only one specific problem in such an unmanned multi-agent search and rescue system, such as task allocation problem, path planning problem or control problem. Additionally, few literatures illustrate the relationship between these problems. This leads us to propose an system architecture of UAVs-robots team system (URTS) for search and rescue usage. The flowchart of decision-making and control process of URTS is also given. We divide it into five main hierarchical processes, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. It is because the UTRS needs to be able to assign different tasks to agents to perform first. After a task is assigned, if the task is to reach a target location, a path to reach it needs to be planned. To make agent move on the path, a behavior corresponding to the environment is required to determine. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two processes. But to illustrate how the whole system works, the first three problems are also briefly stated.
 
-% To discuss the local motion planning problem and tracking control problem, the real mechanical system for each agent corresponds must be considered. To meet the need for search mobility, we choose quadrotor aircraft as UAV. The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control). In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system. However, to let the biped robot moving, not only the control problem (cite: robot control) but also the local motion planning problem need to be solved. The local motion planning of the walking of biped robot, i.e., stable walking parttern generation, is discussed in this paper. Related researches can be found in (cite: walking parttern).
+% To discuss the local motion planning problem and tracking control problem, the real mechanical system for each agent corresponds must be considered. To meet the need for search mobility, we choose quadrotor aircraft as UAV. The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control). In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system. However, to let the biped robot moving, not only the control problem (cite: robot control) but also the local motion planning problem need to be solved. The local motion planning of the walking of biped robot, i.e., stable walking pattern generation, is discussed in this paper. Related researches can be found in (cite: walking pattern).
 
-The local motion planning is the bridge between path planning and tracking control since the path found by path planning algorithm and the path enforced to follow by a controller are not necessarily the same. The reason is that path planning algorithm usually treats the agent as a point, while the actual agent is a mechanical system for the tracking control design. A mechanical system means that there exist kinodynamic constraints. It makes certain paths impossible to follow for an agent, such as paths that are not smooth, have too large curvature, or require too large velocity and acceleration. Although there are some literatures tackle the path planning with the kinodynamic constraints of an actual mechanical system \cite{9384209}, this paper splits the step of path planning into three steps, i.e., (i) path planning, (ii) behavior layer and (iii) local motion planning for clarity. Through this decomposition, we can focus on the local motion design of specific behaviors. The motion planning of flying behavior for UAV and walking behavior for robot is studied in this paper, especially the latter. Due to the challenge of the local motion planning of the walking of biped robot, i.e., stable walking parttern generation, it is a popular research topic (cite: walking parttern).
+The local motion planning is the bridge between path planning and tracking control since the path found by path planning algorithm and the path enforced to follow by a controller are not necessarily the same. The reason is that path planning algorithm usually treats the agent as a point, while the actual agent in the physical world is a mechanical system for the tracking control design. A mechanical system means that there exist kinodynamic constraints. This makes certain paths impossible to follow for an actual agent, such as paths that are not smooth, have too large curvature, or require too large velocity and acceleration. Although there are some literatures directly tackle the kinodynamic constraints path planning problem \cite{9384209}, this paper splits path planning into three steps, i.e., (i) path planning, (ii) behavior layer and (iii) local motion planning for clarity. Through this decomposition, we can focus on the local motion planning of specific behaviors. The motion planning of flying behavior for UAV and walking behavior for robot is studied in this paper, especially the latter. The local motion planning of walking of biped robot, i.e., stable walking pattern generation, is a popular research topic due to its challenge(cite: walking pattern).
 
-The tracking control is to control an agent to follow a desired trajectory. There are many control strategy for MAS. According to the way of the design of controller, it can be divided into centralized control and decentralized control in control field \cite{8931370}. Centralized control means there exist a powerful central controller in MAS to gather the state information and sent the control command back to each agent to reach a global goal. Due to the powerful nature of the central controller, control commands can be determined well and quickly. But when it fails, the whole system will be completely paralyzed. In contrast, decentralized control means that each agent has its own controller to collect and control the agent's own state information. Under this architecture, although the global goal cannot be achieved, the possibility of paralyzing the entire system due to the failure of the controller is avoided
+The tracking control is to control an agent to follow a desired trajectory. There are many control strategy for MAS. According to the way of the design of controller, it can be divided into centralized control and decentralized control in control field \cite{8931370}. Centralized control means there exist a powerful central controller in MAS to gather the state information and sent the control command back to each agent to reach a global goal. Due to the powerful nature of the central controller, control commands can be determined well and quickly. But when it fails, the whole system will be completely paralyzed. In contrast, decentralized control means that each agent has its own controller to collect and control the agent's own state information. Under this architecture, although the global goal cannot be achieved, the possibility of paralyzing the entire system due to the failure of the controller is avoided.
 
-Besides, the formation control is also a topic in MAS (cite:formation control). Its purpose is to keep a MAS in a formation while moving. Although formation control provides a simple framework for the control of a large number of agents, considering the complexity of the disaster relief environment, formation will make the application of URTS inflexible. Because there are many different sacles and types of tasks that must be handled in a disaster relief environment, agents in URTS need to organize multiple teams of different sacles and types to deal with. In this situation, it is more reasonable to treat each agent as an independent individual and design an independent trajectory for the agent to follow.
+Besides, the formation control is also a topic in MAS (cite:formation control). Its purpose is to keep a MAS in a formation while moving. Although formation control provides a simple framework for the control of a large number of agents, considering the complexity of the disaster relief environment, formation will make the application of URTS inflexible. It is because we expect that agents in URTS need to organize multiple teams of different scales and types to deal with multiple tasks of different scales and types in a disaster relief environment. In this situation, it is more reasonable to treat each agent as an independent individual and design an independent trajectory for the agent to follow.
 
-The external disturbances during tracking control must also be considered. The agent
+The external disturbances during tracking control must also be considered. The agent ...
+% The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control).
+% the control problem of robot
 
-The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control)
-the control problem of robot
-FTC
-disturbance
+Fault-tolerant contrl (FTC) ...
+
+Based on the foregoing, a robust $H_\infty$ decentralized fault-tolerant tracking control strategy is proposed to deal with the control problem in URTS.
 
 % Based on the foregoing, an UAV-robot team system (URTS) is discussed in this paper.
-
-% \PARstart{W}{ith}
 
 The contributions of this study are described as follows:
 \begin{enumerate}
@@ -126,12 +123,12 @@ The remainder of the paper is organized as follows. In Section II, ...
 
 \textbf{Notation 1:} 
 % $diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks $A_1, A_2, \dots, A_n$.
-$A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: sequence. $(a_{k_n})$: subsequence. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
+$A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: a sequence. $(a_{k_n})$: a subsequence of a sequence $(a_n)$. $[a_{j,k}]$: A matrix with the entries $a_{j,k}$ in the $j$th row and $k$th column. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
     0,t_f 
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
 \section{PRELIMINARIES OF search and rescue URTS}
-The URTS will start with a given search and rescue area, and ends with searching task completed. The URTS is composed of $N_j$ teams and a ground station. Each team contains $1$ UAV and $N_i-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,N_i$ and $j=1,2,...,N_j$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
+The URTS will start with a given search and rescue area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
 % The system architecture if URTS is shown in Fig. \ref{fig:1}.
 % \begin{figure}[htbp]
 % \centering
@@ -139,15 +136,23 @@ The URTS will start with a given search and rescue area, and ends with searching
 % \label{fig:1}
 % \end{figure}
 
-To complete search tasks, each team is designed to be responsible for a small area of the overall search area, and each agent will be assigned an appropriate path to cover the area. To complete rescue tasks, whenever a target (e.g., victims or disaster area) is found by the machine vision of nearby agent, the ground station will assign some agents to the location of target. It can be expected that there has multiple search or rescue tasks need to be performed at the same time but there has multiple agents. If each agent can only perform one task at a time, then there exist many feasible way of task allocation. Usually we want this allocation to be optimal, which can be achieved by solving the dynamic task allocation problem.
+To complete search tasks, each team is designed to be responsible for a small area of the overall search area, and each agent will be assigned an appropriate path to cover the area. To complete rescue tasks, whenever a target (e.g., victims or disaster area) is found by the machine vision of nearby agent, the ground station will assign some agents to the location of target. 
+% It can be expected that there has multiple search or rescue tasks need to be performed at the same time but there has multiple agents. If each agent can only perform one task at a time, then there exist many feasible way of task allocation. Usually we want this allocation to be optimal, which can be achieved by solving the dynamic task allocation problem.
 
-If a task is to reach a location of certain goal, there must exist multiple feasible paths. Similar to task allocation, we usually want to find an optimal path. Besides, it's necessary to concern about collision between agents or between agents and obstacles in the actual scenario, so each agent will also sense distance-related information about its surrounding and send it back to the ground station. The ground station will combine this information with the goal assigned by task allocation algorithm and make a decision to avoid obstacles and other agents nearby. That is, the path of each agent will be reassigned every moment if needed by solving the dynamic path planning problems.
+If a task is to reach a location of certain goal, we need to find a collision-free path to reach it. 
+% there must exist multiple feasible paths. Similar to task allocation, we usually want to find an optimal path. 
+% Besides, it's necessary to concern about collision between agents or between agents and obstacles in the actual scenario, 
+Hence, each agent will also sense distance-related information about its surrounding and send it back to the ground station. The ground station will combine this information with the goal location assigned by task allocation algorithm and make a decision to avoid obstacles and other agents nearby.
+% That is, the path of each agent will be reassigned every moment if needed by solving the dynamic path planning problems.
 
-We need to design some behavior to follow the path found by path planning algorithm especially for agents with complex mechanical systems like robots. Since such a system has a high degree of freedom, there are many ways to follow the same path (e.g., a robot can walk or run to follow the same path). Furthermore, agents in a search and rescue system are not always following a trajectory. Sometimes they need the behavior such as stop to look around, get supplies and put supplies. To meet these needs, a behavioral layer is necessary. The behavior layer gives an appropriate behavior to fulfill an actual requirement. In order to make an behavior, we must design a corresponding motion which is handled by local motion planning. The motion is a desired reference trajectory for an actual mechanical system to follow. Finally, a tracking controller is designed to follow the desired reference trajectory.
+We need to determine specific behavior to follow the path found by path planning algorithm according to the situation of the environment especially for agents with complex mechanical systems like robots. Since such a system has a high degree of freedom, there are many ways to follow the same path (e.g., a robot can walk or run to follow the same path). Furthermore, agents in URTS are not always following the path. Sometimes they need the behavior such as stop to look around, get supplies and put supplies. To meet these needs, a behavioral layer is necessary.
+% The behavior layer decides an appropriate behavior based on the circumstances.
 
-To clarify this issue, a more detailed system architecture for each agent is needed. Followed by the concept in \cite{paden2016survey}, a system architecture for an agent used in search and rescue is proposed as shown in Fig. \ref{fig:sys}. The Simultaneous Localization And Mapping (SLAM) block converts sensor information into the location of agents and an occupy map. The visual object recognition block provides distance information and object information through sensor info. The object information provides agent machine vision that enables it to determine an appropriate behavior (e.g., a robot sees a obstacle and decides to climb through it). The detailed functions of remaining 5 blocks, i.e., Tack Allocation, Path Planning, Behavior Layer, Local Motion Planning and Tracking Control, will be explained in the following sections.
+In order to make an behavior, we must design a corresponding motion which is handled by local motion planning. The motion is a desired reference trajectory for an actual mechanical system to follow. Finally, a tracking controller is designed to follow this desired reference trajectory.
 
-% To determine the behavior, agent needs the information about enviroment. The sensing data which include external enviroment information and internal system information is feedback to Behavior Layer to assist in judging the present state (fig:system). 
+The agents overall have the same system architecture in URTS except for some subprocess differences. Followed by the concept in \cite{paden2016survey}, a system architecture for an agent used in search and rescue is proposed as shown in Fig. \ref{fig:sys}. The Simultaneous Localization And Mapping (SLAM) block converts sensor information into the location of agents $q_{start}$ and an occupy map $\mathcal{C}$. The visual object recognition block provides distance information and object information through the analysis of sensor information. The object information provides agent machine vision that enables it to determine an appropriate behavior (e.g., a robot sees a obstacle and decides to climb through it). The detailed functions of remaining 5 blocks, i.e., Tack Allocation, Path Planning, Behavior Layer, Local Motion Planning and Tracking Control, will be explained in the following sections.
+
+% To determine the behavior, agent needs the information about environment. The sensing data which include external environment information and internal system information is feedback to Behavior Layer to assist in judging the present state (fig:system). 
 
 \begin{figure}[htbp]
 \centering
@@ -156,7 +161,7 @@ To clarify this issue, a more detailed system architecture for each agent is nee
 \end{figure}
 
 \subsection{Task Allocation}
-In the URTS, it can be expected that each agent will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agent and task is more than one, and each agent has different capabilities (e.g. moving speed or load capacity) and status (e.g. their own position or the amount of supplies carried), and each task has different characteristics (e.g. Urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which makes us want to find the optimal allocation. This problem is refered as Task Allocation Problem or Multi-robot Task Allocation (MRTA) Problem. A problem formulation and problem modeling can be found in \cite{Khamis2015}. Although there are many different problem definitions and many problem models to solve this issue, the common goal is to find a set of task-agent pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned and therefore do not further discuss this issue. In other words, every agent knows a destinition it need to go at every moment.
+In the URTS, it can be expected that each agent will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agents and tasks is more than one, and each agent has different capabilities (e.g. moving speed or load capacity) and status (e.g. their own position or the amount of supplies carried), and each task has different characteristics (e.g. Urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which makes us want to find the optimal allocation. This problem is refered as task allocation problem or multi-robot task allocation problem. A problem formulation and problem modeling can be found in \cite{Khamis2015}. Although there are many different problem definitions and many problem models to solve this issue, the common goal is to find a set of task-agent pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned and therefore do not further discuss this issue. In other words, every agent knows a destinition $q_{goal}$ it need to go at every moment.
 % $(\mathcal{G})_n, n\in\mathbb{Z}\cap[1, N], N\in\mathbb{Z}^+$
 \textit{
     \begin{remark}
@@ -165,12 +170,17 @@ In the URTS, it can be expected that each agent will be assigned several specifi
 }
 
 \subsection{Path Planning}
-After a target point is assigned for each agent, next step is to find a collision-free path from current position to it. There are several path planning algorithm to handle this problem, in this article, a roadmap-based path planning algorithm is used. This method attempts to discretize the search space into interconnected roads and find the path on it. According to the roadmap construction method, it can be divided into deterministic and sample-based. According to the way of pathfinding, it can be divided into multi-query planner and single-query planner \cite{elbanhawi2014sampling}. Multi-query planner divides pathfinding into learning phase in which a roadmap is bulit and query phase in which a graph search algorithm is used to find a best path within paths. Some representative planners are Probability Road Map (PRM), Visibility Graph, and Voronoi Diagrams \cite{liu2018survey}. Relatively speaking, single-query planner completes pathfinding by constructing and querying at the same time, that is to say, the roadmap will be constructed incrementally and toward the goal. Some representative planners such as Rapidly-exploring Random Tree (RRT), Expansice Space Tree (EST), and Ariadne's Clew \cite{elbanhawi2014sampling}. However, the environment is dynamic rather static for URTS so some extra structure need to impose on aforementioned planner. Some common dynamic planner also can be found in \cite{elbanhawi2014sampling}, such like PRM with D* search algorithm, dynamic RRT, and extended RRT.
+After a target point is assigned for each agent, next step is to find a collision-free path from current position to it. There must exist multiple feasible paths to go. Similar to task allocation, we usually want to find an optimal path. There are several path planning algorithm to handle this problem. Due to the developmental and universal nature of roadmap-based path planning algorithm, this paper uses it as the path planning method of UTRS. This method attempts to discretize the search space into interconnected roads and find the path on it. 
+% According to the roadmap construction method, it can be divided into deterministic and sample-based. 
 
-Furthermore, the constraints imposed by the mechanical structure are needed to consider within pathfinding process mentioned by other literatures but it will be left to Local Motion Planning to deal with. The reason is that URTS is a large-scale system, which makes the environment in which it is located changes more violently and will leads to many corresponding behaviors which path constraints will not necessarily be the same (e.g., curvature constraints of two behavior: running and walking are expected to be different for robot). In this case, Path Planning becomes a higher-level planner which regard agent as a point without kinodynamic constraints while the decision of the behavior and the corresponding motion will be handed over to the next two layers: Behavior Layer and Local Motion Planning.
+According to the way of pathfinding, it can be divided into multi-query planner and single-query planner \cite{elbanhawi2014sampling}. Multi-query planner will first construct a roadmap and then use the graph search method on it to query the best path, such as Probability Road Map (PRM), Visibility Graph, and Voronoi Diagrams \cite{liu2018survey}. Single-query planner will complete pathfinding by constructing and querying simultaneously,
+%  i.e., the roadmap will be constructed incrementally and toward the goal, 
+such as Rapidly-exploring Random Tree (RRT), Expansice Space Tree (EST), and Ariadne's Clew \cite{elbanhawi2014sampling}. However, the environment is dynamic rather static for URTS so some extra structure need to impose on aforementioned planner. Some common dynamic planner can also be found in \cite{elbanhawi2014sampling}, such like PRM with D* search algorithm, dynamic RRT, and extended RRT. All of the above common roadmap-based planners can be applied to the URTS.
+
+Furthermore, the constraints imposed by the mechanical structure are needed to consider within pathfinding process mentioned by other literatures but it will be left to Local Motion Planning block to deal with. The reason is that URTS works on a complex environment and therefore requires a variety of behaviors to respond, and the constraints on these behaviors will vary. (e.g., curvature constraints of two behavior: running and walking are expected to be different for robot). In this case, a unified planner will become overly complex and impracticable. For this reason, we divide path planning into three subprocess, i.e., Path Planning, Behavior Layer and Local Motion Planning. Then, the global planner, Path Planning block, will regard agent as a point without kinodynamic constraints. The local planners, Local Motion Planning block, will consider the motion planning of a specific behavior.
 % In this case, the configuration space $\mathcal{C}$ degenerates to $\mathbb{R}^3$.
 
-By treating a roadmap-based path planning algorithm as a black box, the output is a sequence (or sayed waypoints), and the three inputs are current configuration $q_{start}$, goal configuration $q_{goal}$, and configuration space $\mathcal{C}$. Current configuration is obtained by GPS, inertial measurement unit, or other locating techniques. Goal configuration is obtained by previous layer: Task Allocation. Configuration space $\mathcal{C}$ is constructed by environment information through sensors of agents online or in advance by human knowledge offline. It's a space contain all possible configuration of agent which composed of free space $\mathcal{C}_{free}$ and obstacle space $\mathcal{C}_{obs}$, where $\mathcal{C}=\mathcal{C}_{free}\cup\mathcal{C}_{obs}$ and $\mathcal{C}_{free}\cap\mathcal{C}_{obs}=\emptyset$. For a simpler explanation of how the URTS works, the following assumption is made.
+By treating a roadmap-based path planning algorithm as a black box, the output is a sequence (or sayed waypoints), and the three inputs are current configuration $q_{start}$, goal configuration $q_{goal}$, and configuration space $\mathcal{C}$. Current configuration is obtained by GPS, inertial measurement unit, or other locating techniques. Goal configuration is obtained by previous block, Task Allocation. Configuration space $\mathcal{C}$ is constructed by environment information through sensors of agents online or in advance by human knowledge offline. $\mathcal{C}$ is a space contain all possible configuration of agent which composed of free space $\mathcal{C}_{free}$ and obstacle space $\mathcal{C}_{obs}$, where $\mathcal{C}=\mathcal{C}_{free}\cup\mathcal{C}_{obs}$ and $\mathcal{C}_{free}\cap\mathcal{C}_{obs}=\emptyset$. For a simpler explanation of how the URTS works, the following assumption is made.
 \begin{assumption}
     The locating ability of the URTS is perfect so every agent can know its current configuration $q_{start}$.
 \end{assumption}
@@ -180,22 +190,22 @@ By treating a roadmap-based path planning algorithm as a black box, the output i
 \begin{assumption}
     The URTS is supposed to have an perfect real-time mapping ability so a real-time configuration space $\mathcal{C}$ can be obtain.
 \end{assumption}
-\begin{assumption} \label{asm:collision}
+\begin{assumption} \label{asm:collision} % UAV do not consider obstacle collisions a little wierd.
     UAVs do not consider obstacle collisions because there are few obstacles in the air. Hence, the path of UAVs can be directly assigned rather found by planner. Robots do not consider obstacle collisions in the direction perpendicular to the ground. 
 \end{assumption}
-From above assumption, a path of agent can be expressed as a sequence
+From above assumptions, a path of agent can be expressed as a sequence
 \begin{equation}
     (\sigma_n), n\in\mathbb{Z}\cap[1,k_f], \sigma_n\in\mathcal{C}
 \end{equation}
-where $k_f$ is the time step when reaching goal. Since the path planning is dynamic, $(\sigma_n)$ is composed of multiple segments actually. Let $(\sigma_{k_n})$ be the subsequence of $(\sigma_n)$, where $k_n$ is the time step when a replanning decision is occured. Then, the segments of path from the result of the replanning in time step $k_n$ can be expressed as sequences $(\sigma_m), m\in\mathbb{Z}\cap[k_n, k_{n+1})$. For agents, the replanning decision can be a goal changing that made by human or Task Allocation. For robot, it can be a collision detecting by a dynamic roadmap-based planner. The results path $(\sigma_n)$ is passed to next layer, Behavior Layer.
+where $k_f$ is the time step when reaching goal. Since the path planning is dynamic, $(\sigma_n)$ is composed of multiple segments actually. Let $(\sigma_{k_n})$ be the subsequence of $(\sigma_n)$, where $k_n$ is the time step when a replanning decision is occured. Then, the segments of path from the result of the replanning in time step $k_n$ can be expressed as sequences $(\sigma_m), m\in\mathbb{Z}\cap[k_n, k_{n+1})$. For agents, the replanning decision can be a goal changing that made by human or Task Allocation. For robot, it can be a collision detecting by a dynamic roadmap-based planner. The results path $(\sigma_n)$ is passed to next block, Behavior Layer.
 
 \subsection{Behavior Layer}
 % Since UAVs and robots are real physical systems, they must interact with the environment through a behavior so that they can move and act in the physical world.
-Path Planning tells agents where to go but not how. Take robot as an example, it may walk, run, climb, or jump to follow the path $(\sigma_n)$ in real scenario. These behaviors with changing position are called "moving" in this paper. Besides, the agents do not always moving. Somtimes they has to suspending to take a action such like getting and putting supplies, rotating in place to collect more environment info, or some unexpected situations occur such like no path found, the robot falls. These behaviors without changing position are called an "action" in this paper. More behaviors can be added so that the agent can have more way to act with environment but there must have a corresponding behavior every moment otherwise the agent will lose control. The sequence of these behaviors be expressed as:
+Path Planning tells agents where to go but not how. Take robot as an example, it may walk, run, climb, or jump to follow the path $(\sigma_n)$ in real scenario. These behaviors with changing position are called "moving" in this paper. Besides, the agents do not always moving. Somtimes they has to suspend to take a action (e.g., getting and putting supplies, rotating in place to collect more environment information) or deal with some unexpected situations (e.g., no path found, the robot falls). These behaviors without changing position are called an "action" in this paper. More behaviors can be added so that the agent can have more way to act with environment but there must have a corresponding behavior every moment otherwise the agent will lose control. The sequence of these behaviors be expressed as:
 \begin{equation}
     (\beta_n), n\in\mathbb{Z}\cap[1,k_f], \beta_n\in\mathcal{B}
 \end{equation}
-It is to say that the path $(\sigma_n)$ is divided into many segments which corresponding to a specific behavior. The set of behavior $\mathcal{B}$ of agent in URTS can be roughly discribed in Fig. \ref{fig:behavior}.
+It is to say that the path $(\sigma_n)$ is divided into many segments and each corresponding to a specific behavior. Judging an appropriate behavior according to the current environment will be a rather complicated project, so this article only gives the structure of the behavior set. The set of behavior $\mathcal{B}$ of agent in URTS can be roughly discribed in Fig. \ref{fig:behavior}.
 
 \begin{figure*}[htbp]
     \centering
@@ -204,31 +214,31 @@ It is to say that the path $(\sigma_n)$ is divided into many segments which corr
 \end{figure*}
 
 \subsection{Local Motion Planning}
-After a specific behavior is determined, the next step is to design a motion to achieve that behavior. Local Motion Planning is like Path Planning but its scale is smaller and its resolution and precision must be higher. Collision checking is needed since we consider agent as a point or a cube in Path Planning and it's a real body here. Furthermore, the kinodynamic constraint is handled in this block. Although motion planning and path planning are separated into two blocks, the technologies involved are similar and often the same notion in other literature. Therefore, the output of this block is also a path but with a sampling period which often be referred as a reference trajectory $r(t)$. $r(t)$ describes the position and orientation that needed to be reach by a machine system govern by a dynamic equation. Then, Tracking Control block will track $r(t)$ to really do that behavior. Note that the path and trajectory are distinguished in some literature. Different from path (e.g., $(\sigma_n)$), a trajectory (e.g., $r(t)$) has consider the time in physic world. The flowchart of Local Motion Planning block is shown in Fig. \ref{fig:LocalMotionPlanning}
+After a specific behavior is determined, the next step is to design a motion to achieve that behavior. Local Motion Planning block is like Path Planning block but its scale is smaller and its resolution and precision must be higher. Collision checking is needed since we consider agent as a point in Path Planning block and it is a real body here. Furthermore, the kinodynamic constraint is handled in this block. Although motion planning and path planning are separated into two blocks, the technologies involved are similar and often the same notion in other literature. Therefore, the output of this block is also a path but with a timescale, i.e., sampling period. This path is often referred as a reference trajectory $r(t)$. $r(t)$ describes the position and orientation that needed to be reach over time by a machine system govern by a dynamic equation. Then, Tracking Control block will track $r(t)$ to really do that behavior. Note that the path and trajectory are distinguished in some literature. Different from path $(\sigma_n)$ (or say $r[k]$), a trajectory $r(t)$ has consider the time in physic world. The flowchart of Local Motion Planning block is shown in Fig. \ref{fig:LocalMotionPlanning}
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.4]{fig/LMP.pdf}\caption{The flowchart of local motion planning. The corresponding motion design will be executed according to the behavior determined by the behavior layer.}
+    \includegraphics[scale=.4]{fig/LMP.pdf}\caption{The flowchart of local motion planning. The corresponding motion planning will be executed according to the behavior determined by the behavior layer. The terminator, exception, represents an exceptional condition that performs unconsidered behaviors. The reference path $r[k]$ is a sequence (or say a discrete signal) designed by a specific behavior block. $r[k]$ will convert to reference trajectory $r(t)$, an analog signal, by an A to D convertor.}
     \label{fig:LocalMotionPlanning}
 \end{figure*}
 
-In Fig. \ref{fig:LocalMotionPlanning}, some basic behaviors of UAV and robot mentioned before are added to illustrate the flow of this block. The terminator, exception, represents an exceptional condition that performs unconsidered behaviors. To limit the scope of this article, we only focus on the motion design of Flying (for UAV) and Walking (for robot) behavior which belong to Moving behavior. The reference path $r[k]$ is a sequence (or say a discrete signal) designed by a specific behavior block. It then convert to reference trajectory $r(t)$, an analog signal, by an A to D convertor.
+In Fig. \ref{fig:LocalMotionPlanning}, some basic behaviors of UAV and robot mentioned before are added to illustrate the flow of this block. To limit the scope of this article, we only focus on the motion planning of flying behavior of UAV and walking behavior of robot. They are belong to moving behavior in Fig. \ref{fig:LocalMotionPlanning}.
 
 \section{system description of UAV-Robot Team System}
-In order to design a reference trajectory $r(t)$ for the motion of UAV and robot, their dynamic models must be given first. After the system description of UAV and robot, the motion design of Flying and Walking as shown in Fig. \ref{fig:FandW} will be discussed subsequently and separately in the next two subsections.
+In order to design a reference trajectory $r(t)$ for the motion of UAV and robot, their dynamic models must be given first. After the system description of UAV and robot, the motion planning of flying and walking as shown in Fig. \ref{fig:FandW} will be discussed subsequently and separately in the next two subsections.
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.4]{fig/FandW.pdf}\caption{The flowchart of Flying and Walking. In both two blocks, a smoothed path is obtained by post-processing first. Then the respective motion of behavior is designed. The final outputs of Flying and Walking are all reference path $r[k]$, but its value and dimension will vary according to the dimension of the system model.}
     \label{fig:FandW}
 \end{figure*}
-Before the discussion of the motion design of these two behavior, the following assumption is maded.
+Before the discussion of the motion planning of these two behavior, the following assumption is maded.
 \textit{
     \begin{assumption} \label{asm:cc again}
         The space between obstacles is large enough to eliminate the need for collision checking again, and the average speed of agents is slow enough to ignore dynamic constraints
     \end{assumption}
 }
-However, for these two behaviors, there all exists an inevitable kinematic constraint on curvature of local motion. Although an accurate reference trajectory without breaking the curvature constraint can be designed, it is not easy to solve this problem. Additionally, it is not nessasry for these two behaviors in URTS since they are uesd to move from one location to another while the effect of error during moving caused by breaking curvature constraint is relatively insignificant. At the same time, the assumption \ref{asm:cc again} makes sure the error will not causing collision. As an alternative, this problem can be handled by curve fitting which can be regarded as a post-process of the path $(\sigma_n)$. The post-process will appear in the begining of motion design process of these two behaviors as shown in Fig. \ref{fig:FandW}.
+However, for these two behaviors, there all exists an inevitable kinematic constraint on curvature of local motion. Although an accurate reference trajectory without breaking the curvature constraint can be designed, it is not easy to solve this problem. Additionally, it is not nessasry for these two behaviors in URTS since they are uesd to move from one location to another while the effect of error during moving caused by breaking curvature constraint is relatively insignificant. At the same time, the \textit{Assumption \ref{asm:cc again}} makes sure the error will not causing collision. As an alternative, this problem can be handled by curve fitting which can be regarded as a post-process of the path $(\sigma_n)$. The post-process will appear in the begining of motion planning process of these two behaviors as shown in Fig. \ref{fig:FandW}.
 
-\subsection{motion design of flying of UAV}
+\subsection{motion planning of flying of UAV}
 A dynamic model about how the UAV moves in the physical world is given first. By Newton-Euler equation, the dynamic model of UAV can be formulated as \cite{sabatino2015quadrotor}:
 \begin{equation} \label{eq:uav} 
     \begin{split}
@@ -305,14 +315,10 @@ where $J=\begin{bmatrix}
 \end{bmatrix}$.
 % where $y'$ denotes the $y$ axis after rotating the $z$ axis and $x''$ denotes the $x$ axis after rotating the $y'$ axis
 $m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $f$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame, and $F$ is the total thrust. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
-% For ease of discussion later, let us convert (\ref{eq:uav}) into the following form:
-% \begin{equation}
-%     F_w=M(X_w)\ddot{X_w}+C(\dot{X_w})+G(X_w)+F(\dot{X_w})
-% \end{equation
 
-Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $(\beta_n)=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed by linear interpolation and then cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. $(\sigma_n')$ is the position reference path $\begin{bmatrix}
+Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $(\beta_n)=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. $(\sigma_n')$ is the position reference path $\begin{bmatrix}
     x_r[k] & y_r[k] & z_r[k]
-\end{bmatrix}^T$. Subsequently, the orientation reference path, row angle $\phi_r[k]$, pitch angle $\theta_r[k]$ and yaw angle $\psi_r[k]$ are set. $\phi_r[k]$ is set to zero since no need for spinning when flying. $\theta_r[k]$ and $\psi_r[k]$ cannot be set since UAV is an underactuated system, which will be discussed in the next section. Finally, the reference path $r[k]$ of UAV can be obtained by combining them together, i.e., $r[k] = \begin{bmatrix}
+\end{bmatrix}^T$. Subsequently, the orientation reference path, row angle $\phi_r[k]$, pitch angle $\theta_r[k]$ and yaw angle $\psi_r[k]$ are considered. $\phi_r[k]$ is set to zero since no need for spinning when flying. $\theta_r[k]$ and $\psi_r[k]$ cannot be set since UAV is an underactuated system, which will be discussed in the next section. Finally, the reference path $r[k]$ of UAV can be obtained by combining them together, i.e., $r[k] = \begin{bmatrix}
     x_r[k] & y_r[k] & z_r[k] & \psi_r[k]
 \end{bmatrix}^T$. The flowchart is shown in Fig. \ref{fig:FandW}.
 
@@ -332,14 +338,14 @@ By Lagrange equation, the dynamic model of biped robot can be formulated as:
         & \tau = M(q)\ddot{q} + C(q,\dot{q})\dot{q} + G(q)    
     \end{split}
 \end{equation}
-where $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is in the joint space. Furthermore, the walking of biped-robot suffers from the falling problem, i.e, how to find a stable walking parttern prevent robot from falling. These make the design of walking motion more difficult. In this paper, a three-dimensional linear inverted pendulum Mode (3D-LIPM) \cite{kajita2001real} is used to design the walking motion.
+where $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is in the joint space. Furthermore, the walking of biped robot suffers from the falling problem, i.e, how to find a stable walking pattern prevent robot from falling. These make the design of walking motion more difficult. In this paper, a three-dimensional linear inverted pendulum Model (3D-LIPM) \cite{kajita2001real} is used to design the walking motion.
 
 Let us define the body frame of robot as $\{ \widehat{X_b}, \widehat{Y_b}, \widehat{Z_b} \}$ as in \cite{ourrobot}. Taking the forward direction of robot as $\widehat{X_b}$ direction, the left direction as $\widehat{Y_b}$ direction, and the torso direction as $\widehat{Z_b}$ direction in body frame, "Falling" means the moments on the robot in $\widehat{X_b}$ and $\widehat{Y_b}$ direction are not zero. More accuately, the robot will not fall if the zero moment point (ZMP) lies in the support polygon, i.e., the convex hull of face of supported foots. The ZMP in $\widehat{X_b}$ direction can be discribed as \cite{huang2001planning} ($\widehat{Y_b}$ direction as same form):
 \begin{equation}
     x_{zmp} = \frac{\sum_{i=1}^{12} (m_i(\ddot{z}_i+g)x_i - m_i\ddot{x}_iz_i - I_{iy}\ddot{\Omega}_{iy})}
                    {\sum_{i=1}^{12} m_i(\ddot{z}_i+g)}
 \end{equation}
-It can be seen that ZMP is related to 12 link masses, moment of inertia, positions, accelerations, and angular velocities. This makes the analytical solution of reference $q_r(t)$ impossible. However, an approximate solution can be derived through 3D-LIPM which will find CoM reference first and then obtain $q_r(t)$ by using inverse kinemic (IK) given step size, step height, step period and CoM height. Many researchers have used this method to avoid complex calculations for ZMP of actual robot dynamic model. Although the actual dynamic model is different from 3D-LIPM so there is an error between them, the design process will be more simple. The overall process is shown in Fig. \ref{fig:FandW}.
+It can be seen that ZMP is related to 12 link masses, moment of inertia, positions, accelerations, and angular velocities. This makes the analytical solution of reference $q_r(t)$ impossible. However, an approximate solution can be derived through 3D-LIPM. It is to find CoM reference first and then obtain $q_r(t)$ by using inverse kinemic (IK) given step size, step height, step period and CoM height. Many researchers have used this method to avoid complex calculations for ZMP of actual robot dynamic model. Although the actual dynamic model is different from 3D-LIPM so there is an error between them, the design process will be more simple. The overall process is shown in Fig. \ref{fig:FandW}.
 % \begin{figure}[htbp]
 %     \centering
 %     \includegraphics[scale=.3]{fig/walking.pdf}\caption{flowchart of biped robot walking}%
@@ -348,22 +354,24 @@ It can be seen that ZMP is related to 12 link masses, moment of inertia, positio
 
 Following the same step in UAV, the smoothed path $(\sigma_n')$ for robot can be obtained at first. For ease of explanation, suppose walking is occured between time step $1$ and $N$, i.e., $n\in\mathbb{Z}\cap[1,N]$. Note that $(\sigma_n')$ is not actual CoM reference in robot case since CoM of robot need to "swinging" for balance. Despite that, $(\sigma_n')$ tells the robot the position to go so the $\widehat{X_b}$ direction can be obtained by doing finite difference on $(\sigma_n')$ due to the expectation that the robot will move forward (rather than sideways or backward). To keep torso upright, the $\widehat{Z_b}$ direction is equal to the $z$-axis in the inertial frame $\widehat{Z_g}$. Given $\widehat{X_b}$ and $\widehat{Z_b}$, $\widehat{Y_b}$ can be obtained obviously through cross product. The sequence of body frame, i.e., CoM orientation path $(CO_n)$ can be obtained through the above steps.
 
-\begin{remark}
-    A frame in $\mathbb{R}^3$ can be determined by given the "position" and "orientation" with respect to a reference frame. That is, given the position and orientation of two joints in a link with known kinematics, the position and orientation of joints between them can be found by IK. Hence, we need to find the  position path and orientation path which compose the desired path.
-\end{remark}
+\textit{
+    \begin{remark}
+        A frame in $\mathbb{R}^3$ can be determined by given the "position" and "orientation" with respect to a reference frame. That is, given the position and orientation of two joints in a link with known kinematics, the position and orientation of joints between them can be found by IK. Hence, we need to find the  position path and orientation path, which compose the desired path.
+    \end{remark}
+}
 
 Let us denote the $x$ and $y$ component of $\sigma_n'$ in $(\sigma_n')$ as the sequence $(\sigma^{1}_{n}), \sigma^{1}_{n}\in\mathbb{R}^2$. The left and right "envelopes", $(\sigma^{2}_{n})$ and $(\sigma^{3}_{n})$, of $(\sigma^{1}_{n})$ with a fixed distance $L_1$ can be found by $(\sigma^{1}_{n})$ and $(CO_n)$ through the geometric relation between $(\sigma^{i}_{n}), i=1,2,3$, where $L_1$ is feet width (or shoulder width). Then the $x$ and $y$ component of left and right foothold paths, $(\sigma^{2}_{k_n})$ and $(\sigma^{3}_{k_n})$, can be obtained by a given step size, which are the subsequence of $(\sigma^{2}_{n})$ and $(\sigma^{3}_{n})$, respectively. Finally, left and right foothold paths $(\sigma^{i}_{k_n}), \sigma^{i}_{k_n}\in\mathbb{R}^3, i=4,5$ are found by adding $z$ component which is given by ground height.
 
-After foothold paths are obtained, ankle position path can also be obtained by the given step height which is customized by the designer or based on the height of the obstacle to be crossed. Taking the left foothold path as an example, $x$ and $y$ component of the highest position of ankle during stride are set as middle point of two footholds $\sigma^{2}_{k_m}$ and $\sigma^{2}_{k_{m+1}}$ where $m\in\mathbb{Z}\cap[1,N-1]$, and the $z$ component are given by step height. By using cubic spline interpolation, we have the left and right ankle position path $(\sigma^{6}_{n})$ and $(\sigma^{7}_{n})$. The ankle orientation path is found by gradient of ground. Finally, the ankle path is found by combining the position and orientation path together. So far, the remaining work is to find out the CoM path and then to combine with the ankle path to calculate the joint path through IK.
+After foothold paths are obtained, ankle position path can also be obtained by the given step height which is customized by the designer or based on the height of the obstacle to be crossed. Taking the left foothold path as an example, $x$ and $y$ component of the highest position of ankle during stride are set as middle point of two footholds $\sigma^{2}_{k_m}$ and $\sigma^{2}_{k_{m+1}}$ where $m\in\mathbb{Z}\cap[1,N-1]$, and the $z$ component are given by step height. By using cubic spline interpolation, we have the left and right ankle position paths, $(\sigma^{6}_{n})$ and $(\sigma^{7}_{n})$. The ankle orientation path is found by gradient of ground. Finally, the left and right ankle paths, $(\sigma^{8}_{n})$ and $(\sigma^{9}_{n})$, are found by combining the position and orientation path together. So far, the remaining work is to find out the CoM path and then to combine with the ankle path to calculate the joint path through IK.
 
-To obtain CoM postion path $(CP_n)$, ZMP path need to obtain first. ZMP path can be obtained through ankle path since ZMP needs to lie in the support face and ankle path point out when a feet is stand on the ground. Suppose the CoM height $z_c$ of robot is constant when walking, then the robot model can be regarded as an 3D-LIPM:
+To obtain CoM postion path $(CP_n)$, ZMP path need to obtain first. ZMP path can be obtained through foothold paths $(\sigma^{4}_{k_n})$ and $(\sigma^{5}_{k_n})$ since ZMP needs to lie in the support face and the foothold path point out when a feet is stand on the ground. Suppose the CoM height $z_c$ of robot is constant when walking, then the robot model can be regarded as an 3D-LIPM:
 \begin{equation} \label{eq:LIPM}
     \begin{split}
         & \ddot{x} = \frac{g}{z_c}(x - p_x) \\
         & \ddot{y} = \frac{g}{z_c}(y - p_y)
     \end{split}
 \end{equation}
-where $(x,y)$ is the position of CoM of the inverted pendulum, $g$ is the gravity acceleration, and $(p_x,p_y)$ is the position of ZMP. Since $z_c,g,(p_x,p_y)$ are given, $(x,y)$ can be solved. To solve the ODE in (\ref{eq:LIPM}), a method is proposed to convert it to a servo problem \cite{1241826}:
+where $(x,y)$ is the position of CoM of the inverted pendulum, $g$ is the gravity acceleration, and $(p_x,p_y)$ is the position of ZMP. Since $z_c$, $g$ and $(p_x,p_y)$ are given, $(x,y)$ can be solved. To solve the ODE in (\ref{eq:LIPM}), a method is proposed to convert it to a servo problem \cite{1241826}:
 \begin{equation} \label{eq:output tracking}
     \begin{split}
         & \dot{\bar{x}} = A\bar{x} + Bu \\
@@ -378,7 +386,8 @@ where $\bar{x} = \begin{bmatrix}
     0 \\ 0 \\ 1
 \end{bmatrix}$, and $C = \begin{bmatrix}
     1 & 0 & -z_c/g
-\end{bmatrix}$. Our goal is to find a control input $u$ in order that the output $p_x$ can track a ZMP reference path so that the solution of ODE (\ref{eq:LIPM}) $x$, i.e., the CoM position path we want is found. Unlike conventional methods, the problem is solved by optimal control. The system is discretized first and the discrete LQ tracker is employed to achieve the output tracking. The formulation can be found in TABLE 4.4-1 in \cite{lewis2012optimal}. The $y$-direction can be found by same procedure since the dynamic of 3D-LIPM in the $x$-direction and $y$-direction is decoupled with same form. The CoM position path $(CP_n)$ then be obtained by combining $x$, $y$ and $z_c$.
+\end{bmatrix}$. Our goal is to find a control input $u$ in order that the output $p_x$ can track a ZMP reference trajectory so that the solution of ODE $x$ in (\ref{eq:LIPM}), i.e., the CoM position path we want is found. Unlike conventional methods, the problem is solved by optimal control. The system is discretized first and the discrete LQ tracker is employed to achieve the output tracking. The formulation can be found in TABLE 4.4-1 in \cite{lewis2012optimal}. The $y$-direction can be found by same procedure since the dynamic of 3D-LIPM in the $x$-direction and $y$-direction is decoupled with same form. The CoM position path $(CP_n)$ then be obtained by combining $x$, $y$ and $z_c$.
+% $\bar{x}$ in (\ref{eq:output tracking}),
 
 By combining the CoM orientation $(CO_n)$ and position $(CP_n)$ path, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]$ of robot is found by solving IK.
 
@@ -391,7 +400,7 @@ where $u(t)\in\mathbb{R}^n$ is control input vector, $x(t)\in\mathbb{R}^n$ is st
 \begin{equation} \label{eq:control}
     u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t)) 
 \end{equation}
-where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms to canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law. To make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
+where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law for improving system robustness. To make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
 \begin{enumerate}
     \item For agent, there exists coupling effect due to co-channel interference in communication between agents \cite{9448458}.
     \item For agent, there exists cyber-attack on communication network between agents and ground station.
@@ -399,7 +408,7 @@ where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms 
     \item For UAV, there exists wind disturbance \cite{9075385}.
     \item For robot, there exists ground reaction force \cite{chen2013human}. 
 \end{enumerate}
-Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to an disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the real system:
+Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to an disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the following real system:
 % The coupling effect for an agent \textit{$agent_{i,j}$} in URTS can be expressed as the form $\sum_{i'=1,i'\neq i}^{N_i}\sum_{j'=1,j'\neq j}^{N_j}\textit{c}_{i,j}(x_{i,j}(t))\times x_{i',j'}(t)$ where $x_{i,j}(t)$ is the own state.
 \begin{equation} \label{eq:agent d1} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t) + d_1(t)
@@ -426,7 +435,7 @@ By Multipling $M(r(t))^{-1}$ from the left and right sides and with some arrangm
 \begin{equation} \label{eq:error, state eq}
     \ddot{e}(t) = u_{fb}(t) + f_1(t)
 \end{equation}
-where $f_1(t) = M(r(t))^{-1}(-\Delta M -\Delta H + d_1(t))$ is the unknown actuator fault signal. $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
+where $f_1(t) = M(r(t))^{-1}(-\Delta M -\Delta H + d_1(t))$ is the unknown actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
 % \textit{
 %     \begin{remark}
 %         Although the error terms $\Delta e$, $\Delta M$ and $\Delta H$ caused by the difference between state $x(t)$ and estimated state $\hat{x}(t)$ are not necessarily bounded, they can still be estimated as long as they are smooth.
@@ -445,7 +454,7 @@ with $A_0 = \begin{bmatrix}
 0 \\ 0 \\ 1
 \end{bmatrix}$. 
 
-Through above analysis, the tracking control problem of the nonlinear system with external disturbance (\ref{eq:agent d1}) is transformed into the fault tolerance stable control problem of linear system (\ref{eq:linear f1}). The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear system stable. In a real system, the feedback information is measured by sensor, i.e, the state $\pmb{e}(t)$ in (\ref{eq:linear f1}) is unavailable. At the same time, the external disturbances on sensor also need to be considered as mentioned before. Since the sensor information (\ref{eq:agent output}) will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but also the coupling effect due to co-channel interference and the cyber-attack signal are concerned. Suppose the total effect can be equivalent to an unknown sensor fault signal $f_2(t)\in \mathbb{R}^{n}$ with same size as $f_1(t)$, the measurement output equation can be described as:
+Through above analysis, the tracking control problem of the nonlinear system with external disturbance (\ref{eq:agent d1}) is transformed into the stable control problem of the linear system (\ref{eq:linear f1}) with fault signal. The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear system stable. In a real system, the feedback information is measured by sensor, i.e, the state $\pmb{e}(t)$ in (\ref{eq:linear f1}) is unavailable. At the same time, the external disturbances on sensor also need to be considered as mentioned before. Since the sensor information (\ref{eq:agent output}) will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but also the coupling effect due to co-channel interference and the cyber-attack signal are concerned. Suppose the total effect can be equivalent to an unknown sensor fault signal $f_2(t)\in \mathbb{R}^{n}$ with same size as $f_1(t)$, the measurement output equation can be described as:
 \begin{equation} \label{eq:agent output}
     y(t) = C\pmb{e}(t) + B_2f_2(t)
 \end{equation}
@@ -458,17 +467,17 @@ where $y(t)\in\mathbb{R}^l$ is the output vector, $C\in\mathbb{R}^{l\times 3n}$ 
 \end{equation}
 % where $f_i(t)\in \mathbb{R}^{n_i}, i=1,2$ with $n_1=n$ and $n_2 = n$.
 
-To deal with the fault signals, an active fault tolerance control (FTC) is introduced \cite{9306757}. First, we need a model of the fault signal. In general, constructing a model for an unknown signal is impossible since there is no information about it. Hence, the following assumption is maded:
+To deal with the fault signals, an active fault-tolerant control (FTC) is introduced \cite{9306757}. First, we need a model of the fault signal. In general, constructing a model for an unknown signal is impossible since there is no information about it. Hence, the following assumption is maded:
 \begin{assumption} \label{asm:smooth}
     The first $p-1$ derivatives of the fault signals $f_i(t), i=1,2$ all exist and are continuous, i.e., $f_i(t)\in C^{p-1}$.
 \end{assumption}
-Under the assumption, now we can construct a "smooth" model by finite difference method. To obtain a state-space representation, the derivative of the fault signals $\dot{f}_i(t)$ with uniform grid $h$ are needed, which can be expressed as:
+Under the assumption, now we can construct a smoothing signal model by finite difference method. To obtain a state-space representation, the derivative of the fault signals $\dot{f}_i(t)$ with uniform grid $h$ are needed, which can be expressed as:
 \begin{equation} \label{eq:df}
     \dot{f}_i(t)=\sum_{k\in{Z_0}}\frac{a_k f_i(t-kh)}{h} + R_{p-1}(t), Z_0\subset\mathbb{Z}
 \end{equation}
-where $R_{p-1}(t)\in O(h^{p-1})$ denotes the remainder term, and $p=\vert{Z_0}\vert > 1$ is the accuracy of difference. The derivative of $f_i(t-kh),k\in{Z_0}$ in (\ref{eq:df}) is also needed. For the convenience of analysis, let us choose $Z_0=\{ 0,1,\dots,p-1 \}$. By changing index $k$ to $j$, the derivative of $f_i(t-jh),k\in{Z_0}$ can be obtained by (\ref{eq:df}):
+where $R_{p-1}(t)\in O(h^{p-1})$ denotes the remainder term, and $p=\vert{Z_0}\vert > 1$ is the accuracy of difference. The derivative of $f_i(t-kh),k\in{Z_0}$ in (\ref{eq:df}) is also needed. For the convenience of analysis, let us choose $Z_0=\{ 0,1,\dots,p-1 \}$. By changing index $k$ to $j$, the derivative of $f_i(t-jh),j\in{Z_0}$ can be obtained by (\ref{eq:df}):
 \begin{equation} \label{eq:df1}
-    \dot{f}_i(t-jh)=\sum_{k=0}^{p-1}\frac{a_{j,k} f_i(t-kh)}{h}+\epsilon_j(t), j=0,1,\dots,p-1
+    \dot{f}_i(t-jh)=\sum_{k=0}^{p-1}\frac{a_{j,k} f_i(t-kh)}{h}+\epsilon_j(t)
 \end{equation}
 where $\epsilon_j(t)\in O(h^{p-1})$. By arranging $\dot{f}_i(t-jh)$ into a state-space representation, we have:
 \begin{equation} \label{eq:7}
@@ -478,7 +487,7 @@ where $v_i(t)=\begin{bmatrix}
     \epsilon_0^T(t) & \epsilon_1^T(t) & \dots & \epsilon_{p-1}^T(t)
 \end{bmatrix}^T$, $F_i(t)=\begin{bmatrix}
     f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-(p-1)h)
-\end{bmatrix}^T$, and $A_i=(a_{j,k})\otimes I_{n}$. Then, the fault signals $f_i(t), i=1,2$ are the output of the system in (\ref{eq:7})
+\end{bmatrix}^T$, and $A_i=[a_{j,k}]\otimes I_{n}$. Then, the fault signals $f_i(t), i=1,2$ are the output of the system in (\ref{eq:7})
 \begin{equation} \label{eq:8}
     f_i(t)=C_iF_i(t)
 \end{equation}
@@ -506,7 +515,7 @@ where $\bar{e}(t) = \begin{bmatrix}
 \end{bmatrix}$.
 \textit{
     \begin{remark}
-        The equation (\ref{eq:df}) is derived by Taylor expansion, so assumption \ref{asm:smooth} is nessasry. Unlike previous work, a finite-difference-method-based modeling method is proposed, which reduce the approximation error between origin fault signal and its smooth model. Besides, the fault signals $f_i(t)$ are assumed to be of differentiability class $C^{p-1}$ rather than bounded, which will make the proposed method more general for practical scenario.
+        The equation (\ref{eq:df}) is derived by Taylor expansion, so Assumption \ref{asm:smooth} is nessasry. Unlike previous work, a finite-difference-method-based modeling method is proposed, which reduce the approximation error between origin fault signal and its smooth model. Besides, the fault signals $f_i(t)$ are assumed to be of differentiability class $C^{p-1}$ rather than bounded, which will make the proposed method more general for practical scenario.
     \end{remark}
 }
 Since the fault signals become a state variable of the augment system in (\ref{eq:9}), a Luenberger observer is proposed to estimate them and origin state simutaniously to achieve active FTC:
@@ -624,7 +633,7 @@ Although the sufficient condition (\ref{BMI1}) for the existence of the $H_\inft
 \end{equation}
 where $M_{11}=Q_1+Sym(P_1(\bar{A}+\bar{B}K)) + K^TRK + \frac{1}{\rho^2}P_1P_1$, $M_{22}=Q_2+Sym(P_2(\bar{A}+L\bar{C})) + K^TRK + \frac{1}{\rho^2}P_2P_2$. By the fact that $\begin{bmatrix}
     M_{11} & -P_1\bar{B}K - K^TRK \\ * & M_{22}
-\end{bmatrix} < 0 \Rightarrow M_{11}<0, M_{22}<0$, the inequality $M_{11}<0$ is used to find $P_1,K,\rho$. Premultiplying and
+\end{bmatrix} < 0 \Rightarrow M_{11}<0, M_{22}<0$, the inequality $M_{11}<0$ is used to find $P_1,K$. Premultiplying and
 postmultiplying $M_{11}<0$ by $W_1=P_1^{-1}$ and applying Lemma \ref{lemma2}, we obtain:
 \begin{equation} \label{eq:step1}
     \begin{bmatrix}
@@ -634,9 +643,9 @@ postmultiplying $M_{11}<0$ by $W_1=P_1^{-1}$ and applying Lemma \ref{lemma2}, we
         * & * & * & -\rho^2I\\
     \end{bmatrix} < 0
 \end{equation}
-where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1,\rho$.
+where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1$.
 
-\textit{Step 2:} Substituting $P_1=W^{-1}$, $K=Y_1W_1^{-1}$ and $\rho$ found in \textit{Step 1} into (\ref{eq:M}) and applying Lemma \ref{lemma2}, we obtain:
+\textit{Step 2:} Substituting $P_1=W^{-1}$ and $K=Y_1W_1^{-1}$ found in \textit{Step 1} into (\ref{eq:M}) and applying Lemma \ref{lemma2}, we obtain:
 \begin{equation} \label{eq:step2}
     \begin{bmatrix}
         M_{11} & -P_1\bar{B}K - K^TRK & P_2 \\
@@ -647,6 +656,15 @@ where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1,\r
 where $Y_2=P_2L$. By solving the LMI (\ref{eq:step2}), we can obtain $P_2,Y_2$.
 
 Finally, we can find the gains $K$ and $L=P_2^{-1}Y_2$ that achieve the $H_\infty$ observer-based stablized control performance in (\ref{Hinf}) of the augmented system (\ref{eq:aug}).
+
+For the optimal $H_\infty$ observer-based stablized control specification for (\ref{eq:aug}), we need to solve the following LMIs-constrained optimization problem:
+\begin{equation}
+    \begin{split}
+        & \rho^*=\min \rho \\
+        & s.t.
+    \end{split}
+\end{equation}
+...
 
 % The design procedure of the $H_\infty$ observer-based stablized control scheme for the augmented system (\ref{eq:aug}) is organized as follows.
 % \begin{enumerate}
@@ -716,7 +734,7 @@ The overall flowchart of Tracking Control is shown in Fig. \ref{fig:tracking}. T
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.5]{fig/tracking.pdf}\caption{The flowchart of tracking control. The control scheme of UAV and robot is only different from the block, reference generator. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general feedforward-linearized PID FTC for an agent in URTS is proposed.}%
+    \includegraphics[scale=.42]{fig/tracking.pdf}\caption{The flowchart of tracking control. The control scheme of UAV and robot is only different from the block, reference generator. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general feedforward-linearized PID FTC for an agent in URTS is proposed.}%
     \label{fig:tracking}
 \end{figure*}
 
