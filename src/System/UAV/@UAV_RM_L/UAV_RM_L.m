@@ -1,5 +1,5 @@
-classdef UAV  
-%it's a simplify model for UAV with Reference model
+classdef UAV_RM_L  
+% UAV model, Reference Model, Linearized (e.g., fuzzy, global linearized, tensor product, ...)
 % - System form
 %       - dx/dt = f(x) + g(x)*u + Ev
 % - The model is refered to 1.pdf
@@ -25,21 +25,25 @@ classdef UAV
     end   
     
     properties
+        % Designed parameters
         rho = 10^(1);
         Q   = 10^(-1)*diag([1, 0.001, 1.5, 0.002, 1, 0.001, 0.1, 0, 0.1, 0, 1, 0.001]); % correspond to x - xr
         E   = 10^(-1)*diag([0 1 0 1 0 1 0 1 0 1 0 1]); % disturbance matrix
 
+        % Linearized system
         A  % System matrix
         B  % Input matrix
         C  % output matrix
         K  % Control gain matrix
         L  % Observer gain matrix
 
+        % Reference model
         Ar
         Br
         TIMES_AR = 10;
 
-        tr % trajectories (x, xr, t, dt, ...)
+        % trajectories (x, xr, t, dt, ...)
+        tr 
 
         tau
         
@@ -53,12 +57,13 @@ classdef UAV
         Kx = 0.01, Ky = 0.01, Kz = 0.01
         Kph = 0.012, Kth = 0.012, Kps = 0.012
 
+        % for saving data
         DATA_FOLDER_PATH = 'data/'
         PATH % data path
     end
     
     methods
-        function uav = UAV()
+        function uav = UAV_RM_L()
             uav.tr = Trajectory();
             uav.Ar = -uav.TIMES_AR*eye(uav.DIM_X);
             uav.Br = -uav.Ar;                         

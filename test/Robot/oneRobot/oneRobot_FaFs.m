@@ -5,12 +5,12 @@ addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 rb = Robot();
+dt = rb.dt;
 
-dt = .001;
 %% sys
 DIM_F = rb.DIM_F; % Dimension of e
 DIM_SOLVE_K = 1; 
-A1 = [0 1 0; 0 0 1; 0 0 0]; B1 = [0; 0; 1]; C1 = eye(3); % Intergral{e}, e, de
+A1 = [0 1 0; 0 0 1; 0 0 0]; B1 = [0; 0; 1]; C1 = [1 0 0; 0 1 0; 0 0 1]; % Intergral{e}, e, de
 A = kron(A1, eye(DIM_F));
 B = kron(B1, eye(DIM_F));
 C = kron(C1, eye(DIM_F));
@@ -30,7 +30,7 @@ WINDOW = 3; dt_ = 1*dt; METHOD = '2';
 sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a1.B = sys1.B;
-sys_a.B = sys.B;
+sys_a.B = kron(sys_a1.B, eye(DIM_F));
 
 Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
 sys_a1.Q1 = diag(Q1);
@@ -41,7 +41,7 @@ sys_a1.Q2 = diag(Q2);
 WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
 sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s1.B = [0; .1; 1];
+sys_s1.B = [0; .1; .2];
 sys_s.B = kron(sys_s1.B, eye(DIM_F));
 
 Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
@@ -58,7 +58,7 @@ sys_aug1 = LinearModel(A, B, C);
 sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
 sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E = .1*eye(sys_aug1.DIM_X);
-sys_aug1.R = [];
+sys_aug1.R = 10^(-3)*eye(sys_aug1.DIM_U);
 sys_aug1.rho = 5;
 
 %% some mapping
@@ -86,8 +86,6 @@ end
 I = eye(DIM_F);
 rb.K = kron(rb.K, I);
 rb.KL = kron(rb.KL, I);
-% disp(norm(K))
-% disp(norm(L))
 
 %% trajectory
 % Find task space ref
@@ -120,7 +118,13 @@ if EXE.TRAJ
     %% set disturbance
     rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1);
     % rb.tr.f2    = repmat(.01*sin(1*rb.tr.t), sys_s.DIM, 1);
+
     rb.tr.f2    = 0.1*ones(sys_s.DIM, rb.tr.LEN);
+    b = [0.1 -0.05 0.05]; n = length(b)+1;
+    a = round(linspace(1,rb.tr.LEN,n));
+    for i = 1 : n-1
+        rb.tr.f2(:, a(i):a(i+1)) = b(i);
+    end
 
     rb = rb.trajectory();
     rb.Save('tr');
@@ -153,7 +157,7 @@ if EXE.PLOT
     
     %% fig
     fig = figure;
-    DIM = 1;%sys.DIM_X/div(i);
+    DIM = 1;
     div = divisors(DIM);
     i = ceil((length(div))/2);
     Layout = tiledlayout(DIM, div(i));
@@ -185,11 +189,11 @@ if EXE.PLOT
     savefig(FILE_NAME)
     
     %% fig, Fa and Fs
-    index = sys.DIM_X;
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_a.DIM, 'a')
+    start_index = sys.DIM_X;
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, start_index, sys_a.DIM, 'a')
     % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
-    index = sys.DIM_X + sys_a.DIM_X;
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, sys_s.DIM, 's')
+    start_index = sys.DIM_X + sys_a.DIM_X;
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, start_index, sys_s.DIM, 's')
     % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
     
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
@@ -204,5 +208,3 @@ toc
 
 %% Controlability
 % rank(ctrb(rb.A, rb.B))
-
-%% Debug

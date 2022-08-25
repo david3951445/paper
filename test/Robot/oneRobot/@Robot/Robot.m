@@ -30,7 +30,7 @@ classdef Robot
         dt = .001
 
         DIM_F = 12 % dimension of state (pos)
-        WINDOW = 3 % looking forward window of unknown signal
+        % WINDOW = 3 % looking forward window of unknown signal
 
         INTERP_DENSITY = 2500 % interp density of zmp
 

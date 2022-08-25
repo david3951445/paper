@@ -1,0 +1,2 @@
+- one UAV, observer-based, tracking control, feedback linearization (computed torque method), fault-tolerance on actuator and sensor (using smoothing model)
+- system parameter: 1.pdf

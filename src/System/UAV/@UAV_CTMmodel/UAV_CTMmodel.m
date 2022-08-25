@@ -1,4 +1,4 @@
-classdef UAV_CTMmodel < UAV
+classdef UAV_CTMmodel < UAV_RM_L
 %UAV CTM-based model
 % - System form
 %       - tau = M(x)*x'' + C(x, x') + G(x) + F(x')
@@ -14,6 +14,7 @@ classdef UAV_CTMmodel < UAV
         DIM_X3
         Dt % torque drag coefficient matrix
         Df % force drag coefficient matrix
+
         WINDOW % looking forward window of unknown signal
         r4
     end

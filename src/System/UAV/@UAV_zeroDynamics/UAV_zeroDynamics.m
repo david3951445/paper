@@ -1,4 +1,4 @@
-classdef UAV_zeroDynamics < UAV
+classdef UAV_zeroDynamics < UAV_RM_L
 %UAV zero dynamics control
 % reference book(Section 3.2.2):
 %       Quadrotor control: modeling, nonlinear control design, and simulation

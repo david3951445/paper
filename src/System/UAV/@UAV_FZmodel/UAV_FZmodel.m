@@ -1,4 +1,4 @@
-classdef UAV_FZmodel < UAV
+classdef UAV_FZmodel < UAV_RM_L
 %UAV fuzzy model
 % - System form
 %       - dx/dt = Ai*x + Bi*u + Ev

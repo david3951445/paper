@@ -51,7 +51,7 @@
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.2017.DOI}
 
-\title{Robust Fault-Tolerant Control and Motion Planning of UAVs and Biped Robots Team System for Search and Rescue Usage}
+\title{Robust Fault-Tolerant Control and Motion Planning of UAVs and Biped Robots Team System for S\&R Usage}
 % \author{\uppercase{First A. Author}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
 % \uppercase{Second B. Author\authorrefmark{2}, and Third C. Author,
 % Jr}.\authorrefmark{3},
@@ -75,11 +75,11 @@
 % .
 
 \begin{abstract}
-In this study, we investigate a UAVs and biped robots team system (URTS) for search and rescue usage. The system architecture of URTS is proposed to illustrate the issues need to be addressed in URTS and the relationships between them. Then we focus on two issues, local motion planning and tracking control. We discuss the methods of local motion planning for UAV flying behavior and robot walking behavior, and then give the control methods for UAV and robot. The relationship between the two issues, the transformation of the reference trajectory, is also explored in detail. By converting the dynamics model of UAV and robot into a unified agent model, a design method for a $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) is proposed for the agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to active FTC through observer estimation. The design of this $H_\infty$ observer-based FTC is transformed into a linear matrix inequality (LMI) -constrained optimization problem by a two-step design procedure. Finally, with the help of MATLAB LMI Toolbox, the tracking problem of UAV and robot in URTS is effectively solved. Simulations are given ...
+In this study, we investigate a UAVs and biped robots team system (URTS) for search and rescue (S\&R) usage. The system architecture of URTS is proposed to illustrate the issues need to be addressed in URTS and the relationships between them. Then we focus on two issues, local motion planning and tracking control. We discuss the methods of local motion planning for UAV flying behavior and robot walking behavior, and then give the control methods for UAV and robot. The relationship between the two issues, the transformation of the reference trajectory, is also explored in detail. By converting the dynamics model of UAV and robot into a unified agent model, a design method for a $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) is proposed for the agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to active FTC through observer estimation. The design of this $H_\infty$ observer-based FTC is transformed into a linear matrix inequality (LMI) -constrained optimization problem by a two-step design procedure. Finally, with the help of MATLAB LMI Toolbox, the tracking problem of UAV and robot in URTS is effectively solved. Simulations are given ...
 \end{abstract}
 
 \begin{keywords}
-biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H_\infty$ control, search and rescue, smoothing signal model, UAV, UAVs-UGVs team system
+biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H_\infty$ control, S\&R, smoothing signal model, UAV, UAVs-UGVs team system
 \end{keywords}
 
 \titlepgskip=-15pt
@@ -88,15 +88,15 @@ biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H
 
 \section{Introduction}
 % unmanned vvehcile
-\PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as search and rescue, battlefield, logistics and transportation, and surveillance, etc (cite:UV). Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system (MAS) becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued (cite:HMAS). Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios because each agent has different aptitudes.
+\PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as S\&R, battlefield, logistics and transportation, and surveillance, etc (cite:UV). Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system (MAS) becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued (cite:HMAS). Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios because each agent has different aptitudes.
 
 To construct an unmanned HMAS, the three required key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision-making content through the actuator. To limit the scope of this paper, we focus on decision-making and control only. The three main problem of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent, subject to constraints such as agent capabilities, fuel cost, time cost, etc \cite{9476736}. Path planning is to optimally plan paths to each agent, subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc (cite: path planning). Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning part, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
 
-Although there are many types of UVs to make up an unmanned HMAS, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability (cite:UAV-UGV). Additionally, the complementarity between them also makes such a system more potential. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing. To discuss more concretely, we consider an UAVs-UGVs team system for search and rescue. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the search and rescue environment, we choose biped robot as UGV. Even though other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system.
+Although there are many types of UVs to make up an unmanned HMAS, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability (cite:UAV-UGV). Additionally, the complementarity between them also makes such a system more potential. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing. To discuss more concretely, we consider an UAVs-UGVs team system for S\&R. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the S\&R environment, we choose biped robot as UGV. Even though other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a S\&R system.
 
-To the best of the authors' knowledge, most of the literature focus on only one specific problem in such an unmanned multi-agent search and rescue system, such as task allocation problem, path planning problem or control problem. Additionally, few literatures illustrate the relationship between these problems. This leads us to propose an system architecture of UAVs-robots team system (URTS) for search and rescue usage. The flowchart of decision-making and control process of URTS is also given. We divide it into five main hierarchical processes, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. It is because the UTRS needs to be able to assign different tasks to agents to perform first. After a task is assigned, if the task is to reach a target location, a path to reach it needs to be planned. To make agent move on the path, a behavior corresponding to the environment is required to determine. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two processes. But to illustrate how the whole system works, the first three problems are also briefly stated.
+To the best of the authors' knowledge, most of the literature focus on only one specific problem in such an unmanned multi-agent S\&R system, such as task allocation problem, path planning problem or control problem. Additionally, few literatures illustrate the relationship between these problems. This leads us to propose an system architecture of UAVs-robots team system (URTS) for S\&R usage. The flowchart of decision-making and control process of URTS is also given. We divide it into five main hierarchical processes, i.e., tack allocation, path planning, behavior layer, local motion planning and tracking control. It is because the UTRS needs to be able to assign different tasks to agents to perform first. After a task is assigned, if the task is to reach a target location, a path to reach it needs to be planned. To make agent move on the path, a behavior corresponding to the environment is required to determine. Then, a local motion corresponding to the behavior of the agent needs to be planned. Finally, a controller must be designed to track the trajectory of the motion. In order to further limit the scope of the study, we will focus on the latter two processes. But to illustrate how the whole system works, the first three problems are also briefly stated.
 
-% To discuss the local motion planning problem and tracking control problem, the real mechanical system for each agent corresponds must be considered. To meet the need for search mobility, we choose quadrotor aircraft as UAV. The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control). In order to deal with the complex terrain of the search and rescue environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a search and rescue system. However, to let the biped robot moving, not only the control problem (cite: robot control) but also the local motion planning problem need to be solved. The local motion planning of the walking of biped robot, i.e., stable walking pattern generation, is discussed in this paper. Related researches can be found in (cite: walking pattern).
+% To discuss the local motion planning problem and tracking control problem, the real mechanical system for each agent corresponds must be considered. To meet the need for search mobility, we choose quadrotor aircraft as UAV. The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control). In order to deal with the complex terrain of the S\&R environment, biped robot was chosen as the UGV. Although other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a S\&R system. However, to let the biped robot moving, not only the control problem (cite: robot control) but also the local motion planning problem need to be solved. The local motion planning of the walking of biped robot, i.e., stable walking pattern generation, is discussed in this paper. Related researches can be found in (cite: walking pattern).
 
 The local motion planning is the bridge between path planning and tracking control since the path found by path planning algorithm and the path enforced to follow by a controller are not necessarily the same. The reason is that path planning algorithm usually treats the agent as a point, while the actual agent in the physical world is a mechanical system for the tracking control design. A mechanical system means that there exist kinodynamic constraints. This makes certain paths impossible to follow for an actual agent, such as paths that are not smooth, have too large curvature, or require too large velocity and acceleration. Although there are some literatures directly tackle the kinodynamic constraints path planning problem \cite{9384209}, this paper splits path planning into three steps, i.e., (i) path planning, (ii) behavior layer and (iii) local motion planning for clarity. Through this decomposition, we can focus on the local motion planning of specific behaviors. The motion planning of flying behavior for UAV and walking behavior for robot is studied in this paper, especially the latter. The local motion planning of walking of biped robot, i.e., stable walking pattern generation, is a popular research topic due to its challenge(cite: walking pattern).
 
@@ -127,8 +127,8 @@ $A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: a sequence.
     0,t_f 
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
-\section{PRELIMINARIES OF search and rescue URTS}
-The URTS will start with a given search and rescue area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $agent_{i,j}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $agent_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
+\section{PRELIMINARIES OF S\&R URTS}
+The URTS will start with a given S\&R area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $\alpha_{i,j}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $\alpha_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
 % The system architecture if URTS is shown in Fig. \ref{fig:1}.
 % \begin{figure}[htbp]
 % \centering
@@ -136,7 +136,7 @@ The URTS will start with a given search and rescue area, and end with mission co
 % \label{fig:1}
 % \end{figure}
 
-To complete search tasks, each team is designed to be responsible for a small area of the overall search area, and each agent will be assigned an appropriate path to cover the area. To complete rescue tasks, whenever a target (e.g., victims or disaster area) is found by the machine vision of nearby agent, the ground station will assign some agents to the location of target. 
+To complete search tasks, each team is designed to be responsible for a small area of the overall S\&R area, and each agent will be assigned an appropriate path to cover the area. To complete rescue tasks, whenever a target (e.g., victims or disaster area) is found by the machine vision of nearby agent, the ground station will assign some agents to the location of target. 
 % It can be expected that there has multiple search or rescue tasks need to be performed at the same time but there has multiple agents. If each agent can only perform one task at a time, then there exist many feasible way of task allocation. Usually we want this allocation to be optimal, which can be achieved by solving the dynamic task allocation problem.
 
 If a task is to reach a location of certain goal, we need to find a collision-free path to reach it. 
@@ -150,13 +150,13 @@ We need to determine specific behavior to follow the path found by path planning
 
 In order to make a behavior, we must design a corresponding motion which is handled by local motion planning. The motion is a desired reference trajectory for an actual mechanical system to follow. Finally, a tracking controller is designed to follow this desired reference trajectory.
 
-The agents overall have the same system architecture in URTS except for some subprocess differences. Followed by the concept in \cite{paden2016survey}, a system architecture for an agent used in search and rescue is proposed as shown in Fig. \ref{fig:sys}. The Simultaneous Localization And Mapping (SLAM) block converts sensor information into the location of agents $q_{start}$ and an occupy map $\mathcal{C}$. The visual object recognition block provides distance information and object information through the analysis of sensor information. The object information provides agent machine vision that enables it to determine an appropriate behavior (e.g., a robot can see a obstacle and decides to climb through it). The detailed functions of remaining 5 blocks, i.e., Tack Allocation, Path Planning, Behavior Layer, Local Motion Planning and Tracking Control, will be explained in the following sections.
+The agents overall have the same system architecture in URTS except for some subprocess differences. Followed by the concept in \cite{paden2016survey}, a system architecture for an agent used in S\&R is proposed as shown in Fig. \ref{fig:sys}. The Simultaneous Localization And Mapping (SLAM) block converts sensor information into the location of agents $q_{start}$ and an occupy map $\mathcal{C}$. The visual object recognition block provides distance information and object information through the analysis of sensor information. The object information provides agent machine vision that enables it to determine an appropriate behavior (e.g., a robot can see a obstacle and decides to climb through it). The detailed functions of remaining 5 blocks, i.e., Tack Allocation, Path Planning, Behavior Layer, Local Motion Planning and Tracking Control, will be explained in the following sections.
 
 % To determine the behavior, agent needs the information about environment. The sensing data which include external environment information and internal system information is feedback to Behavior Layer to assist in judging the present state (fig:system). 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=.5]{fig/sys.pdf}\caption{The system architecture of agent in URTS. The 2 blocks on left side are used to convert low-level sensor information into high-level information, such as map, start point and object information. The 5 blocks on right side are the flow of an agent performing a search and rescue mission. From top to bottom, it is the decision of the task position, the planning of the path, the decision of the behavior, the planning of the local motion trajectory, and the low-level tracking control}%
+\includegraphics[scale=.5]{fig/sys.pdf}\caption{The system architecture of agent in URTS. The 2 blocks on left side are used to convert low-level sensor information into high-level information, such as map, start point and object information. The 5 blocks on right side are the flow of an agent performing a S\&R mission. From top to bottom, it is the decision of the task position, the planning of the path, the decision of the behavior, the planning of the local motion trajectory, and the low-level tracking control}%
 \label{fig:sys}
 \end{figure}
 
@@ -165,7 +165,7 @@ In the URTS, it can be expected that each agent will be assigned several specifi
 % $(\mathcal{G})_n, n\in\mathbb{Z}\cap[1, N], N\in\mathbb{Z}^+$
 \textit{
     \begin{remark}
-        This block is like a commander since it is used to assign task for agents. Thus, if the real search and rescue system has human experts as commanders, he can replace its job or make decisions together with it to maximize the rescue value.
+        This block is like a commander since it is used to assign task for agents. Thus, if the real S\&R system has human experts as commanders, he can replace its job or make decisions together with it to maximize the rescue value.
     \end{remark}
 }
 
@@ -314,9 +314,9 @@ where $J=\begin{bmatrix}
     0 & \sin\phi & \cos\phi
 \end{bmatrix}$.
 % where $y'$ denotes the $y$ axis after rotating the $z$ axis and $x''$ denotes the $x$ axis after rotating the $y'$ axis
-$m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $f$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame, and $F$ is the total thrust. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
+$g$ is the gravity acceleration, $m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $f$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame, and $F$ is the total thrust. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
 
-Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $(\beta_n)=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. $(\sigma_n')$ is the position reference path $\begin{bmatrix}
+Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $\beta_n={flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. Then, $(\sigma_n')$ will be the position reference path $\begin{bmatrix}
     x_r[k] & y_r[k] & z_r[k]
 \end{bmatrix}^T$. Subsequently, the orientation reference path, row angle $\phi_r[k]$, pitch angle $\theta_r[k]$ and yaw angle $\psi_r[k]$ are considered. $\phi_r[k]$ is set to zero since no need for spinning when flying. $\theta_r[k]$ and $\psi_r[k]$ cannot be set beforehand since UAV is an underactuated system, which will be discussed in the next section. Finally, the reference path $r[k]$ of UAV can be obtained by combining them together, i.e., $r[k] = \begin{bmatrix}
     x_r[k] & y_r[k] & z_r[k] & \psi_r[k]
@@ -408,7 +408,7 @@ where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms 
     \item For UAV, there exists wind disturbance \cite{9075385}.
     \item For robot, there exists ground reaction force \cite{chen2013human}. 
 \end{enumerate}
-Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to an disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the following real system:
+Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to a disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the following real system:
 % The coupling effect for an agent \textit{$agent_{i,j}$} in URTS can be expressed as the form $\sum_{i'=1,i'\neq i}^{N_i}\sum_{j'=1,j'\neq j}^{N_j}\textit{c}_{i,j}(x_{i,j}(t))\times x_{i',j'}(t)$ where $x_{i,j}(t)$ is the own state.
 \begin{equation} \label{eq:agent d1} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t) + d_1(t)
@@ -435,7 +435,7 @@ By Multipling $M(r(t))^{-1}$ from the left and right sides and with some arrangm
 \begin{equation} \label{eq:error, state eq}
     \ddot{e}(t) = u_{fb}(t) + f_1(t)
 \end{equation}
-where $f_1(t) = M(r(t))^{-1}(-\Delta M -\Delta H + d_1(t))$ is the unknown actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
+where $f_1(t) = M(r(t))^{-1}(-\Delta M -\Delta H + d_1(t))\in\mathbb{R}^n$ is the actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
 % \textit{
 %     \begin{remark}
 %         Although the error terms $\Delta e$, $\Delta M$ and $\Delta H$ caused by the difference between state $x(t)$ and estimated state $\hat{x}(t)$ are not necessarily bounded, they can still be estimated as long as they are smooth.
@@ -454,50 +454,68 @@ with $A_0 = \begin{bmatrix}
 0 \\ 0 \\ 1
 \end{bmatrix}$. 
 
-Through above analysis, the tracking control problem of the nonlinear system with external disturbance (\ref{eq:agent d1}) is transformed into the stable control problem of the linear system (\ref{eq:linear f1}) with fault signal by the feedforward linearization. The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear system stable. In a real system, the feedback information is measured by sensor, i.e, the state $\pmb{e}(t)$ in (\ref{eq:linear f1}) is unavailable. At the same time, the external disturbances on sensor also need to be considered as mentioned before. Since the sensor information will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but also the coupling effect due to co-channel interference and the cyber-attack signal are concerned. Suppose the total effect can be equivalent to an unknown sensor fault signal $f_2(t)\in \mathbb{R}^{n}$ with same size as $f_1(t)$, the measurement output equation can be described as:
+Through above analysis, the tracking control problem of the nonlinear system with external disturbance (\ref{eq:agent d1}) is transformed into the stable control problem of the linear system (\ref{eq:linear f1}) with fault signal by the feedforward linearization. The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear system stable. In a real system, the feedback information is measured by sensor, i.e, the state $x(t)$ in (\ref{eq:agent}) is unavailable. At the same time, the external disturbances on sensor also need to be considered as mentioned before. Since the sensor information will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but also the coupling effect due to co-channel interference and the cyber-attack signal are concerned. Let $\pmb{x}(t)=\begin{bmatrix}
+    \int_{0}^{t}x^T(\tau)d\tau & x^T(t) & \dot{x}^T(t)
+\end{bmatrix}^T$
+% Suppose the total effect can be equivalent to an unknown sensor fault signal $f_2(t)\in \mathbb{R}^{n}$ with same size as $f_1(t)$, 
+, the measurement output equation can be described as:
 \begin{equation} \label{eq:agent output}
-    y(t) = C\pmb{e}(t) + B_2f_2(t)
+    y(t) = C\pmb{x}(t) + B_2f_2(t)
 \end{equation}
-where $y(t)\in\mathbb{R}^{ln}$ is the output vector, $C\in\mathbb{R}^{l\times 3n}$ is the output matrix, and $B_2\in\mathbb{R}^{l\times n}$ is the input matrix of $f_2(t)$. By putting (\ref{eq:linear f1}) and (\ref{eq:agent output}) together, we have the following system:
+where $y(t)\in\mathbb{R}^{l}$ is the output vector, $C\in\mathbb{R}^{l\times 3n}$ is the output matrix, $B_2\in\mathbb{R}^{l\times o}$ is the input matrix of $f_2(t)$, and $f_2(t)\in\mathbb{R}^o$ is the actuator fault signal . Let $\pmb{r}(t)=\begin{bmatrix}
+    \int_{0}^{t}r^T(\tau)d\tau & r^T(t) & \dot{r}^T(t)
+\end{bmatrix}^T$ to modify the output equation (\ref{eq:agent output}) and putting it and (\ref{eq:linear f1}) together, we have the following system:
 \begin{equation} \label{eq:error}
     \begin{split}
         & \dot{\pmb{e}}(t)=A\pmb{e}(t)+B(u_{fb}(t)+f_1(t)) \\
-        & y(t) = C\pmb{e}(t) + B_2f_2(t)   
+        & y(t) = C\pmb{e}(t) + C\pmb{r}(t) + B_2f_2(t)   
     \end{split}  
 \end{equation}
 % where $f_i(t)\in \mathbb{R}^{n_i}, i=1,2$ with $n_1=n$ and $n_2 = n$.
 
-To deal with the fault signals, an active fault-tolerant control (FTC) is introduced \cite{9306757}. First, we need a model of the fault signal. In general, constructing a model for an unknown signal is impossible since there is no information about it. Hence, the following assumption is maded:
-\begin{assumption} \label{asm:smooth}
-    The first $p-1$ derivatives of the fault signals $f_i(t), i=1,2$ all exist and are continuous, i.e., $f_i(t)\in C^{p-1}$.
-\end{assumption}
-Under the assumption, now we can construct a smoothing signal model by finite difference method. To obtain a state-space representation, the derivative of the fault signals $\dot{f}_i(t)$ with uniform grid $h$ are needed, which can be expressed as:
-\begin{equation} \label{eq:df}
-    \dot{f}_i(t)=\sum_{k\in{Z_0}}\frac{a_k f_i(t-kh)}{h} + R_{p-1}(t), Z_0\subset\mathbb{Z}
-\end{equation}
-where $R_{p-1}(t)\in O(h^{p-1})$ denotes the remainder term, and $p=\vert{Z_0}\vert > 1$ is the accuracy of difference. The derivative of $f_i(t-kh),k\in{Z_0}$ in (\ref{eq:df}) is also needed. For the convenience of analysis, let us choose $Z_0=\{ 0,1,\dots,p-1 \}$. By changing index $k$ to $j$, the derivative of $f_i(t-jh),j\in{Z_0}$ can be obtained by (\ref{eq:df}):
-\begin{equation} \label{eq:df1}
-    \dot{f}_i(t-jh)=\sum_{k=0}^{p-1}\frac{a_{j,k} f_i(t-kh)}{h}+\epsilon_j(t)
-\end{equation}
-where $\epsilon_j(t)\in O(h^{p-1})$. By arranging $\dot{f}_i(t-jh)$ into a state-space representation, we have:
+To deal with the fault signals $f_i(t),i=1,2$, a smoothing signal model is introduced \cite{9306757}:
+%% teacher say the following assumption too strong
+% First, we need a model of the fault signal. In general, constructing a model for an unknown signal is impossible since there is no information about it. Hence, the following assumption is maded:
+% \begin{assumption} \label{asm:smooth}
+%     The first $p-1$ derivatives of the fault signals $f_i(t), i=1,2$ all exist and are continuous, i.e., $f_i(t)\in C^{p-1}$.
+% \end{assumption}
+% Under the assumption, now we can construct a smoothing signal model by finite difference method. To obtain a state-space representation, the derivative of the fault signals $\dot{f}_i(t)$ with uniform grid $h$ are needed, which can be expressed as:
+% \begin{equation} \label{eq:df}
+%     \dot{f}_i(t)=\sum_{k\in{Z_0}}\frac{a_k f_i(t-kh)}{h} + R_{p-1}(t), Z_0\subset\mathbb{Z}
+% \end{equation}
+% where $R_{p-1}(t)\in O(h^{p-1})$ denotes the remainder term, and $p=\vert{Z_0}\vert > 1$ is the accuracy of difference. The derivative of $f_i(t-kh),k\in{Z_0}$ in (\ref{eq:df}) is also needed. For the convenience of analysis, let us choose $Z_0=\{ 0,1,\dots,p-1 \}$. By changing index $k$ to $j$, the derivative of $f_i(t-jh),j\in{Z_0}$ can be obtained by (\ref{eq:df}):
+% \begin{equation} \label{eq:df1}
+%     \dot{f}_i(t-jh)=\sum_{k=0}^{p-1}\frac{a_{j,k} f_i(t-kh)}{h}+\epsilon_j(t)
+% \end{equation}
+% where $\epsilon_j(t)\in O(h^{p-1})$. By arranging $\dot{f}_i(t-jh)$ into a state-space representation, we have:
+%
+% where $F_i(t)=\begin{bmatrix}
+%     f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-kh)
+% \end{bmatrix}^T$, $v_i(t)=\begin{bmatrix}
+%     \epsilon_0^T(t) & \epsilon_1^T(t) & \dots & \epsilon_{p-1}^T(t)
+% \end{bmatrix}^T$, and $A_i=[a_{j,k}]\otimes I_{n}$. 
+% Then, the fault signals $f_i(t), i=1,2$ are the output of the system in (\ref{eq:smooth model})
+% \begin{equation} \label{eq:8}
+%     f_i(t)=C_iF_i(t)
+% \end{equation}
+% where $C_i=\begin{bmatrix}
+%     1 & 0 & \dots & 0
+% \end{bmatrix}\otimes I_{n}$.
 \begin{equation} \label{eq:smooth model}
-    \dot{F}_i(t)=A_iF_i(t)+v_i(t)
+    \begin{split}
+        & \dot{F}_i(t)=A_iF_i(t)+v_i(t) \\
+        & f_i(t)=C_iF_i(t)        
+    \end{split}
 \end{equation}
-where $v_i(t)=\begin{bmatrix}
-    \epsilon_0^T(t) & \epsilon_1^T(t) & \dots & \epsilon_{p-1}^T(t)
-\end{bmatrix}^T$, $F_i(t)=\begin{bmatrix}
-    f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-(p-1)h)
-\end{bmatrix}^T$, and $A_i=[a_{j,k}]\otimes I_{n}$. Then, the fault signals $f_i(t), i=1,2$ are the output of the system in (\ref{eq:smooth model})
-\begin{equation} \label{eq:8}
-    f_i(t)=C_iF_i(t)
-\end{equation}
-where $C_i=\begin{bmatrix}
-    1 & 0 & \dots & 0
-\end{bmatrix}\otimes I_{n}$. Sub. (\ref{eq:smooth model}) and (\ref{eq:8}) into (\ref{eq:error}), we get:
-\begin{equation} \label{eq:9}
+where $F_i(t)=\begin{bmatrix}
+    f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-kh)
+\end{bmatrix}^T\in\mathbb{R}^{(k+1)n}$, $A_i\in\mathbb{R}^{{(k+1)n}\times{(k+1)n}}$, $v_i(t)$ is the model error, and $C_i=\begin{bmatrix}
+        1 & 0 & \dots & 0
+    \end{bmatrix}\otimes I_{n_i}$ with $n_1=n$ and $n_2 = o$. Substituting (\ref{eq:smooth model}) into (\ref{eq:error}), we get:
+\begin{equation} \label{eq:e_bar}
     \begin{split}
         & \dot{\bar{e}}(t) = \bar{A}\bar{e}(t)+\bar{B}u_{fb}(t)+\bar{v}(t) \\
-        & y(t)=\bar{C}\bar{e}(t)
+        & y(t)=\bar{C}\bar{e}(t) + C\pmb{r}(t)
     \end{split}
 \end{equation}
 where $\bar{e}(t) = \begin{bmatrix}
@@ -513,20 +531,20 @@ where $\bar{e}(t) = \begin{bmatrix}
 \end{bmatrix}$, and $\bar{v}(t)=\begin{bmatrix}
     0 \\ v_1(t) \\ v_2(t)
 \end{bmatrix}$.
-\textit{
-    \begin{remark}
-        The equation (\ref{eq:df}) is derived by Taylor expansion, so Assumption \ref{asm:smooth} is nessasry. Unlike previous work, a finite-difference-method-based modeling method is proposed, which reduce the approximation error between origin fault signal and its smooth model. Besides, the fault signals $f_i(t)$ are assumed to be of differentiability class $C^{p-1}$ rather than bounded, which will make the proposed method more general for practical scenario.
-    \end{remark}
-}
-Since the fault signals become a state variable of the augment system in (\ref{eq:9}), a Luenberger observer is proposed to estimate them and origin state simutaniously to achieve active FTC:
-\begin{equation} \label{eq:10}
+% \textit{
+%     \begin{remark}
+%         The equation (\ref{eq:df}) is derived by Taylor expansion, so Assumption \ref{asm:smooth} is nessasry. Unlike previous work, a finite-difference-method-based modeling method is proposed, which reduce the approximation error between origin fault signal and its smooth model. Besides, the fault signals $f_i(t)$ are assumed to be of differentiability class $C^{p-1}$ rather than bounded, which will make the proposed method more general for practical scenario.
+%     \end{remark}
+% }
+Since the fault signals become a state variable of the augment system in (\ref{eq:e_bar}), a Luenberger observer is proposed to estimate them and origin state simutaniously to achieve active FTC:
+\begin{equation} \label{eq:e_hat}
     \begin{split}
         & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{e}}(t)+\bar{B}u_{fb}(t)-{L}(y(t)-\hat{y}(t)) \\
-        & \hat{y}(t)=\bar{C}\hat{\bar{e}}(t)  
+        & \hat{y}(t)=\bar{C}\hat{\bar{e}}(t) + C\pmb{r}(t)
     \end{split}
 \end{equation}
 \begin{assumption}
-    The augmented system (\ref{eq:9}) is observable.
+    The augmented system (\ref{eq:e_bar}) is observable.
 \end{assumption}
 The PID FTC law is given as:
 \begin{equation} \label{eq:Kx}
@@ -534,7 +552,11 @@ The PID FTC law is given as:
 \end{equation}
 where $K = \begin{bmatrix}
     K_I & K_P & K_D & K_{F_1} & K_{F_2}
-\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the estimation error $\tilde{e}(t)=\bar{e}(t)-\hat{\bar{e}}(t)$, then an new augmented system can be obtained from (\ref{eq:9}), (\ref{eq:10}) and (\ref{eq:Kx}):
+\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the estimation error $\tilde{e}(t)=\bar{e}(t)-\hat{\bar{e}}(t)$, by the two subsystems (\ref{eq:e_bar}) and (\ref{eq:e_hat}), we get:
+\begin{equation} \label{eq:e_tilde}
+    \dot{\tilde{e}}(t) = \bar{A}\tilde{e}(t) +L\bar{C}\tilde{e}(t)
+\end{equation}
+Combining (\ref{eq:e_bar}), (\ref{eq:e_hat}) and (\ref{eq:Kx}), we have the following augmented system:
 \begin{equation} \label{eq:aug}
     \dot{\tilde{x}}(t) = \tilde{A}\tilde{x}(t)+\tilde{v}(t)
 \end{equation}
@@ -548,12 +570,13 @@ where $\tilde{x}(t)=\begin{bmatrix}
 
 In order to enable the designed control gain $K$ and observer gain $L$ to achieve a specific stablized performance for the system (\ref{eq:aug}) under the disturbance $\bar{v}(t)$, the $H_\infty$ observer-based stablized control performance below a prescribed disturbance attenuation level $\rho^2$ is given as:
 \begin{equation} \label{Hinf}
-    \begin{split}     
-        & H_{\infty}(K, L) \\
-        & = \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt - V(\tilde{x}(0))}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2
-    \end{split}
+    % \begin{split}     
+        % & H_{\infty}(K, L) \\
+        % & = 
+        \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt - V(\tilde{x}(0))}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2
+    % \end{split}
 \end{equation}
-where $t_f$ is the final time, $Q \geq 0$ is the weighting matrix of state and estimation error, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on tracking and estimation error $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the $H_\infty$ observer-based stablized control problem in (\ref{Hinf}), the following lemmas are given:
+where $t_f$ is the final time, $Q \geq 0$ is the weighting matrix of augmented state, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}_0)$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on augmented state $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the $H_\infty$ observer-based stablized control problem in (\ref{Hinf}), the following lemmas are given:
 \begin{lemma}[\cite{boyd1994linear}] \label{lemma1}
     For any matriices $X$ and $Y$ with appropriate dimensions, and matrix $R=R^T>0$ the following inequality holds:
     \begin{equation} \label{}
@@ -588,30 +611,33 @@ Then, the following theorem is given.
             & \leq V(\tilde{x}(0)) + \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + \\
             & u_{fb}^T(t)Ru_{fb}(t) + Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)))dt
         \end{split}
-    \end{equation}. By (\ref{eq:aug}) and Lemma \ref{lemma1}, we have:
+    \end{equation}
+    By (\ref{eq:aug}) and Lemma \ref{lemma1}, we have:
     \begin{equation} \label{pf:2}
         \begin{split}
             & Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)) \\
             & = Sym((\tilde{A}\tilde{x}(t)+\tilde{v}(t))^TP\tilde{x}(t)) \\
             & = \tilde{x}^T(t)(P\tilde{A} + \tilde{A}^T P + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t)
         \end{split}
-    \end{equation}. Substituting (\ref{pf:2}) and (\ref{eq:Kx}) into (\ref{pf:1}), we get:
+    \end{equation}
+    Substituting (\ref{pf:2}) and (\ref{eq:Kx}) into (\ref{pf:1}), we get:
     \begin{equation*} \label{pf:3}
         \begin{split}
             & \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t))dt + u_{fb}^T(t)Ru_{fb}(t))dt \\
             & \leq V(\tilde{x}(0)) + \int_{0}^{t_f}(\tilde{x}^T(t)(Q + P\tilde{A} + \tilde{A}^T P +\tilde{K}^TR\tilde{K}\\
             & + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t))dt
         \end{split}
-    \end{equation*}. Thus, if (\ref{BMI1}) holds then (\ref{Hinf}) holds
+    \end{equation*}
+    Thus, if (\ref{BMI1}) holds then (\ref{Hinf}) holds
 \end{proof}
 
 Although the sufficient condition (\ref{BMI1}) for the existence of the $H_\infty$ observer-based stablized control specification (\ref{Hinf}) have been found, it can not be solved easily since it is a bilinear matrix inequality (BMI) and exists strong coupling between the variables. To solve the issue, a two-step design is exploit.
 
-\textit{Step 1:} First, let $P=\begin{bmatrix}
-        P_1 & 0 \\ 0 & P_2
-\end{bmatrix}, Q=\begin{bmatrix}
-        Q_1 & 0 \\ 0 & Q_2
-\end{bmatrix}$ where $P_1,Q_1$ are for stablized control error and $P_2,Q_2$ are for estimated error. Substituting it into (\ref{BMI1}), we get:
+\textit{Step 1:} First, let the Lyapunov function of augmented system (\ref{eq:aug}) be the sum of two Lyapunov function of subsystems (\ref{eq:e_bar}) and (\ref{eq:e_tilde}), i.e., $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)=\bar{e}^T(t)P_1\bar{e}(t)+\tilde{e}^T(t)P_2\tilde{e}(t)$. Second, let the augmented state energy be the sum of tracking error energy and estimated error energy, i.e., $\tilde{x}^T(t)Q\tilde{x}(t)=\bar{e}^T(t)Q_1\bar{e}(t)+\tilde{e}^T(t)Q_2\tilde{e}(t)$. Substituting $P=\begin{bmatrix}
+    P_1 & 0 \\ 0 & P_2
+\end{bmatrix}$ and $Q=\begin{bmatrix}
+    Q_1 & 0 \\ 0 & Q_2
+\end{bmatrix}$ into (\ref{BMI1}), we get:
 \begin{equation} \label{eq:M}
     \begin{split}
         & \begin{bmatrix}
@@ -637,10 +663,9 @@ where $M_{11}=Q_1+Sym(P_1(\bar{A}+\bar{B}K)) + K^TRK + \frac{1}{\rho^2}P_1P_1$, 
 postmultiplying $M_{11}<0$ by $W_1=P_1^{-1}$ and applying Lemma \ref{lemma2}, we obtain:
 \begin{equation} \label{eq:step1}
     \begin{bmatrix}
-        Sym(\bar{A}W_1+\bar{B}Y_1) & W_1\sqrt[1/2]{Q_1} & Y_1^T & I \\
-        * & -I & 0 & 0 \\
-        * & * & -R^{-1} & 0 \\
-        * & * & * & -\rho^2I\\
+        Sym(\bar{A}W_1+\bar{B}Y_1) + \frac{1}{\rho^2} & W_1\sqrt[1/2]{Q_1} & Y_1^T \\
+        * & -I & 0\\
+        * & * & -R^{-1}\\
     \end{bmatrix} < 0
 \end{equation}
 where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1$.
@@ -701,21 +726,27 @@ The design procedure of the optimal $H_\infty$ observer-based feedforward-linear
 %         \end{bmatrix} + 
 %     \end{equation}
 % \end{proof}
-Although the control gain and observer gain can already be found through the previous steps, the calculation speed can be further improved by reducing the dimensionality of the LMI (\ref{BMI1}). First, let us decompose the PID tracking error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$ and the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$ where $\pmb{e}_i(t)\in\mathbb{R}^3$, $y_i(t)\in\mathbb{R}^l$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l\times 3},B_{2,0}\in\mathbb{R}^{l\times 1}$. This means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done. Due to the fact that $f_1(t)\in\mathbb{R}^n, f_2(t)\in\mathbb{R}^{n}$, the n subsystems are obtained from (\ref{eq:error}):
+Although the control gain and observer gain can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose the PID tracking error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}^1$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^l_0$, $f_{2,i}(t)\in\mathbb{R}^o_0$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
         & {y}_i(t)=C_0\pmb{e}_i(t)+B_{2,0}f_{2,i}(t)   
     \end{split}
-\end{equation}
-where $u_{fb,i}(t),f_{1,i}(t),f_{2,i}(t)\in \mathbb{R}$ denote the element in the corresponding vector. By Theorem \ref{theorem1} again, the form shows that the subsystems (\ref{eq:linear subsys}) can achieve the $H_\infty$ observer-based stablized control performance. Let $K_i$ be the control gain of the $i$th subsystems, the origin control gain $K$ of the origin agent system can be obtained by $K = \begin{bmatrix}
+\end{equation}.
+\begin{remark}
+    If the linearized system (\ref{eq:error}) can be splited into $n$ subsystems, this means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done.
+\end{remark}
+
+By Theorem \ref{theorem1} again, the form shows that we can find the control gain $K_i\in\mathbb{R}^{1\times s}$ and observer gain $L_i\in\mathbb{R}^{s\times l_0}$ of $i$th subsystem (\ref{eq:linear subsys}) that achieve the $H_\infty$ observer-based stablized control performance with prescribed attenuation level $\rho_i$, where $s=3+(k-1)+(k-1)o_0$. The origin control gain $K$ of the origin agent system can be reconstructed by $K = \begin{bmatrix}
     \mathit{v}_1 & \mathit{v}_2 & ... & \mathit{v}_n
-\end{bmatrix}^T, \mathit{v}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be obtained in the same way. In this case, the calculate speed can be improved since the dimensionality is decrease.
-\textit{
-    \begin{remark}
-        This method can regard as designing the control and observer gain to each state variable, which is a common control method in practice. However, the gains are not directly adjusted but indirectly designed through prescribed specifications (\ref{Hinf}). Besides, $K_i, i=1,2,\dots,n$ do not have to be the same value (so do $L_i, i=1,2,\dots,n$). Dependent on the actual system situation, the appropriate $L_i$ and $K_i$ can be designed for each state variable by adjusting the weighting matrix $Q_i,R_i$ and attenuation level $\rho_i$ for each subsystem.
-    \end{remark}
-}
+\end{bmatrix}^T, \mathit{v}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be reconstructed in the same way. 
+
+In this case, the calculation speed of finding gains $K,L$ can be improved since the dimensionality is decrease. Furthermore, the online calculation speed of controller and observer can be also improved since there are more zeros in the gains $K,L$ found by this method while maintaining robustness. More clearly, the number of elements in matrix $K$, the number of scalar gains, changes from $n\times(sn)$ to $(1\times s)n$. For $L$, it changes from $(sn)\times(l_0n)$ to $(s\times l_0)n$.
+% \textit{
+%     \begin{remark}
+%         This method can regard as designing the control and observer gain to each state variable, which is a common control method in practice. However, the gains are not directly adjusted but indirectly designed through prescribed specifications (\ref{Hinf}). Besides, $K_i, i=1,2,\dots,n$ do not have to be the same value (so do $L_i, i=1,2,\dots,n$). Dependent on the actual system situation, the appropriate $L_i$ and $K_i$ can be designed for each state variable by adjusting the weighting matrix $Q_i,R_i$ and attenuation level $\rho_i$ for each subsystem.
+%     \end{remark}
+% }
 
 Even though the design of the agent controller and observer has been completed, the trajectory design of UAV is not done yet. Since the UAV is an underactuated system, the "virtual" control input for UAV $u(t)=\begin{bmatrix}
     f_x & f_y & f_z & \tau_x & \tau_y & \tau_z 
@@ -729,9 +760,7 @@ Even though the design of the agent controller and observer has been completed, 
         0 \\ 0 \\ F
 \end{bmatrix} $ from UAV dynacmis in (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations because $f_x$, $f_y$, $f_z$ and $\psi_r$ are given.
 
-The overall flowchart of Tracking Control is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the actual reference trajectory $r(t)$ and control input $u(t)$ according to the result of Local Motion Planning $r'(t)$ and Theorem \ref{theorem1} $u'(t)$. The reference generator for robot is an identity function since it is a fully actuated system. Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)=\begin{bmatrix}
-    \int_{0}^{t}r(\tau)d\tau & r(t) & \dot{r}(t)
-\end{bmatrix}$. $\pmb{r}(t)$ then pass to sensor to calculate the PID tracking error $\pmb{e}(t)$. The sensor measure not only the agent's own information (e.g., position, velocity or $\pmb{e}(t)$) but environmental information. The environmental information is passed back to the high-level block for positioning, mapping and object recognition. The measurement output $y(t)$ is input to observer to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The differentiation of $\pmb{r}(t)$, $\pmb{\dot{r}}(t)$, is input to controller for feedforward control.
+The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the actual reference trajectory $r(t)$ and control input $u(t)$ according to the result of Local Motion Planning $r'(t)$ and Theorem \ref{theorem1} $u'(t)$. The reference generator for robot is an identity function since it is a fully actuated system. Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)$. $\pmb{r}(t)$ then pass to sensor to calculate the PID tracking error $\pmb{e}(t)$. The sensor measure not only the agent's own information (e.g., position, velocity or $\pmb{e}(t)$) but environmental information. The environmental information is passed back to the high-level block for positioning, mapping and object recognition. The measurement output $y(t)$ is input to observer to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The differentiation of $\pmb{r}(t)$, $\pmb{\dot{r}}(t)$, is input to controller for feedforward control.
 
 \begin{figure*}[htbp]
     \centering
@@ -740,17 +769,64 @@ The overall flowchart of Tracking Control is shown in Fig. \ref{fig:tracking}. T
 \end{figure*}
 
 \section{simulation results}
+In this section, a specific S\&R procedure for URTS is given to illustrate the proposed UTRS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_j,j=1,2,...,N$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $1$st team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $1$st team as a set, $team_1=\{ \alpha_{1,j} | j=1,2,...,5 \}$. At the beginning, the agents in $team_1$ are assigned the search tasks of $area_1$. The search task is obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper task-agent pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{1,j},T_j) | j=1,2,...,5 \}$. Suppose a target is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{1,2}$ and $\alpha_{1,3}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{1,2},T_2),(\alpha_{1,3},T_3) \})\cup\{ \alpha_{1,2},T_6),(\alpha_{1,3},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $j$th team is responsible for $j$th area, $area_j$}%
+    \label{fig:SR_area}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The search tasks in $1$st team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach a destinition $q_{goal}$ as shown in figure. For robots, $q_{goal}$ will be passed to path planning algorithm to find a collision path. For UAV, the path is directly assigned due to the no-collision assumption as shown in figure.}%
+    \label{fig:S_task}
+\end{figure}
+
+To explain the path planning block and behavior layer block, we choose the pair $(\alpha_{1,2},T_6)$ as an example, i.e., the robot $\alpha_{1,2}$ performing the task $T_6$. From $T_6$, we have the goal configuration $q_{goal}$. With the current configuration $q_{start}$ and configuration space obtained by SLAM, the path $(\sigma_n)$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as shown in Fig. \ref{fig:R_task}. We choose the first walking behavior to illustrate the local motion planning block of robots. For the the UAV $\alpha_{1,1}$, the path $(\sigma_n)$ is directly set to $([ 0,0,0 ]^T, [0,0,0]^T, ...)$ without going through path planning. The behavior sequence $(\beta_n)$ of the UAV $\alpha_{1,1}$ is set to flying behavior from start to finish, i.e., $\beta_n={flying}, n\in\mathbb{Z}\cap[1,k_f]$.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The path planning tasks.}%
+    \label{fig:R_task}
+\end{figure}
+
+Following the procedure in Fig. \ref{fig:FandW}, the resuls of local motion planning of UAV flying and robot walking are shown in Fig. \ref{fig:sim:FandW}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The resuls of local motion planning of flying and walking.}%
+    \label{fig:sim:FandW}
+\end{figure}
+
+Through the previous steps, the reference trajectory $r(t)$ of flying and walking has been designed. The remaining parameter setting is given as follow.
+
+\textit{UAV:}\begin{enumerate}
+    \item system parameters: $g = 9.81, m = 2,
+    J_x = J_y = 1.25, Jz = 2.2,
+    K_x = K_y = K_z = 0.01,
+    K_\phi = K_\theta = K_\psi = 0.012$
+    \item designed parameters: $Q_1=,Q_2=,R=,rho=$ % correspond to x - xr, R=, \rho=$
+\end{enumerate}
+
+\textit{robot:} \begin{enumerate}
+    \item system parameters: Appendix E in \cite{ourrobot}
+    \item designed parameters:
+\end{enumerate}
+
+The tracking error and fault signal estimation of UAV $\alpha_{1,1}$ are shown in Fig. \ref{fig:UAV, error, estimation}, where the external disturbances is set to... . The tracking error and error signal estimation of the robot $\alpha_{1,2}$ are shown in Fig. \ref{fig:robot, error, estimation}, where the external disturbances is set to... .
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:UAV, error, estimation}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of robot walking.}%
+    \label{fig:robot, error, estimation}
+\end{figure}
+
+description of fig...
 
 \section{conclusion}
-% \subsection{tracking control of UAV-robot team}
-% Since the dynamical system of UAV (\ref{eq:uav}) and robot (\ref{eq:robot}) are nonlinear, it is not easy to design the controller relative to the linear system
-% Use feedback linearization, dynamic of UAV and robot become the form (\ref{eq:4})...
+In this study, a system architecture of URTS for R\&S usage is given. This gives a holistic view of the operational framework for UTRS. Next, we focus on part of the system architecture of UTRS, i.e., the reference trajectory design of UAV flying and robot walking and controller design of UAV and robot. The procedure of reference trajectory design method is given. An $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) strategy is proposed to control the agent in URTS. After analysis, this control problem is transformed into a LMI-constrained optimization problem. Through two-step design procedure, the problem is effectively solved by MATLAB LMI Toolbox. Finally, the effectiveness of the designed controller and observer is also verified by the simulation results. In the future, we will...
 
-% \subsection{reference trajectories design of UAV-robot team}
-% \textit{Assumption :} The behavior of uavs and robots is always at "fly" and "walk" respectively during the whole process. 
-% \textit{Assumption :} Robots always walking on a flat ground.
-% \subsection{path planning of UAV-robot team}
-% In order to facilitate the verification of the feasibility of URTS, the following assumptions are given
 
 % \nocite{*}
 \bibliographystyle{unsrt}

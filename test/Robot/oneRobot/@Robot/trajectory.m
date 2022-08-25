@@ -80,16 +80,17 @@ for i = startTime : LEN - 1
     %% fault signal
     % feedback linearized term: Mh(), Hh(). By testing, using feedforward only ( Mh(r(t)) ) is more stable then feedback + feedforward ( Mh(xh(t)+r(t)) ).
     u = rb.u_PID(xh); % PID control
+
     M = rb.M(X+r);
-    % Mh = rb.M(Xh+r);
     Mh = rb.M(r);
+    % Mh = rb.M(Xh+r);
     % Mh = 0;
     
     H = rb.H(X+r, dX+dr);
+    Hh = rb.H(r, dr);
     % Hh = rb.H(Xh+r, dXh+dr); % diverge
     % Hh = rb.H(Xh+r, dr);
     % Hh = rb.H(X+r, dXh+dr);
-    Hh = rb.H(r, dr);
     % Hh = 0;
     
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
@@ -99,7 +100,7 @@ for i = startTime : LEN - 1
     % Show norm of error terms
     if mod(i, 100) == 0 
         % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
-        disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
+        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
     rb.tr.f1(:, i) = f;
     

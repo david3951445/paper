@@ -1,4 +1,4 @@
-classdef UAV_TPmodel < UAV
+classdef UAV_TPmodel < UAV_RM_L
 %UAV TP model
 % - System form
 %       - dx/dt = Ai*x + Bi*u + Ev
