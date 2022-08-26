@@ -52,7 +52,7 @@ classdef UAV_RM_L
 
     properties (Access = protected)
         % system parameters
-        m = 2, l = 0.2, b = 2, d = 5, G = 9.81
+        m = 2, G = 9.81 %, l = 0.2, b = 2, d = 5, 
         Jx = 1.25, Jy = 1.25, Jz = 2.2
         Kx = 0.01, Ky = 0.01, Kz = 0.01
         Kph = 0.012, Kth = 0.012, Kps = 0.012

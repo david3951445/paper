@@ -7,13 +7,14 @@ n = length(CoM);
 theta = zeros(6, n);
 
 % CoM to inertial
+% disp(['calculating tform of joint1 to Lfoot_endeffector, i = 1~' num2str(n)])
 tform = cell(1, n);
 frame0 = eye(4);%trvec2tform([0 -rb.L(1) rb.L(2)]); % joint1 to CoM
 frame3 = eul2tform([-pi/2 -pi/2 0]); % Lfoot to Lfoot_endeffector
 for i = 1 : n
-    frame1 = trvec2tform(CoM(1:3, i)')*eul2tform(flip(CoM(4:6, i)')); % inertial to CoM
-    frame2 = trvec2tform(r_lh(1:3, i)')*eul2tform(flip(r_lh(4:6, i)')); % inertial to Lfoot
-    tform{i} = frame0/frame1*frame2*frame3;
+    frame1 = trvec2tform(CoM(1:3, i)')*eul2tform(flip(CoM(4:6, i)')); % inertial frame to CoM
+    frame2 = trvec2tform(r_lh(1:3, i)')*eul2tform(flip(r_lh(4:6, i)')); % inertial frame to Lfoot
+    tform{i} = frame0/frame1*frame2*frame3; % joint1 to Lfoot_endeffector
 end
 
 configSol = [0 0 0 0 0 0];

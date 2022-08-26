@@ -27,14 +27,18 @@ classdef Robot
             10^(-4)*[6 17 17 0 0 0]
             10^(-5)*[22 99 91 0 -.1 0]
         ] % inertia of CoM1~12
+
         dt = .001
-
         DIM_F = 12 % dimension of state (pos)
-        % WINDOW = 3 % looking forward window of unknown signal
-
         INTERP_DENSITY = 2500 % interp density of zmp
+        PATH = ['data/' mfilename] %  path of saved data
 
-        PATH = ['data/' mfilename]
+        %% flow control of code
+        EXE_LMI = 0
+        EXE_Z2C = 0 % ZMP to CoM converter
+        EXE_IK = 0 % inverse dynamic
+        EXE_TRAJ = 1 % trajectory
+        EXE_PLOT = 1 % plot results
     end
     properties
         %% rigidbodytree
@@ -65,7 +69,7 @@ classdef Robot
         DIM
 
         %% trajectories
-        tr 
+        tr
     end
 
     methods

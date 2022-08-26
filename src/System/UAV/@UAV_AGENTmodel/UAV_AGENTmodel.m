@@ -11,7 +11,12 @@ classdef UAV_AGENTmodel
         dt = .001
 
         DIM_F = 6 % dimension of state (pos)
-        PATH = ['data/' mfilename]
+        PATH = ['data/' mfilename] % path of saved data
+
+        %% flow control of code
+        EXE_LMI = 0
+        EXE_TRAJ = 0 % trajectory
+        EXE_PLOT = 1 % plot results
     end
 
     properties
@@ -75,7 +80,7 @@ classdef UAV_AGENTmodel
 
             ddr = r4*[1 -2 1]'/dt^2;
             u = uav.u_fb(xh);
-            c = uav.m*eye(3)*ddr + [0; 0; -uav.m*uav.G] + uav.Df*xh(2*uav.DIM_F + (1:3));
+            c = uav.m*eye(3)*ddr + [0; 0; -uav.m*uav.G] + uav.Df*xh(2*uav.DIM_F + (1:3));%+u(1:3);
             % c = u(1:3);
 
             F = sqrt(c(1)^2 + c(2)^2 + c(3)^2);

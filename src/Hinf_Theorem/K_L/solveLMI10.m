@@ -80,7 +80,7 @@ eqn = [eqn, LMI <= 0];
 
 % If you want to limit size of L, i.e., Y'*weight*Y <= Ub
 % weight = eye(DIM_X); % weight of Y
-% Ub = 10^(5)*eye(DIM_Y); % upper bound
+% Ub = 10^(10)*eye(DIM_Y); % upper bound
 % LMI = [
 %     -Ub  Y2'
 %     Y2  -weight

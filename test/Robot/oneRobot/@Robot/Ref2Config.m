@@ -50,7 +50,7 @@ zmp = [
 %% find CoM traj
 % x, y, z of CoM
 % t = 0 : dt : (length(zmp)-1)*dt;
-if EXE.Z2C
+if rb.EXE_Z2C
     CoM = ZMP2CoM(zmp, dt, rb.height_CoM); % x, y
     CoM(3, :) = rb.height_CoM; % z
 
@@ -71,8 +71,9 @@ CoM0 = rb.CoM;
 CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
-if EXE.IK
-    n = len3;
+if rb.EXE_IK
+    simTime = 10;
+    n = simTime/dt;
     qr = zeros(12, n);
     newSubtree = subtree(robot, 'body_f1');
     qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));

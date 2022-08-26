@@ -20,9 +20,9 @@ B = kron(B1, eye(DIM_SOLVE_K));
 C = kron(C1, eye(DIM_SOLVE_K));
 sys1 = LinearModel(A, B, C);
 % Error weighting. Tracking:1, Estimation:2
-Q1 = 10^(0)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
+Q1 = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
 sys1.Q1 = diag(Q1);
-Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
+Q2 = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
@@ -32,21 +32,21 @@ sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a1.B = sys1.B;
 sys_a.B = kron(sys_a1.B, eye(DIM_F));
 
-Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+Q1 = zeros(1,WINDOW); % Can't stablilze unknown signal
 sys_a1.Q1 = diag(Q1);
-Q2 = 10^(3)*(.1.^(0 : WINDOW-1));
+Q2 = 10^(1)*(.1.^(0 : WINDOW-1));
 sys_a1.Q2 = diag(Q2);
 
 %% smooth model (sensor)
-WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
+WINDOW = 5; dt_ = 1000*dt; METHOD = '2';
 sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s1.B = [0; .1; .2];
+sys_s1.B = [0; .1; 1];
 sys_s.B = kron(sys_s1.B, eye(DIM_F));
 
-Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
+Q1 = zeros(1,WINDOW); % Can't stablilze unknown signal
 sys_s1.Q1 = diag(Q1);
-Q2 = 10^(1)*(.1.^(0 : WINDOW-1));
+Q2 = 10^(2)*(.1.^(0 : WINDOW-1));
 sys_s1.Q2 = diag(Q2);
 
 %% augment sys
@@ -55,11 +55,11 @@ sys_aug = LinearModel(A, B, C);
 [A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
 sys_aug1 = LinearModel(A, B, C);
 
-sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
-sys_aug1.E = .1*eye(sys_aug1.DIM_X);
-sys_aug1.R = 10^(-3)*eye(sys_aug1.DIM_U);
-sys_aug1.rho = 5;
+sys_aug1.Q1 = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2 = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.E = 1*eye(sys_aug1.DIM_X);
+sys_aug1.R = 2*10^(-3)*eye(sys_aug1.DIM_U);
+sys_aug1.rho = 25;
 
 %% some mapping
 rb.sys = sys;
@@ -67,12 +67,14 @@ rb.sys_a = sys_a;
 rb.sys_s = sys_s;
 rb.sys_aug = sys_aug;
 
-if EXE.LMI
+if rb.EXE_LMI
     disp('solving LMI ...')
     [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     rb.K = K;
     rb.KL = KL;
-
+    
+%     norm(K)
+%     norm(KL)
     rb.Save('K') 
     rb.Save('KL') 
 end
@@ -103,9 +105,9 @@ rb = rb.Ref2Config(); % rb.r -> rb.qr
 % ref(DIM_F/2+1:DIM_F, :) = repmat(.1*sin(t), DIM_F/2, 1);
 % rb.qr = ref;
 
-if EXE.TRAJ
+if rb.EXE_TRAJ
     rb.tr.dt    = dt; % Time step
-    rb.tr.LEN   = length(rb.qr);
+    rb.tr.LEN   = 4/dt;%length(rb.qr);
     rb.tr.T     = dt*(rb.tr.LEN-1); % Final time
     rb.tr.t     = 0 : dt : rb.tr.T;
     %% set initial
@@ -117,38 +119,39 @@ if EXE.TRAJ
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
     %% set disturbance
     rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1);
-    % rb.tr.f2    = repmat(.01*sin(1*rb.tr.t), sys_s.DIM, 1);
+    rb.tr.f2    = repmat(.5*sin(1*rb.tr.t), sys_s.DIM, 1);
 
-    rb.tr.f2    = 0.1*ones(sys_s.DIM, rb.tr.LEN);
-    b = [0.1 -0.05 0.05]; n = length(b)+1;
-    a = round(linspace(1,rb.tr.LEN,n));
-    for i = 1 : n-1
-        rb.tr.f2(:, a(i):a(i+1)) = b(i);
-    end
+    % rb.tr.f2    = 0.5*ones(sys_s.DIM, rb.tr.LEN);
+    % b = [.5 -.5 .5 -.5]; n = length(b)+1;
+    % a = round(linspace(1,rb.tr.LEN,n));
+    % for i = 1 : n-1
+    %     rb.tr.f2(:, a(i):a(i+1)) = b(i);
+    % end
+
 
     rb = rb.trajectory();
     rb.Save('tr');
 end
 
-if EXE.PLOT
+if rb.EXE_PLOT
     disp('Ploting trajectory ...')
     
     %% fig, map and path
-%     fig = figure;
-%     show(pp.map);
-%     hold on;
-%     plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
-%     % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path  
-%     plot(rb.r(1, :), rb.r(2, :), '-o', 'DisplayName', 'r(t)')
-%     len2 = length(rb.r);
-%     plot(rb.r_lr(1, 1:2:len2), rb.r_lr(2, 1:2:len2), '-o', 'DisplayName', 'left foot')
-%     plot(rb.r_lr(1, 2:2:len2), rb.r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
-%     plot(rb.zmp(1, :), rb.zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
-%     plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
-%     axis equal
-%     title('foot trajectory')
-%     xlabel('x'); ylabel('y')
-%     legend
+    fig = figure;
+    show(pp.map);
+    hold on;
+    plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
+    % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path  
+    plot(rb.r(1, :), rb.r(2, :), '-o', 'DisplayName', 'r(t)')
+    len2 = length(rb.r);
+    plot(rb.r_lr(1, 1:2:len2), rb.r_lr(2, 1:2:len2), '-o', 'DisplayName', 'left foot')
+    plot(rb.r_lr(1, 2:2:len2), rb.r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
+    plot(rb.zmp(1, :), rb.zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
+    plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
+    axis equal
+    title('foot trajectory')
+    xlabel('x'); ylabel('y')
+    legend
 %     
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
 %     saveas(fig, FILE_NAME)
@@ -164,17 +167,12 @@ if EXE.PLOT
     
     r = rb.tr.r{1};
     % timeInterval = 1:length(rb.tr.t)-1;
-%     rb.tr.t = rb.tr.t(1:length(rb.tr.t)-1); % state have one more step than reference
     for i = 1 : 1%DIM_F % position
         nexttile
         hold on
-%         plot(rb.tr.t, rb.tr.x(DIM_F+i, :), 'DisplayName', 'state')
         index = DIM_F + i;
         plot(rb.tr.t, rb.tr.x(index, :)+r(i, :), 'DisplayName', 'state', 'LineWidth', 2)
         plot(rb.tr.t, rb.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
-%         plot(t, rb.tr.x(1, :), 'DisplayName', 'state1', 'LineWidth', 2)
-%         plot(t, rb.tr.x(2, :), 'DisplayName', 'state2', 'LineWidth', 2)
-%         plot(t, rb.tr.x(3, :), 'DisplayName', 'state3', 'LineWidth', 2)
         plot(rb.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
         
         title(['$q_' num2str(i) '$'], 'Interpreter','latex')
@@ -195,7 +193,26 @@ if EXE.PLOT
     start_index = sys.DIM_X + sys_a.DIM_X;
     Plot(rb.tr.t, rb.tr.x, rb.tr.xh, start_index, sys_s.DIM, 's')
     % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
+
+    %% control u(t)
+    fig = figure;
+    DIM = size(rb.tr.u, 1);
+    div = divisors(DIM);
+    i = ceil((length(div))/2);
+    Layout = tiledlayout(DIM/div(i), div(i));
     
+    % timeInterval = 1:length(rb.tr.t)-1;
+    for i = 1 : DIM % position
+        nexttile
+        hold on
+        index = i;
+        plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', 'control', 'LineWidth', 2)    
+        title(['$u_' num2str(i) '$'], 'Interpreter','latex')
+        legend
+        xlabel("t")
+        % ylim([-2 2])
+    end
+
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
 %     saveas(fig, FILE_NAME)
 %     FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
@@ -207,4 +224,4 @@ end
 toc
 
 %% Controlability
-% rank(ctrb(rb.A, rb.B))
+% rank(ctrb(rb.A, rb.B))    

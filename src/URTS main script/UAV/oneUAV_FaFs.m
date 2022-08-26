@@ -66,7 +66,7 @@ uav.sys_a = sys_a;
 uav.sys_s = sys_s;
 uav.sys_aug = sys_aug;
 
-if EXE.LMI
+if uav.EXE_LMI
     disp('solving LMI ...')
     [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     uav.K = K;
@@ -99,7 +99,7 @@ for i = 1 : uav.tr.LEN - 1
     ];
 end
 
-if EXE.TRAJ
+if uav.EXE_TRAJ
     %% set initial
     x0_pos = zeros(1, sys.DIM_X);
     uav.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
@@ -120,7 +120,7 @@ if EXE.TRAJ
     uav.Save('tr');
 end
 
-if EXE.PLOT
+if uav.EXE_PLOT
     disp('Ploting trajectory ...')
     
     %% state, error, estimated state

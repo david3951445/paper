@@ -21,22 +21,30 @@ startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 %     r_old = [r r_old(:, 1 : size(r_old, 2)-1)]; % update old r
 % end
 % Method 2
-r = rb.qr;
-dr = diff(r, 1, 2)/dt;
-dr = filloutliers(dr, 'pchip', 'movmedian', 10); % since numercial differenciation will produce outliers if it's not smooth.
-ddr = diff(dr, 1, 2)/dt;
-ddr = filloutliers(ddr, 'pchip', 'movmedian', 10);
-dr = [zeros(DIM_F, 1) dr]; % diff() will result in 1 missing data, resize it
-ddr = [zeros(DIM_F, 2) ddr];
-rb.tr.r     = cell(1,3);
-rb.tr.r{1} = r;
-rb.tr.r{2} = dr;
-rb.tr.r{3} = ddr;
+rb.tr.r = cell(1,3);
+for i = 1 : DIM_F
+    r = rb.qr(i,1:LEN);
+    
+    dr = diff(r, 1, 2)/dt;
+    dr = filloutliers(dr,'clip','movmedian', 10, 'ThresholdFactor', 1); % numercial differenciation will produce outliers 
+    dr = smoothdata(dr);
+    
+    ddr = diff(dr, 1, 2)/dt;
+    ddr = smoothdata(ddr);
+    
+    dr = [zeros(1, 1) dr]; % diff() will result in 1 missing data, resize it
+    ddr = [zeros(1, 2) ddr]; % diff() will result in 1 missing data, resize it
 
-%% initialize x, xh
+    rb.tr.r{1}(i,:) = r;
+    rb.tr.r{2}(i,:) = dr;
+    rb.tr.r{3}(i,:) = ddr;
+end
+
+%% initialize x, xh, u
 x           = zeros(DIM_X3, LEN);
 xh          = zeros(DIM_X3, LEN);
 x(:, 1:startTime) = repmat(rb.tr.x0, [1 startTime]);
+rb.tr.u     = zeros(rb.sys.DIM_U, LEN);
 
 %% trajectory
 disp(['Calculating trajectory ..., t = 0 ~ ' num2str(dt*(LEN-1))])
@@ -80,17 +88,15 @@ for i = startTime : LEN - 1
     %% fault signal
     % feedback linearized term: Mh(), Hh(). By testing, using feedforward only ( Mh(r(t)) ) is more stable then feedback + feedforward ( Mh(xh(t)+r(t)) ).
     u = rb.u_PID(xh); % PID control
-
-    M = rb.M(X+r);
-    Mh = rb.M(r);
-    % Mh = rb.M(Xh+r);
+    rb.tr.u(:, i+1) = u;
+    M = rb.M(X+r); 
+    Mh = rb.M(r); % feedforward compensation
+    % Mh = rb.M(Xh+r); 
     % Mh = 0;
     
     H = rb.H(X+r, dX+dr);
-    Hh = rb.H(r, dr);
-    % Hh = rb.H(Xh+r, dXh+dr); % diverge
-    % Hh = rb.H(Xh+r, dr);
-    % Hh = rb.H(X+r, dXh+dr);
+    Hh = rb.H(r, dr); % feedforward compensation
+    % Hh = rb.H(Xh+r, dXh+dr); % feedback compensation
     % Hh = 0;
     
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
@@ -99,8 +105,8 @@ for i = startTime : LEN - 1
 
     % Show norm of error terms
     if mod(i, 100) == 0 
-        % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
-        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
+        disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+        disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
     rb.tr.f1(:, i) = f;
     
