@@ -5,9 +5,10 @@ addpath(genpath('../../../src'))
 addpath(genpath('function'))
 
 rb = Robot();
-dt = rb.dt;
+rb.tr.dt    = .001; % Time step
+rb.tr.T     = 2; % Final time
 
-%% sys
+%% system
 DIM_F = rb.DIM_F; % Dimension of e
 DIM_SOLVE_K = 1; 
 A1 = [0 1 0; 0 0 1; 0 0 0]; B1 = [0; 0; 1]; C1 = [1 0 0; 0 1 0; 0 0 1]; % Intergral{e}, e, de
@@ -20,46 +21,46 @@ B = kron(B1, eye(DIM_SOLVE_K));
 C = kron(C1, eye(DIM_SOLVE_K));
 sys1 = LinearModel(A, B, C);
 % Error weighting. Tracking:1, Estimation:2
-Q1 = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
+Q1      = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
 sys1.Q1 = diag(Q1);
-Q2 = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
+Q2      = 10^(2)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
 sys1.Q2 = diag(Q2);
 
 %% smooth model (acuator)
-WINDOW = 3; dt_ = 1*dt; METHOD = '2';
-sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
-sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_a1.B = sys1.B;
-sys_a.B = kron(sys_a1.B, eye(DIM_F));
+WINDOW = 3; dt_ = 1*rb.tr.dt; METHOD = '2';
+sys_a1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_a1.B    = sys1.B;
+sys_a.B     = kron(sys_a1.B, eye(DIM_F));
 
-Q1 = zeros(1,WINDOW); % Can't stablilze unknown signal
-sys_a1.Q1 = diag(Q1);
-Q2 = 10^(1)*(.1.^(0 : WINDOW-1));
-sys_a1.Q2 = diag(Q2);
+Q1          = zeros(1,WINDOW); % Can't stablilze unknown signal
+sys_a1.Q1   = diag(Q1);
+Q2          = 10^(1)*(.1.^(0 : WINDOW-1));
+sys_a1.Q2   = diag(Q2);
 
 %% smooth model (sensor)
-WINDOW = 5; dt_ = 1000*dt; METHOD = '2';
-sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
-sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s1.B = [0; .1; 1];
-sys_s.B = kron(sys_s1.B, eye(DIM_F));
+WINDOW = 5; dt_ = 1000*rb.tr.dt; METHOD = '2';
+sys_s1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_s       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_s1.B    = [0; .1; 1];
+sys_s.B     = kron(sys_s1.B, eye(DIM_F));
 
-Q1 = zeros(1,WINDOW); % Can't stablilze unknown signal
-sys_s1.Q1 = diag(Q1);
-Q2 = 10^(2)*(.1.^(0 : WINDOW-1));
-sys_s1.Q2 = diag(Q2);
+Q1          = zeros(1,WINDOW); % Can't stablilze unknown signal
+sys_s1.Q1   = diag(Q1);
+Q2          = 10^(2)*(.1.^(0 : WINDOW-1));
+sys_s1.Q2   = diag(Q2);
 
-%% augment sys
-[A, B, C] = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
-sys_aug = LinearModel(A, B, C);
-[A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
-sys_aug1 = LinearModel(A, B, C);
+%% augment system
+[A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
+sys_aug     = LinearModel(A, B, C);
+[A, B, C]   = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
+sys_aug1    = LinearModel(A, B, C);
 
-sys_aug1.Q1 = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
-sys_aug1.E = 1*eye(sys_aug1.DIM_X);
-sys_aug1.R = 2*10^(-3)*eye(sys_aug1.DIM_U);
-sys_aug1.rho = 25;
+sys_aug1.Q1     = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2     = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.E      = 1*eye(sys_aug1.DIM_X);
+sys_aug1.R      = 2*10^(-3)*eye(sys_aug1.DIM_U);
+sys_aug1.rho    = 25;
 
 %% some mapping
 rb.sys = sys;
@@ -67,6 +68,7 @@ rb.sys_a = sys_a;
 rb.sys_s = sys_s;
 rb.sys_aug = sys_aug;
 
+%% solve LMI
 if rb.EXE_LMI
     disp('solving LMI ...')
     [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
@@ -92,10 +94,9 @@ rb.KL = kron(rb.KL, I);
 %% trajectory
 % Find task space ref
 pp = PathPlanning();
-rb.r = pp.r;
 
 % find joint ref
-rb = rb.Ref2Config(); % rb.r -> rb.qr
+rb = rb.Ref2Config(pp.r); % rb.r -> rb.qr
 
 % testing ref
 % t = 0 : dt : 10;
@@ -106,28 +107,44 @@ rb = rb.Ref2Config(); % rb.r -> rb.qr
 % rb.qr = ref;
 
 if rb.EXE_TRAJ
-    rb.tr.dt    = dt; % Time step
-    rb.tr.LEN   = 4/dt;%length(rb.qr);
-    rb.tr.T     = dt*(rb.tr.LEN-1); % Final time
-    rb.tr.t     = 0 : dt : rb.tr.T;
+    rb.tr.LEN   = rb.tr.T/rb.tr.dt + 1; %length(rb.qr);
+    rb.tr.t     = 0 : rb.tr.dt : rb.tr.T;
+
     %% set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     x0_pos = zeros(1, sys.DIM_X);
 %     x0_pos = [zeros(1,DIM_F) x0_pos zeros(DIM_F)]
-    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
+    rb.tr.x0    = [x0_pos ones(1, sys_a.DIM_X) 0*ones(1, sys_s.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
-    %% set disturbance
-    rb.tr.f1    = repmat(.2*sin(1*rb.tr.t), sys_a.DIM, 1);
-    rb.tr.f2    = repmat(.5*sin(1*rb.tr.t), sys_s.DIM, 1);
 
+    %% set disturbance
+    x = .2*cos(1*rb.tr.t);
+    % x = x + sqrt(.1)*randn(1, rb.tr.LEN);
+    rb.tr.f1    = repmat(x, sys_a.DIM, 1);
+
+    % sin wave
+    x = 1*sin(1*rb.tr.t);
+    % x = x + sqrt(.01)*randn(1, rb.tr.LEN);
+    rb.tr.f2    = repmat(x, sys_s.DIM, 1);
+
+    % smoothed square wave
+    % t = linspace(0, rb.tr.T, 100);
+    % x = .5*square(t, 60);
+    % fx = fit(t', x', 'SmoothingSpline');
+    % x3 = feval(fx, rb.tr.t)';
+    % plot(rb.tr.t, x3)
+    % rb.tr.f2 = repmat(x3, sys_a.DIM, 1);
+    
+    % constant 
     % rb.tr.f2    = 0.5*ones(sys_s.DIM, rb.tr.LEN);
+
+    % square wave
     % b = [.5 -.5 .5 -.5]; n = length(b)+1;
     % a = round(linspace(1,rb.tr.LEN,n));
     % for i = 1 : n-1
     %     rb.tr.f2(:, a(i):a(i+1)) = b(i);
     % end
-
 
     rb = rb.trajectory();
     rb.Save('tr');
@@ -135,6 +152,7 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
+    %% GRF
     
     %% fig, map and path
     fig = figure;
@@ -142,7 +160,8 @@ if rb.EXE_PLOT
     hold on;
     plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
     % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path  
-    plot(rb.r(1, :), rb.r(2, :), '-o', 'DisplayName', 'r(t)')
+    plot(pp.r(1, :), pp.r(2, :), '-o', 'DisplayName', 'r(t)')
+    
     len2 = length(rb.r);
     plot(rb.r_lr(1, 1:2:len2), rb.r_lr(2, 1:2:len2), '-o', 'DisplayName', 'left foot')
     plot(rb.r_lr(1, 2:2:len2), rb.r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
@@ -207,7 +226,7 @@ if rb.EXE_PLOT
         hold on
         index = i;
         plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', 'control', 'LineWidth', 2)    
-        title(['$u_' num2str(i) '$'], 'Interpreter','latex')
+        title(['$u_{' num2str(i) '}$'], 'Interpreter','latex')
         legend
         xlabel("t")
         % ylim([-2 2])

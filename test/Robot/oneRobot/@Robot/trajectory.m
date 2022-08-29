@@ -98,15 +98,19 @@ for i = startTime : LEN - 1
     Hh = rb.H(r, dr); % feedforward compensation
     % Hh = rb.H(Xh+r, dXh+dr); % feedback compensation
     % Hh = 0;
-    
+
+    % fext1 = externalForce(rb.rbtree, 'body11', [0 0 0 0 0 rb.tr.GRF{1}(i)], X');
+    % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
+
     f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + rb.tr.f1(:, i));
     % f = -eye(DIM_F)/M*(rb.tr.f1(:, i));
+    % f = tau;
 
     % Show norm of error terms
     if mod(i, 100) == 0 
-        disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
-        disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
+        % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
     rb.tr.f1(:, i) = f;
     

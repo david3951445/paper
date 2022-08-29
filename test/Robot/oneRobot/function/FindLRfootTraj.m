@@ -14,7 +14,7 @@ foothold = FIRST_HIGHEST_FOOT*2:4:len2_1;
 r_l(:, foothold) = r_l(:, 1+foothold);
 
 %% spline
-len3 = (len2-1)*splineDensity.zmp+1;
+len3 = (len2-1)*splineDensity+1;
 xx = linspace(0, 1, len3);
 t1 = linspace(0, 1, len2_1);
 r_lh = [
@@ -24,9 +24,9 @@ r_lh = [
 ];
 
 %% The results of spline between same value (footholds) isn't the same. Thus, correct it manually.
-l = splineDensity.zmp/2;
+l = splineDensity/2;
 foothold = (foothold/4-1)*(4*l)+(l*(4-1)+1);
-for i = 1 : splineDensity.zmp-1
+for i = 1 : splineDensity-1
     r_lh(:, i+foothold) = r_lh(:, foothold);
 end
 % special case on start and end of trajectory
@@ -42,7 +42,7 @@ frame = zeros(3, len3);
 for i = 1 : len3
     frame(:, i) = [0 0 atan2(dr_lh(2, i), dr_lh(1, i))]';
 end
-for i = 1 : splineDensity.zmp-1
+for i = 1 : splineDensity-1
     frame(:, i+foothold) = frame(:, foothold);
 end
 % special case on start and end of trajectory

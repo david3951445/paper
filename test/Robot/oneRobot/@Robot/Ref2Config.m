@@ -1,4 +1,4 @@
-function rb = Ref2Config(rb)
+function rb = Ref2Config(rb, r)
 %Given r(t) find qr1(t)~qr12(t)
 % r(t) = [x(t); y(t)] : task space (planar) trajectory of robot
 % CoM(t)              : Center of Mass trajectory
@@ -6,9 +6,8 @@ function rb = Ref2Config(rb)
 %% parameters
 robot               = rb.rbtree;
 L                   = rb.L;
-r                   = rb.r;
-dt                  = rb.dt;
-splineDensity.zmp   = rb.INTERP_DENSITY;
+dt                  = rb.tr.dt;
+splineDensity       = rb.INTERP_DENSITY;
 height_feet         = rb.height_feet;
 START_FOOT          = 1; % 1:left, 0:right
 len2                = length(r);
@@ -40,7 +39,7 @@ end
 
 %% find ZMP traj
 t = linspace(0, 1, len2);
-len3 = (len2-1)*splineDensity.zmp+1;
+len3 = (len2-1)*splineDensity+1;
 xx = linspace(0, 1, len3);
 zmp = [
     interp1(t, r_lr(1, :), xx)
@@ -72,7 +71,7 @@ CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
 if rb.EXE_IK
-    simTime = 10;
+    simTime = rb.tr.T;
     n = simTime/dt;
     qr = zeros(12, n);
     newSubtree = subtree(robot, 'body_f1');

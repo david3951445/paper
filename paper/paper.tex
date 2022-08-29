@@ -807,10 +807,10 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
 
 \textit{robot:} \begin{enumerate}
     \item system parameters: Appendix E in \cite{ourrobot}
-    \item designed parameters:
+    \item designed parameters: $Q_1=,Q_2=,R=,rho=$ % correspond to x - xr, R=, \rho=$
 \end{enumerate}
 
-The tracking error and fault signal estimation of UAV $\alpha_{1,1}$ are shown in Fig. \ref{fig:UAV, error, estimation}, where the external disturbances is set to... . The tracking error and error signal estimation of the robot $\alpha_{1,2}$ are shown in Fig. \ref{fig:robot, error, estimation}, where the external disturbances is set to... .
+For convenience, the distubance $d_1(t)$ in actuator fault is set as $d_1(t)=0.2\cos(t)$ and the sensor fault is set as $f_2(t)=\sin(t)$. The tracking error and fault signal estimation of UAV $\alpha_{1,1}$ are shown in Fig. \ref{fig:UAV, error, estimation}. The tracking error and error signal estimation of the robot $\alpha_{1,2}$ are shown in Fig. \ref{fig:robot, error, estimation}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
