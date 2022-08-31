@@ -1,42 +1,45 @@
-classdef AGENT  
+classdef Agent  
 % agent model
 
     properties (Constant)  
-        DIM_X = 12  % dimension of state
-    end   
-    
-    properties
-        % trajectories (x, xr, t, dt, ...)
-        tr 
 
-        tau
-        
-    end
+    end   
 
     properties (Access = protected)
-        % system parameters
-        m = 2, l = 0.2, b = 2, d = 5, G = 9.81
-        Jx = 1.25, Jy = 1.25, Jz = 2.2
-        Kx = 0.01, Ky = 0.01, Kz = 0.01
-        Kph = 0.012, Kth = 0.012, Kps = 0.012
+        PATH % path of saved data
+    end
 
-        % for saving data
-        DATA_FOLDER_PATH = 'data/'
-        PATH % data path
+    properties
+        DIM_F % dimension of state (pos)
+        % INTERP_DENSITY = 2500 % interp density of zmp
+
+        %% Control design
+        sys
+        sys_a
+        sys_s
+        sys_aug
+
+        K  % Control gain matrix
+        KL  % Observer gain matrix
+        % DIM
+
+        % trajectories (x, xr, t, dt, ...)
+        tr
+
+        %% flow control of code
+        EXE_LMI = 1 % solving LMI
+        EXE_TRAJ = 1 % trajectory
+        EXE_PLOT = 1 % plot results
     end
     
     methods
-        function uav = AGENT()
-            uav.tr = Trajectory();
-            uav.Ar = -uav.TIMES_AR*eye(uav.DIM_X);
-            uav.Br = -uav.Ar;                         
+        function ag = AGENT()
         end
-
-        Save(uav, filename, whichVar) % save property
-        uav = load(uav, filename)
-    end
-
-    methods (Access = private)
+        y = M(ag, x) % inertial matrix
+        y = H(ag, x, dx) % non-inertial matrix
+        ag = trajectory(ag) % get trajectory (x, u, ...)
+        is_saved = Save(ag, whichVar) % save properties
+        ag = Load(ag) % load properties
     end
 end
 %#ok<*PROPLC>

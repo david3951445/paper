@@ -104,11 +104,9 @@ The tracking control is to control an agent to follow a desired trajectory. Ther
 
 Besides, the formation control is also a topic in MAS (cite:formation control). Its purpose is to keep a MAS in a formation while moving. Although formation control provides a simple framework for the control of a large number of agents, considering the complexity of the disaster relief environment, formation will make the application of URTS inflexible. It is because we expect that agents in URTS need to organize multiple teams of different scales and types to deal with multiple tasks of different scales and types in a disaster relief environment. In this situation, it is more reasonable to treat each agent as an independent individual and specify an independent trajectory for the agent to follow.
 
-The external disturbances during tracking control must also be considered. The agent ...
+In order to cope with the fault in the actual system, the fault-tolerant control (FTC) has also been widely studied. According to the way of handling the fault, it can be divided into the passive FTC and the active FTC \cite{6669235}. The passive FTC treats the fault as an unknown system perturbation and designs a control law to tolerate it. In contrast, the active FTC will first estimate and identify the fault and then compensate it through the controller. Despite the added complexity in controller design, the active FTC will outperform the passive FTC due to the extra estimation steps.
 % The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control).
 % the control problem of robot
-
-Fault-tolerant contrl (FTC) ...
 
 Based on the foregoing, a robust $H_\infty$ decentralized fault-tolerant tracking control strategy is proposed to deal with the control problem in URTS.
 

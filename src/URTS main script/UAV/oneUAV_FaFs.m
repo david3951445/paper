@@ -1,89 +1,113 @@
 %main script
-% one Robot, CTM, reference model tracking control, Fa + Fs, K solved by DIM = 1
-clc; clear; close all; tic; % warning off
+% one uav, observer-based tracking control, feedfoward linearization, FTC (smoothed model, actuator and sensor fault), K solved by DIM = 1 method
+clc; clear; close all; tic;
 addpath(genpath('../../../src'))
+addpath(genpath('function'))
 
 uav = UAV_AGENTmodel();
-dt = uav.dt;
+% flow control of code
+uav.EXE_LMI     = 1; % solving LMI
+uav.EXE_TRAJ    = 1; % trajectory
+uav.EXE_PLOT    = 1; % plot results
 
-%% sys
-DIM_F = uav.DIM_F; % Dimension of e
-DIM_SOLVE_K = 1; 
-A1 = [0 1 0; 0 0 1; 0 0 0]; B1 = [0; 0; 1]; C1 = [1 0 0; 0 1 0; 0 0 1]; % Intergral{e}, e, de
-A = kron(A1, eye(DIM_F));
-B = kron(B1, eye(DIM_F));
-C = kron(C1, eye(DIM_F));
-sys = LinearModel(A, B, C);
-A = kron(A1, eye(DIM_SOLVE_K));
-B = kron(B1, eye(DIM_SOLVE_K));
-C = kron(C1, eye(DIM_SOLVE_K));
-sys1 = LinearModel(A, B, C);
+% time
+uav.tr.dt    = .001; % Time step
+uav.tr.T     = 10; % Final time
+
+% global variable
+DIM_F       = uav.DIM_F; % Dimension of e
+DIM_SOLVE_K = 1;
+I           = eye(DIM_F);
+
+%% system
 % Error weighting. Tracking:1, Estimation:2
-Q1 = 10^(0)*[1 100 10]; % corresponding to [Intergral{e}, e, de]
-sys1.Q1 = diag(Q1);
-Q2 = 10^(1)*[1 100 100]; % corresponding to [Intergral{e}, e, de]
-sys1.Q2 = diag(Q2);
+DIM_F       = uav.DIM_F; % Dimension of e
+DIM_SOLVE_K = 1; 
+A0          = [0 1 0; 0 0 1; 0 0 0];
+B0          = [0; 0; 1];
+C0          = [1 0 0; 0 1 0; 0 0 1]; % Intergral{e}, e, de
+
+% for solving control and observer gain
+sys1        = LinearModel(A0, B0, C0);
+sys1.Q1     = 10^(2)*diag([1 100 10]);
+sys1.Q2     = 10^(2)*diag([1 100 10]); % corresponding to [Intergral{e}, e, de]
+
+% for plot trajectories
+sys = LinearModel(kron(A0, I), kron(B0, I), kron(C0, I));
 
 %% smooth model (acuator)
-WINDOW = 3; dt_ = 1*dt; METHOD = '2';
-sys_a1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
-sys_a = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_a1.B = sys1.B;
-sys_a.B = kron(sys_a1.B, eye(DIM_F));
+WINDOW  = 3;
+dt_     = 1*uav.tr.dt;
+METHOD  = '2';
 
-Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
-sys_a1.Q1 = diag(Q1);
-Q2 = 10^(3)*(.1.^(0 : WINDOW-1));
-sys_a1.Q2 = diag(Q2);
+% for solving control and observer gain
+sys_a1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_a1.B    = sys1.B;
+sys_a1.Q1   = diag(zeros(1,WINDOW)); % Can't stablilze unknown signal
+sys_a1.Q2   = 10^(1)*diag((.1.^(0 : WINDOW-1)));
+
+% for plot trajectories
+sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_a.B     = kron(sys_a1.B, I);
 
 %% smooth model (sensor)
-WINDOW = 3; dt_ = 1*dt; METHOD = '1-3';
-sys_s1 = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
-sys_s = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s1.B = [0; .1; .2];
-sys_s.B = kron(sys_s1.B, eye(DIM_F));
+WINDOW  = 4;
+dt_     = 1000*uav.tr.dt; % multiply 1000 is better by testing
+METHOD = '2';
 
-Q1 = 0*(.1.^(0 : WINDOW-1)); % Can't stablilze unknown signal
-sys_s1.Q1 = diag(Q1);
-Q2 = 10^(1)*(.1.^(0 : WINDOW-1));
-sys_s1.Q2 = diag(Q2);
+% for solving control and observer gain
+sys_s1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
+sys_s1.B    = [0; .1; 1];
+sys_s1.Q1   = diag(zeros(1,WINDOW));  % Can't stablilze unknown signal
+sys_s1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
-%% augment sys
-[A, B, C] = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
-sys_aug = LinearModel(A, B, C);
-[A, B, C] = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
-sys_aug1 = LinearModel(A, B, C);
+% for plot trajectories
+sys_s       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+sys_s.B     = kron(sys_s1.B, I);
 
-sys_aug1.Q1 = 10^(-2)*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
-sys_aug1.Q2 = 10^(-2)*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
-sys_aug1.E = .1*eye(sys_aug1.DIM_X);
-sys_aug1.R = 10^(-3)*eye(sys_aug1.DIM_U);
-sys_aug1.rho = 5;
+%% augment system
+% for solving control and observer gain
+[A, B, C]       = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
+sys_aug1        = LinearModel(A, B, C);
+sys_aug1.Q1     = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of integral{e}, e, de, f1, f2
+sys_aug1.Q2     = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
+sys_aug1.E      = 1*eye(sys_aug1.DIM_X);
+sys_aug1.R      = 2*10^(-3)*eye(sys_aug1.DIM_U);
+sys_aug1.rho    = 25;
+
+% for plot trajectories
+[A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
+sys_aug     = LinearModel(A, B, C);
 
 %% some mapping
-uav.sys = sys;
-uav.sys_a = sys_a;
-uav.sys_s = sys_s;
+uav.sys      = sys;
+uav.sys_a    = sys_a;
+uav.sys_s    = sys_s;
 uav.sys_aug = sys_aug;
 
+%% solve LMI
 if uav.EXE_LMI
     disp('solving LMI ...')
     [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     uav.K = K;
     uav.KL = KL;
-
+    
+%     norm(K)
+    norm(KL)
     uav.Save('K') 
     uav.Save('KL') 
 end
-I = eye(DIM_F);
+
+% Fine tune of gain
+% ...
+
+% construt origin gain
 uav.K = kron(uav.K, I);
 uav.KL = kron(uav.KL, I);
 
 %% trajectory
 % Construct reference r(t) = [xd, yd, zd, phid]^T
-uav.tr.dt   = dt; % Time step
-uav.tr.T    = 10; % Final time
-uav.tr.t    = 0 : dt : uav.tr.T;
+uav.tr.t    = 0 : uav.tr.dt : uav.tr.T;
 uav.tr.LEN  = length(uav.tr.t);
 
 uav.qr  = zeros(4, uav.tr.LEN);
@@ -106,15 +130,25 @@ if uav.EXE_TRAJ
     uav.tr.xh0   = zeros(uav.sys_aug.DIM_X, 1);
 
     %% set distuuavance
+    %-1 actuator fault
     uav.tr.f1    = repmat(.2*sin(1*uav.tr.t), sys_a.DIM, 1);
-    % uav.tr.f2    = repmat(.01*sin(1*uav.tr.t), sys_s.DIM, 1);
 
-    uav.tr.f2    = 0.1*ones(sys_s.DIM, uav.tr.LEN);
+    %-2 sensor fault
+    % square wave
+    % uav.tr.f2    = 0.1*ones(sys_s.DIM, uav.tr.LEN);
     % b = [0.1 -0.05 0.05]; n = length(b)+1;
     % a = round(linspace(1,uav.tr.LEN,n));
     % for i = 1 : n-1
     %     uav.tr.f2(:, a(i):a(i+1)) = b(i);
     % end
+
+    % smoothed square wave
+    t = linspace(0, uav.tr.T, 100);
+    x = .5*square(t, 60);
+    fx = fit(t', x', 'SmoothingSpline');
+    x3 = feval(fx, uav.tr.t)';
+    plot(uav.tr.t, x3)
+    uav.tr.f2 = repmat(x3, sys_a.DIM, 1);
 
     uav = uav.trajectory();
     uav.Save('tr');

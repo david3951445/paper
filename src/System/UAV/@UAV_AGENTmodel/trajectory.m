@@ -50,6 +50,8 @@ end
 %% trajectory
 disp(['Calculating trajectory ..., t = 0 ~ ' num2str(dt*(LEN-1))])
 xb = [x; xh];
+uav.tr.r = cell(1,3);
+uav.tr.u = zeros(uav.sys.DIM_U, LEN);
 for i = startTime : LEN - 1
     %% debug message
     if mod(i, 1/dt) == 0
@@ -114,8 +116,8 @@ for i = startTime : LEN - 1
 
     % Show norm of error terms
     if mod(i, 100) == 0 
-        disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
-        disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
+        % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
+        % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
     uav.tr.f1(:, i) = f;
     

@@ -20,6 +20,10 @@ classdef Class2 < Class1
             %   Detailed explanation goes here
             obj.C1 = a1;
         end
+        function Print(obj)
+            obj.Print@Class1();
+            2
+        end
     end
 end
 

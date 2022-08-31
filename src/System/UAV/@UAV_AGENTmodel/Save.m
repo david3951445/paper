@@ -1,16 +1,13 @@
 function Save(uav, whichVar)
 %Save a property into classname.mat
 % whichVar  : which property be saved
+if Save@Agent(uav, whichVar)
+    return
+end
 
 switch whichVar
-    case 'tr'
-        tr = uav.tr;
     case 'qr'
         qr = uav.qr;
-    case 'K'
-        K = uav.K;
-    case 'KL'
-        KL = uav.KL;
     otherwise
         disp(['No such property in uav'])
 end

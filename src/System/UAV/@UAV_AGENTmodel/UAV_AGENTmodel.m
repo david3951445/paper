@@ -1,4 +1,4 @@
-classdef UAV_AGENTmodel  
+classdef UAV_AGENTmodel < Agent 
 % agent model
   
     properties (Constant)
@@ -10,38 +10,23 @@ classdef UAV_AGENTmodel
         Kph = 0.012, Kth = 0.012, Kps = 0.012
         dt = .001
 
-        DIM_F = 6 % dimension of state (pos)
-        PATH = ['data/' mfilename] % path of saved data
-
         %% flow control of code
-        EXE_LMI = 0
-        EXE_TRAJ = 0 % trajectory
-        EXE_PLOT = 1 % plot results
     end
 
     properties
         Dt % torque drag coefficient matrix
         Df % force drag coefficient matrix
 
-        %% Control design
-        sys
-        sys_a
-        sys_s
-        sys_aug
-
-        K  % Control gain matrix
-        KL  % Observer gain matrix
-        DIM
-
-        %% trajectories
         qr
-        tr
     end
   
     methods
         function uav = UAV_AGENTmodel()
-            %% Load old data
+            uav@Agent();
+            uav.PATH  = ['data/' mfilename]; % path of saved data
             uav = uav.Load(); % load old data
+            uav.DIM_F = 6;
+            
             uav.Dt = diag([uav.Kph, uav.Kth, uav.Kps]);
             uav.Df = diag([uav.Kx, uav.Ky, uav.Kz]);                 
         end
@@ -88,8 +73,6 @@ classdef UAV_AGENTmodel
             phi = atan(-c(2)*cos(theta)/c(3));
         end
 
-        uav = trajectory(uav) % get trajectory (x, u, ...)
-
         function y = f_aug(uav, t, xb)
             DIM_X3 = uav.sys_aug.DIM_X;
             x = xb(1 : DIM_X3);
@@ -100,9 +83,6 @@ classdef UAV_AGENTmodel
                 uav.sys_aug.A*xh + uav.sys_aug.B*u - uav.KL*uav.sys_aug.C*(x-xh)
             ];
         end
-
-        Save(uav, filename, whichVar) % save property
-        uav = load(uav, filename)
     end
 
     methods (Access = private)

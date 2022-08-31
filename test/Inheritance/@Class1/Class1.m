@@ -18,6 +18,10 @@ classdef Class1
             %   Detailed explanation goes here
             obj.A1 = a1;
         end
+        
+        function Print(obj)
+            1
+        end
     end
 end
 
