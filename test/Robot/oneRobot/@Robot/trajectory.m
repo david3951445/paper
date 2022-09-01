@@ -1,7 +1,6 @@
 function rb = trajectory(rb)
 %calculate trajectory
 
-sys         = rb.sys;
 sys_a       = rb.sys_a;
 sys_s       = rb.sys_s;
 dt          = rb.tr.dt;
@@ -11,6 +10,35 @@ DIM_F       = rb.DIM_F;
 DIM_X       = rb.sys.DIM_X;
 DIM_X3      = rb.sys_aug.DIM_X;
 startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
+
+%% set disturbance
+%-1 actuator fault
+d1 = repmat(10*sin(3*t), sys_a.DIM, 1);
+sys_a.fault = zeros(sys_a.DIM, LEN);
+
+%-2 sensor fault
+% square wave
+% sys_s.fault = 0.1*ones(sys_s.DIM, rb.tr.LEN);
+% b = [0.1 -0.05 0.05]; n = length(b)+1;
+% a = round(linspace(1,rb.tr.LEN,n));
+% for i = 1 : n-1
+%     sys_s.fault(:, a(i):a(i+1)) = b(i);
+% end
+
+% smoothed square wave
+t_ = linspace(0, rb.tr.T, 100);
+x_ = 0.1*square(t_, 60);
+fx = fit(t_', x_', 'SmoothingSpline');
+x3 = feval(fx, rb.tr.t)';
+sys_s.fault = repmat(x3, sys_s.DIM, 1);
+
+% sin wave
+% x = 1*sin(1*rb.tr.t);
+% x = x + sqrt(.01)*randn(1, rb.tr.LEN);
+% sys_s.fault    = repmat(x, sys_s.DIM, 1);
+
+% constant 
+% rb.tr.f2    = 0.5*ones(sys_s.DIM, rb.tr.LEN);
 
 %% Construct r(t)
 % Method 1
@@ -102,9 +130,9 @@ for i = startTime : LEN - 1
     % fext1 = externalForce(rb.rbtree, 'body11', [0 0 0 0 0 rb.tr.GRF{1}(i)], X');
     % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
 
-    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + rb.tr.f1(:, i));
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + rb.tr.f1(:, i));
-    % f = -eye(DIM_F)/M*(rb.tr.f1(:, i));
+    sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
+    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + sys_a.fault(:, i));
+    % sys_a.fault(:, i) = -eye(DIM_F)/M*(-d1(:, i));
     % f = tau;
 
     % Show norm of error terms
@@ -112,33 +140,18 @@ for i = startTime : LEN - 1
         % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
         % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
-    rb.tr.f1(:, i) = f;
     
     xb(:, i+1) = ODE_solver(@rb.f_aug, dt, [x; xh], t(i), 'RK4');
     % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;
 
     %% assign real fault signal
-    % Since the real fault signal is not produced from smooth model, we need reassign it.
-    % actuator fault
-    j0 = sys.DIM_X;
-    range = 1 : sys_a.DIM;
-    for j = 1 : sys_a.WINDOW-1
-        j1 = j0 + j*sys_a.DIM;
-        xb(j1+range, i+1) = xb(j1+range-sys_a.DIM, i); % Since Fa(i) = [fa(i), fa(i-1), fa(i-2), ...], so Fa(i+1) = ["new fa", fa(i), f(i-1)]
-    end
-    xb(j0+range, i+1) = rb.tr.f1(:, i); % assign "new fa"
-    % sensor fault
-    if ~isempty(sys_s)
-        j0 = sys.DIM_X + sys_a.DIM_X;
-        range = 1 : sys_s.DIM;
-        for j = 1 : sys_s.WINDOW-1
-            j1 = j0 + j*sys_s.DIM;
-            xb(j1+range, i+1) = xb(j1-sys_s.DIM+range, i);
-        end
-        xb(j0+range, i+1) = rb.tr.f2(:, i);
-    end
+    xb = sys_a.set_real_signal(xb, i);
+    xb = sys_s.set_real_signal(xb, i);
 end
 
+%% some mapping
 rb.tr.x = xb(1:DIM_X3, :);
 rb.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
+rb.sys_a = sys_a;
+rb.sys_s = sys_s;
 end 

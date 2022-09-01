@@ -44,7 +44,7 @@ METHOD  = '2';
 sys_a1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_a1.B    = sys1.B;
 sys_a1.Q1   = diag(zeros(1,WINDOW)); % Can't stablilze unknown signal
-sys_a1.Q2   = 10^(1)*diag((.1.^(0 : WINDOW-1)));
+sys_a1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
 sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
@@ -73,16 +73,18 @@ sys_aug1.Q1     = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of i
 sys_aug1.Q2     = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E      = 1*eye(sys_aug1.DIM_X);
 sys_aug1.R      = 2*10^(-3)*eye(sys_aug1.DIM_U);
-sys_aug1.rho    = 25;
+sys_aug1.rho    = 30;
 
 % for plot trajectories
 [A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug     = LinearModel(A, B, C);
 
 %% some mapping
-uav.sys      = sys;
-uav.sys_a    = sys_a;
-uav.sys_s    = sys_s;
+sys_a.begin = sys.DIM_X;
+sys_s.begin = sys.DIM_X + sys_a.DIM_X;
+uav.sys     = sys;
+uav.sys_a   = sys_a;
+uav.sys_s   = sys_s;
 uav.sys_aug = sys_aug;
 
 %% solve LMI
@@ -129,27 +131,6 @@ if uav.EXE_TRAJ
     uav.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
     uav.tr.xh0   = zeros(uav.sys_aug.DIM_X, 1);
 
-    %% set distuuavance
-    %-1 actuator fault
-    uav.tr.f1    = repmat(.2*sin(1*uav.tr.t), sys_a.DIM, 1);
-
-    %-2 sensor fault
-    % square wave
-    % uav.tr.f2    = 0.1*ones(sys_s.DIM, uav.tr.LEN);
-    % b = [0.1 -0.05 0.05]; n = length(b)+1;
-    % a = round(linspace(1,uav.tr.LEN,n));
-    % for i = 1 : n-1
-    %     uav.tr.f2(:, a(i):a(i+1)) = b(i);
-    % end
-
-    % smoothed square wave
-    t = linspace(0, uav.tr.T, 100);
-    x = .5*square(t, 60);
-    fx = fit(t', x', 'SmoothingSpline');
-    x3 = feval(fx, uav.tr.t)';
-    plot(uav.tr.t, x3)
-    uav.tr.f2 = repmat(x3, sys_a.DIM, 1);
-
     uav = uav.trajectory();
     uav.Save('tr');
 end
@@ -186,11 +167,9 @@ if uav.EXE_PLOT
     savefig(FILE_NAME)
     
     %% fault signals (Fa, Fs)
-    start_index = sys.DIM_X;
-    Plot(uav.tr.t, uav.tr.x, uav.tr.xh, start_index, sys_a.DIM, 'a')
+    Plot(uav.tr.t, uav.tr.x, uav.tr.xh, uav.sys_a.begin, sys_a.DIM, 'a')
     % Plot(uav.tr.t, uav.tr.x, uav.tr.xh, index, 1, 'a')
-    start_index = sys.DIM_X + sys_a.DIM_X;
-    Plot(uav.tr.t, uav.tr.x, uav.tr.xh, start_index, sys_s.DIM, 's')
+    Plot(uav.tr.t, uav.tr.x, uav.tr.xh, uav.sys_s.begin , sys_s.DIM, 's')
     % Plot(uav.tr.t, uav.tr.x, uav.tr.xh, index, 1, 's')
     
     %% control u(t)

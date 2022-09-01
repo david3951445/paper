@@ -1,7 +1,6 @@
 function uav = trajectory(uav)
 %calculate trajectory
 
-sys         = uav.sys;
 sys_a       = uav.sys_a;
 sys_s       = uav.sys_s;
 dt          = uav.tr.dt;
@@ -11,6 +10,28 @@ DIM_F       = uav.DIM_F;
 DIM_X       = uav.sys.DIM_X;
 DIM_X3      = uav.sys_aug.DIM_X;
 startTime   = 5; % For calculate ddr(t), start at 3-rd step (k = 3)
+
+%% set disturbance
+%-1 actuator fault
+d1 = repmat(100*sin(3*t), sys_a.DIM, 1);
+sys_a.fault = zeros(sys_a.DIM, LEN);
+
+%-2 sensor fault
+% square wave
+% uav.tr.f2    = 0.1*ones(sys_s.DIM, uav.tr.LEN);
+% b = [0.1 -0.05 0.05]; n = length(b)+1;
+% a = round(linspace(1,uav.tr.LEN,n));
+% for i = 1 : n-1
+%     uav.tr.f2(:, a(i):a(i+1)) = b(i);
+% end
+
+% smoothed square wave
+t_ = linspace(0, uav.tr.T, 100);
+x_ = 1*square(t_, 60);
+fx = fit(t_', x_', 'SmoothingSpline');
+x3 = feval(fx, uav.tr.t)';
+% plot(uav.tr.t, x3)
+sys_s.fault = repmat(x3, sys_s.DIM, 1);
 
 % r = uav.qr;
 % dr = diff(r, 1, 2)/dt;
@@ -76,7 +97,7 @@ for i = startTime : LEN - 1
     Xh      = xh(DIM_F + (1:DIM_F));
     dXh     = xh(2*DIM_F + (1:DIM_F));
 
-     %% reference
+    %% reference
     [phi, theta, F] = uav.pos_controller(xh, r4(1:3, i-2:i), dt);
     r = [
         r4(1, i)
@@ -110,42 +131,28 @@ for i = startTime : LEN - 1
     % Hh = uav.H(X+r, dXh+dr);
     % Hh = 0;
     
-    f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh + uav.tr.f1(:, i));
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + uav.tr.f1(:, i));
-    % f = -eye(DIM_F)/M*(uav.tr.f1(:, i));
+    sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
+    % uav.sys_a.fault = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + uav.tr.f1(:, i));
+    % uav.sys_a.fault = -eye(DIM_F)/M*(uav.tr.f1(:, i));
 
     % Show norm of error terms
     if mod(i, 100) == 0 
+        disp(['norm of f1: ' num2str(norm(sys_a.fault(:, i)))])
         % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
         % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end
-    uav.tr.f1(:, i) = f;
     
     xb(:, i+1) = ODE_solver(@uav.f_aug, dt, [x; xh], t(i), 'RK4');
     % xb(:, i+1) = xb(:, i) + fun(t(i), xb(:, i))*dt;
 
     %% assign real fault signal
-    % Since the real fault signal is not produced from smooth model, we need reassign it.
-    % actuator fault
-    j0 = sys.DIM_X;
-    range = 1 : sys_a.DIM;
-    for j = 1 : sys_a.WINDOW-1
-        j1 = j0 + j*sys_a.DIM;
-        xb(j1+range, i+1) = xb(j1+range-sys_a.DIM, i); % Since Fa(i) = [fa(i), fa(i-1), fa(i-2), ...], so Fa(i+1) = ["new fa", fa(i), f(i-1)]
-    end
-    xb(j0+range, i+1) = uav.tr.f1(:, i); % assign "new fa"
-    % sensor fault
-    if ~isempty(sys_s)
-        j0 = sys.DIM_X + sys_a.DIM_X;
-        range = 1 : sys_s.DIM;
-        for j = 1 : sys_s.WINDOW-1
-            j1 = j0 + j*sys_s.DIM;
-            xb(j1+range, i+1) = xb(j1-sys_s.DIM+range, i);
-        end
-        xb(j0+range, i+1) = uav.tr.f2(:, i);
-    end
+    xb = sys_a.set_real_signal(xb, i);
+    xb = sys_s.set_real_signal(xb, i);
 end
 
+%% some mapping
 uav.tr.x = xb(1:DIM_X3, :);
 uav.tr.xh = xb(DIM_X3 + (1:DIM_X3), :);
-end 
+uav.sys_a = sys_a;
+uav.sys_s = sys_s;
+end

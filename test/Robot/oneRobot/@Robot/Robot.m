@@ -91,7 +91,7 @@ classdef Robot < Agent
             rb.height_CoM0_stand = sum(rb.L(2:6));
             rb.height_CoM0_walk  = rb.height_CoM0_stand - rb.OFFSER_COM_STAND_WALK;
             rb = get_rbtree(rb); % Construct robot rbtree
-            rb = GRF(rb); % Ground Reaction Force
+            % rb = GRF(rb); % Ground Reaction Force
         end
         
         function y = M(rb, x)

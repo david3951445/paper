@@ -14,7 +14,7 @@ rb.EXE_PLOT    = 1; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
-rb.tr.T     = 2; % Final time
+rb.tr.T     = 9; % Final time
 
 % global variable
 DIM_F       = rb.DIM_F; % Dimension of e
@@ -44,14 +44,14 @@ METHOD  = '2';
 sys_a1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_a1.B    = sys1.B;
 sys_a1.Q1   = diag(zeros(1,WINDOW)); % Can't stablilze unknown signal
-sys_a1.Q2   = 10^(1)*diag((.1.^(0 : WINDOW-1)));
+sys_a1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
 sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a.B     = kron(sys_a1.B, I);
 
 %% smooth model (sensor)
-WINDOW  = 5;
+WINDOW  = 4;
 dt_     = 1000*rb.tr.dt; % multiply 1000 is better by testing
 METHOD = '2';
 
@@ -73,13 +73,15 @@ sys_aug1.Q1     = 10^(0)/2*blkdiag(sys1.Q1, sys_a1.Q1, sys_s1.Q1); % weight of i
 sys_aug1.Q2     = 10^(-1)/2*blkdiag(sys1.Q2, sys_a1.Q2, sys_s1.Q2); % weight of integral{e}, e, de, f1, f2
 sys_aug1.E      = 1*eye(sys_aug1.DIM_X);
 sys_aug1.R      = 2*10^(-3)*eye(sys_aug1.DIM_U);
-sys_aug1.rho    = 25;
+sys_aug1.rho    = 30;
 
 % for plot trajectories
 [A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug     = LinearModel(A, B, C);
 
 %% some mapping
+sys_a.begin = sys.DIM_X;
+sys_s.begin = sys.DIM_X + sys_a.DIM_X;
 rb.sys      = sys;
 rb.sys_a    = sys_a;
 rb.sys_s    = sys_s;
@@ -134,36 +136,8 @@ if rb.EXE_TRAJ
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     x0_pos      = zeros(1, sys.DIM_X);
 %     x0_pos = [zeros(1,DIM_F) x0_pos zeros(DIM_F)]
-    rb.tr.x0    = [x0_pos ones(1, sys_a.DIM_X) 0*ones(1, sys_s.DIM_X)]';
+    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) 0*ones(1, sys_s.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
-
-    %% set disturbance
-    x = .2*cos(1*rb.tr.t);
-    % x = x + sqrt(.1)*randn(1, rb.tr.LEN);
-    rb.tr.f1    = repmat(x, sys_a.DIM, 1);
-
-    % sin wave
-    x = 1*sin(1*rb.tr.t);
-    % x = x + sqrt(.01)*randn(1, rb.tr.LEN);
-    rb.tr.f2    = repmat(x, sys_s.DIM, 1);
-
-    % smoothed square wave
-    % t = linspace(0, rb.tr.T, 100);
-    % x = .5*square(t, 60);
-    % fx = fit(t', x', 'SmoothingSpline');
-    % x3 = feval(fx, rb.tr.t)';
-    % plot(rb.tr.t, x3)
-    % rb.tr.f2 = repmat(x3, sys_a.DIM, 1);
-    
-    % constant 
-    % rb.tr.f2    = 0.5*ones(sys_s.DIM, rb.tr.LEN);
-
-    % square wave
-    % b = [.5 -.5 .5 -.5]; n = length(b)+1;
-    % a = round(linspace(1,rb.tr.LEN,n));
-    % for i = 1 : n-1
-    %     rb.tr.f2(:, a(i):a(i+1)) = b(i);
-    % end
 
     rb = rb.trajectory();
     rb.Save('tr');
@@ -225,11 +199,9 @@ if rb.EXE_PLOT
     savefig(FILE_NAME)
     
     %% Fa and Fs
-    start_index = sys.DIM_X;
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, start_index, sys_a.DIM, 'a')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, 'a')
     % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
-    start_index = sys.DIM_X + sys_a.DIM_X;
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, start_index, sys_s.DIM, 's')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, 's')
     % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
 
     %% control u(t)
@@ -257,7 +229,7 @@ if rb.EXE_PLOT
 %     savefig(FILE_NAME)
 end
 
-
+    
 %% Execution time
 toc
 

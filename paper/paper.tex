@@ -421,19 +421,19 @@ Since the ground station is responsible for the calculation, the calculated cont
 %     \end{split}
 % \end{equation}
 % where $M_0, C_0, G_0$ and  $F_0$ is the nominal part and $\Delta M,\Delta C,\Delta G$ and $\Delta F$ is the uncertain part.
-Now, substituting (\ref{eq:control}) into (\ref{eq:agent d1}) and subtracting $M(r(t))\ddot{x}(t)$ from the left and right sides, we have:
+Now, substituting (\ref{eq:control}) into (\ref{eq:agent d1}) and subtracting $M(x(t))\ddot{r}(t)$ from the left and right sides, we have:
 \begin{equation} \label{eq:agent1}
     \begin{split}
-        & (M(x(t))-M(r(t)))\ddot{x}(t) + H(x(t),\dot{x}(t)) \\
-        & =(M(r(t))(\ddot{r}(t)-\ddot{x}(t)) + M(r(t))u_{fb}(t) \\
+        & M(x(t))(\ddot{x}(t)-\ddot{r}(t)) + H(x(t),\dot{x}(t)) \\
+        & =(M(r(t))-M(x(t)))\ddot{r}(t) + M(r(t))u_{fb}(t) \\
         & + H(r(t),\dot{r}(t)) + d_1(t)
     \end{split}
 \end{equation}
-By Multipling $M(r(t))^{-1}$ from the left and right sides and with some arrangments, we have:
+By Multipling $M(x(t))^{-1}$ from the left and right sides and with some arrangments, we have:
 \begin{equation} \label{eq:error, state eq}
     \ddot{e}(t) = u_{fb}(t) + f_1(t)
 \end{equation}
-where $f_1(t) = M(r(t))^{-1}(-\Delta M -\Delta H + d_1(t))\in\mathbb{R}^n$ is the actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
+where $f_1(t) = M(x(t))^{-1}(-\Delta M (\ddot{r}(t)+u_{fb}(t)) -\Delta H + d_1(t))\in\mathbb{R}^n$ is the actuator fault signal, $\Delta M \triangleq M(x(t)) - M(r(t)), \Delta H \triangleq H(x(t),\dot{x}(t)) - H(r(t),\dot{r}(t))$ are the error terms from feedforward compensation, and $e(t)= x(t)-r(t)$ is the tracking error.
 % \textit{
 %     \begin{remark}
 %         Although the error terms $\Delta e$, $\Delta M$ and $\Delta H$ caused by the difference between state $x(t)$ and estimated state $\hat{x}(t)$ are not necessarily bounded, they can still be estimated as long as they are smooth.

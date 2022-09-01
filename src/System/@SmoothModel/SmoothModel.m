@@ -19,6 +19,9 @@ classdef SmoothModel
 
         DIM % dimension of fault signal
         DIM_X % dimension of A
+
+        begin % begining index in the augment system
+        fault % the fault signal of this model
     end
     
     methods
@@ -41,9 +44,21 @@ classdef SmoothModel
 
             obj.E = eye(obj.DIM_X);
         end
-        
-        obj = getA_CT(obj);
-        obj = getA_DT(obj);
+
+        function xb = set_real_signal(obj, xb, i)
+            %assign real fault signal
+            % Since the real fault signal is not produced from smooth model, we need reassign it.
+            j0 = obj.begin;
+            range = 1 : obj.DIM;
+            for j = 1 : obj.WINDOW-1
+                j1 = j0 + j*obj.DIM;
+                xb(j1+range, i+1) = xb(j1+range-obj.DIM, i); % Since Fa(i) = [fa(i), fa(i-1), fa(i-2), ...], so Fa(i+1) = ["new fa", fa(i), f(i-1)]
+            end
+            xb(j0+range, i+1) = obj.fault(:, i); % assign "new fa"
+        end
+
+        obj = getA_CT(obj); % construct continuos time smoothing model
+        obj = getA_DT(obj); % construct discrete time smoothing mode
     end
 end
 
