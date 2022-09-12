@@ -22,15 +22,14 @@ sys_a.fault = zeros(sys_a.DIM, LEN);
 % b = [0.1 -0.05 0.05]; n = length(b)+1;
 % a = round(linspace(1,uav.tr.LEN,n));
 % for i = 1 : n-1
-%     uav.tr.f2(:, a(i):a(i+1)) = b(i);
+%     sys_s.fault(:, a(i):a(i+1)) = b(i);
 % end
 
 % smoothed square wave
-t_ = linspace(0, uav.tr.T, 100);
-x_ = 1*square(t_, 60);
+t_ = linspace(0, uav.tr.T, 50);
+x_ = 1*square(.5*t_, 60);
 fx = fit(t_', x_', 'SmoothingSpline');
 x3 = feval(fx, uav.tr.t)';
-% plot(uav.tr.t, x3)
 sys_s.fault = repmat(x3, sys_s.DIM, 1);
 
 % r = uav.qr;
@@ -137,7 +136,7 @@ for i = startTime : LEN - 1
 
     % Show norm of error terms
     if mod(i, 100) == 0 
-        disp(['norm of f1: ' num2str(norm(sys_a.fault(:, i)))])
+        % disp(['norm of f1: ' num2str(norm(sys_a.fault(:, i)))])
         % disp(['norm of M-Mh: ' num2str(norm(M-Mh))])
         % disp(['norm of H-Hh: ' num2str(norm(H-Hh))])
     end

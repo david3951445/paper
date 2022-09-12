@@ -104,13 +104,9 @@ The tracking control is to control an agent to follow a desired trajectory. Ther
 
 Besides, the formation control is also a topic in MAS (cite:formation control). Its purpose is to keep a MAS in a formation while moving. Although formation control provides a simple framework for the control of a large number of agents, considering the complexity of the disaster relief environment, formation will make the application of URTS inflexible. It is because we expect that agents in URTS need to organize multiple teams of different scales and types to deal with multiple tasks of different scales and types in a disaster relief environment. In this situation, it is more reasonable to treat each agent as an independent individual and specify an independent trajectory for the agent to follow.
 
-In order to cope with the fault in the actual system, the fault-tolerant control (FTC) has also been widely studied. According to the way of handling the fault, it can be divided into the passive FTC and the active FTC \cite{6669235}. The passive FTC treats the fault as an unknown system perturbation and designs a control law to tolerate it. In contrast, the active FTC will first estimate and identify the fault and then compensate it through the controller. Despite the added complexity in controller design, the active FTC will outperform the passive FTC due to the extra estimation steps.
+In order to cope with the fault in the actual system, the fault-tolerant control (FTC) has also been widely studied. According to the way of handling the fault, it can be divided into the passive FTC and the active FTC \cite{6669235}. The passive FTC treats the fault as an unknown system perturbation and designs a control law to tolerate it. In contrast, the active FTC will first estimate and identify the fault and then compensate it through the controller. Despite the added complexity in controller design, the active FTC will outperform the passive FTC due to the extra estimation steps. Based on the foregoing, a robust $H_\infty$ decentralized fault-tolerant tracking control strategy is proposed to deal with the control problem in URTS.
 % The control problem of UAV has been widely studied due to its applicability and low cost (cite: uav control).
 % the control problem of robot
-
-Based on the foregoing, a robust $H_\infty$ decentralized fault-tolerant tracking control strategy is proposed to deal with the control problem in URTS.
-
-% Based on the foregoing, an UAV-robot team system (URTS) is discussed in this paper.
 
 The contributions of this study are described as follows:
 \begin{enumerate}
@@ -120,8 +116,7 @@ The contributions of this study are described as follows:
 The remainder of the paper is organized as follows. In Section II, ...
 
 \textbf{Notation 1:} 
-% $diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks $A_1, A_2, \dots, A_n$.
-$A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: a sequence. $(a_{k_n})$: a subsequence of a sequence $(a_n)$. $[a_{j,k}]$: A matrix with the entries $a_{j,k}$ in the $j$th row and $k$th column. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
+$diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks $A_1, A_2, \dots, A_n$. $A^T$: transpose of A. $A > 0$: a positive definite matrix. $(a_n)$: a sequence. $(a_{k_n})$: a subsequence of a sequence $(a_n)$. $[a_{j,k}]$: A matrix with the entries $a_{j,k}$ in the $j$th row and $k$th column. $\vert{S}\vert$: size of a set $S$. $\otimes$: Kronecker product. $I_n$: n-dimension identity matrix. $x(t)\in L_2\begin{bmatrix}
     0,t_f 
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
@@ -507,9 +502,9 @@ To deal with the fault signals $f_i(t),i=1,2$, a smoothing signal model is intro
 \end{equation}
 where $F_i(t)=\begin{bmatrix}
     f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-kh)
-\end{bmatrix}^T\in\mathbb{R}^{(k+1)n}$, $A_i\in\mathbb{R}^{{(k+1)n}\times{(k+1)n}}$, $v_i(t)$ is the model error, and $C_i=\begin{bmatrix}
+\end{bmatrix}^T\in\mathbb{R}^{(k+1)n}$, $A_i\in\mathbb{R}^{{(k+1)n}\times{(k+1)n}}$, $v_i(t)$ is the model error, $C_i=\begin{bmatrix}
         1 & 0 & \dots & 0
-    \end{bmatrix}\otimes I_{n_i}$ with $n_1=n$ and $n_2 = o$. Substituting (\ref{eq:smooth model}) into (\ref{eq:error}), we get:
+    \end{bmatrix}\otimes I_{n_i}$, and $k$ is the smoothing signal model window size with $n_1=n$ and $n_2 = o$. Substituting (\ref{eq:smooth model}) into (\ref{eq:error}), we get:
 \begin{equation} \label{eq:e_bar}
     \begin{split}
         & \dot{\bar{e}}(t) = \bar{A}\bar{e}(t)+\bar{B}u_{fb}(t)+\bar{v}(t) \\
@@ -730,7 +725,7 @@ Although the control gain and observer gain can already be found through the pre
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
         & {y}_i(t)=C_0\pmb{e}_i(t)+B_{2,0}f_{2,i}(t)   
     \end{split}
-\end{equation}.
+\end{equation}
 \begin{remark}
     If the linearized system (\ref{eq:error}) can be splited into $n$ subsystems, this means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done.
 \end{remark}
@@ -739,7 +734,7 @@ By Theorem \ref{theorem1} again, the form shows that we can find the control gai
     \mathit{v}_1 & \mathit{v}_2 & ... & \mathit{v}_n
 \end{bmatrix}^T, \mathit{v}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be reconstructed in the same way. 
 
-In this case, the calculation speed of finding gains $K,L$ can be improved since the dimensionality is decrease. Furthermore, the online calculation speed of controller and observer can be also improved since there are more zeros in the gains $K,L$ found by this method while maintaining robustness. More clearly, the number of elements in matrix $K$, the number of scalar gains, changes from $n\times(sn)$ to $(1\times s)n$. For $L$, it changes from $(sn)\times(l_0n)$ to $(s\times l_0)n$.
+In this case, the calculation speed of finding gains $K,L$ can be improved since the dimensionality is decrease. Furthermore, the online calculation speed of controller and observer can be also improved since there are more zeros in the gains $K,L$ found by this method while maintaining robustness. More clearly, the number of elements in matrix $K$, i.e., the number of scalar gains, changes from $n\times(sn)$ to $(1\times s)n$. For $L$, it changes from $(sn)\times(l_0n)$ to $(s\times l_0)n$.
 % \textit{
 %     \begin{remark}
 %         This method can regard as designing the control and observer gain to each state variable, which is a common control method in practice. However, the gains are not directly adjusted but indirectly designed through prescribed specifications (\ref{Hinf}). Besides, $K_i, i=1,2,\dots,n$ do not have to be the same value (so do $L_i, i=1,2,\dots,n$). Dependent on the actual system situation, the appropriate $L_i$ and $K_i$ can be designed for each state variable by adjusting the weighting matrix $Q_i,R_i$ and attenuation level $\rho_i$ for each subsystem.
@@ -793,14 +788,19 @@ Following the procedure in Fig. \ref{fig:FandW}, the resuls of local motion plan
     \label{fig:sim:FandW}
 \end{figure}
 
-Through the previous steps, the reference trajectory $r(t)$ of flying and walking has been designed. The remaining parameter setting is given as follow.
+Through the previous steps, the reference trajectory $r(t)$ of flying and walking has been designed. The remaining parameters are set as follow.
+
+\textit{agent:}\begin{enumerate}
+    \item system parameters: $C_0 = I_3$, $B_{2,0} = [0, 0.1, 1]^T$;
+    \item designed parameters: $Q_1 = 50*diag(diag(1,100,10),$\\$ 0, 0), Q_2 = 5*diag(diag([1,100,10]), diag(1,0.1,$\\$0.01), diag(1,0.1,0.01 ,0.001)), R=0.002, \rho=30$. Actuator and sensor smoothing signal model window sizes are $3$ and $4$, respectively.
+\end{enumerate}
 
 \textit{UAV:}\begin{enumerate}
     \item system parameters: $g = 9.81, m = 2,
     J_x = J_y = 1.25, Jz = 2.2,
     K_x = K_y = K_z = 0.01,
     K_\phi = K_\theta = K_\psi = 0.012$
-    \item designed parameters: $Q_1=,Q_2=,R=,rho=$ % correspond to x - xr, R=, \rho=$
+    % \item external disturbances: $d_1(t) = [ 10\sin(3t), \dots,$\\$ 10\sin(3t)] \in\mathbb{R}^6$, $f_2(t)=$
 \end{enumerate}
 
 \textit{robot:} \begin{enumerate}
@@ -808,22 +808,58 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
     \item designed parameters: $Q_1=,Q_2=,R=,rho=$ % correspond to x - xr, R=, \rho=$
 \end{enumerate}
 
-For convenience, the distubance $d_1(t)$ in actuator fault is set as $d_1(t)=0.2\cos(t)$ and the sensor fault is set as $f_2(t)=\sin(t)$. The tracking error and fault signal estimation of UAV $\alpha_{1,1}$ are shown in Fig. \ref{fig:UAV, error, estimation}. The tracking error and error signal estimation of the robot $\alpha_{1,2}$ are shown in Fig. \ref{fig:robot, error, estimation}.
+The simulation results of the UAV $\alpha_{1,1}$ and the robot $\alpha_{1,2}$ are given as follow.
+
+\textit{UAV:}
+The reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=10\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
-    \label{fig:UAV, error, estimation}
+    \label{fig:UAV, state}
 \end{figure}
 \begin{figure}[htbp]
     \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:UAV, fa}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:UAV, fs}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:UAV, control}
+\end{figure}
+
+\textit{robot:}
+The reference, state and estimated state are shown in Fig. \ref{fig:robot, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:robot, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:robot, control}
+\begin{figure}[htbp]
+    \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of robot walking.}%
-    \label{fig:robot, error, estimation}
+    \label{fig:robot, state}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:robot, fa}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:robot, fs}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The tracking error of UAV flying.}%
+    \label{fig:robot, control}
 \end{figure}
 
 description of fig...
 
 \section{conclusion}
-In this study, a system architecture of URTS for R\&S usage is given. This gives a holistic view of the operational framework for UTRS. Next, we focus on part of the system architecture of UTRS, i.e., the reference trajectory design of UAV flying and robot walking and controller design of UAV and robot. The procedure of reference trajectory design method is given. An $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) strategy is proposed to control the agent in URTS. After analysis, this control problem is transformed into a LMI-constrained optimization problem. Through two-step design procedure, the problem is effectively solved by MATLAB LMI Toolbox. Finally, the effectiveness of the designed controller and observer is also verified by the simulation results. In the future, we will...
+In this study, a system architecture of URTS for R\&S usage is given. This gives a holistic view of the operational framework for UTRS. Next, we focus on part of the system architecture of UTRS, i.e., the reference trajectory design of UAV flying and robot walking and controller design of UAV and robot. The procedure of reference trajectory design method of UAV flying and robot walking is also given in detail. An $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) strategy is proposed to control the agent in URTS under the external disturbances. After analysis, this control problem is transformed into a LMI-constrained optimization problem. Through two-step design procedure, the problem is effectively solved by MATLAB LMI Toolbox. Finally, the effectiveness of the designed controller and observer is also verified by the simulation results. In the future, we will...
 
 
 % \nocite{*}

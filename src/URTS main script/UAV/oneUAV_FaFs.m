@@ -6,13 +6,13 @@ addpath(genpath('function'))
 
 uav = UAV_AGENTmodel();
 % flow control of code
-uav.EXE_LMI     = 1; % solving LMI
+uav.EXE_LMI     = 0; % solving LMI
 uav.EXE_TRAJ    = 1; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
 uav.tr.dt    = .001; % Time step
-uav.tr.T     = 10; % Final time
+uav.tr.T     = 20; % Final time
 
 % global variable
 DIM_F       = uav.DIM_F; % Dimension of e
@@ -21,8 +21,6 @@ I           = eye(DIM_F);
 
 %% system
 % Error weighting. Tracking:1, Estimation:2
-DIM_F       = uav.DIM_F; % Dimension of e
-DIM_SOLVE_K = 1; 
 A0          = [0 1 0; 0 0 1; 0 0 0];
 B0          = [0; 0; 1];
 C0          = [1 0 0; 0 1 0; 0 0 1]; % Intergral{e}, e, de
@@ -43,7 +41,7 @@ METHOD  = '2';
 % for solving control and observer gain
 sys_a1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_a1.B    = sys1.B;
-sys_a1.Q1   = diag(zeros(1,WINDOW)); % Can't stablilze unknown signal
+sys_a1.Q1   = diag(zeros(1, WINDOW)); % Can't stablilze unknown signal
 sys_a1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
@@ -58,7 +56,7 @@ METHOD = '2';
 % for solving control and observer gain
 sys_s1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
 sys_s1.B    = [0; .1; 1];
-sys_s1.Q1   = diag(zeros(1,WINDOW));  % Can't stablilze unknown signal
+sys_s1.Q1   = diag(zeros(1, WINDOW));  % Can't stablilze unknown signal
 sys_s1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
@@ -80,50 +78,63 @@ sys_aug1.rho    = 30;
 sys_aug     = LinearModel(A, B, C);
 
 %% some mapping
-sys_a.begin = sys.DIM_X;
-sys_s.begin = sys.DIM_X + sys_a.DIM_X;
-uav.sys     = sys;
-uav.sys_a   = sys_a;
-uav.sys_s   = sys_s;
-uav.sys_aug = sys_aug;
+sys_a.begin     = sys.DIM_X;
+sys_s.begin     = sys.DIM_X + sys_a.DIM_X;
+uav.sys         = sys;
+uav.sys_a       = sys_a;
+uav.sys_s       = sys_s;
+uav.sys_aug     = sys_aug;
 
 %% solve LMI
-if uav.EXE_LMI
-    disp('solving LMI ...')
-    [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
-    uav.K = K;
-    uav.KL = KL;
-    
-%     norm(K)
-    norm(KL)
-    uav.Save('K') 
-    uav.Save('KL') 
-end
-
-% Fine tune of gain
-% ...
-
-% construt origin gain
-uav.K = kron(uav.K, I);
-uav.KL = kron(uav.KL, I);
+uav = uav.get_K_L(sys_aug1);
 
 %% trajectory
 % Construct reference r(t) = [xd, yd, zd, phid]^T
 uav.tr.t    = 0 : uav.tr.dt : uav.tr.T;
 uav.tr.LEN  = length(uav.tr.t);
 
-uav.qr  = zeros(4, uav.tr.LEN);
-amp_z   = 0.9;
-amp     = 0.8;
-freg    = 1;
-for i = 1 : uav.tr.LEN - 1
-    uav.qr(:, i) = [
-        amp*sin(freg*uav.tr.t(i))
-        amp*cos(freg*uav.tr.t(i))
-        amp_z*uav.tr.t(i) + 1
-        0
-    ];
-end
+%-1 circle up
+% uav.qr  = zeros(4, uav.tr.LEN);
+% amp_z   = 0.9;
+% amp     = 0.8;
+% freg    = 1;
+% for i = 1 : uav.tr.LEN - 1
+%     uav.qr(:, i) = [
+%         amp*sin(freg*uav.tr.t(i))
+%         amp*cos(freg*uav.tr.t(i))
+%         amp_z*uav.tr.t(i) + 1
+%         0
+%     ];
+% end
+
+%-2 search task
+r1 = [
+    0 0 1 1 2 2 2 1 0
+    0 1 1 0 0 1 2 2 2
+]*5;
+a = 20;
+
+len1 = length(r1);
+t1 = linspace(0,1,len1);
+
+len2 = (len1-1)*a+1;
+t2 = linspace(0,1,len2);
+r2 = zeros(2, len2);
+r2 = [
+    interp1(t1, r1(1, :), t2);
+    interp1(t1, r1(2, :), t2);
+];
+
+fx = fit(t2', r2(1,:)', 'SmoothingSpline');
+fy = fit(t2', r2(2,:)', 'SmoothingSpline');
+len3 = uav.tr.LEN;
+t3 = linspace(0,1,len3);
+r3 = [
+    feval(fx, t3)';
+    feval(fy, t3)';
+];
+r4 = cat(1, r3, 1*sin(uav.tr.t));
+uav.qr = cat(1, r4, zeros(1, length(r4)));
 
 if uav.EXE_TRAJ
     %% set initial
@@ -137,7 +148,11 @@ end
 
 if uav.EXE_PLOT
     disp('Ploting trajectory ...')
-    
+    %% r(t)
+    figure; hold on;    
+    plot(r2(1, :), r2(2, :));
+    plot(uav.qr(1, :), uav.qr(2, :), '-o', 'DisplayName', 'r(t)')
+
     %% state, error, estimated state
     fig = figure;
     DIM = DIM_F;

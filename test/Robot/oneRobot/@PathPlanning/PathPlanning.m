@@ -40,13 +40,12 @@ classdef PathPlanning
             goal = [map.XWorldLimits(2) map.YWorldLimits(2) 0];
             rng(1); % repeatable result
             [pthObj, solnInfo] = planner.plan(start,goal);
-            r3 = pp.Post_processing(pthObj.States(:, 1:2)'); % Interpolate path, make it more smooth and increase density
 
+            pp.r = fit_linear_spline(pthObj.States(:, 1:2)', pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
+            pp.tree = solnInfo.TreeData;
+            pp.map = map;
             pp.start = start;
             pp.goal = goal;
-            pp.r = r3;
-            pp.map = map;
-            pp.tree = solnInfo.TreeData;
         end 
 
         function Plot(pp)

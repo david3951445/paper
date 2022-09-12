@@ -6,11 +6,11 @@ addpath(genpath('function'))
 
 rb = Robot();
 % flow control of code
-rb.EXE_LMI     = 1;
+rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
-rb.EXE_TRAJ    = 1; % trajectory
-rb.EXE_PLOT    = 1; % plot results
+rb.EXE_TRAJ    = 0; % trajectory
+rb.EXE_PLOT    = 0; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
@@ -88,29 +88,7 @@ rb.sys_s    = sys_s;
 rb.sys_aug = sys_aug;
 
 %% solve LMI
-if rb.EXE_LMI
-    disp('solving LMI ...')
-    [K, KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
-    rb.K = K;
-    rb.KL = KL;
-    
-%     norm(K)
-%     norm(KL)
-    rb.Save('K') 
-    rb.Save('KL') 
-end
-% Fine tune of gain
-% gain = [-1 zeros(1, sys_a.WINDOW-1)];
-% rb.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
-% rb.KL(4:6, :) = [1000 0 0; 0 100 0; 0 0 10];
-% rb.KL(7:9,:) = [1000 0 0; 0 100 0; 0 0 10];
-% rb.K(:, sys1.DIM_X + sys_a.WINDOW + (1:sys_s.WINDOW)) = zeros(1, sys_s.WINDOW);
-% I0 = diag(1.1.^(0:rb.DIM_F-1));
-% ...
-
-% construt origin gain
-rb.K = kron(rb.K, I);
-rb.KL = kron(rb.KL, I);
+rb = rb.get_K_L(sys_aug1);
 
 %% trajectory
 % Find task space ref

@@ -35,8 +35,10 @@ classdef Agent
     methods
         function ag = AGENT()
         end
+        
         y = M(ag, x) % inertial matrix
         y = H(ag, x, dx) % non-inertial matrix
+        ag = get_K_L(ag, sys_aug1) % solve LMI to obtain control gain K and observer gain L
         ag = trajectory(ag) % get trajectory (x, u, ...)
         is_saved = Save(ag, whichVar) % save properties
         ag = Load(ag) % load properties
