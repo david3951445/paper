@@ -7,7 +7,7 @@ addpath(genpath('function'))
 uav = UAV_AGENTmodel();
 % flow control of code
 uav.EXE_LMI     = 0; % solving LMI
-uav.EXE_TRAJ    = 1; % trajectory
+uav.EXE_TRAJ    = 0; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
