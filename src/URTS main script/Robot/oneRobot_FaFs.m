@@ -1,7 +1,10 @@
 %main script
 % one Robot, observer-based tracking control, feedfoward linearization, FTC (smoothed model, actuator and sensor fault), K solved by DIM = 1 method, path planning
+% The slow parts (During the test, these parts should be taken care not to run repeatedly):
+%   - calculating the inverse dynamic (line 20 in IK_leg.m)
+%   - calculating the nonlinear terms M(x) and H(x, dx) in rb.trajectory()
 clc; clear; close all; tic;
-addpath(genpath('../../../src'))
+addpath(genpath('./././src'))
 addpath(genpath('function'))
 
 rb = Robot();
@@ -14,7 +17,9 @@ rb.EXE_PLOT    = 0; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
-rb.tr.T     = 9; % Final time
+rb.tr.T     = 20; % Final time
+rb.tr.t    = 0 : rb.tr.dt : rb.tr.T;
+rb.tr.LEN  = length(rb.tr.t);
 
 % global variable
 DIM_F       = rb.DIM_F; % Dimension of e
@@ -57,7 +62,7 @@ METHOD = '2';
 
 % for solving control and observer gain
 sys_s1      = SmoothModel(WINDOW, DIM_SOLVE_K, dt_, METHOD);
-sys_s1.B    = [0; .1; 1];
+sys_s1.B    = [0; 0; 1];
 sys_s1.Q1   = diag(zeros(1,WINDOW));  % Can't stablilze unknown signal
 sys_s1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
@@ -88,7 +93,7 @@ rb.sys_s    = sys_s;
 rb.sys_aug = sys_aug;
 
 %% solve LMI
-rb = rb.get_K_L(sys_aug1);
+rb = rb.get_K_L(sys1, sys_aug1);
 
 %% trajectory
 % Find task space ref
@@ -106,8 +111,6 @@ rb = rb.Ref2Config(pp.r); % rb.r -> rb.qr
 % rb.qr = ref;
 
 if rb.EXE_TRAJ
-    rb.tr.t    = 0 : rb.tr.dt : rb.tr.T;
-    rb.tr.LEN  = length(rb.tr.t);
 
     %% set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
@@ -129,58 +132,76 @@ if rb.EXE_PLOT
     fig = figure;
     show(pp.map);
     hold on;
-    plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','tree expansion'); % tree expansion
-    % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path  
-    plot(pp.r(1, :), pp.r(2, :), '-o', 'DisplayName', 'r(t)')
-    
-    len2 = length(rb.r);
-    plot(rb.r_lr(1, 1:2:len2), rb.r_lr(2, 1:2:len2), '-o', 'DisplayName', 'left foot')
-    plot(rb.r_lr(1, 2:2:len2), rb.r_lr(2, 2:2:len2), '-o', 'DisplayName', 'right foot')
-    plot(rb.zmp(1, :), rb.zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
-    plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
+    plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','RRT tree expansion'); % tree expansion
+    % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
+    plot(pp.sigma(1, :), pp.sigma(2, :), 'o', 'DisplayName', '$\sigma(t)$')
+    plot(pp.r(1, :), pp.r(2, :), 'LineWidth', 2, 'DisplayName', '$\sigma''(t)$')
+    len = length(pp.sigma);
+    plot(pp.sigma(1, 1), pp.sigma(2, 1), 'square', 'MarkerSize', 20, 'DisplayName', '$q_{start}$')
+    plot(pp.sigma(1, len), pp.sigma(2, len), 'pentagram', 'MarkerSize', 20, 'DisplayName', '$q_{goal}$')
+    % len1 = 25;
+    % plot(rb.r_lr(1, 1:2:len1), rb.r_lr(2, 1:2:len1), '-o', 'DisplayName', 'left foot')
+    % plot(rb.r_lr(1, 2:2:len1), rb.r_lr(2, 2:2:len1), '-o', 'DisplayName', 'right foot')
+    % plot(rb.zmp(1, :), rb.zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
+    % plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
     axis equal
-    title('foot trajectory')
-    xlabel('x'); ylabel('y')
-    legend
-%     
-%     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
-%     saveas(fig, FILE_NAME)
-%     FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
-%     savefig(FILE_NAME)
-    
+    % title('path of the robot \alpha_{1,2} using RRT algorithm')
+    xlabel('x (m)'); ylabel('y (m)')
+    legend('Interpreter','latex')%, 'FontSize', 20)
+    save_fig(fig)
+
+    %% local motion planning
+    fig = figure;
+    hold on;
+    len = 4;
+    plot(pp.sigma(1, 1:len), pp.sigma(2, 1:len), '^', 'DisplayName', '$\sigma(t)$','MarkerSize', 7)
+    len = 20;
+    plot(pp.r(1, 1:len), pp.r(2, 1:len), 'LineWidth', 1, 'DisplayName', '$\sigma''(t)$')
+    % len = length(pp.sigma);
+    % plot(pp.sigma(1, 1), pp.sigma(2, 1), 'square', 'MarkerSize', 20, 'DisplayName', '$q_{start}$')
+    % plot(pp.sigma(1, len), pp.sigma(2, len), 'pentagram', 'MarkerSize', 20, 'DisplayName', '$q_{goal}$')
+    len = rb.tr.LEN;
+    plot(rb.zmp(1, 1:len), rb.zmp(2, 1:len), 'Displayname', 'ZMP path', 'LineWidth', 1)
+    plot(rb.CoM(1, 1:len), rb.CoM(2, 1:len), 'Displayname', 'CoM path', 'LineWidth', 1)
+    len1 = 25;
+    plot(rb.r_lr(1, 1:2:len1), rb.r_lr(2, 1:2:len1), 'o', 'DisplayName', 'left footholds path', 'LineWidth', 1)
+    plot(rb.r_lr(1, 2:2:len1), rb.r_lr(2, 2:2:len1), 'square', 'DisplayName', 'right footholds path', 'LineWidth', 1)
+    axis equal
+    % title('local motion planning')
+    xlabel('x (m)'); ylabel('y (m)')
+    legend('Interpreter','latex')%, 'FontSize', 20)
+    % exportgraphics(fig,'lmp.png','Resolution',500)
+    save_fig(fig)
+
     %% state, estimated state, reference
     fig = figure;
-    DIM = 1;
-    div = divisors(DIM);
-    i = ceil((length(div))/2);
-    Layout = tiledlayout(DIM, div(i));
-    
+    DIM = DIM_F;
+    % div = divisors(DIM);
+    % i = ceil((length(div))/2);
+    % Layout = tiledlayout(DIM/div(i), div(i));
+    Layout = tiledlayout(DIM/2, 2);
+    Layout.TileSpacing = 'tight';
+    Layout.Padding = 'tight';
     r = rb.tr.r{1};
-    % timeInterval = 1:length(rb.tr.t)-1;
-    for i = 1 : 1%DIM_F % position
+    for i = 1 : DIM % position
         nexttile
         hold on
-        index = DIM_F + i;
+        index = DIM + i;
         plot(rb.tr.t, rb.tr.x(index, :)+r(i, :), 'DisplayName', 'state', 'LineWidth', 2)
         plot(rb.tr.t, rb.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
         plot(rb.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
-        
-        title(['$q_' num2str(i) '$'], 'Interpreter','latex')
-        legend
-        xlabel("t")
+        grid on
+        ylabel(['$q_{' num2str(i) '} (rad)$'], 'Interpreter','latex')      
+        legend('Interpreter','latex','Location','southeast')
         % ylim([-2 2])
     end
+    xlabel(Layout,'t (sec)')
     
-    FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
-    saveas(fig, FILE_NAME)
-    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
-    savefig(FILE_NAME)
+    % save_fig(fig)
     
     %% Fa and Fs
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, 'a')
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 'a')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, 's')
-    % Plot(rb.tr.t, rb.tr.x, rb.tr.xh, index, 1, 's')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, '1')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, '2')
 
     %% control u(t)
     fig = figure;
@@ -189,7 +210,6 @@ if rb.EXE_PLOT
     i = ceil((length(div))/2);
     Layout = tiledlayout(DIM/div(i), div(i));
     
-    % timeInterval = 1:length(rb.tr.t)-1;
     for i = 1 : DIM % position
         nexttile
         hold on
@@ -200,11 +220,6 @@ if rb.EXE_PLOT
         xlabel("t")
         % ylim([-2 2])
     end
-
-%     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
-%     saveas(fig, FILE_NAME)    
-%     FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
-%     savefig(FILE_NAME)
 end
 
     
@@ -213,3 +228,11 @@ toc
 
 %% Controlability
 % rank(ctrb(rb.A, rb.B))    
+
+%% function
+function save_fig(fig)
+    FILE_NAME = ['results/fig' num2str(fig.Number) '.png'];
+    saveas(fig, FILE_NAME)
+    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
+    savefig(FILE_NAME)
+end

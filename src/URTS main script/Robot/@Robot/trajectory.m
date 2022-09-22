@@ -13,7 +13,7 @@ startTime   = 3; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% set disturbance
 %-1 actuator fault
-d1 = repmat(10*sin(3*t), sys_a.DIM, 1);
+d1 = 1*repmat(10*sin(3*t), sys_a.DIM, 1);
 sys_a.fault = zeros(sys_a.DIM, LEN);
 
 %-2 sensor fault
@@ -27,7 +27,7 @@ sys_a.fault = zeros(sys_a.DIM, LEN);
 
 % smoothed square wave
 t_ = linspace(0, rb.tr.T, 100);
-x_ = 0.1*square(t_, 60);
+x_ = .1*square(.5*t_, 60);
 fx = fit(t_', x_', 'SmoothingSpline');
 x3 = feval(fx, rb.tr.t)';
 sys_s.fault = repmat(x3, sys_s.DIM, 1);
@@ -131,7 +131,7 @@ for i = startTime : LEN - 1
     % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
 
     sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
-    % f = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + sys_a.fault(:, i));
+    % sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*(-d1(:, i));
     % f = tau;
 

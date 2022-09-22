@@ -86,7 +86,7 @@ uav.sys_s       = sys_s;
 uav.sys_aug     = sys_aug;
 
 %% solve LMI
-uav = uav.get_K_L(sys_aug1);
+uav = uav.get_K_L(sys1, sys_aug1);
 
 %% trajectory
 % Construct reference r(t) = [xd, yd, zd, phid]^T
@@ -111,30 +111,24 @@ uav.tr.LEN  = length(uav.tr.t);
 r1 = [
     0 0 1 1 2 2 2 1 0
     0 1 1 0 0 1 2 2 2
+    0 .5 1 .5 0 -.5 -1 -.5 0
 ]*5;
-a = 20;
 
 len1 = length(r1);
 t1 = linspace(0,1,len1);
-
-len2 = (len1-1)*a+1;
+density = 5;
+len2 = (len1-1)*density+1;
 t2 = linspace(0,1,len2);
-r2 = zeros(2, len2);
-r2 = [
-    interp1(t1, r1(1, :), t2);
-    interp1(t1, r1(2, :), t2);
-];
-
-fx = fit(t2', r2(1,:)', 'SmoothingSpline');
-fy = fit(t2', r2(2,:)', 'SmoothingSpline');
+r2 = zeros(3, len2);
 len3 = uav.tr.LEN;
 t3 = linspace(0,1,len3);
-r3 = [
-    feval(fx, t3)';
-    feval(fy, t3)';
-];
-r4 = cat(1, r3, 1*sin(uav.tr.t));
-uav.qr = cat(1, r4, zeros(1, length(r4)));
+r3 = zeros(3, len3);
+for i = 1 : 3
+    r2(i, :) = interp1(t1, r1(i, :), t2);
+    f2{i} = fit(t2', r2(i, :)', 'SmoothingSpline');
+    r3(i, :) = feval(f2{i}, t3)';
+end
+uav.qr = cat(1, r3, zeros(1, length(r3)));
 
 if uav.EXE_TRAJ
     %% set initial
@@ -149,9 +143,16 @@ end
 if uav.EXE_PLOT
     disp('Ploting trajectory ...')
     %% r(t)
-    figure; hold on;    
-    plot(r2(1, :), r2(2, :));
-    plot(uav.qr(1, :), uav.qr(2, :), '-o', 'DisplayName', 'r(t)')
+    figure
+    % plot3(r2(1, :), r2(2, :), r2(3, :), '-o', 'DisplayName', '$\sigma(t)$');
+    hold on
+    % plot3(uav.qr(1, :), uav.qr(2, :), uav.qr(3, :), 'DisplayName', '$\sigma''(t)$')
+    plot(r2(1, :), r2(2, :), '-o', 'DisplayName', '$\sigma(t)$');
+    plot(uav.qr(1, :), uav.qr(2, :), 'DisplayName', '$\sigma''(t)$')
+    axis equal
+    title('reference')
+    xlabel('x (m)'); ylabel('y (m)')
+    legend('Interpreter','latex')
 
     %% state, error, estimated state
     fig = figure;
@@ -159,9 +160,12 @@ if uav.EXE_PLOT
     div = divisors(DIM);
     i = ceil((length(div))/2);
     Layout = tiledlayout(DIM/div(i), div(i));
+    Layout.TileSpacing = 'compact';
+    Layout.Padding = 'compact';
     
     r = uav.tr.r{1};
     % timeInterval = 1:length(uav.tr.t)-1;
+    Y_LABEL = {'x (m)', 'y (m)', 'z (m)', '\phi (rad)', '\theta (rad)', '\psi (rad)'};
     for i = 1 : DIM_F % position
         nexttile
         hold on
@@ -170,9 +174,10 @@ if uav.EXE_PLOT
         plot(uav.tr.t, uav.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
         plot(uav.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
         
-        title(['$q_' num2str(i) '$'], 'Interpreter','latex')
-        legend
-        xlabel("t")
+        title(['$x_{' num2str(i) '}$'], 'Interpreter','latex')
+        legend('Interpreter','latex')
+        xlabel('t (sec)')
+        ylabel(Y_LABEL{i})
         % ylim([-2 2])
     end
     

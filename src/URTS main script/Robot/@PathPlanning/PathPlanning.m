@@ -9,7 +9,8 @@ classdef PathPlanning
     end
 
     properties
-        r % path
+        sigma % path
+        r % smoothed path
         tree % span tree of RRT
         map % occupancy Map
         start % start point
@@ -41,7 +42,8 @@ classdef PathPlanning
             rng(1); % repeatable result
             [pthObj, solnInfo] = planner.plan(start,goal);
 
-            pp.r = fit_linear_spline(pthObj.States(:, 1:2)', pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
+            pp.sigma = pthObj.States(:, 1:2)';
+            pp.r = fit_linear_spline(pp.sigma, pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
             pp.tree = solnInfo.TreeData;
             pp.map = map;
             pp.start = start;

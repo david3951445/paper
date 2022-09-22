@@ -71,8 +71,7 @@ CoM0(3, :) = rb.height_CoM0_walk;
 
 %% Inverse Kinemic, [x y z phi theta psi] -> config
 if rb.EXE_IK
-    simTime = rb.tr.T;
-    n = simTime/dt;
+    n = rb.tr.LEN;
     qr = zeros(12, n);
     newSubtree = subtree(robot, 'body_f1');
     qr(1:2:11, :) = IK_leg(newSubtree, CoM0(:, 1:n), r_lh(:, 1:n));

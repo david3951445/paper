@@ -1,4 +1,4 @@
-function ag = get_K_L(ag, sys_aug1)
+function ag = get_K_L(ag, sys1, sys_aug1)
 I = eye(ag.DIM_F);
 
 if ag.EXE_LMI
@@ -12,8 +12,10 @@ if ag.EXE_LMI
 end
 
 %% Fine tune of gain
-% gain = [-1 zeros(1, sys_a.WINDOW-1)];
-% ag.K(:, sys1.DIM_X + (1:sys_a.WINDOW)) = gain;
+% feedback control law u_fb = K*x_b, where K = [Kp Ki Kd Ka Ks]
+
+gain = [-1 zeros(1, ag.sys_a.WINDOW-1)]; % since the optimal actuator fault gain Ka is -I so that it can offset the estimation of actuator fault f_a.
+ag.K(:, sys1.DIM_X + (1:ag.sys_a.WINDOW)) = gain;
 % ag.KL(4:6, :) = [1000 0 0; 0 100 0; 0 0 10];
 % ag.KL(7:9,:) = [1000 0 0; 0 100 0; 0 0 10];
 % ag.K(:, sys1.DIM_X + sys_a.WINDOW + (1:sys_s.WINDOW)) = zeros(1, sys_s.WINDOW);

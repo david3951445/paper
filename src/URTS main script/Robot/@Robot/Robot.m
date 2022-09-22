@@ -27,7 +27,7 @@ classdef Robot < Agent
             10^(-5)*[22 99 91 0 -.1 0]
         ] % inertia of CoM1~12
 
-        INTERP_DENSITY = 2500 % interp density of zmp
+        INTERP_DENSITY = 800 % interp density of zmp
     end
     properties
         %% rigidbodytree

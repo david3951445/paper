@@ -11,6 +11,7 @@ switch whichVar
         KL = ag.KL;
     otherwise
         is_saved = false;
+        return;
 end
 
 if isfile([ag.PATH '.mat'])

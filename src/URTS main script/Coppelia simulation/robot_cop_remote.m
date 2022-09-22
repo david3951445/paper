@@ -8,7 +8,7 @@ clientID = sim.simxStart('127.0.0.1',19999,true,true,5000,5);
 
 if (clientID>-1)
     disp('Connected to remote API server');
-    load qr
+    qr = load('Robot/data/Robot.mat').qr;
     [len1, len2] = size(qr);
     h = zeros(1, len1);
     r = zeros(1, len1);
@@ -24,8 +24,8 @@ if (clientID>-1)
                 disp(['i = ' num2str(i)])
 %             end
             for j = 1 : len1
-%                 sim.simxSetJointTargetVelocity(clientID, h(j), .1, sim.simx_opmode_streaming);
                 position = qr(j, i);
+%                 sim.simxSetJointTargetPosition(clientID, h(j), position, sim.simx_opmode_streaming);
                 sim.simxSetJointPosition(clientID, h(j), position, sim.simx_opmode_streaming);
             end
         end        
