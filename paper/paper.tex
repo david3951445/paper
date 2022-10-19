@@ -54,7 +54,7 @@
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.2017.DOI}
 
-\title{Robust Fault-Tolerant Control and Motion Planning of UAVs and Biped Robots Team System for S\&R Usage}
+\title{Robust Fault-Tolerant Control and Motion Planning of UAVs and Biped Robots Team System for Search and Rescue Usage}
 % \author{\uppercase{First A. Author}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
 % \uppercase{Second B. Author\authorrefmark{2}, and Third C. Author,
 % Jr}.\authorrefmark{3},
@@ -124,7 +124,7 @@ $diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks 
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
 \section{PRELIMINARIES OF S\&R URTS}
-The URTS will start with a given S\&R area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $\alpha_{i,j}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $\alpha_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
+The URTS will start with a given S\&R area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $\alpha_{j,i}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $\alpha_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
 % The system architecture if URTS is shown in Fig. \ref{fig:1}.
 % \begin{figure}[htbp]
 % \centering
@@ -166,7 +166,7 @@ In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned 
 }
 \textit{
     \begin{remark}
-        Although each agent has its own team, agents can also work across teams. For example, if the result given by the task allocation algorithm contains the agent-task pairs $(\alpha_{4,1},T_1)$ and $(\alpha_{2,2},T_1)$, then the agent $\alpha_{4,1}$ in team 1 and the agent $\alpha_{2,2}$ in team 2 will execute task $T_1$ together. 
+        Although each agent has its own team, agents can also work across teams. For example, if the result given by the task allocation algorithm contains the agent-task pairs $(\alpha_{1,5},T_1)$ and $(\alpha_{2,2},T_1)$, then the agent $\alpha_{1,5}$ in team 1 and the agent $\alpha_{2,2}$ in team 2 will execute task $T_1$ together. 
     \end{remark}
 }
 
@@ -178,7 +178,11 @@ According to the way of pathfinding, it can be divided into multi-query planner 
 %  i.e., the roadmap will be constructed incrementally and toward the goal, 
 such as Rapidly-exploring Random Tree (RRT), Expansice Space Tree (EST), and Ariadne's Clew \cite{elbanhawi2014sampling}. However, the environment is dynamic rather static for URTS so some extra structures need to impose on the aforementioned planner. Some common dynamic planners can also be found in \cite{elbanhawi2014sampling}, such like PRM with D* search algorithm, dynamic RRT, and extended RRT. All of the above common roadmap-based planners can be applied to the URTS.
 
-Furthermore, the constraints imposed by the mechanical structure are needed to consider within pathfinding process mentioned by other literatures but it will be left to Local Motion Planning block to deal with. The reason is that URTS works on a complex environment and therefore requires a variety of behaviors to respond, and the constraints on these behaviors will vary. (e.g., curvature constraints of two behavior: running and walking are expected to be different for robot). In this case, a unified planner will become overly complex and impracticable. For this reason, we divide path planning into three subprocesses, i.e., Path Planning, Behavior Layer and Local Motion Planning. Then, the global planner, Path Planning block, will regard an agent as a point without kinodynamic constraints. The local planners, Local Motion Planning block, will consider the motion planning of a specific behavior.
+\begin{remark}
+    To avoid agents colliding with each other, the concept of multi-agent path planning is proposed \cite{yu2013multi}. However, URTS operates in a large environment so the probability of collision is small and the agents have the ability to communicate. Therefore, when the paths collide, the mechanism of waiting for the other side to pass can be used to avoid the collision problem.
+\end{remark}
+
+Furthermore, the constraints imposed by the mechanical structure are needed to consider within pathfinding process mentioned by other literatures but it will be left to local motion planning block to deal with. The reason is that URTS works on a complex environment and therefore requires a variety of behaviors to respond, and the constraints on these behaviors will vary. (e.g., curvature constraints of two behavior: running and walking are expected to be different for robot). In this case, a unified planner will become overly complex and impracticable. For this reason, we divide path planning into three subprocesses, i.e., path planning, behavior layer and local motion planning. Then, the global planner, path planning block, will regard an agent as a point without kinodynamic constraints. The local planners, local motion planning block, will consider the motion planning of a specific behavior.
 % In this case, the configuration space $\mathcal{C}$ degenerates to $\mathbb{R}^3$.
 
 By treating a roadmap-based path planning algorithm as a black box, the output is a sequence (or sayed waypoints), and the three inputs are current configuration $q_{start}$, goal configuration $q_{goal}$, and configuration space $\mathcal{C}$. Current configuration is obtained by GPS, inertial measurement unit, or other locating techniques. Goal configuration is obtained by the previous block, Task Allocation. Configuration space $\mathcal{C}$ is constructed by environment information through sensors of agents online or in advance by human knowledge offline. $\mathcal{C}$ is a space contain all possible configurations of agents which are composed of free space $\mathcal{C}_{free}$ and obstacle space $\mathcal{C}_{obs}$, where $\mathcal{C}=\mathcal{C}_{free}\cup\mathcal{C}_{obs}$ and $\mathcal{C}_{free}\cap\mathcal{C}_{obs}=\emptyset$. For a simpler explanation of how the URTS works, the following assumption is made.
@@ -193,14 +197,14 @@ By treating a roadmap-based path planning algorithm as a black box, the output i
     The URTS is supposed to have a perfect real-time mapping ability so a real-time configuration space $\mathcal{C}$ can be obtained.
 \end{assumption}
 \begin{assumption} \label{asm:collision} % UAV do not consider obstacle collisions a little wierd.
-    UAVs do not consider obstacle collisions because there are few obstacles in the air. Hence, the path of UAVs can be directly assigned rather than found by planner. Robots do not consider obstacle collisions in the direction perpendicular to the ground. 
+    UAVs do not consider obstacle collision, so the path of UAVs can be directly assigned rather than found by planner. Robots do not consider obstacle collision in the direction perpendicular to the ground. 
 \end{assumption}
 
 From above assumptions, a path of agent can be expressed as a sequence
 \begin{equation}
     (\sigma_n), n\in\mathbb{Z}\cap[1,k_f], \sigma_n\in\mathcal{C}
 \end{equation}
-where $k_f$ is the time step when reaching goal. Since the path planning is dynamic, $(\sigma_n)$ is composed of multiple segments actually. Let $(\sigma_{k_n})$ be the subsequence of $(\sigma_n)$, where $k_n$ is the time step when a replanning decision is occured. Then, the segments of path from the result of the replanning in time step $k_n$ can be expressed as sequences $(\sigma_m), m\in\mathbb{Z}\cap[k_n, k_{n+1})$. For agents, the replanning decision can be a goal changing that is made by human or Task Allocation. For robot, it can be a collision detecting by a dynamic roadmap-based planner. The results path $(\sigma_n)$ is passed to the next block, Behavior Layer.
+where $k_f$ is the time step when reaching goal. Since the path planning is dynamic, $(\sigma_n)$ is composed of multiple segments actually. Let $(\sigma_{k_n})$ be the subsequence of $(\sigma_n)$, where $k_n$ is the time step when a replanning decision is occured. Then, the segments of path from the result of the replanning in time step $k_n$ can be expressed as sequences $(\sigma_m), m\in\mathbb{Z}\cap[k_n, k_{n+1})$. For agents, the replanning decision can be a goal changing that is made by human or task allocation block. For robot, it can be a collision detecting by a dynamic roadmap-based planner. The results path $(\sigma_n)$ is passed to the next block, Behavior Layer.
 
 \subsection{Behavior Layer}
 % Since UAVs and robots are real physical systems, they must interact with the environment through a behavior so that they can move and act in the physical world.
@@ -772,7 +776,7 @@ The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. T
 \end{figure*}
 
 \section{simulation results}
-In this section, a specific S\&R procedure for URTS is given to illustrate the proposed UTRS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_j,j=1,2,...,N$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $1$st team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $1$st team as a set, $team_1=\{ \alpha_{1,j} | j=1,2,...,5 \}$. At the beginning, the agents in $team_1$ are assigned the search tasks of $area_1$ to build the occupy map and find targets. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{1,j},T_j) | j=1,2,...,5 \}$. Suppose a target is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{1,2}$ and $\alpha_{1,3}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{1,2},T_2),(\alpha_{1,3},T_3) \})\cup\{ \alpha_{1,2},T_6),(\alpha_{1,3},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
+In this section, a specific S\&R procedure for URTS is given to illustrate the proposed UTRS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_j,j=1,2,...,N$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $1$st team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $1$st team as a set, $team_1=\{ \alpha_{1,j} | j=1,2,...,5 \}$. At the beginning, the agents in $team_1$ are assigned the search tasks of $area_1$ to build the occupy map and find targets. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{1,j},T_j) | j=1,2,...,5 \}$. Suppose a target is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{1,5}$ and $\alpha_{2,2}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{1,5},T_2),(\alpha_{2,2},T_3) \})\cup\{ (\alpha_{1,5},T_6),(\alpha_{2,2},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $j$th team is responsible for $j$th area, $area_j$}%
@@ -780,13 +784,13 @@ In this section, a specific S\&R procedure for URTS is given to illustrate the p
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The search tasks in $1$st team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach a destinition $q_{goal}$ as shown in figure. For robots, $q_{goal}$ will be passed to path planning algorithm to find a collision path. For UAV, the path is directly assigned due to the no-collision assumption as shown in figure.}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The search tasks in $1$st team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinitions $q_{goal}$ (black dots in figure). For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma_n)$ due to the no-collision assumption.}
     \label{fig:S_task}
 \end{figure}
 
-To explain the path planning block and behavior layer block, we choose the pair $(\alpha_{1,2},T_6)$ as an example, i.e., the robot $\alpha_{1,2}$ performing the task $T_6$. From $T_6$, we have the goal configuration $q_{goal}$. With the current configuration $q_{start}$ and configuration space obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking},n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing},n\in\mathbb{Z}\cap[6,15]$, $\beta_n=\mathit{running},n\in\mathbb{Z}\cap[16,27]$. We choose the first walking behavior to illustrate the local motion planning block of robots.
+To explain the path planning block and behavior layer block, we choose the pairs $(\alpha_{1,5},T_6)$ and $(\alpha_{1,1}, T_1)$ as example. For the robot $\alpha_{1,5}$, we have the goal configuration $q_{goal}$ from the task $T_6$. With the current configuration $q_{start}$ and configuration space $\mathcal{C}$ obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking}$ for $n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing}$ for $n\in\mathbb{Z}\cap[6,15]$ and $\beta_n=\mathit{running}$ for $n\in\mathbb{Z}\cap[16,27]$. We choose the walking behavior to illustrate the local motion planning block of robots.
 
-For the the UAV $\alpha_{1,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=9$ is directly set to $([0,0,0]^T\mathbin{,} [0,5,2.5]^T\mathbin{,} [5,5,5]^T\mathbin{,} [5,0,2.5]^T\mathbin{,} [10,0,0]^T\mathbin{,} [10,5,-2.5]^T\mathbin{,} [10,10,-5]^T\mathbin{,} [5,10,-2.5]^T\mathbin{,} [0,10,0]^T)$ without going through path planning by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,9]$.
+For the UAV $\alpha_{1,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=9$ is directly set to $([0,0,0]^T\mathbin{,} [0,5,2.5]^T\mathbin{,} [5,5,5]^T\mathbin{,} [5,0,2.5]^T\mathbin{,} [10,0,0]^T\mathbin{,} [10,5,-2.5]^T\mathbin{,} [10,10,-5]^T\mathbin{,} [5,10,-2.5]^T\mathbin{,} [0,10,0]^T)$ without going through path planning by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,9]$.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The path planning tasks.}%

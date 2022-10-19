@@ -61,6 +61,12 @@ Yuanchang Liu and Richard Bucknall.
   unmanned vehicles.
 \newblock {\em Robotica}, 36(7):1019--1047, 2018.
 
+\bibitem{yu2013multi}
+Jingjin Yu and Steven~M LaValle.
+\newblock Multi-agent path planning and network flow.
+\newblock In {\em Algorithmic foundations of robotics X}, pages 157--173.
+  Springer, 2013.
+
 \bibitem{sabatino2015quadrotor}
 Francesco Sabatino.
 \newblock Quadrotor control: modeling, nonlinearcontrol design, and simulation,

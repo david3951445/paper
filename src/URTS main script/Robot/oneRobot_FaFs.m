@@ -4,8 +4,7 @@
 %   - calculating the inverse dynamic (line 20 in IK_leg.m)
 %   - calculating the nonlinear terms M(x) and H(x, dx) in rb.trajectory()
 clc; clear; close all; tic;
-addpath(genpath('./././src'))
-addpath(genpath('function'))
+addpath(genpath('../../../src'))
 
 rb = Robot();
 % flow control of code
@@ -13,7 +12,7 @@ rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
 rb.EXE_TRAJ    = 0; % trajectory
-rb.EXE_PLOT    = 0; % plot results
+rb.EXE_PLOT    = 1; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
@@ -56,7 +55,7 @@ sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a.B     = kron(sys_a1.B, I);
 
 %% smooth model (sensor)
-WINDOW  = 4;
+WINDOW  = 3;
 dt_     = 1000*rb.tr.dt; % multiply 1000 is better by testing
 METHOD = '2';
 
@@ -193,33 +192,29 @@ if rb.EXE_PLOT
         grid on
         ylabel(['$q_{' num2str(i) '} (rad)$'], 'Interpreter','latex')      
         legend('Interpreter','latex','Location','southeast')
-        % ylim([-2 2])
     end
     xlabel(Layout,'t (sec)')
     
-    % save_fig(fig)
-    
     %% Fa and Fs
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, '1')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, '2')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, '1', 'm/s^2')
+    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, '2', 'm')
 
     %% control u(t)
     fig = figure;
     DIM = size(rb.tr.u, 1);
-    div = divisors(DIM);
-    i = ceil((length(div))/2);
-    Layout = tiledlayout(DIM/div(i), div(i));
+    % div = divisors(DIM);
+    % i = ceil((length(div))/2);
+    % Layout = tiledlayout(DIM/div(i), div(i));
     
-    for i = 1 : DIM % position
-        nexttile
-        hold on
+    hold on
+    for i = 1 : DIM
+        % nexttile
         index = i;
-        plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', 'control', 'LineWidth', 2)    
-        title(['$u_{' num2str(i) '}$'], 'Interpreter','latex')
-        legend
-        xlabel("t")
-        % ylim([-2 2])
+        plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', ['$u_{' num2str(i) '}$'], 'LineWidth', 1)    
     end
+    legend('Interpreter','latex','Location','southeast')
+    xlabel("t")
+    ylabel('$N\cdot m$', 'Interpreter','latex')
 end
 
     

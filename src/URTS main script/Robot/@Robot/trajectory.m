@@ -52,6 +52,7 @@ sys_s.fault = repmat(x3, sys_s.DIM, 1);
 rb.tr.r = cell(1,3);
 for i = 1 : DIM_F
     r = rb.qr(i,1:LEN);
+    % r = smoothdata(r, "movmean", 10);
     
     dr = diff(r, 1, 2)/dt;
     dr = filloutliers(dr,'clip','movmedian', 10, 'ThresholdFactor', 1); % numercial differenciation will produce outliers 
@@ -116,7 +117,7 @@ for i = startTime : LEN - 1
     %% fault signal
     % feedback linearized term: Mh(), Hh(). By testing, using feedforward only ( Mh(r(t)) ) is more stable then feedback + feedforward ( Mh(xh(t)+r(t)) ).
     u = rb.u_PID(xh); % PID control
-    rb.tr.u(:, i+1) = u;
+
     M = rb.M(X+r); 
     Mh = rb.M(r); % feedforward compensation
     % Mh = rb.M(Xh+r); 
@@ -130,10 +131,13 @@ for i = startTime : LEN - 1
     % fext1 = externalForce(rb.rbtree, 'body11', [0 0 0 0 0 rb.tr.GRF{1}(i)], X');
     % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
 
+    d1(:, i) = d1(:, i) + 0.12*x.*x
     sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*(-d1(:, i));
     % f = tau;
+
+    rb.tr.u(:, i+1) = Mh*(ddr + u) + Hh;
 
     % Show norm of error terms
     if mod(i, 100) == 0 

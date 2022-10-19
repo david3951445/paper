@@ -2,7 +2,6 @@
 % one uav, observer-based tracking control, feedfoward linearization, FTC (smoothed model, actuator and sensor fault), K solved by DIM = 1 method
 clc; clear; close all; tic;
 addpath(genpath('../../../src'))
-addpath(genpath('function'))
 
 uav = UAV_AGENTmodel();
 % flow control of code
@@ -129,6 +128,7 @@ for i = 1 : 3
     r3(i, :) = feval(f2{i}, t3)';
 end
 uav.qr = cat(1, r3, zeros(1, length(r3)));
+uav.Save('qr');
 
 if uav.EXE_TRAJ
     %% set initial
@@ -142,16 +142,28 @@ end
 
 if uav.EXE_PLOT
     disp('Ploting trajectory ...')
+    r = uav.tr.r{1};
     %% r(t)
+%     figure
+%     hold on
+%     plot(r2(1, :), r2(2, :), '-o', 'DisplayName', '$\sigma(t)$');
+%     plot(uav.qr(1, :), uav.qr(2, :), 'DisplayName', '$\sigma''(t)$')
+%     axis equal
+%     title('reference')
+%     xlabel('x (m)'); ylabel('y (m)')
+%     legend('Interpreter','latex')
+    
+    %% 3D, r(t), state
     figure
-    % plot3(r2(1, :), r2(2, :), r2(3, :), '-o', 'DisplayName', '$\sigma(t)$');
+    plot3(r(1, :), r(2, :), r(3, :), 'DisplayName', '$r(t)$');
     hold on
-    % plot3(uav.qr(1, :), uav.qr(2, :), uav.qr(3, :), 'DisplayName', '$\sigma''(t)$')
-    plot(r2(1, :), r2(2, :), '-o', 'DisplayName', '$\sigma(t)$');
-    plot(uav.qr(1, :), uav.qr(2, :), 'DisplayName', '$\sigma''(t)$')
-    axis equal
-    title('reference')
-    xlabel('x (m)'); ylabel('y (m)')
+    X = uav.tr.x(DIM_F+1, :) + r(1, :);
+    Y = uav.tr.x(DIM_F+2, :) + r(2, :);
+    Z = uav.tr.x(DIM_F+3, :) + r(3, :);
+    plot3(X, Y, Z, 'DisplayName', '$x(t)$')
+%     axis equal
+    title('UAV reference and state')
+    xlabel('x (m)'); ylabel('y (m)'); zlabel('z (m)')
     legend('Interpreter','latex')
 
     %% state, error, estimated state
@@ -163,8 +175,6 @@ if uav.EXE_PLOT
     Layout.TileSpacing = 'compact';
     Layout.Padding = 'compact';
     
-    r = uav.tr.r{1};
-    % timeInterval = 1:length(uav.tr.t)-1;
     Y_LABEL = {'x (m)', 'y (m)', 'z (m)', '\phi (rad)', '\theta (rad)', '\psi (rad)'};
     for i = 1 : DIM_F % position
         nexttile
@@ -188,28 +198,23 @@ if uav.EXE_PLOT
     
     %% fault signals (Fa, Fs)
     Plot(uav.tr.t, uav.tr.x, uav.tr.xh, uav.sys_a.begin, sys_a.DIM, 'a')
-    % Plot(uav.tr.t, uav.tr.x, uav.tr.xh, index, 1, 'a')
     Plot(uav.tr.t, uav.tr.x, uav.tr.xh, uav.sys_s.begin , sys_s.DIM, 's')
-    % Plot(uav.tr.t, uav.tr.x, uav.tr.xh, index, 1, 's')
     
     %% control u(t)
-    fig = figure;
-    DIM = size(uav.tr.u, 1);
-    div = divisors(DIM);
-    i = ceil((length(div))/2);
-    Layout = tiledlayout(DIM/div(i), div(i));
-    
-    % timeInterval = 1:length(uav.tr.t)-1;
-    for i = 1 : DIM % position
-        nexttile
-        hold on
-        index = i;
-        plot(uav.tr.t, uav.tr.u(index, :), 'DisplayName', 'control', 'LineWidth', 2)    
-        title(['$u_' num2str(i) '$'], 'Interpreter','latex')
-        legend
-        xlabel("t")
-        % ylim([-2 2])
-    end
+%     fig = figure;
+%     DIM = size(uav.tr.u, 1);
+%     div = divisors(DIM);
+%     i = ceil((length(div))/2);
+%     Layout = tiledlayout(DIM/div(i), div(i));  
+%     for i = 1 : DIM % position
+%         nexttile
+%         hold on
+%         index = i;
+%         plot(uav.tr.t, uav.tr.u(index, :), 'DisplayName', 'control', 'LineWidth', 2)    
+%         title(['$u_' num2str(i) '$'], 'Interpreter','latex')
+%         legend
+%         xlabel("t")
+%     end
     
 %     FILE_NAME = ['results/fig' num2str(fig.Number) '.pdf'];
 %     saveas(fig, FILE_NAME)
