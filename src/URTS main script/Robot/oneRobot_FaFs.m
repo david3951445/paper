@@ -83,7 +83,7 @@ sys_aug1.rho    = 30;
 [A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug     = LinearModel(A, B, C);
 
-%% some mapping
+%% Copy sys, sys_a, sys_s, sys_aug to rb
 sys_a.begin = sys.DIM_X;
 sys_s.begin = sys.DIM_X + sys_a.DIM_X;
 rb.sys      = sys;
@@ -95,23 +95,11 @@ rb.sys_aug = sys_aug;
 rb = rb.get_K_L(sys1, sys_aug1);
 
 %% trajectory
-% Find task space ref
-pp = PathPlanning();
-
-% find joint ref
-rb = rb.Ref2Config(pp.r); % rb.r -> rb.qr
-
-% testing ref
-% t = 0 : dt : 10;
-% ref = zeros(DIM_F, length(t));
-% ref = repmat(.1*cos(t), DIM_F, 1);
-% ref(1:DIM_F/2, :) = repmat(.1*cos(t), DIM_F/2, 1);
-% ref(DIM_F/2+1:DIM_F, :) = repmat(.1*sin(t), DIM_F/2, 1);
-% rb.qr = ref;
+pp = PathPlanning(); % Find task space ref in a map using RRT
+rb = rb.Ref2Config(pp.r); % task space ref -> joint space ref
 
 if rb.EXE_TRAJ
-
-    %% set initial
+    % Set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     x0_pos      = zeros(1, sys.DIM_X);
@@ -125,109 +113,15 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
-    %% GRF
-    
-    %% map and path
-    fig = figure;
-    show(pp.map);
-    hold on;
-    plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','RRT tree expansion'); % tree expansion
-    % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
-    plot(pp.sigma(1, :), pp.sigma(2, :), 'o', 'DisplayName', '$\sigma(t)$')
-    plot(pp.r(1, :), pp.r(2, :), 'LineWidth', 2, 'DisplayName', '$\sigma''(t)$')
-    len = length(pp.sigma);
-    plot(pp.sigma(1, 1), pp.sigma(2, 1), 'square', 'MarkerSize', 20, 'DisplayName', '$q_{start}$')
-    plot(pp.sigma(1, len), pp.sigma(2, len), 'pentagram', 'MarkerSize', 20, 'DisplayName', '$q_{goal}$')
-    % len1 = 25;
-    % plot(rb.r_lr(1, 1:2:len1), rb.r_lr(2, 1:2:len1), '-o', 'DisplayName', 'left foot')
-    % plot(rb.r_lr(1, 2:2:len1), rb.r_lr(2, 2:2:len1), '-o', 'DisplayName', 'right foot')
-    % plot(rb.zmp(1, :), rb.zmp(2, :), '-s', 'Displayname', 'ZMP trajectory')
-    % plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
-    axis equal
-    % title('path of the robot \alpha_{1,2} using RRT algorithm')
-    xlabel('x (m)'); ylabel('y (m)')
-    legend('Interpreter','latex')%, 'FontSize', 20)
-    save_fig(fig)
 
-    %% local motion planning
-    fig = figure;
-    hold on;
-    len = 4;
-    plot(pp.sigma(1, 1:len), pp.sigma(2, 1:len), '^', 'DisplayName', '$\sigma(t)$','MarkerSize', 7)
-    len = 20;
-    plot(pp.r(1, 1:len), pp.r(2, 1:len), 'LineWidth', 1, 'DisplayName', '$\sigma''(t)$')
-    % len = length(pp.sigma);
-    % plot(pp.sigma(1, 1), pp.sigma(2, 1), 'square', 'MarkerSize', 20, 'DisplayName', '$q_{start}$')
-    % plot(pp.sigma(1, len), pp.sigma(2, len), 'pentagram', 'MarkerSize', 20, 'DisplayName', '$q_{goal}$')
-    len = rb.tr.LEN;
-    plot(rb.zmp(1, 1:len), rb.zmp(2, 1:len), 'Displayname', 'ZMP path', 'LineWidth', 1)
-    plot(rb.CoM(1, 1:len), rb.CoM(2, 1:len), 'Displayname', 'CoM path', 'LineWidth', 1)
-    len1 = 25;
-    plot(rb.r_lr(1, 1:2:len1), rb.r_lr(2, 1:2:len1), 'o', 'DisplayName', 'left footholds path', 'LineWidth', 1)
-    plot(rb.r_lr(1, 2:2:len1), rb.r_lr(2, 2:2:len1), 'square', 'DisplayName', 'right footholds path', 'LineWidth', 1)
-    axis equal
-    % title('local motion planning')
-    xlabel('x (m)'); ylabel('y (m)')
-    legend('Interpreter','latex')%, 'FontSize', 20)
-    % exportgraphics(fig,'lmp.png','Resolution',500)
-    save_fig(fig)
-
-    %% state, estimated state, reference
-    fig = figure;
-    DIM = DIM_F;
-    % div = divisors(DIM);
-    % i = ceil((length(div))/2);
-    % Layout = tiledlayout(DIM/div(i), div(i));
-    Layout = tiledlayout(DIM/2, 2);
-    Layout.TileSpacing = 'tight';
-    Layout.Padding = 'tight';
-    r = rb.tr.r{1};
-    for i = 1 : DIM % position
-        nexttile
-        hold on
-        index = DIM + i;
-        plot(rb.tr.t, rb.tr.x(index, :)+r(i, :), 'DisplayName', 'state', 'LineWidth', 2)
-        plot(rb.tr.t, rb.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
-        plot(rb.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
-        grid on
-        ylabel(['$q_{' num2str(i) '} (rad)$'], 'Interpreter','latex')      
-        legend('Interpreter','latex','Location','southeast')
-    end
-    xlabel(Layout,'t (sec)')
-    
-    %% Fa and Fs
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, sys_a.DIM, '1', 'm/s^2')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, sys_s.DIM, '2', 'm')
-
-    %% control u(t)
-    fig = figure;
-    DIM = size(rb.tr.u, 1);
-    % div = divisors(DIM);
-    % i = ceil((length(div))/2);
-    % Layout = tiledlayout(DIM/div(i), div(i));
-    
-    hold on
-    for i = 1 : DIM
-        % nexttile
-        index = i;
-        plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', ['$u_{' num2str(i) '}$'], 'LineWidth', 1)    
-    end
-    legend('Interpreter','latex','Location','southeast')
-    xlabel("t")
-    ylabel('$N\cdot m$', 'Interpreter','latex')
+    figure
+    rr = rb.tr.r{1}(:, 1:1500:rb.tr.LEN);
+    tt = linspace(0, 1, length(rr));
+    plot(tt, rr);
+    % PlotPP(pp); % path planning
+    % PlotLMP(pp, rb); % local motion planning
+    % PlotTC(rb) % tracking control
 end
-
     
 %% Execution time
 toc
-
-%% Controlability
-% rank(ctrb(rb.A, rb.B))    
-
-%% function
-function save_fig(fig)
-    FILE_NAME = ['results/fig' num2str(fig.Number) '.png'];
-    saveas(fig, FILE_NAME)
-    FILE_NAME = ['data/fig/fig' num2str(fig.Number) '.fig'];
-    savefig(FILE_NAME)
-end
