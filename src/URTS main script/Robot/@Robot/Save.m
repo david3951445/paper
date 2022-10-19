@@ -6,6 +6,12 @@ if Save@Agent(rb, whichVar)
 end
 
 switch whichVar
+    case 'r_lr'
+        r_lr = rb.r_lr;
+    case 'INTERP_DENSITY'
+        INTERP_DENSITY = rb.INTERP_DENSITY;
+    case 'rbtree'
+        rbtree = rb.rbtree;
     case 'qr'
         qr = rb.qr;
     case 'CoM'

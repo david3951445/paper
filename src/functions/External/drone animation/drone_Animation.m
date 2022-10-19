@@ -31,16 +31,16 @@ zp = zeros(1,length(to));
  
 
 plot3(r(1, :),r(2, :),r(3, :),'DisplayName', 'reference r(t)', 'LineWidth',1.5); % plot ref
-grid on;
 axis equal;
+grid on;
 %  view(68,50);
 view(150,20);
- xlim([-.5 10.5]); ylim([-.5 10.5]); zlim([-1.5 1.5]);
- xlabel('X(m)');
- ylabel('Y(m)');
- zlabel('Z(m)');
- hold(gca, 'on');
- legend('Interpreter','latex','Location','best');
+xlim([-.5 10.5]); ylim([-.5 10.5]); zlim([-1.5 1.5]);
+xlabel('X(m)');
+ylabel('Y(m)');
+zlabel('Z(m)');
+hold(gca, 'on');
+legend('Interpreter','latex','Location','best');
 
 %% Design Different parts
 % design the base square
@@ -70,8 +70,8 @@ view(150,20);
   set(drone,'parent',combinedobject);
 %  drawnow
 
-F = cell(1, length(x));
 disp('animationing ...')
+F = cell(1, length(x));
 plotState = plot3(x(1:1),y(1:1),z(1:1), 'b:','DisplayName', 'state x(t)','LineWidth',1.5);
  for i = 1:length(x)
      disp(num2str(i))
@@ -98,8 +98,8 @@ plotState = plot3(x(1:1),y(1:1),z(1:1), 'b:','DisplayName', 'state x(t)','LineWi
         %delete(b);
 %      drawnow
    % pause(0.2);
-     F{i} = getframe(gcf);
- end
+   F{i} = getframe(gcf);
+  end
 
  
  disp('making .avi ...')

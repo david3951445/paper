@@ -1,7 +1,7 @@
 function rb = Ref2Config(rb, r)
 %Given r(t) find qr1(t)~qr12(t)
-% r(t) = [x(t); y(t)] : task space (planar) trajectory of robot
-% CoM(t)              : Center of Mass trajectory
+% r(t) = [x(t); y(t)] : Task space (planar) trajectory of robot
+% qr1(t)~qr12(t)      : Joint space trajectory
 
 %% parameters
 robot               = rb.rbtree;
@@ -85,6 +85,7 @@ end
 
 %% Save data
 rb.r_lr = r_lr;
+rb.Save('r_lr');
 rb.zmp = zmp;
 
 %% fig 1

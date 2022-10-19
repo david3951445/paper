@@ -12,7 +12,7 @@ rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
 rb.EXE_TRAJ    = 0; % trajectory
-rb.EXE_PLOT    = 1; % plot results
+rb.EXE_PLOT    = 0; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
@@ -113,14 +113,9 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
-
-    figure
-    rr = rb.tr.r{1}(:, 1:1500:rb.tr.LEN);
-    tt = linspace(0, 1, length(rr));
-    plot(tt, rr);
     % PlotPP(pp); % path planning
-    % PlotLMP(pp, rb); % local motion planning
-    % PlotTC(rb) % tracking control
+    PlotLMP(pp, rb); % local motion planning
+%     PlotTC(rb) % tracking control
 end
     
 %% Execution time

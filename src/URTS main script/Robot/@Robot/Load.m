@@ -5,6 +5,14 @@ rb = Load@Agent(rb);
 if isfile([rb.PATH '.mat'])
     data = load(rb.PATH);
     
+    if isfield(data, 'r_lr')
+        r_lr = rb.r_lr;
+    if isfield(data, 'INTERP_DENSITY')
+        INTERP_DENSITY = rb.INTERP_DENSITY;
+    end
+    if isfield(data, 'rbtree')
+        rb.rbtree = data.rbtree;
+    end
     if isfield(data, 'qr')
         rb.qr = data.qr;
     end
