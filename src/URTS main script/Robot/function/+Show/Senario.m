@@ -1,6 +1,6 @@
 function [fig, axisRange] = Senario()
     % Setting of figure() for senario in URTS
-    fig = figure('pos', [0 50 800 600]);
+    fig = figure;
     axis equal
     grid on
     hold on

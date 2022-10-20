@@ -1,5 +1,5 @@
 function PlotPP(pp)
-    % Plot the occupy map and path planning result
+    % Plot the occupancy map and path planning result
     fig = figure;
     show(pp.map);
     hold on;

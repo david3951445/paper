@@ -41,7 +41,7 @@ classdef PathPlanning
                 start = [map.XWorldLimits(1) map.YWorldLimits(1) 0];
                 goal = [map.XWorldLimits(2) map.YWorldLimits(2) 0];
             end
-            rng(2); % repeatable result
+            rng(1); % repeatable result
             [pthObj, solnInfo] = planner.plan(start, goal);
 
             pp.map = map;
