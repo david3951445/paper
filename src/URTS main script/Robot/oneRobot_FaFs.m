@@ -113,9 +113,9 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
-    Show.PlotPP(pp); % path planning
+%     Show.PlotPP(pp); % path planning
 %     Show.PlotLMP(pp, rb); % local motion planning
-%     Show.PlotTC(rb) % tracking control
+    Show.PlotTC(rb) % tracking control
 end
     
 %% Execution time
