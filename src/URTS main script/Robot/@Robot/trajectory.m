@@ -130,8 +130,7 @@ for i = startTime : LEN - 1
 
     % fext1 = externalForce(rb.rbtree, 'body11', [0 0 0 0 0 rb.tr.GRF{1}(i)], X');
     % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
-
-    d1(:, i) = d1(:, i) + 0.12*x.*x
+    d1(:, i) = d1(:, i) + 0.12*x(DIM_F + (1:DIM_F)).*x(DIM_F + (1:DIM_F));
     sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*(-d1(:, i));

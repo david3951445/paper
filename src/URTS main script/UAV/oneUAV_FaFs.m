@@ -6,7 +6,7 @@ addpath(genpath('../../../src'))
 uav = UAV_AGENTmodel();
 % flow control of code
 uav.EXE_LMI     = 0; % solving LMI
-uav.EXE_TRAJ    = 1; % trajectory
+uav.EXE_TRAJ    = 0; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
@@ -49,7 +49,7 @@ sys_a.B     = kron(sys_a1.B, I);
 
 %% smooth model (sensor)
 WINDOW  = 4;
-dt_     = 1000*uav.tr.dt; % multiply 1000 is better by testing
+dt_     = 600*uav.tr.dt; % multiply 1000 is better by testing
 METHOD = '2';
 
 % for solving control and observer gain
@@ -109,9 +109,11 @@ uav.tr.LEN  = length(uav.tr.t);
 %-2 search task
 r1 = [
     0 0 1 1 2 2 2 1 0
-    0 1 1 0 0 1 2 2 2
-    0 .5 1 .5 0 -.5 -1 -.5 0
+    0 0 1 0 0 1 2 2 2
+    0 .3 .4 .3 .2 .3 .4 .3 .2
 ]*5;
+r1(1:2, :) = r1(1:2, :)/2;
+r1(3, :) = r1(3, :) + 2;
 
 len1 = length(r1);
 t1 = linspace(0,1,len1);

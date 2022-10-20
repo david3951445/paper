@@ -18,7 +18,7 @@ classdef PathPlanning
     end
     
     methods
-        function pp = PathPlanning()
+        function pp = PathPlanning(start, goal)
             %% Construct map
             X = imread('map.png');
             imageCropped = X(:,:,1);
@@ -37,15 +37,17 @@ classdef PathPlanning
 
             planner = plannerRRTStar(ss,sv);
             planner.MaxConnectionDistance = pp.MAX_CON_DIS;
-            start = [map.XWorldLimits(1) map.YWorldLimits(1) 0];
-            goal = [map.XWorldLimits(2) map.YWorldLimits(2) 0];
-            rng(1); % repeatable result
-            [pthObj, solnInfo] = planner.plan(start,goal);
+            if nargin == 0
+                start = [map.XWorldLimits(1) map.YWorldLimits(1) 0];
+                goal = [map.XWorldLimits(2) map.YWorldLimits(2) 0];
+            end
+            rng(2); % repeatable result
+            [pthObj, solnInfo] = planner.plan(start, goal);
 
+            pp.map = map;
             pp.sigma = pthObj.States(:, 1:2)';
             pp.r = fit_linear_spline(pp.sigma, pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
             pp.tree = solnInfo.TreeData;
-            pp.map = map;
             pp.start = start;
             pp.goal = goal;
         end 

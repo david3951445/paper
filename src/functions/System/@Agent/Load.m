@@ -1,6 +1,5 @@
 function ag = Load(ag)
 %load old data
-
 if isfile([ag.PATH '.mat'])
     data = load(ag.PATH);
     if isfield(data, 'tr')

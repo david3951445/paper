@@ -12,7 +12,7 @@ rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
 rb.EXE_TRAJ    = 0; % trajectory
-rb.EXE_PLOT    = 0; % plot results
+rb.EXE_PLOT    = 1; % plot results
 
 % time
 rb.tr.dt    = .001; % Time step
@@ -25,7 +25,7 @@ DIM_F       = rb.DIM_F; % Dimension of e
 DIM_SOLVE_K = 1;
 I           = eye(DIM_F);
 
-%% system
+%% Agent system model 
 % Error weighting. Tracking:1, Estimation:2
 A0          = [0 1 0; 0 0 1; 0 0 0];
 B0          = [0; 0; 1];
@@ -39,7 +39,7 @@ sys1.Q2     = 10^(2)*diag([1 100 10]); % corresponding to [Intergral{e}, e, de]
 % for plot trajectories
 sys = LinearModel(kron(A0, I), kron(B0, I), kron(C0, I));
 
-%% smooth model (acuator)
+%% Smooth model (acuator)
 WINDOW  = 3;
 dt_     = 1*rb.tr.dt;
 METHOD  = '2';
@@ -54,7 +54,7 @@ sys_a1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_a.B     = kron(sys_a1.B, I);
 
-%% smooth model (sensor)
+%% Smooth model (sensor)
 WINDOW  = 3;
 dt_     = 1000*rb.tr.dt; % multiply 1000 is better by testing
 METHOD = '2';
@@ -69,7 +69,7 @@ sys_s1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 sys_s       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
 sys_s.B     = kron(sys_s1.B, I);
 
-%% augment system
+%% Augment system
 % for solving control and observer gain
 [A, B, C]       = AugmentSystem(sys1.A, sys1.B, sys1.C, sys_a1.A, sys_a1.B, sys_a1.C, sys_s1.A, sys_s1.B, sys_s1.C);
 sys_aug1        = LinearModel(A, B, C);
@@ -94,8 +94,8 @@ rb.sys_aug = sys_aug;
 %% solve LMI
 rb = rb.get_K_L(sys1, sys_aug1);
 
-%% trajectory
-pp = PathPlanning(); % Find task space ref in a map using RRT
+%% Calculate trajectory
+pp = PathPlanning(); % Find task space ref in an occupancy  map using RRT
 rb = rb.Ref2Config(pp.r); % task space ref -> joint space ref
 
 if rb.EXE_TRAJ
@@ -113,9 +113,9 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
-    % PlotPP(pp); % path planning
-    PlotLMP(pp, rb); % local motion planning
-%     PlotTC(rb) % tracking control
+    Show.PlotPP(pp); % path planning
+%     Show.PlotLMP(pp, rb); % local motion planning
+%     Show.PlotTC(rb) % tracking control
 end
     
 %% Execution time
