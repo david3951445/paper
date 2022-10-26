@@ -776,7 +776,7 @@ The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. T
 \end{figure*}
 
 \section{simulation results}
-In this section, a specific S\&R procedure for URTS is given to illustrate the proposed UTRS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_j,j=1,2,...,N$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $1$st team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $1$st team as a set, $team_1=\{ \alpha_{1,j} | j=1,2,...,5 \}$. At the beginning, the agents in $team_1$ are assigned the search tasks of $area_1$ to build the occupancy map and find targets. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{1,j},T_j) | j=1,2,...,5 \}$. Suppose a target is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{1,5}$ and $\alpha_{2,2}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{1,5},T_2),(\alpha_{2,2},T_3) \})\cup\{ (\alpha_{1,5},T_6),(\alpha_{2,2},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
+In this section, a specific S\&R procedure for URTS is given to illustrate the proposed UTRS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_j,j=1,2,...,N$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $i$th team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $i$th team as a set, $team_i=\{ \alpha_{i,j} | j=1,2,...,5 \}$. At the beginning, the agents in $team_i$ are assigned the search tasks of $area_i$ to build the occupancy map and find targets. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{i,j},T_j) | j=1,2,...,5 \}$. Suppose a target is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{i,5}$ and $\alpha_{i+1,2}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{i,5},T_2),(\alpha_{i+1,2},T_3) \})\cup\{ (\alpha_{i,5},T_6),(\alpha_{i+1,2},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $j$th team is responsible for $j$th area, $area_j$}%
@@ -784,13 +784,13 @@ In this section, a specific S\&R procedure for URTS is given to illustrate the p
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The search tasks in $1$st team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinitions $q_{goal}$ (black dots in figure). For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma_n)$ due to the no-collision assumption.}
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The search tasks in $i$th team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinitions $q_{goal}$ (black dots in figure). For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma_n)$ due to the no-collision assumption.}
     \label{fig:S_task}
 \end{figure}
 
-To explain the path planning block and behavior layer block, we choose the pairs $(\alpha_{1,5},T_6)$ and $(\alpha_{1,1}, T_1)$ as example. For the robot $\alpha_{1,5}$, we have the goal configuration $q_{goal}$ from the task $T_6$. With the current configuration $q_{start}$ and configuration space $\mathcal{C}$ obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking}$ for $n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing}$ for $n\in\mathbb{Z}\cap[6,15]$ and $\beta_n=\mathit{running}$ for $n\in\mathbb{Z}\cap[16,27]$. We choose the walking behavior to illustrate the local motion planning block of robots.
+To explain the path planning block and behavior layer block, we choose the pairs $(\alpha_{i,5},T_6)$ and $(\alpha_{i,1}, T_1)$ as example. For the robot $\alpha_{i,5}$, we have the goal configuration $q_{goal}$ from the task $T_6$. With the current configuration $q_{start}$ and configuration space $\mathcal{C}$ obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking}$ for $n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing}$ for $n\in\mathbb{Z}\cap[6,15]$ and $\beta_n=\mathit{running}$ for $n\in\mathbb{Z}\cap[16,27]$. We choose the walking behavior to illustrate the local motion planning block of robots.
 
-For the UAV $\alpha_{1,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=9$ is directly set to $([0,0,0]^T\mathbin{,} [0,5,2.5]^T\mathbin{,} [5,5,5]^T\mathbin{,} [5,0,2.5]^T\mathbin{,} [10,0,0]^T\mathbin{,} [10,5,-2.5]^T\mathbin{,} [10,10,-5]^T\mathbin{,} [5,10,-2.5]^T\mathbin{,} [0,10,0]^T)$ without going through path planning by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,9]$.
+For the UAV $\alpha_{i,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=9$ is directly set to $([0,0,0]^T\mathbin{,} [0,5,2.5]^T\mathbin{,} [5,5,5]^T\mathbin{,} [5,0,2.5]^T\mathbin{,} [10,0,0]^T\mathbin{,} [10,5,-2.5]^T\mathbin{,} [10,10,-5]^T\mathbin{,} [5,10,-2.5]^T\mathbin{,} [0,10,0]^T)$ without going through path planning by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,9]$.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The path planning tasks.}%
@@ -829,28 +829,28 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
     \item designed parameters: $Q_1=,Q_2=,R=,rho=20$.
 \end{enumerate}
 
-The simulation results of tracking and estimation in tracking control block of the UAV $\alpha_{1,1}$ and the robot $\alpha_{1,2}$ are given as follow.
+The simulation results of tracking and estimation in tracking control block of the UAV $\alpha_{i,1}$ and the robot $\alpha_{i,2}$ are given as follow.
 
 \textit{UAV:}
 The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=10\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{1,1}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, state}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the UAV $\alpha_{1,1}$}
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the UAV $\alpha_{i,1}$}
     \label{fig:UAV, fa}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of snesor fault of the UAV $\alpha_{1,1}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of snesor fault of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, fs}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the UAV $\alpha_{1,1}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, control}
 \end{figure}
 
@@ -858,22 +858,22 @@ The trajectories of reference, state and estimated state are shown in Fig. \ref{
 The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:robot, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:robot, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:robot, control}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{1,2}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{i,2}$}%
     \label{fig:robot, state}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the robot $\alpha_{1,2}$.}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the robot $\alpha_{i,2}$.}%
     \label{fig:robot, fa}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of sensor fault of the robot $\alpha_{1,2}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of sensor fault of the robot $\alpha_{i,2}$}%
     \label{fig:robot, fs}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the robot $\alpha_{1,2}$}%
+    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the robot $\alpha_{i,2}$}%
     \label{fig:robot, control}
 \end{figure}
 
