@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  26 OCT 2022 18:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  27 OCT 2022 17:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -742,12 +742,12 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [7]
-Underfull \hbox (badness 2762) in paragraph at lines 444--454
+Underfull \hbox (badness 2762) in paragraph at lines 450--460
 \OML/cmm/m/it/10 d[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) \OMS/cmsy/m/n/10 2 \U/msb/m/n/10 R[]$ \T1/ptm/n/n/10 is the ac-tu-a-tor fault sig-nal, $\OT1/cmr/m/n/10 \OML/cmm/m/it/10 M \U/msa/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 1436) in paragraph at lines 456--463
+Underfull \hbox (badness 1436) in paragraph at lines 462--469
 \T1/ptm/n/n/10 where $\OML/cmm/m/it/10 A \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 A[] \OMS/cmsy/m/n/10 
  \OML/cmm/m/it/10 I[]; B \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 B[] \OMS/cmsy/m/n/10 
  \OML/cmm/m/it/10 I[]$ \T1/ptm/n/n/10 with $\OML/cmm/m/it/10 A[] \OT1/cmr/m/n/10 =
@@ -755,7 +755,7 @@ Underfull \hbox (badness 1436) in paragraph at lines 456--463
 
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 471.
+Package pdftex.def Info: notaglinelogo.png  used on input line 475.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -773,13 +773,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 612--613
+Underfull \hbox (badness 10000) in paragraph at lines 618--619
 \T1/ptm/b/n/10 Proof. \T1/ptm/n/n/10 Choose the Lya-punov func-tion $\OML/cmm/m/it/10 V\OT1/cmr/m/n/10 ([](\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) =
  []
 
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 629.
+Package pdftex.def Info: notaglinelogo.png  used on input line 627.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -799,7 +799,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [9]
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 750.
+Package pdftex.def Info: notaglinelogo.png  used on input line 751.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -817,61 +817,48 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [10]
-Underfull \hbox (badness 1661) in paragraph at lines 758--769
+Underfull \hbox (badness 1661) in paragraph at lines 764--775
 []\T1/ptm/n/n/10 Even though the de-sign of the agent con-troller and
  []
 
 
-Underfull \hbox (badness 2221) in paragraph at lines 758--769
+Underfull \hbox (badness 2221) in paragraph at lines 764--775
 \T1/ptm/n/n/10 ob-server has been com-pleted, the tra-jec-tory de-sign of
  []
 
-<fig/tracking.pdf, id=115, 1180.41pt x 787.02025pt>
+<fig/tracking.pdf, id=116, 1180.41pt x 787.02025pt>
 File: fig/tracking.pdf Graphic file (type pdf)
 <use fig/tracking.pdf>
-Package pdftex.def Info: fig/tracking.pdf  used on input line 774.
+Package pdftex.def Info: fig/tracking.pdf  used on input line 780.
 (pdftex.def)             Requested size: 495.76883pt x 330.54625pt.
-<fig/1.pdf, id=116, 471.68219pt x 277.9986pt>
+<fig/1.pdf, id=117, 471.68219pt x 277.9986pt>
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 782.
+Package pdftex.def Info: fig/1.pdf  used on input line 788.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 787.
+Package pdftex.def Info: fig/1.pdf  used on input line 793.
+(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+File: fig/1.pdf Graphic file (type pdf)
+<use fig/1.pdf>
+Package pdftex.def Info: fig/1.pdf  used on input line 802.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 796.
+Package pdftex.def Info: fig/1.pdf  used on input line 809.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
-File: fig/1.pdf Graphic file (type pdf)
-<use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 803.
-(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
-<fig/untitled.png, id=117, 421.62318pt x 316.25352pt>
+<fig/untitled.png, id=118, 421.62318pt x 316.25352pt>
 File: fig/untitled.png Graphic file (type png)
 <use fig/untitled.png>
-Package pdftex.def Info: fig/untitled.png  used on input line 808.
+Package pdftex.def Info: fig/untitled.png  used on input line 814.
 (pdftex.def)             Requested size: 177.08052pt x 132.82556pt.
-File: fig/1.pdf Graphic file (type pdf)
-<use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 838.
-(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
-File: fig/1.pdf Graphic file (type pdf)
-<use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 843.
-(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
-File: fig/1.pdf Graphic file (type pdf)
-<use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 848.
-(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
-File: fig/1.pdf Graphic file (type pdf)
-<use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 853.
-(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 856.
+Package pdftex.def Info: notaglinelogo.png  used on input line 831.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -891,23 +878,23 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [11]
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 861.
+Package pdftex.def Info: fig/1.pdf  used on input line 844.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 866.
+Package pdftex.def Info: fig/1.pdf  used on input line 849.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 871.
+Package pdftex.def Info: fig/1.pdf  used on input line 854.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: fig/1.pdf Graphic file (type pdf)
 <use fig/1.pdf>
-Package pdftex.def Info: fig/1.pdf  used on input line 876.
+Package pdftex.def Info: fig/1.pdf  used on input line 859.
 (pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 879.
+Package pdftex.def Info: notaglinelogo.png  used on input line 862.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -927,7 +914,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [12 <./fig/tracking.pdf> <./fig/1.pdf>]
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 882.
+Package pdftex.def Info: notaglinelogo.png  used on input line 866.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -944,19 +931,31 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[13 <./fig/untitled.png (PNG copy)>] (paper.bbl
+[13 <./fig/untitled.png (PNG copy)>]
+File: fig/1.pdf Graphic file (type pdf)
+<use fig/1.pdf>
+Package pdftex.def Info: fig/1.pdf  used on input line 870.
+(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
+File: fig/1.pdf Graphic file (type pdf)
+<use fig/1.pdf>
+Package pdftex.def Info: fig/1.pdf  used on input line 875.
+(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
+File: fig/1.pdf Graphic file (type pdf)
+<use fig/1.pdf>
+Package pdftex.def Info: fig/1.pdf  used on input line 880.
+(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
+File: fig/1.pdf Graphic file (type pdf)
+<use fig/1.pdf>
+Package pdftex.def Info: fig/1.pdf  used on input line 885.
+(pdftex.def)             Requested size: 198.10516pt x 116.7586pt.
+ (paper.bbl
 
 LaTeX Font Warning: Font shape `T1/ptm/n/it' undefined
 (Font)              using `T1/ptm/n/n' instead on input line 6.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 76--79
-[]\T1/ptm/n/it/7.61 M.Y.Lee B.S.Chen, Y.Y.Tsai.  on-line sup-ple-men-tary file.
- []
-
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 87.
+Package pdftex.def Info: notaglinelogo.png  used on input line 26.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -973,14 +972,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[14])
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 76--79
+[]\T1/ptm/m/n/7.61 M.Y.Lee B.S.Chen, Y.Y.Tsai.  on-line sup-ple-men-tary file.
+ []
+
+)
 File: bullet.png Graphic file (type png)
 <use bullet.png>
-Package pdftex.def Info: bullet.png  used on input line 890.
+Package pdftex.def Info: bullet.png  used on input line 899.
 (pdftex.def)             Requested size: 5.0pt x 14.6871pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 892.
+Package pdftex.def Info: notaglinelogo.png  used on input line 901.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1005,17 +1009,17 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 8439 strings out of 478659
- 144473 string characters out of 2845921
- 478464 words of memory out of 3000000
- 26379 multiletter control sequences out of 15000+600000
+ 8441 strings out of 478659
+ 144505 string characters out of 2845921
+ 479483 words of memory out of 3000000
+ 26381 multiletter control sequences out of 15000+600000
  471925 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,22n,117p,1625b,520s stack positions out of 5000i,500n,10000p,200000b,80000s
-{C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (15 pages, 823205 bytes).
+ 70i,22n,117p,1625b,524s stack positions out of 5000i,500n,10000p,200000b,80000s
+{C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (15 pages, 835153 bytes).
 PDF statistics:
- 244 PDF objects out of 1000 (max. 8388607)
+ 249 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  59 words of extra memory for PDF output out of 10000 (max. 10000000)
 

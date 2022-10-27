@@ -1,3 +1,8 @@
+% Search task simuation
+%
+% Definition
+% - transformation : homogeneous transformation
+%  
 clc; clear; close all
 
 rb = Robot();
@@ -20,42 +25,8 @@ fps = fps/factor;
 config = r(1:factor:length(x), :); % For simulatiom speed, compress the array by a factor
 config = cat(2, config(:, 1:2:11), config(:, 2:2:12)); % To match the rigidbodytree config format, 1,2,...,12 -> 1,3,...11,2,4,...,12
 
-%% Animation
-% for i = 1 : length(config)
-%     disp(i)
-%     show(robot, config(i, :));
-%     F{i} = getframe(gcf);
-%     drawnow
-% end
-
 %% State
-isLeftFoot = true;
-index = 1;
-supportFeetTransform = eul2tform([0 0 0]);
-% supportFeetTransform = eul2tform([-pi/2 0 0]);
-numberOfFrameInHalf = rb.INTERP_DENSITY/factor; % The number of "animation frame" in a half walking cycle
-supportFeetChanged = 1 + numberOfFrameInHalf/2; 
-transform{index} = supportFeetTransform;
-for i = 2 : size(config, 1)
-    if i == supportFeetChanged + 1      
-        if isLeftFoot
-            tf = getTransform(robot, config(i, :), 'body12', 'body11'); % Left foot is the supporting foot
-        else
-            tf = getTransform(robot, config(i, :), 'body11', 'body12'); % Right foot is the supporting foot
-        end
-
-        % Update
-        supportFeetChanged = supportFeetChanged + numberOfFrameInHalf;
-        supportFeetTransform = supportFeetTransform*eul2tform([0 -pi/2 -pi/2])*tf/eul2tform([0 -pi/2 -pi/2]);
-        index = index + 1;
-        isLeftFoot = ~isLeftFoot;
-
-        transform{index} = supportFeetTransform*eul2tform([0 -pi/2 -pi/2]);
-
-        % show(robot, config(i, :));
-        % F{index-1} = getframe(gcf);
-    end
-end
+transform = Config2LRSupportFeetTransform(robot, config, rb.INTERP_DENSITY/factor);
 
 %% Reference
 len = length(rb.r_lr);
@@ -68,9 +39,17 @@ for i = 1 : len
 end
 
 %% Plot
+% Animation
+% for i = 1 : length(config)
+%     disp(i)
+%     show(robot, config(i, :));
+%     F{i} = getframe(gcf);
+%     drawnow
+% end
+
 [fig, axisRange] = Show.Senario(); % Figure setting
 Show.Area(axisRange)
-Show.Map()
+Show.Map([0 9], [0 6]);
 
 % Reference
 plot3(r_lr(1, :), r_lr(2, :), r_lr(3, :),'-o','DisplayName', 'reference r(t)', LineWidth=1);
@@ -86,3 +65,5 @@ end
 % plot3(pos(1, :), pos(2, :), pos(3, :), '-o', DisplayName='state')
 
 MakeVideo(F, fps/5, 'data/footPrint.avi')
+
+%% Function

@@ -6,5 +6,5 @@ function Map(xLimit, yLimit)
     % xImage = [6.5 6.5;-.5 -.5]; % The x data for the image corners
     % yImage = [-3 6; -3 6 ];   
     zImage = [ 0 0; 0 0 ];
-    surf(xImage,yImage,zImage, 'CData', img, FaceColor='texturemap', EdgeColor='none');
+    surf(xImage, yImage, zImage, 'CData', img, FaceColor='texturemap', EdgeColor='k', DisplayName='map', MarkerEdgeColor='k');
 end

@@ -1,4 +1,10 @@
 function MakeVideo(frame, fps, filename)
+    % Make .avi file
+    %
+    % Input:
+    %   - frame | cell array    :
+    %   - fps | int             :
+    %   - filename | string     :
     disp('making .avi ...')
     %% save frame to .avi
     writerObj = VideoWriter(filename);

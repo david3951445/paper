@@ -124,7 +124,7 @@ $diag(A_1, A_2, \dots, A_n)$: a block diagonal matrix with main diagonal blocks 
 \end{bmatrix}$ if $\int^{t_f}_{0}x^T(t)x(t)dt<\infty$. $Sym(A)$: sum of a matrix $A$ and its tranposed, i.e., $Sym(A) = A+A^T$.
 
 \section{PRELIMINARIES OF S\&R URTS}
-The URTS will start with a given S\&R area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $i$th agent in the $j$th team is denoted as $\alpha_{j,i}$, where $i=1,2,...,N_A$ and $j=1,2,...,N_T$. The UAVs are chosed as the first agents in each team, i.e., $\alpha_{1,j}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
+The URTS will start with a given S\&R area, and end with mission completed. The URTS is composed of $N_T$ teams and a ground station. Each team contains $N_A$ agents with $1$ UAV and $N_A-1$ robots. Hence, the $j$th agent in the $i$th team is denoted as $\alpha_{i,j}$, where $i=1,2,...,N_T$ and $j=1,2,...,N_A$. The UAVs are chosed as the first agents in each team, i.e., $\alpha_{i,1}$. Each agent has environmental sensing capability and load capability, while the ground station is responsible for computing and decision-making. Besides, there are communication channels between agents and ground station through wireless network.
 % The system architecture if URTS is shown in Fig. \ref{fig:1}.
 % \begin{figure}[htbp]
 % \centering
@@ -409,12 +409,18 @@ where $u(t)\in\mathbb{R}^n$ is control input vector, $x(t)\in\mathbb{R}^n$ is st
 \end{equation}
 where $M(r(t)),\ddot{r}(t),H(r(t),\dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law for improving system robustness. To make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
 \begin{enumerate}
-    \item For agent, there exists coupling effect due to co-channel interference in communication between agents \cite{9448458}.
+    \item For agent, there exists coupling effect due to co-channel interference in communication between agents \cite{9834947}.
     \item For agent, there exists cyber-attack on communication network between agents and ground station.
     \item For agent, there exists sensor noise.
     \item For UAV, there exists wind disturbance \cite{9075385}.
     \item For robot, there exists ground reaction force \cite{chen2013human}. 
 \end{enumerate}
+Let $x_{i,j}(t), i=1,2,\dots,N_T, j=1,2,\dots,N_A$ denote the state vector of agents $\alpha_{i,j}$.The coupling term can be represented as \begin{equation} \label{eq:UAV couple}
+    \sum_{k = 1, k \neq i}^{N_T}f_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)
+\end{equation} for UAVs $\alpha_{i, 1}$ and \begin{equation} \label{eq:robot couple}
+    \sum_{k = 1, k \neq j'}^{N_A}f_{i, j', k}(x_{i, j'}(t))x_{i, k}(t)
+\end{equation} for robots $\alpha_{i, j'}$ where $j'=2,3,...,N_A$ \cite{9834947}.
+
 Since the ground station is responsible for the calculation, the calculated control command (\ref{eq:control}) will be transmitted to the agent through the network channel in URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to a disturbance force $d_1(t)$. The nominal system (\ref{eq:agent}) then be rewrited as the following real system:
 % The coupling effect for an agent \textit{$agent_{i,j}$} in URTS can be expressed as the form $\sum_{i'=1,i'\neq i}^{N_i}\sum_{j'=1,j'\neq j}^{N_j}\textit{c}_{i,j}(x_{i,j}(t))\times x_{i',j'}(t)$ where $x_{i,j}(t)$ is the own state.
 \begin{equation} \label{eq:agent d1} 
@@ -811,7 +817,7 @@ Following the procedure in Fig. \ref{fig:FandW}, the results of local motion pla
 
 Through the previous steps, the reference trajectory $r(t)$ of flying and walking has been designed. The remaining parameters are set as follow.
 
-\textit{agents:}\begin{enumerate}
+\textit{Agents:}\begin{enumerate}
     \item system parameters: $C_0 = I_3$, $B_{2,0} = [0, 0.1, 1]^T$.
     \item designed parameters: $Q_1 = 50*diag(diag(1,100,10),\allowbreak 0, 0), Q_2 = 5*diag(diag([1,100,10]), diag(1,0.1,\allowbreak 0.01), diag(1,0.1,0.01 ,0.001)), R=0.002, \rho=30$. Actuator and sensor smoothing signal model window sizes are $3$ and $4$, respectively.
 \end{enumerate}
@@ -824,7 +830,7 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
     % \item external disturbances: $d_1(t) = [ 10\sin(3t), \dots,$\\$ 10\sin(3t)] \in\mathbb{R}^6$, $f_2(t)=$
 \end{enumerate}
 
-\textit{robots:} \begin{enumerate}
+\textit{Robots:} \begin{enumerate}
     \item system parameters: Appendix E in \cite{ourrobot}. Initial values $\bar{x}_0=$.
     \item designed parameters: $Q_1=,Q_2=,R=,rho=20$.
 \end{enumerate}
@@ -832,7 +838,7 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
 The simulation results of tracking and estimation in tracking control block of the UAV $\alpha_{i,1}$ and the robot $\alpha_{i,2}$ are given as follow.
 
 \textit{UAV:}
-The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=10\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
+The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)\in\mathbb{R}^6$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [10\sin(3t),...,10\sin(3t)]^T + \sum_{k = 1, k \neq i}^{N_T}f_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:UAV couple}). Let $x_{i, 1}(t) = [x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t)]^T$, then $f_{i, 1, k}(x_{i, 1}(t)) = 0.1diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t))$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{i,1}$}%
@@ -854,8 +860,11 @@ The trajectories of reference, state and estimated state are shown in Fig. \ref{
     \label{fig:UAV, control}
 \end{figure}
 
-\textit{robot:}
-The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:robot, state}. The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:robot, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:robot, control}
+\textit{Robot:}
+The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:robot, state}.
+The estimation of actuator fault $f_1(t)\in\mathbb{R}^{12}$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [\sin(3t),...,\sin(3t)]^T + \sum_{k = 1, k \neq j'}^{N_A}f_{i, j', k}(x_{i, j'}(t))x_{i, k}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:robot couple}). Let $x_{i, j'}(t) = [x_{i, j', 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, j', 12}(t)]^T$, then $f_{i, j', k}(x_{i, j'}(t)) = 0.01diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 12}(t))$.
+
+The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:robot, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:robot, control}
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{i,2}$}%

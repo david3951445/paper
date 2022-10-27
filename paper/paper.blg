@@ -8,24 +8,24 @@ Database file #1: citation.bib
 Warning--can't use both author and editor fields in Khamis2015
 You've used 22 entries,
             1791 wiz_defined-function locations,
-            574 strings with 7826 characters,
-and the built_in function-call counts, 6224 in all, are:
-= -- 553
-> -- 273
+            575 strings with 7769 characters,
+and the built_in function-call counts, 6242 in all, are:
+= -- 557
+> -- 270
 < -- 9
-+ -- 99
-- -- 77
-* -- 427
-:= -- 923
++ -- 98
+- -- 76
+* -- 425
+:= -- 924
 add.period$ -- 67
 call.type$ -- 22
 change.case$ -- 19
 chr.to.int$ -- 0
 cite$ -- 23
 duplicate$ -- 275
-empty$ -- 609
-format.name$ -- 77
-if$ -- 1441
+empty$ -- 612
+format.name$ -- 76
+if$ -- 1446
 int.to.chr$ -- 0
 int.to.str$ -- 22
 missing$ -- 23
@@ -35,9 +35,9 @@ pop$ -- 76
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 158
+skip$ -- 159
 stack$ -- 0
-substring$ -- 494
+substring$ -- 506
 swap$ -- 93
 text.length$ -- 9
 text.prefix$ -- 0
