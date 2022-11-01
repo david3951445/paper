@@ -1,8 +1,13 @@
 function o = getTPmodel(o, para)
 %Transform "LPV model" to "TP type polytopic LPV model"
-% see https://en.wikipedia.org/wiki/TP_model_transformation_in_control_theory to better understand
+%
+% - how to tansform nonlinear system to LPV system
+% https://www.researchgate.net/publication/347277203_Study_of_tensor_product_model_alternatives
+% - wiki's introduction
+% https://en.wikipedia.org/wiki/TP_model_transformation_in_control_theory
 
-% - lpvPara : LPV system parameter
+
+%% - lpvPara : LPV system parameter
 domain          = para.domain;
 gridsize        = para.gridsize;
 SV_TOLERANCE    = para.SV_TOLERANCE;

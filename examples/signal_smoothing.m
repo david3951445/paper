@@ -1,4 +1,5 @@
-% An example of eliminating the non-smooth properties and outliers that result from numerical differentiation of a signal
+%An example of eliminating the non-smooth properties and outliers that result from numerical differentiation of a signal
+
 clc; clear; close all;
 qr = load('../data/qr.mat').qr;
 
