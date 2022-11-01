@@ -85,7 +85,6 @@ for i = startTime : LEN - 1
     end
     if isnan(xb(:, i))
         disp(['traj has NaN, t = ' num2str(i*dt)])
-        % rb.tr.LEN = i;
         break
     end
     if norm(xb(:, i)) == Inf
@@ -130,8 +129,8 @@ for i = startTime : LEN - 1
 
     % fext1 = externalForce(rb.rbtree, 'body11', [0 0 0 0 0 rb.tr.GRF{1}(i)], X');
     % tau = inverseDynamics(rb.rbtree, X', [], [], fext1);
-    % d1(:, i) = d1(:, i) + 0.12*x(DIM_F + (1:DIM_F)).*x(DIM_F + (1:DIM_F));
-    sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i));
+    d1(:, i) = d1(:, i) + 1*x(DIM_F + (1:DIM_F)).*x(DIM_F + (1:DIM_F)); % Couple terms
+    sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) + H-Hh - d1(:, i)); % Total fault
     % sys_a.fault(:, i) = -eye(DIM_F)/M*((M-Mh)*(ddr + u) - d1(:, i));
     % sys_a.fault(:, i) = -eye(DIM_F)/M*(-d1(:, i));
     % f = tau;

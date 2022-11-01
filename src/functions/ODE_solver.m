@@ -1,4 +1,3 @@
-function y = ODE_solver(f, h, x, t, method)
 %Runge-Kutta-Fehlberg method
 % dx(t)/dt = f(t, x)
 %
@@ -9,6 +8,7 @@ function y = ODE_solver(f, h, x, t, method)
 % output:
 % y     - x(t+h)
 
+function y = ODE_solver(f, h, x, t, method)
 switch method
 case 'Euler'
 k = h*f(t, x);

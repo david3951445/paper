@@ -1,7 +1,7 @@
 function PlotTC(rb)
     % Plot tracking control result
     %
-    % There are three figures:
+    % There are 4 figures:
     %   - Trajectory of state, estimated state, reference
     %   - Estimation of actuator and sensor fault
     %   - Control effort
@@ -9,76 +9,81 @@ function PlotTC(rb)
     %% state, estimated state, reference
     fig = figure;
     DIM = rb.DIM_F;
-    % div = divisors(DIM);
-    % i = ceil((length(div))/2);
-    % Layout = tiledlayout(DIM/div(i), div(i));
-    Layout = tiledlayout(DIM/2, 2);
-    Layout.TileSpacing = 'tight';
-    Layout.Padding = 'tight';
-    % r = rb.tr.r{1};
-    r = rb.qr;
+    
+    Layout = GetTiledlayout(DIM);
+    r = rb.tr.r{1};
     for i = 1 : DIM % position
-        ax = nexttile;
+        nexttile
         hold on
+
         index = DIM + i;
-        % plot(rb.tr.t, rb.tr.x(index, :)+r(i, :), 'DisplayName', 'state', 'LineWidth', 2)
-        % plot(rb.tr.t, rb.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
-        % plot(rb.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
         plot(rb.tr.t, rb.tr.x(index, :)+r(i, :))
         plot(rb.tr.t, rb.tr.xh(index, :)+r(i, :))
         plot(rb.tr.t, r(i, :))
 
         grid on
         ylabel(['$q_{' num2str(i) '} (rad)$'], 'Interpreter','latex')      
-        legend('Interpreter','latex','Location','southeast')
     end
     xlabel(Layout,'t (sec)')
-    lg  = legend('state', 'estimated', 'reference', NumColumns=3); 
+    lg  = legend('state', 'estimated state', 'reference', NumColumns=3); 
     lg.Layout.Tile = 'north';
     % ylabel(Layout, 'rad')
-%     legend(Layout, 'Interpreter','latex','Location','southeast')
 
-    
+    SaveFig(fig)
+
     %% Fa and Fs
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, rb.sys_a.DIM, '1', 'm/s^2')
-    Plot(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, rb.sys_s.DIM, '2', 'm')
-
+    PlotFault(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_a.begin, rb.sys_a.DIM, '1', 'm/s^2')
+    PlotFault(rb.tr.t, rb.tr.x, rb.tr.xh, rb.sys_s.begin, rb.sys_s.DIM, '2', 'm')
+    
     %% control u(t)
     fig = figure;
     DIM = size(rb.tr.u, 1);
-    % div = divisors(DIM);
-    % i = ceil((length(div))/2);
-    % Layout = tiledlayout(DIM/div(i), div(i));
     
     hold on
     for i = 1 : DIM
-        % nexttile
         index = i;
         plot(rb.tr.t, rb.tr.u(index, :), 'DisplayName', ['$u_{' num2str(i) '}$'], 'LineWidth', 1)    
     end
+    xlabel('t (sec)')
+    ylabel('$u (N\cdot m)$', 'Interpreter','latex')
     legend('Interpreter','latex','Location','southeast')
-    xlabel("t")
-    ylabel('$N\cdot m$', 'Interpreter','latex')
+
+    SaveFig(fig)
 end
 
-function Plot(t, x, xh, j, DIM, TITLE, unit)
-    figure
-    % obtain a suitable size
-    Layout = tiledlayout(DIM/2, 2);
-    Layout.TileSpacing = 'tight';
-    Layout.Padding = 'tight';
+%% Functions
+function PlotFault(t, x, xh, begin, DIM, TITLE, unit)
+    fig = figure   ;
+    Layout = GetTiledlayout(DIM);
+
     for i = 1 : DIM
         nexttile
         hold on
-        index = j + i;
-        plot(t, x(index, :), 'Displayname', 'state', 'LineWidth', 1)
-        plot(t, xh(index, :), 'DisplayName', 'estimated state', 'LineWidth', 1)
-    %     plot(t, x(index, :)-xh(index, :), 'Displayname', 'error', 'LineWidth', 3)
+        index = begin + i;
+        plot(t, x(index, :))
+        plot(t, xh(index, :))
+
         grid on
-        ylabel(['$f_{' TITLE ',' num2str(i) '}$'], 'Interpreter','latex')      
-        legend('Interpreter','latex','Location','southeast')
-    % ylim([-2 2])
+        ylabel(['$f_{' TITLE ',' num2str(i) '}(' unit ')$'], 'Interpreter','latex')      
     end
-    ylabel(Layout, unit)
     xlabel(Layout,'t (sec)')
+    lg  = legend('state', 'estimated state', NumColumns=3); 
+    lg.Layout.Tile = 'north';
+
+    SaveFig(fig)
+end
+
+function Layout = GetTiledlayout(DIM)
+    % Obtain a suitable size   
+    %-1 Method 1: Average. ex. 12 -> 4by3
+    % div = divisors(DIM);
+    % i = ceil((length(div))/2);
+    % Layout = tiledlayout(DIM/div(i), div(i));
+
+    %-2 Method 2: 2 col. ex. 12 -> 6by2
+    Layout = tiledlayout(DIM/2, 2); % (row: DIM/2, col: 2)
+
+    % Fill the figure window
+    Layout.TileSpacing = 'tight';
+    Layout.Padding = 'tight';
 end
