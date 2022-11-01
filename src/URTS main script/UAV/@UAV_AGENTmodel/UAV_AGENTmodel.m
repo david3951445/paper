@@ -10,7 +10,7 @@ classdef UAV_AGENTmodel < Agent
         Kph = 0.012, Kth = 0.012, Kps = 0.012
         dt = .001
 
-        %% flow control of code
+        UNIT = {'m', 'm', 'm', 'rad', 'rad', 'rad'}
     end
 
     properties
@@ -53,18 +53,12 @@ classdef UAV_AGENTmodel < Agent
             y = rotz(x(3))*roty(x(2))*rotx(x(1));
         end
 
-        function y = u_fb(uav, xh)
-            % range = 1 : uav.DIM_F*3; 
-            % y = uav.K(:, range)*xh(range); % without unknown sigal info
-            y = uav.K*xh; 
-        end
-
         function [phi, theta, F] = pos_controller(uav, xh, r4, dt)  % c = [fx; fy; fz] = R(Theta)*[0; 0; F]
             % In practice, r([1 2 3], i) get from path planning algorithm.
             % UAV no spin, r(6, i) is zeros. r([4 5], i) is obtain from r([1 2 3 6], i)
 
             ddr = r4*[1 -2 1]'/dt^2;
-            u = uav.u_fb(xh);
+            u = uav.u_PID(xh);
             c = uav.m*eye(3)*ddr + [0; 0; -uav.m*uav.G] + uav.Df*xh(2*uav.DIM_F + (1:3));%+u(1:3);
             % c = u(1:3);
 
@@ -73,16 +67,6 @@ classdef UAV_AGENTmodel < Agent
             phi = atan(-c(2)*cos(theta)/c(3));
         end
 
-        function y = f_aug(uav, t, xb)
-            DIM_X3 = uav.sys_aug.DIM_X;
-            x = xb(1 : DIM_X3);
-            xh = xb(DIM_X3 + (1:DIM_X3));
-            u = uav.u_fb(xh);
-            y = [
-                uav.sys_aug.A*x + uav.sys_aug.B*u
-                uav.sys_aug.A*xh + uav.sys_aug.B*u - uav.KL*uav.sys_aug.C*(x-xh)
-            ];
-        end
     end
 
     methods (Access = private)

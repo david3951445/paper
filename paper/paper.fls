@@ -681,8 +681,6 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb8t.vf
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT .\fig\sys.pdf
 INPUT .\fig\sys.pdf
 INPUT fig\sys.pdf
@@ -695,6 +693,8 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\helvetic\phvbo8t.vf
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvbo8r.tfm
 INPUT .\notaglinelogo.png
@@ -783,22 +783,34 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
+INPUT .\fig\uav (1).png
+INPUT .\fig\uav (1).png
+INPUT fig\uav (1).png
+INPUT .\fig\uav (1).png
+INPUT .\fig\uav (1).png
+INPUT .\fig\uav (1).png
+INPUT .\fig\uav (1).png
+INPUT .\fig\uav (2).png
+INPUT .\fig\uav (2).png
+INPUT fig\uav (2).png
+INPUT .\fig\uav (2).png
+INPUT .\fig\uav (2).png
+INPUT .\fig\uav (2).png
+INPUT .\fig\uav (2).png
+INPUT .\fig\uav (3).png
+INPUT .\fig\uav (3).png
+INPUT fig\uav (3).png
+INPUT .\fig\uav (3).png
+INPUT .\fig\uav (3).png
+INPUT .\fig\uav (3).png
+INPUT .\fig\uav (3).png
+INPUT .\fig\uav (4).png
+INPUT .\fig\uav (4).png
+INPUT fig\uav (4).png
+INPUT .\fig\uav (4).png
+INPUT .\fig\uav (4).png
+INPUT .\fig\uav (4).png
+INPUT .\fig\uav (4).png
 INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
@@ -807,22 +819,34 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT .\fig\1.pdf
-INPUT fig\1.pdf
-INPUT .\fig\1.pdf
+INPUT .\fig\robot (1).png
+INPUT .\fig\robot (1).png
+INPUT fig\robot (1).png
+INPUT .\fig\robot (1).png
+INPUT .\fig\robot (1).png
+INPUT .\fig\robot (1).png
+INPUT .\fig\robot (1).png
+INPUT .\fig\robot (2).png
+INPUT .\fig\robot (2).png
+INPUT fig\robot (2).png
+INPUT .\fig\robot (2).png
+INPUT .\fig\robot (2).png
+INPUT .\fig\robot (2).png
+INPUT .\fig\robot (2).png
+INPUT .\fig\robot (3).png
+INPUT .\fig\robot (3).png
+INPUT fig\robot (3).png
+INPUT .\fig\robot (3).png
+INPUT .\fig\robot (3).png
+INPUT .\fig\robot (3).png
+INPUT .\fig\robot (3).png
+INPUT .\fig\robot (4).png
+INPUT .\fig\robot (4).png
+INPUT fig\robot (4).png
+INPUT .\fig\robot (4).png
+INPUT .\fig\robot (4).png
+INPUT .\fig\robot (4).png
+INPUT .\fig\robot (4).png
 INPUT .\paper.bbl
 INPUT paper.bbl
 INPUT .\paper.bbl

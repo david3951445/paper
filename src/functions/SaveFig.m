@@ -14,6 +14,7 @@ function SaveFig(fig, name_)
     end
     filePath = [folderName '/' name '.png']; % File path
     % saveas(fig, filePath) % With default resolution
+    % exportgraphics(fig, name, 'Resolution', 500)
     exportgraphics(fig, filePath, 'Resolution', 500) % With specific resolution
 
     % Save figure as .fig

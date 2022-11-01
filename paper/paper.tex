@@ -78,7 +78,7 @@
 % .
 
 \begin{abstract}
-In this study, we investigate a UAVs and biped robots team system (URTS) for search and rescue (S\&R) usage. The system architecture of URTS is proposed to illustrate the issues need to be addressed in URTS and the relationships between them. Then we focus on two issues, local motion planning and tracking control. We discuss the methods of local motion planning for UAV flying behavior and robot walking behavior, and then give the control methods for UAV and robot. The relationship between the two issues, the transformation of the reference trajectory, is also explored in detail. By converting the dynamics model of UAV and robot into a unified agent model, a design method for a $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) is proposed for the agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to active FTC through observer estimation. The design of this $H_\infty$ observer-based FTC is transformed into a linear matrix inequality (LMI) -constrained optimization problem by a two-step design procedure. Finally, with the help of MATLAB LMI Toolbox, the tracking problem of UAV and robot in URTS is effectively solved. Simulations are given ...
+In this study, we investigate a UAVs and biped robots team system (URTS) for search and rescue (S\&R) usage. The system architecture of URTS is proposed to illustrate the issues need to be addressed in URTS and the relationships between them. The task allocation and path planning problems are first investigated and stated. Next, we focus on the local motion planning problem for UAV flying and robot walking behavior, and the tracking control problem for UAV and robot. The relationship between local motion planning and tracking control, the transformation of the reference trajectory, is also explored in detail. By converting the dynamics model of UAV and robot into a unified agent model, a design method for an $H_\infty$ decentralized observer-based feedforward-linearized PID fault-tolerant control (FTC) is proposed for the agents in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to active FTC through observer estimation. Then, the design of the $H_\infty$ decentralized observer-based feedforward-linearized PID FTC is transformed into a linear matrix inequality (LMI) -constrained optimization problem by a two-step design procedure. With the help of MATLAB LMI Toolbox, the tracking problem of UAV and robot in URTS is effectively solved. Finally, the simulation results are used to demonstrate the operation of URTS and to verify the effectiveness of the proposed tracking control method.
 \end{abstract}
 
 \begin{keywords}
@@ -838,51 +838,51 @@ Through the previous steps, the reference trajectory $r(t)$ of flying and walkin
 The simulation results of tracking and estimation in tracking control block of the UAV $\alpha_{i,1}$ and the robot $\alpha_{i,2}$ are given as follow.
 
 \textit{UAV:}
-The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)\in\mathbb{R}^6$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [10\sin(3t),...,10\sin(3t)]^T + \sum_{k = 1, k \neq i}^{N_T}f_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:UAV couple}). Let $x_{i, 1}(t) = [x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t)]^T$, then $f_{i, 1, k}(x_{i, 1}(t)) = diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t))$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
+The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:UAV, state}. The estimation of actuator fault $f_1(t)\in\mathbb{R}^6$ is shown in Fig. \ref{fig:UAV, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [100\sin(3t),...,10\sin(3t)]^T + \sum_{k = 1, k \neq i}^{N_T}f_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:UAV couple}). Let $x_{i, 1}(t) = [x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t)]^T$, then $f_{i, 1, k}(x_{i, 1}(t)) = diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t))$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:UAV, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:UAV, control}.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{i,1}$}%
+    \includegraphics[scale=.42]{fig/uav (1).png}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, state}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the UAV $\alpha_{i,1}$}
+    \includegraphics[scale=.42]{fig/uav (2).png}\caption{The estimation of actuator fault of the UAV $\alpha_{i,1}$}
     \label{fig:UAV, fa}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of snesor fault of the UAV $\alpha_{i,1}$}%
+    \includegraphics[scale=.42]{fig/uav (3).png}\caption{The estimation of sensor fault of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, fs}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the UAV $\alpha_{i,1}$}%
+    \includegraphics[scale=.42]{fig/uav (4).png}\caption{The control effort of the UAV $\alpha_{i,1}$}%
     \label{fig:UAV, control}
 \end{figure}
 
 \textit{Robot:}
 The trajectories of reference, state and estimated state are shown in Fig. \ref{fig:robot, state}.
-The estimation of actuator fault $f_1(t)\in\mathbb{R}^{12}$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [\sin(3t),...,\sin(3t)]^T + \sum_{k = 1, k \neq j'}^{N_A}f_{i, j', k}(x_{i, j'}(t))x_{i, k}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:robot couple}). Let $x_{i, j'}(t) = [x_{i, j', 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, j', 12}(t)]^T$, then $f_{i, j', k}(x_{i, j'}(t)) = 0.1diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 12}(t))$.
+The estimation of actuator fault $f_1(t)\in\mathbb{R}^{12}$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t) = [10\sin(3t),...,10\sin(3t)]^T + \sum_{k = 1, k \neq j'}^{N_A}f_{i, j', k}(x_{i, j'}(t))x_{i, k}(t)$, i.e., the non-couple term and the couple term in (\ref{eq:robot couple}). Let $x_{i, j'}(t) = [x_{i, j', 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, j', 12}(t)]^T$, then $f_{i, j', k}(x_{i, j'}(t)) = diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 12}(t))$.
 
 The estimation of actuator fault $f_1(t)$ is shown in Fig. \ref{fig:robot, fa} where the distubance $d_1(t)$ in $f_1(t)$ is set as $d_1(t)=\sin(3t)$. The estimation of sensor fault $f_2(t)$ is shown in Fig. \ref{fig:robot, fs} where $f_2(t)$ is set as a smoothed square wave as shown in figure. The control effort is shown in Fig. \ref{fig:robot, control}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{i,2}$}%
+    \includegraphics[scale=.42]{fig/robot (1).png}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{i,2}$}%
     \label{fig:robot, state}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of actuator fault of the robot $\alpha_{i,2}$.}%
+    \includegraphics[scale=.42]{fig/robot (2).png}\caption{The estimation of actuator fault of the robot $\alpha_{i,2}$.}%
     \label{fig:robot, fa}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The estimation of sensor fault of the robot $\alpha_{i,2}$}%
+    \includegraphics[scale=.42]{fig/robot (3).png}\caption{The estimation of sensor fault of the robot $\alpha_{i,2}$}%
     \label{fig:robot, fs}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.42]{fig/1.pdf}\caption{The control effort of the robot $\alpha_{i,2}$}%
+    \includegraphics[scale=.42]{fig/robot (4).png}\caption{The control effort of the robot $\alpha_{i,2}$}%
     \label{fig:robot, control}
 \end{figure}
 

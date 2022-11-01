@@ -28,6 +28,7 @@ classdef Robot < Agent
         ] % inertia of CoM1~12
 
         INTERP_DENSITY = 1500 % interp density of zmp
+        UNIT = {'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad'}
     end
     properties
         %% rigidbodytree
@@ -101,23 +102,6 @@ classdef Robot < Agent
         function y = H(rb, x, dx)
             CG = rb.rbtree.velocityProduct(x', dx') + rb.rbtree.gravityTorque(x');
             y = CG';
-        end
-
-        function y = f_aug(rb, t, xb)
-            DIM_X3 = rb.sys_aug.DIM_X;
-            x = xb(1 : DIM_X3);
-            xh = xb(DIM_X3 + (1:DIM_X3));
-            u = rb.u_PID(xh);
-            y = [
-                rb.sys_aug.A*x + rb.sys_aug.B*u
-                rb.sys_aug.A*xh + rb.sys_aug.B*u - rb.KL*rb.sys_aug.C*(x-xh)
-            ];
-        end
-
-        function y = u_PID(rb, xh)
-            % range = 1 : rb.DIM_F*3; 
-            % y = rb.K(:, range)*xh(range); % without unknown sigal info
-            y = rb.K*xh; 
         end
 
         rb = get_rbtree(rb) % rigidBodyTree setting
