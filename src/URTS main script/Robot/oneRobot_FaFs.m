@@ -11,7 +11,7 @@ rb = Robot();
 rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
-rb.EXE_TRAJ    = 0; % trajectory
+rb.EXE_TRAJ    = 1; % trajectory
 rb.EXE_PLOT    = 1; % plot results
 
 % time
@@ -102,9 +102,10 @@ if rb.EXE_TRAJ
     % Set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
-    x0_pos      = zeros(1, sys.DIM_X);
+%     x0_pos      = zeros(1, sys.DIM_X);
+    x0_pos = .1.*rand(1, sys.DIM_X) + 0; % Random between the range [-1, 1];
 %     x0_pos = [zeros(1,DIM_F) x0_pos zeros(DIM_F)]
-    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) 0*ones(1, sys_s.DIM_X)]';
+    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_a.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
 
     rb = rb.trajectory();
@@ -114,9 +115,10 @@ end
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
 %     Show.PlotPP(pp); % path planning
-%     Show.PlotLMP(pp, rb); % local motion planning
+    % Show.PlotLMP(pp, rb); % local motion planning
     Show.PlotTC(rb) % tracking control
 end
     
 %% Execution time
 toc
+rmpath(genpath('../../../src'))

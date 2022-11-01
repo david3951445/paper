@@ -15,7 +15,7 @@ xUAV = e + uav.tr.r{1};
 
 %% Path of robots
 startPos = [0.75 0 0; 0.75 6.5 0]; % (x, y, z), Start position of first robot
-Na = 5; % number of agents in a team
+Na = 2; % number of agents in a team
 rb = cell(1, Na-1);
 pp = rb;
 for i = 1 : Na-1
@@ -58,7 +58,7 @@ mapXY = CoordConversion(mapXY);
 
 %% Plot
 [fig, axisRange] = Show.Senario(); % Fig setting, senario of search task in a team
-Show.Area([mapXY(1, :); mapXY(2, :); 0 4]) % Search area
+Show.Area([axisRange(1, :); axisRange(2, :); axisRange(3, :)]) % Search area
 Show.Map(mapXY(1, :), mapXY(2, :)) % Robot occupancy map
 
 % create a drone object

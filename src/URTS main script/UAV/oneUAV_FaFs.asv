@@ -226,4 +226,3 @@ end
 
 %% Execution time
 toc
-rmpath(genpath('../../../src'))

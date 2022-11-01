@@ -11,7 +11,7 @@ function [fig, axisRange] = Senario()
 
     %-1 View with UAV
     view(-30,30);
-    axisRange = [-.5 6.5; -4 6.5; 0 4];
+    axisRange = [-.5 6.5; -1 6.5; 0 4];
     xlim(axisRange(1, :)); ylim(axisRange(2, :)); zlim(axisRange(3, :));
     %-2 Zoom in view
     % view(0,20);
