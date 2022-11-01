@@ -1,7 +1,10 @@
-function r3 = fit_linear_spline(r1, INTERP_DENSITY)
+%Curve fitting, using linear and spline interpolation in order
+
+function r3 = FitLinearSpline(r1, INTERP_DENSITY)
 len1 = length(r1);
 t1 = linspace(0,1,len1);
 
+% Linear interpolation
 len2 = (len1-1)*INTERP_DENSITY(1)+1;
 t2 = linspace(0,1,len2);
 r2 = zeros(2, len2);
@@ -10,6 +13,7 @@ r2 = [
     interp1(t1, r1(2, :), t2);
 ];
 
+% Spline interpolation
 fx = fit(t2', r2(1,:)', 'SmoothingSpline');
 fy = fit(t2', r2(2,:)', 'SmoothingSpline');
 len3 = len2*INTERP_DENSITY(2);

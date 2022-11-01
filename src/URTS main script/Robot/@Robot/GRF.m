@@ -16,7 +16,7 @@ for i = 1 : num_of_step_period - 1
 end
 
 % plot(r0(1,:), r0(2,:))
-r2 = fit_linear_spline(r0, [2 3]);
+r2 = FitLinearSpline(r0, [2 3]);
 
 t = linspace(0, 1, length(r2));
 fx = fit(t', r2(1,:)', 'SmoothingSpline');

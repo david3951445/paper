@@ -46,7 +46,7 @@ classdef PathPlanning
 
             pp.map = map;
             pp.sigma = pthObj.States(:, 1:2)';
-            pp.r = fit_linear_spline(pp.sigma, pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
+            pp.r = FitLinearSpline(pp.sigma, pp.INTERP_DENSITY); % Interpolate path, make it more smooth and increase density
             pp.tree = solnInfo.TreeData;
             pp.start = start;
             pp.goal = goal;

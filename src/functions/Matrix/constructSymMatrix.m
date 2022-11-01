@@ -1,4 +1,3 @@
-function M = constructSymMatrix(M)
 %Construct symmetric matrix
 % Given a lower triangle cell matrix, fill it's remain portion
 % ex.
@@ -9,6 +8,7 @@ function M = constructSymMatrix(M)
 %                    2 5 6
 %                    3 5 9]
 
+function M = constructSymMatrix(M)
 for i = 1 : size(M, 1)
     for j = i + 1 : size(M, 2)
         M{i, j} = M{j, i}';

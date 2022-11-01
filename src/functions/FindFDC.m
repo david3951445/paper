@@ -1,4 +1,3 @@
-function coeff = FindFDC(point, order)
 %Find Coefficient of Finite Difference Method
 %
 % Input:
@@ -14,6 +13,8 @@ function coeff = FindFDC(point, order)
 %   then
 %       point = [-2 0 1]
 %       order = 1
+
+function coeff = FindFDC(point, order)
 
 n = length(point);
 if order >= n
