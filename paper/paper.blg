@@ -6,45 +6,45 @@ The style file: unsrt.bst
 Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: citation.bib
 Warning--can't use both author and editor fields in Khamis2015
-You've used 22 entries,
+You've used 29 entries,
             1791 wiz_defined-function locations,
-            575 strings with 7769 characters,
-and the built_in function-call counts, 6242 in all, are:
-= -- 557
-> -- 270
-< -- 9
-+ -- 98
-- -- 76
-* -- 425
-:= -- 924
-add.period$ -- 67
-call.type$ -- 22
-change.case$ -- 19
+            620 strings with 9237 characters,
+and the built_in function-call counts, 8068 in all, are:
+= -- 711
+> -- 365
+< -- 10
++ -- 132
+- -- 103
+* -- 577
+:= -- 1216
+add.period$ -- 88
+call.type$ -- 29
+change.case$ -- 26
 chr.to.int$ -- 0
-cite$ -- 23
-duplicate$ -- 275
-empty$ -- 612
-format.name$ -- 76
-if$ -- 1446
+cite$ -- 30
+duplicate$ -- 346
+empty$ -- 786
+format.name$ -- 103
+if$ -- 1846
 int.to.chr$ -- 0
-int.to.str$ -- 22
-missing$ -- 23
-newline$ -- 112
-num.names$ -- 22
-pop$ -- 76
+int.to.str$ -- 29
+missing$ -- 30
+newline$ -- 147
+num.names$ -- 29
+pop$ -- 88
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 159
+skip$ -- 188
 stack$ -- 0
-substring$ -- 506
-swap$ -- 93
-text.length$ -- 9
+substring$ -- 650
+swap$ -- 106
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 53
-width$ -- 24
-write$ -- 242
+while$ -- 71
+width$ -- 31
+write$ -- 319
 (There was 1 warning)

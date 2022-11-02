@@ -1,15 +1,40 @@
 \begin{thebibliography}{10}
 
+\bibitem{9700861}
+Laurent Kloeker, Tobias Moers, Lennart Vater, Adrian Zlocki, and Lutz Eckstein.
+\newblock Utilization and potentials of unmanned aerial vehicles (uavs) in the
+  field of automated driving: A survey.
+\newblock In {\em 2021 5th International Conference on Vision, Image and Signal
+  Processing (ICVISP)}, pages 9--17, 2021.
+
 \bibitem{8352646}
 Ali Dorri, Salil~S. Kanhere, and Raja Jurdak.
 \newblock Multi-agent systems: A survey.
 \newblock {\em IEEE Access}, 6:28573--28593, 2018.
+
+\bibitem{chen2019control}
+Fei Chen, Wei Ren, et~al.
+\newblock On the control of multi-agent systems: A survey.
+\newblock {\em Foundations and Trends{\textregistered} in Systems and Control},
+  6(4):339--499, 2019.
+
+\bibitem{9371292}
+Wanglei Cheng, Ke~Zhang, Bin Jiang, and Steven~X. Ding.
+\newblock Fixed-time fault-tolerant formation control for heterogeneous
+  multi-agent systems with parameter uncertainties and disturbances.
+\newblock {\em IEEE Transactions on Circuits and Systems I: Regular Papers},
+  68(5):2121--2133, 2021.
 
 \bibitem{9476736}
 George~Marios Skaltsis, Hyo-Sang Shin, and Antonios Tsourdos.
 \newblock A survey of task allocation techniques in mas.
 \newblock In {\em 2021 International Conference on Unmanned Aircraft Systems
   (ICUAS)}, pages 488--497, 2021.
+
+\bibitem{zhang2018path}
+Han-ye Zhang, Wei-ming Lin, and Ai-xia Chen.
+\newblock Path planning for the mobile robot: A review.
+\newblock {\em Symmetry}, 10(10):450, 2018.
 
 \bibitem{9108245}
 Jawad~N. Yasin, Sherif A.~S. Mohamed, Mohammad-Hashem Haghbayan, Jukka
@@ -18,11 +43,23 @@ Jawad~N. Yasin, Sherif A.~S. Mohamed, Mohammad-Hashem Haghbayan, Jukka
   approaches.
 \newblock {\em IEEE Access}, 8:105139--105155, 2020.
 
+\bibitem{arbanas2018decentralized}
+Barbara Arbanas, Antun Ivanovic, Marko Car, Matko Orsag, Tamara Petrovic, and
+  Stjepan Bogdan.
+\newblock Decentralized planning and control for uav--ugv cooperative teams.
+\newblock {\em Autonomous Robots}, 42(8):1601--1618, 2018.
+
 \bibitem{9384209}
 Linjun Li, Yinglong Miao, Ahmed~H. Qureshi, and Michael~C. Yip.
 \newblock Mpc-mpnet: Model-predictive motion planning networks for fast,
   near-optimal planning under kinodynamic constraints.
 \newblock {\em IEEE Robotics and Automation Letters}, 6(3):4496--4503, 2021.
+
+\bibitem{olcay2017design}
+Tolga Olcay and Ahmet {\"O}zkurt.
+\newblock Design and walking pattern generation of a biped robot.
+\newblock {\em Turkish Journal of Electrical Engineering and Computer
+  Sciences}, 25(2):761--769, 2017.
 
 \bibitem{8931370}
 Yassine Sabri, Najib El~Kamoun, and Fatima Lakrami.
@@ -30,6 +67,12 @@ Yassine Sabri, Najib El~Kamoun, and Fatima Lakrami.
   in smart grid systems.
 \newblock In {\em 2019 7th Mediterranean Congress of Telecommunications (CMT)},
   pages 1--11, 2019.
+
+\bibitem{wang2022consensus}
+Chunping Wang, Jiaqi Wang, Ping Wu, and Jinfeng Gao.
+\newblock Consensus problem and formation control for heterogeneous multi-agent
+  systems with switching topologies.
+\newblock {\em Electronics}, 11(16):2598, 2022.
 
 \bibitem{6669235}
 Damiano Rotondo, Fatiha Nejjari, and Vicenç Puig.
