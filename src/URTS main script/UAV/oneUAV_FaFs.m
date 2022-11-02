@@ -109,8 +109,8 @@ if uav.EXE_PLOT
     r = uav.tr.r{1};
     
     %% Tracking control results
-    % PlotLMP(uav)
-    % uav.PlotTC(); 
+%     PlotLMP(uav)
+    uav.PlotTC(); 
 
     %% Actual control input
     fig = figure;
