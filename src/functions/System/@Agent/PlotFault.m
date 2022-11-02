@@ -2,17 +2,19 @@ function PlotFault(ag, TITLE)
     switch TITLE
         case '1' % actuator
             unit = '/s^2';
+            sys = ag.sys_a;
         case '2' % sensor
             unit = '';
+            sys = ag.sys_s;
     end
 
     fig = figure;
-    Layout = GetTiledlayout(ag.sys_a.DIM);
+    Layout = GetTiledlayout(sys.DIM);
 
-    for i = 1 : ag.sys_a.DIM
+    for i = 1 : sys.DIM
         nexttile
         hold on
-        index = ag.sys_a.begin + i;
+        index = sys.begin + i;
         plot(ag.tr.t, ag.tr.x(index, :))
         plot(ag.tr.t, ag.tr.xh(index, :))
 

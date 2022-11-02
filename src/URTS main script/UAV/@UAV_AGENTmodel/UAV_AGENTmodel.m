@@ -14,10 +14,13 @@ classdef UAV_AGENTmodel < Agent
     end
 
     properties
+        sigma % path, i.e., waypoints
+        qr % smoothed path, i,e, reference trajectoy
+    end
+
+    properties (Access = private)
         Dt % torque drag coefficient matrix
         Df % force drag coefficient matrix
-
-        qr
     end
   
     methods
@@ -44,14 +47,6 @@ classdef UAV_AGENTmodel < Agent
 
             y = CG + F;
         end
-        
-        function y = R_inv(uav, x)
-            y = rotx(-x(1))*roty(-x(2))*rotz(-x(3));
-        end
-
-        function y = R(uav, x)
-            y = rotz(x(3))*roty(x(2))*rotx(x(1));
-        end
 
         function [phi, theta, F] = pos_controller(uav, xh, r4, dt)  % c = [fx; fy; fz] = R(Theta)*[0; 0; F]
             % In practice, r([1 2 3], i) get from path planning algorithm.
@@ -67,9 +62,17 @@ classdef UAV_AGENTmodel < Agent
             phi = atan(-c(2)*cos(theta)/c(3));
         end
 
+        uav = SetPath(uav)
     end
 
-    methods (Access = private)
+    methods (Access = private)              
+        function y = R_inv(uav, x)
+            y = rotx(-x(1))*roty(-x(2))*rotz(-x(3));
+        end
+
+        function y = R(uav, x)
+            y = rotz(x(3))*roty(x(2))*rotx(x(1));
+        end
     end
 end
 %#ok<*PROPLC>

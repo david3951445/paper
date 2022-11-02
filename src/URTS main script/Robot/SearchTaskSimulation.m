@@ -15,7 +15,7 @@ xUAV = e + uav.tr.r{1};
 
 %% Path of robots
 startPos = [0.75 0 0; 0.75 6.5 0]; % (x, y, z), Start position of first robot
-Na = 2; % number of agents in a team
+Na = 5; % number of agents in a team
 rb = cell(1, Na-1);
 pp = rb;
 for i = 1 : Na-1
@@ -25,7 +25,7 @@ for i = 1 : Na-1
     % Since we want r_lr only, disable the Z2C and IK part
     rb{i}.EXE_Z2C = 0; % Do not calculate Z2C (ZMP to CoM)
     rb{i}.EXE_IK = 0; % Do not calculate IK
-    rb{i} = rb{i}.Ref2Config(pp{i}.r); % Calculate r_lr % Left and right footprints path
+    rb{i} = rb{i}.Ref2Config(pp{i}.r); % Calculate r_lr % Left and right footholds path
 
     startPos(:, 1) = startPos(:, 1) + 1.5; % x += 1.5
 end
@@ -69,8 +69,8 @@ set(drone, 'parent', combinedobject);
 % Initialize
 plot3(uav.tr.r{1}(1, :), uav.tr.r{1}(2, :), uav.tr.r{1}(3, :),'DisplayName', 'UAV reference', 'LineWidth',1.5); % UAV ref
 plotState = plot3(xUAV(1, 1), xUAV(2, 1), xUAV(3, 1), 'b:','DisplayName', 'UAV state','LineWidth',1.5); % UAV state
-plotObjLeftFoot = plot(rb{1}.r_lr(1, 1), rb{1}.r_lr(2, 1), 'square', DisplayName='left footprints'); % Robot left footprints ref
-plotObjRightFoot = plot(rb{1}.r_lr(1, 2), rb{1}.r_lr(2, 2), 'o', Color=[0 .5 0], DisplayName='right footprints'); % Robot right footprints ref
+plotObjLeftFoot = plot(rb{1}.r_lr(1, 1), rb{1}.r_lr(2, 1), 'square', DisplayName='left footholds'); % Robot left footholds ref
+plotObjRightFoot = plot(rb{1}.r_lr(1, 2), rb{1}.r_lr(2, 2), 'o', Color=[0 .5 0], DisplayName='right footholds'); % Robot right footholds ref
 
 % Find max length of trajectory in agents
 maxLen = 0;
@@ -110,9 +110,9 @@ for i = 1 : maxLen
             PP = pp{k}; RB = rb{k};
             if i <= length(RB.r_lr)
                 if(mod(i, 2) == 1)
-                    AddXYData(plotObjLeftFoot, RB.r_lr(1, i), RB.r_lr(2, i)) % left feet print
+                    AddXYData(plotObjLeftFoot, RB.r_lr(1, i), RB.r_lr(2, i)) % left feet hold
                 else
-                    AddXYData(plotObjRightFoot, RB.r_lr(1, i), RB.r_lr(2, i)) % right feet print
+                    AddXYData(plotObjRightFoot, RB.r_lr(1, i), RB.r_lr(2, i)) % right feet hold
                 end
             end
         end

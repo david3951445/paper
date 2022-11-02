@@ -47,7 +47,7 @@ function PlotTC(ag)
     end
     xlabel('t (sec)')
     ylabel('$u (N\cdot m)$', 'Interpreter','latex')
-    legend('Interpreter','latex','Location','southeast')
+    legend(Interpreter='latex',Location='southeast')
 
     SaveFig(fig)
 end

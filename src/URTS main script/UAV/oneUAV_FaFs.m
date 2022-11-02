@@ -10,8 +10,10 @@ uav.EXE_TRAJ    = 0; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
-uav.tr.dt    = .001; % Time step
-uav.tr.T     = 20; % Final time
+uav.tr.dt   = .001; % Time step
+uav.tr.T    = 40; % Final time
+uav.tr.t    = 0 : uav.tr.dt : uav.tr.T;
+uav.tr.LEN  = length(uav.tr.t);
 
 % global variable
 DIM_F       = uav.DIM_F; % Dimension of e
@@ -88,53 +90,12 @@ uav.sys_aug     = sys_aug;
 uav = uav.get_K_L(sys1, sys_aug1);
 
 %% trajectory
-% Construct reference r(t) = [xd, yd, zd, phid]^T
-uav.tr.t    = 0 : uav.tr.dt : uav.tr.T;
-uav.tr.LEN  = length(uav.tr.t);
-
-%-1 circle up
-% uav.qr  = zeros(4, uav.tr.LEN);
-% amp_z   = 0.9;
-% amp     = 0.8;
-% freg    = 1;
-% for i = 1 : uav.tr.LEN - 1
-%     uav.qr(:, i) = [
-%         amp*sin(freg*uav.tr.t(i))
-%         amp*cos(freg*uav.tr.t(i))
-%         amp_z*uav.tr.t(i) + 1
-%         0
-%     ];
-% end
-
-%-2 search task
-r1 = [
-    0 0 1 1 2 2 2 1 0
-    0 0 1 0 0 1 2 2 2
-    0 0 .1 .1 .2 .2 .3 .3 .4
-]*5;
-r1(1:2, :) = r1(1:2, :)/2;
-r1(3, :) = r1(3, :) + 2;
-
-len1 = length(r1);
-t1 = linspace(0,1,len1);
-density = 5;
-len2 = (len1-1)*density+1;
-t2 = linspace(0,1,len2);
-r2 = zeros(3, len2);
-len3 = uav.tr.LEN;
-t3 = linspace(0,1,len3);
-r3 = zeros(3, len3);
-for i = 1 : 3
-    r2(i, :) = interp1(t1, r1(i, :), t2);
-    f2{i} = fit(t2', r2(i, :)', 'SmoothingSpline');
-    r3(i, :) = feval(f2{i}, t3)';
-end
-uav.qr = cat(1, r3, zeros(1, length(r3)));
-uav.Save('qr');
+uav = uav.SetPath();
 
 if uav.EXE_TRAJ
     %% set initial
-    x0_pos = zeros(1, sys.DIM_X);
+    % x0_pos = zeros(1, sys.DIM_X);
+    x0_pos = .1.*rand(1, sys.DIM_X) + 0;
     uav.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_s.DIM_X)]';
     uav.tr.xh0   = zeros(uav.sys_aug.DIM_X, 1);
 
@@ -144,47 +105,43 @@ end
 
 if uav.EXE_PLOT
     disp('Ploting trajectory ...')
-    uav.PlotTC(); % Tracking control results
+
+    r = uav.tr.r{1};
+    
+    %% Tracking control results
+%     uav.PlotTC(); 
 
     %% 3D, r(t), state
-    r = uav.tr.r{1};
-    figure
-    plot3(r(1, :), r(2, :), r(3, :), 'DisplayName', '$r(t)$');
-    hold on
-    grid on
-    X = uav.tr.x(DIM_F+1, :) + r(1, :);
-    Y = uav.tr.x(DIM_F+2, :) + r(2, :);
-    Z = uav.tr.x(DIM_F+3, :) + r(3, :);
-    plot3(X, Y, Z, 'DisplayName', '$x(t)$')
-%     axis equal
-    title('UAV reference and state')
-    xlabel('x (m)'); ylabel('y (m)'); zlabel('z (m)')
-    legend('Interpreter','latex')
+    % figure
 
-    %% state, error, estimated state
-    % fig = figure;
-    % DIM = DIM_F;
-    % div = divisors(DIM);
-    % i = ceil((length(div))/2);
-    % Layout = tiledlayout(DIM/div(i), div(i));
-    % Layout.TileSpacing = 'compact';
-    % Layout.Padding = 'compact';
+    % plot3(r(1, :), r(2, :), r(3, :), DisplayName='reference');
+    % hold on
+
+    % X = uav.tr.x(DIM_F+1, :) + r(1, :);
+    % Y = uav.tr.x(DIM_F+2, :) + r(2, :);
+    % Z = uav.tr.x(DIM_F+3, :) + r(3, :);
+    % plot3(X, Y, Z, DisplayName='state')
+
+    % grid on
+    % xlabel('X (m)'); ylabel('Y (m)'); zlabel('Z (m)')
+    % legend(Interpreter="latex", Location='best')
+
+    %% local motion planning
+    fig = figure;
     
+    plot3(uav.sigma(1, :), uav.sigma(2, :), uav.sigma(3, :), '^', DisplayName='$\sigma(t)$', MarkerSize=7)
+    hold on
+
+    plot3(r(1, :), r(2, :), r(3, :), DisplayName='$\sigma''(t)$');
+
+    grid on
+    xlabel('X (m)'); ylabel('Y (m)'); zlabel('Z (m)')
+    legend(Interpreter="latex", Location='best')
+
+    SaveFig(fig)
+
+    %% state, error, estimated state   
     % Y_LABEL = {'x (m)', 'y (m)', 'z (m)', '\phi (rad)', '\theta (rad)', '\psi (rad)'};
-    % for i = 1 : DIM_F % position
-    %     nexttile
-    %     hold on
-    %     index = DIM_F + i;
-    %     plot(uav.tr.t, uav.tr.x(index, :)+r(i, :), 'DisplayName', 'state', 'LineWidth', 2)
-    %     plot(uav.tr.t, uav.tr.xh(index, :)+r(i, :), 'DisplayName', 'estimated', 'LineWidth', 2)
-    %     plot(uav.tr.t, r(i, :), 'DisplayName', 'reference', 'LineWidth', 2)
-        
-    %     title(['$x_{' num2str(i) '}$'], 'Interpreter','latex')
-    %     legend('Interpreter','latex')
-    %     xlabel('t (sec)')
-    %     ylabel(Y_LABEL{i})
-    %     % ylim([-2 2])
-    % end
 end
 
 %% Execution time

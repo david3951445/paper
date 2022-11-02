@@ -17,7 +17,8 @@ function PlotPP(pp)
     % plot(rb.CoM(1, :), rb.CoM(2, :), 'Displayname', 'CoM trajectory')
     axis equal
     % title('path of the robot \alpha_{1,2} using RRT algorithm')
-    xlabel('x (m)'); ylabel('y (m)')
-    legend('Interpreter','latex')%, 'FontSize', 20)
+    xlabel('X (m)'); ylabel('Y (m)')
+    legend(Interpreter='latex',Location='southeast')
+    
     SaveFig(fig)
 end
