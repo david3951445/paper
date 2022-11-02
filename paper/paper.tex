@@ -250,7 +250,7 @@ A dynamic model about how the UAV moves in the physical world is given first. By
 \begin{equation} \label{eq:uav} 
     \begin{split}
         \begin{bmatrix}
-            f \\ \tau
+            F \\ \tau
         \end{bmatrix}&=\begin{bmatrix}
             mI & 0 \\ 0 & J
         \end{bmatrix}\begin{bmatrix}
@@ -295,7 +295,7 @@ where $J=\begin{bmatrix}
     K_{\tau_x} & 0 & 0 \\
     0 & K_{\tau_y} & 0 \\
     0 & 0 & K_{\tau_z}
-\end{bmatrix}$, $f =\begin{bmatrix}
+\end{bmatrix}$, $F =\begin{bmatrix}
     f_x \\ f_y \\ f_z
 \end{bmatrix} = R(\Theta)\begin{bmatrix}
     0 \\ 0 \\ F
@@ -321,7 +321,7 @@ where $J=\begin{bmatrix}
     0 & \sin\phi & \cos\phi
 \end{bmatrix}$.
 % where $y'$ denotes the $y$ axis after rotating the $z$ axis and $x''$ denotes the $x$ axis after rotating the $y'$ axis
-$g$ is the gravity acceleration, $m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $f$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame, and $F$ is the total thrust. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
+$g$ is the gravity acceleration, $m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $F$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, and $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
 
 Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. Then, $(\sigma_n')$ will be the position reference path $\begin{bmatrix}
     x_r[k] & y_r[k] & z_r[k]

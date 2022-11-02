@@ -1,11 +1,11 @@
-function PlotTC(ag)
-    % Plot tracking control result
-    %
-    % There are 4 figures:
-    %   - Trajectory of state, estimated state, reference
-    %   - Estimation of actuator and sensor fault
-    %   - Control effort
+% Plot tracking control result
+%
+% There are 4 figures:
+%   - Trajectory of state, estimated state, reference
+%   - Estimation of actuator and sensor fault
+%   - Control effort
 
+function PlotTC(ag)
     %% state, estimated state, reference
     fig = figure;
     DIM = ag.DIM_F;
@@ -22,7 +22,13 @@ function PlotTC(ag)
         plot(ag.tr.t, ag.tr.xh(index, :)+r(i, :))
         plot(ag.tr.t, r(i, :))
 
-        ylabel(['$x_{' num2str(i) '} (' ag.UNIT{i} ')$'], 'Interpreter','latex')      
+        ylabel(['$x_{' num2str(i) '} (' ag.UNIT{i} ')$'], 'Interpreter','latex')
+        
+        if strcmp(ag.FILE_NAME, 'UAV_AGENTmodel')
+            if (i>3)
+                ylim([-2 2])
+            end
+        end
     end
     xlabel(Layout,'t (sec)')
     lg  = legend('state', 'estimated state', 'reference', NumColumns=3); 
@@ -43,7 +49,7 @@ function PlotTC(ag)
     grid on
     for i = 1 : DIM
         index = i;
-        plot(ag.tr.t, ag.tr.u(index, :), 'DisplayName', ['$u_{' num2str(i) '}$'], 'LineWidth', 1)    
+        plot(ag.tr.t, ag.tr.u(index, :), 'DisplayName', ['$u_{' num2str(i) '}$'])    
     end
     xlabel('t (sec)')
     ylabel('$u (N\cdot m)$', 'Interpreter','latex')

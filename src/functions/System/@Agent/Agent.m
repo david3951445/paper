@@ -7,6 +7,7 @@ classdef Agent
 
     properties (Access = protected)
         PATH % path of saved data
+        FILE_NAME % file name of class
     end
 
     properties
@@ -14,10 +15,10 @@ classdef Agent
         % INTERP_DENSITY = 2500 % interp density of zmp
 
         %% Control design
-        sys
-        sys_a
-        sys_s
-        sys_aug
+        sys % agent system
+        sys_a % actuator smoothed model
+        sys_s % sensor smoothed model
+        sys_aug % augment system
 
         K  % Control gain matrix
         KL  % Observer gain matrix
@@ -42,7 +43,7 @@ classdef Agent
             y = ag.K*xh; 
         end
 
-        function y = f_aug(rb, t, xb)
+        function y = f_aug(rb, t, xb) % A_bar*x_bar
             DIM_X3 = rb.sys_aug.DIM_X;
             x = xb(1 : DIM_X3);
             xh = xb(DIM_X3 + (1:DIM_X3));
@@ -60,8 +61,8 @@ classdef Agent
         is_saved = Save(ag, whichVar) % save properties
         ag = Load(ag) % load properties
         PlotTC(ag) % Plot the results of tracking control
-        [ag, xb] = CalculateNextState(ag, xb, d1, r, dr, ddr, i)
-        PlotFault(ag, TITLE)
+        [ag, xb] = CalculateNextState(ag, xb, d1, r, dr, ddr, i) % Calculate xb(i+1). Temporary method, the coupling between subclass (UAV_AGENTmodel and Robot) must be reduced
+        PlotFault(ag, TITLE) % Plot fault estimation
 
     end
 end

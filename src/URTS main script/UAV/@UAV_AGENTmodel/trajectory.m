@@ -70,6 +70,7 @@ disp(['Calculating trajectory ..., t = 0 ~ ' num2str(dt*(LEN-1))])
 xb = [x; xh];
 uav.tr.r = cell(1,3);
 uav.tr.u = zeros(uav.sys.DIM_U, LEN);
+uav.tr.F = zeros(1, LEN);
 for i = startTime : LEN - 1
     %% reference
     [phi, theta, F] = uav.pos_controller(xb(1 : DIM_X3, i), r4(1:3, i-2:i), dt);
@@ -103,6 +104,7 @@ for i = startTime : LEN - 1
     end
     
     [uav, xb] = uav.CalculateNextState(xb, d1, r, dr, ddr, i);
+    uav.tr.F(i) = F;
 end
 
 % uav.Save('tr');
