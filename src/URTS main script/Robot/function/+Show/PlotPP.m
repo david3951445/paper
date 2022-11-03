@@ -5,8 +5,8 @@ function PlotPP(pp)
     hold on;
     plot(pp.tree(:,1), pp.tree(:,2),'.-', 'DisplayName','RRT tree expansion'); % tree expansion
     % plot(pthObj.States(:,1), pthObj.States(:,2),'r-','LineWidth',2, 'DisplayName','path') % draw path
-    plot(pp.sigma(1, :), pp.sigma(2, :), 'o', 'DisplayName', '$\sigma(t)$')
-    plot(pp.r(1, :), pp.r(2, :), 'LineWidth', 2, 'DisplayName', '$\sigma''(t)$')
+    plot(pp.sigma(1, :), pp.sigma(2, :), 'o', 'DisplayName', '$(\sigma_n)$')
+    plot(pp.r(1, :), pp.r(2, :), 'LineWidth', 2, 'DisplayName', '$(\sigma''_n)$')
     len = length(pp.sigma);
     plot(pp.sigma(1, 1), pp.sigma(2, 1), 'square', 'MarkerSize', 20, 'DisplayName', '$q_{start}$')
     plot(pp.sigma(1, len), pp.sigma(2, len), 'pentagram', 'MarkerSize', 20, 'DisplayName', '$q_{goal}$')

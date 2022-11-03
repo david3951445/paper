@@ -6,9 +6,9 @@ function PlotLMP(pp, rb)
 
     % Path and smoothed path
     len = 4;
-    plot(pp.sigma(1, 1:len), pp.sigma(2, 1:len), '^', 'DisplayName', '$\sigma(t)$','MarkerSize', 7)
+    plot(pp.sigma(1, 1:len), pp.sigma(2, 1:len), '^', 'DisplayName', '$(\sigma_n)$','MarkerSize', 7)
     len = 20;
-    plot(pp.r(1, 1:len), pp.r(2, 1:len), 'LineWidth', 1, 'DisplayName', '$\sigma''(t)$')
+    plot(pp.r(1, 1:len), pp.r(2, 1:len), 'LineWidth', 1, 'DisplayName', '$(\sigma''_n)$')
 
     % Start and goal configuration
     % len = length(pp.sigma);
