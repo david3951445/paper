@@ -1,16 +1,23 @@
-%A simple linear system to test solveLMI()
+%Using a simple linear system to test solveLMI1()
 clc; clear; close all;
-addpath(genpath('../../src'))
+addpath(genpath('../src'))
 
-I = eye(2); O = zeros(2);
-A = [0 1; 1 2]; B = [0; 1]; E = 1*[1 0; 0 1]; Ar = -10*I; Br = -Ar;
-Q1 = 0; Q2 = 10^(-1)*[1 0; 0 0.001]; rho = 3;
-dt = 0.002; T = 10; x0 = [0.1; 0.2]; xr0 = [1; 0];
+I = eye(2);
+O = zeros(2);
+A = [0 1; 1 2];
+B = [0; 1];
+E = 1*[1 0; 0 1];
+Ar = -10*I;
+Br = -Ar;
+Q1 = 1;
+Q2 = 10^(-1)*[1 0; 0 0.001];
+rho = 3;
+dt = 0.002; T = 10;
+x0 = [0.1; 0.2]; xr0 = [1; 0];
 freq = 1; amp = 1;
 v = @(t)[0.5*randn + 0; 0.5*randn + 0];
 r = @(t)[amp*sin(freq*t); amp*freq*cos(freq*t)];
 
-% K1 = solveLMI(A, B, E, Ar, Br, Q1, Q2, rho);
 K2 = solveLMI1(A, B, E, Ar, Br, Q2, rho);
 K = K2*1;
 
