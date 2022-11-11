@@ -1,3 +1,7 @@
+%A method to save and load a class in MATLAB
+%
+% Still testing
+
 clc; clear;
 addpath(genpath('..\function'))
 c = Class1();

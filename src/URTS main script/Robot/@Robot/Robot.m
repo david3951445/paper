@@ -1,11 +1,12 @@
 classdef Robot < Agent
     % 12 link robot model
+    % The model parameters: https://www.dropbox.com/s/qiv63y5hw7vrubp/SupplementFileRobot.pdf?dl=0
     
     properties (Constant)
         % MASS = [6.869 .243 .243 1.045 1.045 3.095 3.095 2.401 2.401 1.045 1.045 .223 .223];
-        MASS = [6.869 .243 1.045 3.095 2.401 1.045 .223]
-        L = [.035 .0907 .0285 .11 .11 .0305]
-        JNT_LIMIT = [
+        MASS = [6.869 .243 1.045 3.095 2.401 1.045 .223] % Link mass
+        L = [.035 .0907 .0285 .11 .11 .0305] % Link length
+        JNT_LIMIT = [ % Joint range limit
             -60 60
             -90 90
             -90 90
@@ -13,9 +14,9 @@ classdef Robot < Agent
             -90 90
             -90 90
         ]/180*pi
-        OFFSER_COM_STAND_WALK = .03 % remain an offset between CoM of standing and walking to let feet reach end point possibly
+        OFFSER_COM_STAND_WALK = .03 % Remain an offset between CoM of standing and walking to let feet reach end point possibly
         height_feet = .01 % The highest point of a feet step
-        INERTIA = [
+        INERTIA = [ % Inertia of CoM1~12
             10^(-2)*[3.603 3.31 3.83 0 0 0]
             10^(-4)*[2 10 9 0 0 0]
             10^(-4)*[6 17 17 0 0 0]
@@ -25,28 +26,28 @@ classdef Robot < Agent
             10^(-4)*[197 196 57 14 29 -3]
             10^(-4)*[6 17 17 0 0 0]
             10^(-5)*[22 99 91 0 -.1 0]
-        ] % inertia of CoM1~12
+        ] 
 
-        INTERP_DENSITY = 1500 % interp density of zmp
-        UNIT = {'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad'}
+        INTERP_DENSITY = 1500 % Interpolation density of zmp
+        UNIT = {'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad', 'rad'} % Unit of each state variable
     end
     properties
-        %% rigidbodytree
+        %% Rigidbody tree of robot
         DH % DH table of leg (joint 1 -> 11 (2 -> 12))
         DH_f2 % DH table of leg (joint 7 -> 3 (8 -> 4))
         
-        height_CoM % height of CoM0
-        height_CoM0_stand % height of CoM when standing
-        height_CoM0_walk % height of CoM when walking
+        height_CoM % Height of CoM0
+        height_CoM0_stand % Height of CoM when standing
+        height_CoM0_walk % Height of CoM when walking
 
-        rbtree % rigidbodytree of robot
+        rbtree % The rigidbodytree
 
         %% reference design
-        r % task space ref traj
-        r_lr
-        zmp
-        CoM
-        qr % joint space ref traj
+        qr % Joint space ref traj
+        r % Task space ref traj
+        r_lr % Left and right footprints path
+        zmp % Zero moment point
+        CoM % Center of mass
 
         %% flow control of code
         EXE_Z2C = 1 % ZMP to CoM converter
@@ -73,13 +74,13 @@ classdef Robot < Agent
             %     -rb.L(6) 0 0 0 % fixed
             % ];
             rb.DH = [
-                0 pi/2 -rb.L(3) 0 % q1
-                0 0 0 pi/2 % fixed
-                0 pi/2 0 0 % q3
-                -rb.L(4) 0 0 0 % q5
-                -rb.L(5) -pi/2 0 0 % q7
-                0 pi/2 0 0 % q9
-                -rb.L(6) 0 0 0 % q11
+                0           pi/2        -rb.L(3)    0       % q1
+                0           0           0           pi/2    % fixed
+                0           pi/2        0           0       % q3
+                -rb.L(4)    0           0           0       % q5
+                -rb.L(5)    -pi/2       0           0       % q7
+                0           pi/2        0           0       % q9
+                -rb.L(6)    0           0           0       % q11
             ];
             rb.DH_f2 = [
                 0 -pi/2 rb.L(5) 0 % fixed

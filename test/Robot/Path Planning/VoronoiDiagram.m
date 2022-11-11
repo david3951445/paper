@@ -1,3 +1,4 @@
+%Draw a Voronoi diagrom
 clc; clear; close all
 n = 10;
 x = rand(1, n);

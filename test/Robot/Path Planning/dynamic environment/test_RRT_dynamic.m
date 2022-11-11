@@ -1,6 +1,10 @@
-%example of using plannerRRT()
-% document: https://www.mathworks.com/help/nav/ref/plannerrrt.html
-% This is modified from the related MATLAB example but with user map
+%Dynamic planning using plannerRRT()
+%
+% document:
+%   https://www.mathworks.com/help/nav/ref/plannerrrt.html
+%
+% This method is not quite correct since the path can be discontinuous 
+
 clc; clear; close all
 
 pre_start = [0 0]; % agent location
