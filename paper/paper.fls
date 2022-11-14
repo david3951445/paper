@@ -697,12 +697,12 @@ INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb8t.v
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\helvetic\phvbo8t.vf
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvbo8r.tfm
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT .\fig\behavior.pdf
 INPUT .\fig\behavior.pdf
 INPUT fig\behavior.pdf
@@ -767,6 +767,10 @@ INPUT fig\S_task.pdf
 INPUT .\fig\S_task.pdf
 INPUT .\fig\S_task.pdf
 INPUT .\fig\S_task.pdf
+INPUT .\notaglinelogo.png
+INPUT .\notaglinelogo.png
+INPUT notaglinelogo.png
+INPUT .\notaglinelogo.png
 INPUT .\fig\robot_PP.png
 INPUT .\fig\robot_PP.png
 INPUT fig\robot_PP.png
@@ -774,10 +778,6 @@ INPUT .\fig\robot_PP.png
 INPUT .\fig\robot_PP.png
 INPUT .\fig\robot_PP.png
 INPUT .\fig\robot_PP.png
-INPUT .\notaglinelogo.png
-INPUT .\notaglinelogo.png
-INPUT notaglinelogo.png
-INPUT .\notaglinelogo.png
 INPUT .\fig\uav_LMP.png
 INPUT .\fig\uav_LMP.png
 INPUT fig\uav_LMP.png
@@ -824,6 +824,10 @@ INPUT .\fig\uav (4).png
 INPUT .\fig\uav (4).png
 INPUT .\fig\uav (4).png
 INPUT .\fig\uav (4).png
+INPUT .\notaglinelogo.png
+INPUT .\notaglinelogo.png
+INPUT notaglinelogo.png
+INPUT .\notaglinelogo.png
 INPUT .\fig\robot (1).png
 INPUT .\fig\robot (1).png
 INPUT fig\robot (1).png
@@ -852,10 +856,6 @@ INPUT .\fig\robot (4).png
 INPUT .\fig\robot (4).png
 INPUT .\fig\robot (4).png
 INPUT .\fig\robot (4).png
-INPUT .\notaglinelogo.png
-INPUT .\notaglinelogo.png
-INPUT notaglinelogo.png
-INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
