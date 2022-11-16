@@ -239,16 +239,16 @@ If each agent in hybrid URTS can track each own reference trajectory $r(t)$, the
 In order to design a reference trajectory $r(t)$ for the motion of UAV and robot, their dynamic models must be given first. After the system description of UAV and robot, the motion planning of flying and walking as shown in Fig. \ref{fig:FandW} will be discussed subsequently and separately in the next two subsections.
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.4]{fig/FandW.pdf}\caption{The flowchart of Flying and Walking. In both two blocks, a smoothed path is obtained by post-processing first. Then the respective motion of behavior is designed. The final outputs of Flying and Walking are all reference path $r[k]$, but its value and dimension will vary according to the dimension of the system model.}
+    \includegraphics[scale=.4]{fig/FandW.png}\caption{The flowchart of Flying and Walking. In both blocks, a smoothed path is obtained by post-processing first. Then the respective motion of behavior is designed. The final outputs of Flying and Walking are all desired reference path $r[k]$, but its value and dimension will vary according to the dimension of the system model.}
     \label{fig:FandW}
 \end{figure*}
-Before the discussion of the motion planning of these two behavior, the following assumption is maded.
+Before the discussion of the motion planning of these two behaviors, the following assumption is maded.
 \textit{
     \begin{assumption} \label{asm:cc again}
         The space between obstacles is large enough to eliminate the need for collision checking again, and the average speed of agents is slow enough to ignore dynamic constraints
     \end{assumption}
 }
-However, for these two behaviors, there all exist an inevitable kinematic constraint on curvature of local motion. Although an accurate reference trajectory without breaking the curvature constraint can be designed, it is not easy to solve this problem. Additionally, it is not nessasry for these two behaviors in URTS since they are uesd to move from one location to another while the effect of error during moving caused by breaking curvature constraint is relatively insignificant. At the same time, the \textit{Assumption \ref{asm:cc again}} makes sure the error will not cause collision. As an alternative, this problem can be handled by curve fitting which can be regarded as a post-process of the path $(\sigma_n)$. The post-process will appear in the begining of motion planning process of these two behaviors as shown in Fig. \ref{fig:FandW}.
+However, for these two behaviors, there exists an inevitable kinematic constraint on the curvature of local motion. Although an accurate reference trajectory without breaking the curvature constraint can be designed, it is not easy to solve this problem. Additionally, it is not nessasry for these two behaviors in URTS since they are uesd to move from one location to another while the effect of error during moving caused by breaking the curvature constraint is relatively insignificant. At the same time, the \textit{Assumption \ref{asm:cc again}} makes sure the error will not cause collision. As an alternative, this problem can be handled by curve fitting which can be regarded as a post-process of the path $(\sigma_n)$. The post-process will appear in the begining of motion planning process of these two behaviors as shown in Fig. \ref{fig:FandW}.
 
 \subsection{motion planning of flying of UAV}
 A dynamic model about how the UAV moves in the physical world is given first. By Newton-Euler equation, the dynamic model of UAV can be formulated as \cite{sabatino2015quadrotor}:
@@ -326,13 +326,13 @@ where $J=\begin{bmatrix}
     0 & \sin\phi & \cos\phi
 \end{bmatrix}$.
 % where $y'$ denotes the $y$ axis after rotating the $z$ axis and $x''$ denotes the $x$ axis after rotating the $y'$ axis
-$g$ is the gravity acceleration, $m$ and $J$ is the mass and inertia matrix of UAV, respectively, $\tau$ and $F$ are the total touque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, and $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame. This model treats the UAV as a mass point and can control the force in the $z$ direction and the touque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denote the reference.
+$g$ is the gravity acceleration, $m$ and $J$ are the mass and inertia matrix of UAV, respectively, $\tau$ and $F$ are the total torque and force acting on UAV, respectively, $\Theta$ is the Euler angles in body frame, $X$ is the postion of center of mass (CoM) in inertial frame, $K_\tau$ and $K_F$ are the aerodynamic damping coefficients, and $R(\Theta)$ is the intrinsic rotation matrix from body frame to inertial frame. This model treats the UAV as a mass point and can control the force in the $z$ direction and the torque in the $x$, $y$ and $z$ direction. Hence, the reference trajectory of UAV $r(t)=[x_r(t),y_r(t),z_r(t),\phi_r(t),\theta_r(t),\psi_r(t)]^T\in\mathbb{R}^{6}$, where the subscript $r$ denotes the reference.
 
-Now, suppose the UAV flying is occured between time step $t_1$ and $t_2$, that is, $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. Then, $(\sigma_n')$ will be the position reference path $\begin{bmatrix}
-    x_r[k] & y_r[k] & z_r[k]
-\end{bmatrix}^T$. Subsequently, the orientation reference path, row angle $\phi_r[k]$, pitch angle $\theta_r[k]$ and yaw angle $\psi_r[k]$ are considered. $\phi_r[k]$ is set to zero since no need for spinning when flying. $\theta_r[k]$ and $\psi_r[k]$ cannot be set beforehand since UAV is an underactuated system, which will be discussed in the next section. Finally, the reference path $r[k]$ of UAV can be obtained by combining them together, i.e., $r[k] = \begin{bmatrix}
-    x_r[k] & y_r[k] & z_r[k] & \psi_r[k]
-\end{bmatrix}^T$. The flowchart is shown in Fig. \ref{fig:FandW}.
+Now, suppose the UAV flying occurs between time step $t_1$ and $t_2$, that is, $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[t_1,t_2]$. The corresponding path $(\sigma_n), n\in\mathbb{Z}\cap[t_1,t_2]$ will be smoothed first by linear interpolation and then by cubic spline interpolation, which gives the smoothed path $(\sigma_n'), n\in\mathbb{Z}\cap[t_1,t_1+D(t_2-t_1)], \sigma_n'\in\mathbb{R}^3$, where $D\in\mathbb{Z}^+$ is the interpolation density. Then, $(\sigma_n')$ will be the position reference path $[
+    x_r[k], y_r[k], z_r[k]
+]^T$. Subsequently, the orientation reference path, row angle $\phi_r[k]$, pitch angle $\theta_r[k]$ and yaw angle $\psi_r[k]$ are all considered. $\phi_r[k]$ is set to zero since no need for spinning when flying. $\theta_r[k]$ and $\psi_r[k]$ cannot be set beforehand since UAV is an underactuated system, which will be discussed in the next section. Finally, the reference path $r[k]$ of UAV can be obtained by combining them together, i.e., $r[k] = [
+    x_r[k], y_r[k], z_r[k], \psi_r[k]
+]^T$. The flowchart is shown in Fig. \ref{fig:FandW}.
 
 % \begin{figure}[htbp]
 %     \centering
@@ -350,21 +350,21 @@ By Lagrange equation, the dynamic model of biped robot can be formulated as:
         & \tau = M(q)\ddot{q} + C(q,\dot{q})\dot{q} + G(q)    
     \end{split}
 \end{equation}
-where $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is in the joint space. Furthermore, the walking of biped robot suffers from the falling problem, i.e, how to find a stable walking pattern prevent robot from falling. These make the design of walking motion more difficult. In this paper, a three-dimensional linear inverted pendulum Model (3D-LIPM) \cite{kajita2001real} is used to design the walking motion.
+where $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is in the joint space. Furthermore, the walking of biped robot suffers from the falling problem, i.e, how to find a stable walking pattern to prevent robot from falling. These make the design of walking motion more difficult. In this paper, a three-dimensional linear inverted pendulum Model (3D-LIPM) \cite{kajita2001real} is used to design the walking motion.
 
-Let us define the body frame of robot as $\{ \widehat{X_b}, \widehat{Y_b}, \widehat{Z_b} \}$ as in \cite{ourrobot}. Taking the forward direction of robot as $\widehat{X_b}$ direction, the left direction as $\widehat{Y_b}$ direction, and the torso direction as $\widehat{Z_b}$ direction in body frame, "Falling" means the moments on the robot in $\widehat{X_b}$ and $\widehat{Y_b}$ direction are not zero. More accuately, the robot will not fall if the zero moment point (ZMP) lies in the support polygon, i.e., the convex hull of face of supported foots. The ZMP in $\widehat{X_b}$ direction can be discribed as \cite{huang2001planning} ($\widehat{Y_b}$ direction as same form):
+With 3D-LIPM, we can significantly reduce the amount of computation. Let us define the body frame of robot as $\{ \widehat{X_b}, \widehat{Y_b}, \widehat{Z_b} \}$ as in \cite{ourrobot}. Taking the forward direction of robot as $\widehat{X_b}$ direction, the left direction as $\widehat{Y_b}$ direction, and the torso direction as $\widehat{Z_b}$ direction in body frame, "Falling" means the moments on the robot in $\widehat{X_b}$ and $\widehat{Y_b}$ direction are not zero. More accuately, the robot will not fall if the zero moment point (ZMP) lies in the support polygon, i.e., the convex hull of face of supported foots. The ZMP in $\widehat{X_b}$ direction can be discribed as \cite{huang2001planning} (The ZMP in $\widehat{Y_b}$ direction as the same form):
 \begin{equation}
     x_{zmp} = \frac{\sum_{i=1}^{12} (m_i(\ddot{z}_i+g)x_i - m_i\ddot{x}_iz_i - I_{iy}\ddot{\Omega}_{iy})}
                    {\sum_{i=1}^{12} m_i(\ddot{z}_i+g)}
 \end{equation}
-It can be seen that ZMP is related to 12 link masses, moment of inertia, positions, accelerations, and angular velocities. This makes the analytical solution of reference $q_r(t)$ impossible. However, an approximate solution can be derived through 3D-LIPM. It is to find CoM reference first and then obtain $q_r(t)$ by using inverse kinemic (IK) given step size, step height, step period and CoM height. Many researchers have used this method to avoid complex calculations for ZMP of actual robot dynamic model. Although the actual dynamic model is different from 3D-LIPM so there is an error between them, the design process will be more simple. The overall process is shown in Fig. \ref{fig:FandW}.
+where $m_i$ is the CoM, $x_i, z_i$ are the linear position components, $I_{iy}$ is the inertial component, and $\ddot{\Omega}_{iy}$ is the angular velocity component of link $i$. However, it is difficult to directly calculate the analytical solution of $q_r$ through (6). Since there is a complex coordinate transformation between $q_r$ and $x_i, z_i, \ddot{\Omega}_{iy}$. At the same time, it is necessary to ensure that $x_{zmp}$ falls on the support polygon but the support polygon also has a relationship with $q_r$. To simplify this complex problem, an approximate solution can be derived through 3D-LIPM. It is to find CoM reference first and then obtain $q_r(t)$ by using inverse kinematic (IK) with given step size, step height, step period and CoM height. Many researchers have used this method to avoid complex calculations for ZMP of actual robot dynamic model. Although there exist a model error between the actual dynamic model and 3D-LIPM, the design process will be more simple. The overall process is shown in Fig. \ref{fig:FandW}.
 % \begin{figure}[htbp]
 %     \centering
 %     \includegraphics[scale=.3]{fig/walking.pdf}\caption{flowchart of biped robot walking}%
 %     \label{fig:walking}
 % \end{figure}
 
-Following the same step in UAV, the smoothed path $(\sigma_n')$ for robot can be obtained at first. For ease of explanation, suppose walking is occured between time step $1$ and $N$, i.e., $n\in\mathbb{Z}\cap[1,N]$. Note that $(\sigma_n')$ is not actual CoM reference in robot case since CoM of robot need to "swinging" for balance. Despite that, $(\sigma_n')$ tells the robot the position to go so the $\widehat{X_b}$ direction can be obtained by doing finite difference on $(\sigma_n')$ due to the expectation that the robot will move forward (rather than sideways or backward). To keep torso upright, the $\widehat{Z_b}$ direction is equal to the $z$-axis in the inertial frame $\widehat{Z_g}$. Given $\widehat{X_b}$ and $\widehat{Z_b}$, $\widehat{Y_b}$ can be obtained obviously through cross product. The sequence of body frame, i.e., CoM orientation path $(CO_n)$ can be obtained through the above steps.
+Following the same step in UAV, the smoothed path $(\sigma_n')$ for robot can be obtained at first. For the convenience of explanation, suppose walking is occured between time step $1$ and $N$, i.e., $n\in\mathbb{Z}\cap[1,N]$. Note that $(\sigma_n')$ is not actual CoM reference in robot case since CoM of robot need to "swinging" for balance. Despite that, $(\sigma_n')$ tells the robot the position to go so the $\widehat{X_b}$ direction can be obtained by doing finite difference on $(\sigma_n')$ due to the expectation that the robot will move forward (rather than sideways or backward). To keep torso upright, the $\widehat{Z_b}$ direction is equal to the $z$-axis in the inertial frame $\widehat{Z_g}$. Given $\widehat{X_b}$ and $\widehat{Z_b}$, $\widehat{Y_b}$ can be obtained obviously through cross product. The sequence of body frame, i.e., CoM orientation path $(CO_n)$ can be obtained through the above steps.
 
 \textit{
     \begin{remark}
@@ -374,34 +374,33 @@ Following the same step in UAV, the smoothed path $(\sigma_n')$ for robot can be
 
 Let us denote the $x$ and $y$ component of $\sigma_n'$ in $(\sigma_n')$ as the sequence $(\sigma^{1}_{n}), \sigma^{1}_{n}\in\mathbb{R}^2$. The left and right "envelopes", $(\sigma^{2}_{n})$ and $(\sigma^{3}_{n})$, of $(\sigma^{1}_{n})$ with a fixed distance $L_1$ can be found by $(\sigma^{1}_{n})$ and $(CO_n)$ through the geometric relation between $(\sigma^{i}_{n}), i=1,2,3$, where $L_1$ is feet width (or shoulder width). Then the $x$ and $y$ component of left and right foothold paths, $(\sigma^{2}_{k_n})$ and $(\sigma^{3}_{k_n})$, can be obtained by a given step size, which are the subsequence of $(\sigma^{2}_{n})$ and $(\sigma^{3}_{n})$, respectively. Finally, left and right foothold paths $(\sigma^{i}_{k_n}), \sigma^{i}_{k_n}\in\mathbb{R}^3, i=4,5$ are found by adding $z$ component which is given by ground height.
 
-After foothold paths are obtained, ankle position path can also be obtained by the given step height which is customized by the designer or based on the height of the obstacle to be crossed. Taking the left foothold path as an example, $x$ and $y$ component of the highest position of ankle during stride are set as middle point of two footholds $\sigma^{2}_{k_m}$ and $\sigma^{2}_{k_{m+1}}$ where $m\in\mathbb{Z}\cap[1,N-1]$, and the $z$ component are given by step height. By using cubic spline interpolation, we have the left and right ankle position paths, $(\sigma^{6}_{n})$ and $(\sigma^{7}_{n})$. The ankle orientation path is found by gradient of ground. Finally, the left and right ankle paths, $(\sigma^{8}_{n})$ and $(\sigma^{9}_{n})$, are found by combining the position and orientation path together. So far, the remaining work is to find out the CoM path and then to combine with the ankle path to calculate the joint path through IK.
+After foothold paths are obtained, ankle position path can also be obtained by the given step height which is customized by the designer or based on the height of the obstacle to be crossed. Taking the left foothold path as an example, $x$ and $y$ component of the highest position of ankle during stride are set as middle point of two footholds $\sigma^{2}_{k_m}$ and $\sigma^{2}_{k_{m+1}}$ where $m\in\mathbb{Z}\cap[1,N-1]$, and the $z$ component is given by step height. By using cubic spline interpolation, we have the left and right ankle position paths, $(\sigma^{6}_{n})$ and $(\sigma^{7}_{n})$. The ankle orientation path is found by the gradient of ground. Finally, the left and right ankle paths, $(\sigma^{8}_{n})$ and $(\sigma^{9}_{n})$, are found by combining the position and orientation path together. So far, the remaining work is to find out the CoM path and then to combine with the ankle path to calculate the joint path through IK.
 
 To obtain CoM postion path $(CP_n)$, ZMP path needs to be obtained first. ZMP path can be obtained through foothold paths $(\sigma^{4}_{k_n})$ and $(\sigma^{5}_{k_n})$ since ZMP needs to lie in the support face and the foothold path points out when the feet are on the ground. Suppose the CoM height $z_c$ of robot is constant when walking, then the robot model can be regarded as an 3D-LIPM:
 \begin{equation} \label{eq:LIPM}
     \begin{split}
-        & \ddot{x} = \frac{g}{z_c}(x - p_x) \\
-        & \ddot{y} = \frac{g}{z_c}(y - p_y)
+        & \ddot{x}_c = \frac{g}{z_c}(x_c - p_x) \\
+        & \ddot{y}_c = \frac{g}{z_c}(y_c - p_y)
     \end{split}
 \end{equation}
-where $(x,y)$ is the position of CoM of the inverted pendulum, $g$ is the gravity acceleration, and $(p_x,p_y)$ is the position of ZMP. Since $z_c$, $g$ and $(p_x,p_y)$ are given, $(x,y)$ can be solved. To solve the ODE in (\ref{eq:LIPM}), a method is proposed to convert it to a servo problem \cite{1241826}:
+where $(x_c, y_c, z_c)$ is the position of CoM of the inverted pendulum, $g$ is the gravity acceleration, and $(p_x,p_y)$ is the position of ZMP on the $x$-$y$ plane. Since $z_c$, $g$ and $(p_x,p_y)$ are given, $(x_c, y_c)$ can be solved. Observing the dynamic equations in the $x$ and $y$ directions in (\ref{eq:LIPM}), it can be found that they are decoupled and thus can be calculated separately. Therefore, only the solution in the $x$ direction is given below (the $y$ direction as the same). To solve it, a method is proposed to convert it to a servo problem \cite{1241826}:
 \begin{equation} \label{eq:output tracking}
     \begin{split}
-        & \dot{\bar{x}} = A\bar{x} + Bu \\
-        & p_x = C\bar{x}
+        & \dot{\bar{x}}_c = A\bar{x}_c + Bu \\
+        & p_x = C\bar{x}_c
     \end{split}
 \end{equation}
-where $\bar{x} = \begin{bmatrix}
-    x \\ \dot{x} \\ \ddot{x}
+where $\bar{x}_c = \begin{bmatrix}
+    x_c \\ \dot{x}_c \\ \ddot{x}_c
 \end{bmatrix}$, $A = \begin{bmatrix}
     0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0
 \end{bmatrix}$, $B = \begin{bmatrix}
     0 \\ 0 \\ 1
 \end{bmatrix}$, and $C = \begin{bmatrix}
     1 & 0 & -z_c/g
-\end{bmatrix}$. Our goal is to find a control input $u$ in order that the output $p_x$ can track a ZMP reference trajectory so that the solution $x$ of ODE in (\ref{eq:LIPM}) can be obtained, i.e., the CoM position path we want is found. Unlike conventional methods, the problem is solved by the optimal control. The system is discretized first and the discrete LQ tracker is employed to achieve the output tracking. The formulation can be found in TABLE 4.4-1 in \cite{lewis2012optimal}. The $y$-direction can be found by same procedure since the dynamic of 3D-LIPM in the $x$-direction and $y$-direction is decoupled with same form. The CoM position path $(CP_n)$ then be obtained by combining $x$, $y$ and $z_c$.
-% $\bar{x}$ in (\ref{eq:output tracking}),
+\end{bmatrix}$. Our goal is to find a control input $u$ in order that the output $p_x$ can track a ZMP reference trajectory so that the solution $x_c$ of ODE in (\ref{eq:LIPM}) can be obtained, i.e., the CoM position path is found. Unlike conventional methods, the problem is solved by the optimal control. The system is discretized first and the discrete LQ tracker is employed to achieve the output tracking. The formulation can be found in TABLE 4.4-1 in \cite{lewis2012optimal}. The CoM position path $(CP_n)$ then be obtained by combining $x_c$ and $y_c$ with $z_c$.
 
-By combining the CoM orientation $(CO_n)$ and position $(CP_n)$ path, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]$ of robot is found by solving IK.
+By combining the CoM orientation path $(CO_n)$ and position path $(CP_n)$, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]$ of robot can be found by solving IK.
 
 \section{Reference Tracking control}
 After the reference trajectory $r(t)$ is set, the last step is to design a controller for an agent to track it. To analyze the tracking control problem of UAV model in (\ref{eq:uav}) and robot model in (\ref{eq:robot}) together, we represent them by the same form called agent model through some appropriate variable transformations:
