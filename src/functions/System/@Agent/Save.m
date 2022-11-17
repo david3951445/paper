@@ -9,6 +9,12 @@ switch whichVar
         K = ag.K;
     case 'KL'
         KL = ag.KL;
+    case 'sys_a'
+        sys_a = ag.sys_a;
+    case 'sys_s'
+        sys_s = ag.sys_s;
+    case 'sys_aug'
+        sys_aug = ag.sys_aug;
     otherwise
         is_saved = false;
         return;

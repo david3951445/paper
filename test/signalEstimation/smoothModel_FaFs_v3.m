@@ -53,7 +53,7 @@ sys_aug.R = [];
 sys_aug.rho = 100;
 
 %% L, K
-[K, L] = solveLMI10(sys_aug.A, sys_aug.B, sys_aug.C, sys_aug.E, sys_aug.Q1, sys_aug.Q2, sys_aug.R, sys_aug.rho);
+[K, L, P1, P2] = solveLMI10(sys_aug.A, sys_aug.B, sys_aug.C, sys_aug.E, sys_aug.Q1, sys_aug.Q2, sys_aug.R, sys_aug.rho);
 % gain = zeros(1, sys_a.WINDOW); gain(1) = -1;
 % K(:, sys.DIM_X + (1:sys_a.DIM_X)) = kron(gain, eye(DIM_F));
 % L(sys.DIM_X+(1:sys_a.DIM_X), :) = -diag([100,200,700]);

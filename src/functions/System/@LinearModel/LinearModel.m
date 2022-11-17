@@ -1,22 +1,26 @@
 classdef LinearModel
     %Linear system model
+    %
     % dx/dt = Ax + Bu + Ev
     % y = Cx
-    
+    %
+
     properties
         A
         B
         C
         E
 
-        Q1 % tracking
-        Q2 % estimation
-        R = []
-        rho = 1
+        P1 % Lyapunov function of tracking error system
+        P2 % Lyapunov function of estimation error system
+        Q1 % Tracking weighting matrix
+        Q2 % Estimation weighting matrix
+        R = [] % Control effort weighting matrix
+        rho = 1 % Prescribed attenuation value
         
-        DIM_X
-        DIM_U
-        DIM_Y
+        DIM_X % Dimension of state vector
+        DIM_U % Dimension of control vector
+        DIM_Y % Dimension of output vector
     end
     
     methods

@@ -58,7 +58,7 @@ classdef Robot < Agent
         function rb = Robot()
             rb@Agent();
             rb.FILE_NAME = mfilename;
-            rb.PATH  = ['data/' mfilename]; % path of saved data
+            rb.PATH  = ['./data/' mfilename]; % path of saved data
             rb = rb.Load(); % load old data
             rb.DIM_F = 12;
             

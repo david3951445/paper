@@ -57,7 +57,7 @@ rb.sys_aug = sys_aug;
 
 if EXE.LMI
     disp('solving LMI ...')
-    [rb.K, rb.KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
+    [rb.K, rb.KL, P1, P2] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
     
     % Fine tune of gain
     % gain = [-1 zeros(1, sys_a.WINDOW-1)];

@@ -73,7 +73,7 @@ for WINDOW = 2 : MAX_WINDOW
     
     gain = zeros(1, WINDOW); gain(1) = -1;
     % method 1
-    [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
+    [K, L, P2, P2] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
 %     K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = kron(gain, eye(DIM_F));
     % method 2, remove unknown siganl state in augment state
 %     [K, L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));

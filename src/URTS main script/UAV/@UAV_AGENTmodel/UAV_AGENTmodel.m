@@ -27,7 +27,7 @@ classdef UAV_AGENTmodel < Agent
         function uav = UAV_AGENTmodel()
             uav@Agent();
             uav.FILE_NAME = mfilename;
-            uav.PATH  = ['data/' mfilename]; % path of saved data
+            uav.PATH  = ['./data/' mfilename]; % path of saved data
             uav = uav.Load(); % load old data
             uav.DIM_F = 6;
             

@@ -3,8 +3,9 @@ I = eye(ag.DIM_F);
 
 if ag.EXE_LMI
     disp('solving LMI ...')
-    [ag.K, ag.KL] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
-    
+    [ag.K, ag.KL, P1, P2] = solveLMI10(sys_aug1.A, sys_aug1.B, sys_aug1.C, sys_aug1.E, sys_aug1.Q1, sys_aug1.Q2, sys_aug1.R, sys_aug1.rho);
+    ag.sys_aug.P1 = kron(P1, I);
+    ag.sys_aug.P2 = kron(P2, I);
 %     norm(ag.KL)
 
     ag.Save('K') 

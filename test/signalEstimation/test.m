@@ -22,7 +22,7 @@ Q1 = 10^(3)*diag([1 1 1 0 0]);
 Q2 = 10^(2)*diag([1 1 1 100 100]);
 R = [];
 rho = 1;
-[K, L] = solveLMI10(Ab, Bb, Cb, E, Q1, Q2, R, rho);
+[K, L, P1, P2] = solveLMI10(Ab, Bb, Cb, E, Q1, Q2, R, rho);
 L = L*10;
 
 %% traj

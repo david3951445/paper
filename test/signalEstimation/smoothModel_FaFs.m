@@ -71,7 +71,7 @@ for WINDOW = MIN_WINDOW : MAX_WINDOW
    
     gain = zeros(1, WINDOW); gain(1) = -1;
     % method 1
-    [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
+    [K, L, P1, P2] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
 %     L(1:2) = [-100; -200]*10;
 %     L(7:8) = [500; 1000];
 %     K(1:DIM_U*DIM_F, DIM_F*DIM_X + (1:DIM_X2)) = kron(gain, eye(DIM_F));

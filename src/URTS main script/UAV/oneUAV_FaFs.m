@@ -7,7 +7,7 @@ uav = UAV_AGENTmodel();
 % flow control of code
 uav.EXE_LMI     = 0; % solving LMI
 uav.EXE_TRAJ    = 0; % trajectory
-uav.EXE_PLOT    = 1; % plot results
+uav.EXE_PLOT    = 0; % plot results
 
 % time
 uav.tr.dt   = .001; % Time step
@@ -77,6 +77,9 @@ sys_aug1.rho    = 30;
 % for plot trajectories
 [A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
 sys_aug     = LinearModel(A, B, C);
+sys_aug.Q1  = kron(sys_aug1.Q1, I);
+sys_aug.Q2  = kron(sys_aug1.Q2, I);
+sys_aug.R   = kron(sys_aug1.R, I);
 
 %% Copy sys, sys_a, sys_s, sys_aug to uav
 sys_a.begin     = sys.DIM_X;
@@ -109,8 +112,8 @@ if uav.EXE_PLOT
     r = uav.tr.r{1};
     
     %% Tracking control results
-    PlotLMP(uav)
-    % uav.PlotTC(); 
+%     PlotLMP(uav)
+    uav.PlotTC(); 
     % PlotActualControl(uav) % Actual control input
     
     %% 3D, r(t), state
@@ -132,6 +135,9 @@ if uav.EXE_PLOT
     %% state, error, estimated state   
     % Y_LABEL = {'x (m)', 'y (m)', 'z (m)', '\phi (rad)', '\theta (rad)', '\psi (rad)'};
 end
+
+%% Calculate Hinf Performance
+uav.GetHinfPerformance()
 
 %% Execution time
 toc

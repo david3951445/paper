@@ -63,6 +63,7 @@ classdef Agent
         PlotTC(ag) % Plot the results of tracking control
         [ag, xb] = CalculateNextState(ag, xb, d1, r, dr, ddr, i) % Calculate xb(i+1). Temporary method, the coupling between subclass (UAV_AGENTmodel and Robot) must be reduced
         PlotFault(ag, TITLE) % Plot fault estimation
+        y = GetHinfPerformance(ag)
 
     end
 end

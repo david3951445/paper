@@ -159,7 +159,7 @@ The agents overall have the same system architecture in URTS except for some sub
 \end{figure}
 
 \subsection{Task Allocation}
-In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agents and tasks is more than one, and each agent has different capabilities (e.g., moving speed or load capacity) and status (e.g., their own position or the amount of supplies carried), and each task has different characteristics (e.g., urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which leads us to find the optimal allocation. This problem is referred to a task allocation problem or multi-robot task allocation problem. A problem formulation and a mathematical model of problem can be found in \cite{Khamis2015}. Although many different formulations and models have been employed to solve the task allocation problem, the common goal is to find a set of agent-task pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned so that every agent knows a destinition $q_{goal}$ it needs to go at every moment.
+In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agents and tasks is more than one, and each agent has different capabilities (e.g., moving speed or load capacity) and status (e.g., their own position or the amount of supplies carried), and each task has different characteristics (e.g., urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which leads us to find the optimal allocation. This problem is referred to a task allocation problem or multi-robot task allocation problem. A problem formulation and a mathematical model of problem can be found in \cite{Khamis2015}. Although many different formulations and models have been employed to solve the task allocation problem, the common goal is to find a set of agent-task pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned so that every agent knows a destination $q_{goal}$ it needs to go at every moment.
 % $(\mathcal{G})_n, n\in\mathbb{Z}\cap[1, N], N\in\mathbb{Z}^+$
 \textit{
     \begin{remark}
@@ -173,7 +173,7 @@ In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned 
 }
 
 \subsection{Path Planning}
-After a destinition $q_{goal}$ is assigned for each agent, next step is to find a collision-free path from current position to it. There must exist multiple feasible paths to go. Similar to task allocation, we usually want to find an optimal path. There are several path planning algorithm to handle this problem. Due to the developmental and universal nature of roadmap-based path planning algorithm, this paper considers it as the path planning method of URTS. This method attempts to discretize the search space into interconnected roads and find the path on it. 
+After a destination $q_{goal}$ is assigned for each agent, next step is to find a collision-free path from current position to it. There must exist multiple feasible paths to go. Similar to task allocation, we usually want to find an optimal path. There are several path planning algorithm to handle this problem. Due to the developmental and universal nature of roadmap-based path planning algorithm, this paper considers it as the path planning method of URTS. This method attempts to discretize the search space into interconnected roads and find the path on it. 
 % According to the roadmap construction method, it can be divided into deterministic and sample-based. 
 
 According to the way of pathfinding, it can be divided into multi-query planner and single-query planner \cite{elbanhawi2014sampling}. Multi-query planner will first construct a roadmap and then use a graph search method on it to query the best path, such as Probability Road Map (PRM), Visibility Graph, and Voronoi Diagrams \cite{liu2018survey}. Single-query planner will complete the pathfinding by constructing and querying simultaneously,
@@ -561,7 +561,7 @@ where $F_i(t)=\begin{bmatrix}
 \end{equation}
 where $\bar{e}(t) = \begin{bmatrix}
     \pmb{e}(t) \\ F_1(t) \\ F_2(t)
-\end{bmatrix}$, $\bar{A}=\begin{bmatrix}
+\end{bmatrix}$ is the augmented tracking error, $\bar{A}=\begin{bmatrix}
     A & BC_1 & 0 \\
     0 & A_1 & 0 \\
     0 & 0 & A_2
@@ -590,17 +590,17 @@ Since the fault signals become a state variable of the augmented tracking error 
     \end{bmatrix} = 3n + (w-1)n + (w-1)o, \forall z \in eig(\bar{A})$.
 \end{assumption}
 The robust PID FTC law of each agent is given as:
-\begin{equation} \label{eq:Kx}
+\begin{equation} \label{eq:u_fb}
     u_{fb}(t)=K\hat{\bar{e}}(t)
 \end{equation}
 where $K = \begin{bmatrix}
     K_I & K_P & K_D & K_{F_1} & K_{F_2}
-\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the estimation error $\tilde{e}(t)=\bar{e}(t)-\hat{\bar{e}}(t)$, by the augmented tracking error system (\ref{eq:e_bar}) and the estimation system (\ref{eq:e_hat}), we get:
+\end{bmatrix}$ is the total control gain, $K_P,K_I,K_D$ are the PID control gain for position tracking error $e(t)$, and $K_{F_i}, i=1,2$ are the fault control gain. Let us define the augmented estimation error $\tilde{e}(t)=\bar{e}(t)-\hat{\bar{e}}(t)$, the augmented estimation error system can be obtained by (\ref{eq:e_bar}) and (\ref{eq:e_hat}):
 \begin{equation} \label{eq:e_tilde}
     \dot{\tilde{e}}(t) = \bar{A}\tilde{e}(t) +L\bar{C}\tilde{e}(t)
 \end{equation}
-Combining (\ref{eq:e_bar}), (\ref{eq:Kx}), and (\ref{eq:e_tilde}), we have the following augmented tracking and estimation error system of each agent in the hybrid URTS:
-\begin{equation} \label{eq:aug}
+Combining (\ref{eq:e_bar}), (\ref{eq:u_fb}), and (\ref{eq:e_tilde}), we have the following augmented tracking and estimation error system of each agent in the hybrid URTS:
+\begin{equation} \label{eq:x_tilde}
     \dot{\tilde{x}}(t) = \tilde{A}\tilde{x}(t)+\tilde{v}(t)
 \end{equation}
 where $\tilde{x}(t)=\begin{bmatrix}
@@ -611,15 +611,17 @@ where $\tilde{x}(t)=\begin{bmatrix}
     \bar{v}(t) \\ \bar{v}(t)
 \end{bmatrix}$
 
-In order to enable the designed control gain $K$ and observer gain $L$ to achieve a specific stablized performance for the system (\ref{eq:aug}) under the disturbance $\bar{v}(t)$, the $H_\infty$ observer-based stablized control performance below a prescribed disturbance attenuation level $\rho^2$ is given as:
+In order to enable the designed control gain $K$ in (\ref{eq:u_fb}) and observer gain $L$ in (\ref{eq:e_hat}) to achieve a specific performance for the augmented system in (\ref{eq:x_tilde}) under the disturbance $\bar{v}(t)$, the robust $H_\infty$ decentralized observer-based tracking control strategy below a prescribed disturbance attenuation level $\rho^2$ for each agent in hybrid URTS is given as:
 \begin{equation} \label{Hinf}
-    % \begin{split}     
+    % \begin{split}
+    \resizebox{1\hsize}{!}{    
         % & H_{\infty}(K, L) \\
         % & = 
-        \frac{\int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt - V(\tilde{x}(0))}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2
+        $\frac{\int_{0}^{t_f}(\bar{e}^T(t)Q_1\bar{e}(t) + \tilde{e}^T(t)Q_2\tilde{e}(t) + u_{fb}^T(t)Ru_{fb}(t))dt - V(\tilde{x}(0))}{\int_{0}^{t_f}\tilde{v}^T(t)\tilde{v}(t)dt}\leq \rho^2$
+    }
     % \end{split}
 \end{equation}
-where $t_f$ is the final time, $Q \geq 0$ is the weighting matrix of augmented state, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}(0))$ is the initial condition effect on augmented system(\ref{eq:aug}), and $\tilde{v}(t)$ is the total disturbance needs to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on augmented state $\tilde{x}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the $H_\infty$ observer-based stablized control problem in (\ref{Hinf}), the following lemmas are given:
+where $t_f$ is the final time, $Q_1 \geq 0$ is the tracking error weighting matrix, $Q_2 \geq 0$ is the estimation error weighting matrix, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}(0))$ is the initial condition effect on the augmented system in (\ref{eq:x_tilde}), and $\tilde{v}(t)$ is the total disturbance needed to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on augmented tracking error $\bar{e}(t)$ and augmented estimation error $\tilde{e}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the robust $H_\infty$ decentralized observer-based tracking control problem of each agent in (\ref{Hinf}), the following lemmas are given:
 \begin{lemma}[\cite{boyd1994linear}] \label{lemma1}
     For any matriices $X$ and $Y$ with appropriate dimensions, and matrix $R=R^T>0$ the following inequality holds:
     \begin{equation} \label{}
@@ -642,10 +644,12 @@ Then, the following theorem is given.
     \end{equation}
     where $\tilde{K}=\begin{bmatrix}
         K & -K
-    \end{bmatrix}$, then the $H_\infty$ observer-based stablized control specification (\ref{Hinf}) can be achieved.
+    \end{bmatrix}$, $Q=\begin{bmatrix}
+        Q_1 & 0 \\ 0 & Q_2
+    \end{bmatrix}$, then the $H_\infty$ decentralized observer-based tracking control strategy in (\ref{Hinf}) can be achieved.
 \end{theorem}
 \begin{proof}
-    Choose the Lyapunov function $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)$ for the augmented system (\ref{eq:aug}) with $P=P^T>0$, we have:
+    Choose the Lyapunov function $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)$ for the augmented system (\ref{eq:x_tilde}) with $P=P^T>0$, we have:
     \begin{equation} \label{pf:1}
         \begin{split}
             & \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t) + u_{fb}^T(t)Ru_{fb}(t))dt \\
@@ -655,7 +659,7 @@ Then, the following theorem is given.
             & u_{fb}^T(t)Ru_{fb}(t) + Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)))dt
         \end{split}
     \end{equation}
-    By (\ref{eq:aug}) and Lemma \ref{lemma1}, we have:
+    By (\ref{eq:x_tilde}) and Lemma \ref{lemma1}, we have:
     \begin{equation} \label{pf:2}
         \begin{split}
             & Sym(\dot{\tilde{x}}^T(t)P\tilde{x}(t)) \\
@@ -663,10 +667,10 @@ Then, the following theorem is given.
             & = \tilde{x}^T(t)(P\tilde{A} + \tilde{A}^T P + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t)
         \end{split}
     \end{equation}
-    Substituting (\ref{pf:2}) and (\ref{eq:Kx}) into (\ref{pf:1}), we get:
+    Substituting (\ref{eq:u_fb}), (\ref{pf:2}) and $\tilde{x}^T(t)Q\tilde{x}(t)=\bar{e}^T(t)Q_1\bar{e}(t)+\tilde{e}^T(t)Q_2\tilde{e}(t)$ into (\ref{pf:1}), we get:
     \begin{equation*} \label{pf:3}
         \begin{split}
-            & \int_{0}^{t_f}(\tilde{x}^T(t)Q\tilde{x}(t))dt + u_{fb}^T(t)Ru_{fb}(t))dt \\
+            & \int_{0}^{t_f}(\bar{e}^T(t)Q_1\bar{e}(t)+\tilde{e}^T(t)Q_2\tilde{e}(t))dt + u_{fb}^T(t)Ru_{fb}(t))dt \\
             & \leq V(\tilde{x}(0)) + \int_{0}^{t_f}(\tilde{x}^T(t)(Q + P\tilde{A} + \tilde{A}^T P +\tilde{K}^TR\tilde{K}\\
             & + \frac{1}{\rho^2}PP)\tilde{x}(t) + \rho^2\tilde{v}^T(t)\tilde{v}(t))dt
         \end{split}
@@ -674,9 +678,9 @@ Then, the following theorem is given.
     Thus, if (\ref{BMI1}) holds then (\ref{Hinf}) holds
 \end{proof}
 
-Although the sufficient condition (\ref{BMI1}) for the existence of the $H_\infty$ observer-based stablized control specification (\ref{Hinf}) have been found, it can not be solved easily since it is a bilinear matrix inequality (BMI) and exists strong coupling between the variables. To solve the issue, a two-step design is exploit.
+Although the sufficient condition (\ref{BMI1}) for the existence of the $H_\infty$ decentralized observer-based tracking control strategy (\ref{Hinf}) have been found, it can not be solved easily since it is a bilinear matrix inequality (BMI) and exists strong coupling between the variables. To solve the issue, a two-step design is exploited.
 
-\textit{Step 1:} First, let the Lyapunov function of augmented system (\ref{eq:aug}) be the sum of two Lyapunov function of subsystems (\ref{eq:e_bar}) and (\ref{eq:e_tilde}), i.e., $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)=\bar{e}^T(t)P_1\bar{e}(t)+\tilde{e}^T(t)P_2\tilde{e}(t)$. Second, let the augmented state energy be the sum of tracking error energy and estimated error energy, i.e., $\tilde{x}^T(t)Q\tilde{x}(t)=\bar{e}^T(t)Q_1\bar{e}(t)+\tilde{e}^T(t)Q_2\tilde{e}(t)$. Substituting $P=\begin{bmatrix}
+\textit{Step 1:} First, let the Lyapunov function of augmented system (\ref{eq:x_tilde}) be the sum of two Lyapunov function of subsystems (\ref{eq:e_bar}) and (\ref{eq:e_tilde}), i.e., $V(\tilde{x}(t))=\tilde{x}^T(t)P\tilde{x}(t)=\bar{e}^T(t)P_1\bar{e}(t)+\tilde{e}^T(t)P_2\tilde{e}(t)$. Substituting $P=\begin{bmatrix}
     P_1 & 0 \\ 0 & P_2
 \end{bmatrix}$ and $Q=\begin{bmatrix}
     Q_1 & 0 \\ 0 & Q_2
@@ -723,21 +727,22 @@ where $Y_1=KW_1$. By solving the LMI (\ref{eq:step1}), we can obtain $W_1,Y_1$.
 \end{equation}
 where $Y_2=P_2L$. By solving the LMI (\ref{eq:step2}), we can obtain $P_2,Y_2$.
 
-% Finally, we can find the gains $K$ and $L=P_2^{-1}Y_2$ that achieve the $H_\infty$ observer-based stablized control performance in (\ref{Hinf}) of the augmented system (\ref{eq:aug}).
+% Finally, we can find the gains $K$ and $L=P_2^{-1}Y_2$ that achieve the $H_\infty$ observer-based stablized control performance in (\ref{Hinf}) of the augmented system (\ref{eq:x_tilde}).
 
-If we want to find the optimal $H_\infty$ observer-based stablized control specification for the system (\ref{eq:aug}), we need to solve the following LMIs-constrained optimization problem:
+If we want to find the optimal $H_\infty$ decentralized observer-based tracking control strategy for the augmented system of each agent in (\ref{eq:x_tilde}), we need to solve the following LMIs-constrained optimization problem:
 \begin{equation} \label{LMI constraint}
     \begin{split}
-        & \rho^*=\mathop{\min}_{P,K,L} \rho \\
+        & \rho^{*2}=\mathop{\min}_{P,K,L} \rho^2 \\
         & s.t. (\refeq{eq:step1}),(\refeq{eq:step2}) 
     \end{split}
 \end{equation}
 
-The design procedure of the optimal $H_\infty$ observer-based feedforward-linearized PID FTC scheme for the agent (\ref{eq:agent d1}) is organized as follows.
+The design procedure of the optimal $H_\infty$ decentralized observer-based feedforward-linearized PID FTC scheme for each agent in (\ref{eq:agent d1}) is summarized as follows:
 \begin{enumerate}
-    \item Apply the feedforward control in (\ref{eq:control}) to obtain the linearized system (\ref{eq:error})
-    \item Construct the smoothing signal models (\ref{eq:smooth model}) for the actuator fault $f_1(t)$ and sensor fault $f_2(t)$. Embed into the linearized system (\ref{eq:error}) to get the augmented system (\ref{eq:aug}).
-    \item Solve the LMIs-constrained optimization problem (\ref{LMI constraint}) by the two-step design to obtain the control gain $K$ and observer gain $L=P_2^{-1}Y_2$.
+    \item Apply the feedforward control in (\ref{eq:control}) to obtain the linearized tracking error dynamic system (\ref{eq:error})
+    \item Construct the smoothing signal models (\ref{eq:smooth model}) for the actuator fault $f_1(t)$ and sensor fault $f_2(t)$. Embed into the linearized system (\ref{eq:error}) to get the augmented tracking error system (\ref{eq:e_bar}).
+    \item Construct the robust PID FTC law (\ref{eq:u_fb}) and the augmented estimation error system (\ref{eq:e_tilde}) to obtain the augmented tracking and estimation error system in (\ref{eq:x_tilde})
+    \item Solve the LMIs-constrained optimization problem (\ref{LMI constraint}) by the two-step design to obtain the control gain $K$ and observer gain $L=P_2^{-1}Y_2$ for each agent in the hybrid URTS.
 \end{enumerate}
 
 % \begin{theorem} \label{theorem2}
@@ -753,7 +758,7 @@ The design procedure of the optimal $H_\infty$ observer-based feedforward-linear
 %     where $M_{11}=\bar{A}W_1+\bar{B}Y_1 + (\bar{A}W_1+\bar{B}Y_1)^T + \frac{1}{\rho^1}I$, $M_{22}=P_2\bar{A}+Y_2\bar{C} + (P_2\bar{A}+Y_2\bar{C})^T+Q_2$, is equivalent to the BMI (\ref{BMI1})
 % \end{theorem}
 % \begin{proof}
-%     Let $W_1=P_1^{-1}$. By $\tilde{A}$ in (\ref{eq:aug}) and (\ref{eq:PQ}), and multiplying (\ref{BMI1}) left and right by $\begin{bmatrix}
+%     Let $W_1=P_1^{-1}$. By $\tilde{A}$ in (\ref{eq:x_tilde}) and (\ref{eq:PQ}), and multiplying (\ref{BMI1}) left and right by $\begin{bmatrix}
 %         W_1 & 0 \\ 0 & I
 %     \end{bmatrix}$, we have:
 %     \begin{equation} \label{}
@@ -769,7 +774,7 @@ The design procedure of the optimal $H_\infty$ observer-based feedforward-linear
 %         \end{bmatrix} + 
 %     \end{equation}
 % \end{proof}
-Although the control gain and observer gain can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose the error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}^1$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
+Although the control gain in (\ref{eq:u_fb}) and observer gain in (\ref{eq:e_bar}) for each agent in URTS can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems for each agent if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose the error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}^1$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
@@ -777,12 +782,12 @@ Although the control gain and observer gain can already be found through the pre
     \end{split}
 \end{equation}
 \begin{remark}
-    If the linearized system (\ref{eq:error}) can be splited into $n$ subsystems, this means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done.
+    If the linearized system (\ref{eq:error}) can be splited into $n$ subsystems, this means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of each agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done.
 \end{remark}
 
-By Theorem \ref{theorem1} again, the form shows that we can find the control gain $K_i\in\mathbb{R}^{1\times s}$ and observer gain $L_i\in\mathbb{R}^{s\times l_0}$ of $i$th subsystem (\ref{eq:linear subsys}) that achieve the $H_\infty$ observer-based stablized control performance with prescribed attenuation level $\rho_i$, where $s=3+(w-1)+(w-1)o_0$. The origin control gain $K$ of the origin agent system can be reconstructed by $K = \begin{bmatrix}
-    \mathit{v}_1 & \mathit{v}_2 & ... & \mathit{v}_n
-\end{bmatrix}^T, \mathit{v}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be reconstructed in the same way. 
+By Theorem \ref{theorem1} again, the form shows that we can find the control gain $K_i\in\mathbb{R}^{1\times s}$ and observer gain $L_i\in\mathbb{R}^{s\times l_0}$ of the $i$th subsystem (\ref{eq:linear subsys}) that achieve the $H_\infty$ observer-based tracking control performance with a prescribed attenuation level $\rho_i$, where $s=3+(w-1)+(w-1)o_0$. The origin control gain $K$ of the origin agent system can be reconstructed by $K = \begin{bmatrix}
+    \mathit{k}_1 & \mathit{k}_2 & ... & \mathit{k}_n
+\end{bmatrix}^T, \mathit{k}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be reconstructed in the same way. 
 
 In this case, the calculation speed of finding gains $K,L$ can be improved since the dimensionality is decrease. Furthermore, the online calculation speed of controller and observer can be also improved since there are more zeros in the gains $K,L$ found by this method while maintaining robustness. More clearly, the number of elements in matrix $K$, i.e., the number of scalar gains, changes from $n\times sn$ to $n(1\times s)$. For $L$, it changes from $sn\times l_0n$ to $n(s\times l_0)$. The number of scalar gains to be designed between them is $n$ times different.
 % \textit{
@@ -791,16 +796,18 @@ In this case, the calculation speed of finding gains $K,L$ can be improved since
 %     \end{remark}
 % }
 
-The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the actual reference trajectory $r(t)$ and control input $u(t)$ according to the output of local motion planning block $r'(t)$ and Theorem \ref{theorem1} $u'(t)$. The reference generator for robot is an identity function since it is a fully actuated system. Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)$. $\pmb{r}(t)$ then pass to observer to calculate the error $\pmb{e}(t)$. Its differential, $\dot{\pmb{r}}(t)$, then input to controller for feedforward control. The sensor measure not only the agent's own information (e.g., position or velocity) but environmental information. The former, measurement output $y(t)$, is passed to observer to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The letter is passed back to the high-level block for positioning, mapping and object recognition.
+The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the actual reference trajectory $r(t)$ and control input $u'(t)$ for each agent according to the output $r'(t)$ of local motion planning block and the control law $u(t)$ we design in (\ref{eq:control}). Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)$. $\pmb{r}(t)$ then pass to observer to calculate the error $\pmb{e}(t)$. Its differential, $\dot{\pmb{r}}(t)$, then inputs to controller for feedforward control. The sensor measure not only the agent's own information (e.g., position or velocity) but also environmental information. The former, measurement output $y(t)$, is passed to observer to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The letter is passed back to the high-level block for positioning, mapping and object recognition.
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.12]{fig/tracking.png}\caption{The flowchart of tracking control. The control scheme of UAV and robot is only different from the block, reference generator. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general feedforward-linearized PID FTC for an agent in URTS is proposed.}%
+    \includegraphics[scale=.12]{fig/tracking.png}\caption{The flowchart of tracking control in the hybrid URTS. The control scheme of UAV and robot in URTS is only different from the reference generator block. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general $H_\infty$ decentralized observer-based feedforward-linearized PID FTC for an agent in URTS is proposed.}%
     \label{fig:tracking}
 \end{figure*}
 
 \section{simulation results}
-In this section, a specific S\&R procedure for URTS is given to illustrate the proposed URTS system architecture and demonstrate the effectiveness of motion planning and control strategy. First, a S\&R area divided into $N_T$ areas, $area_i,i=1,2,...,N_T$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $i$th team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $i$th team as a set, $team_i=\{ \alpha_{i,j} | i=1,2,...,5 \}$. At the beginning, the agents in $team_i$ are assigned the search tasks of $area_i$ to build the occupancy map and find goals. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_1=\{ (\alpha_{i,j},T_j) | j=1,2,...,5 \}$. Suppose a goal is found after a while as shown in Fig. \ref{fig:S_task}, at this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{i,5}$ and $\alpha_{i+1,2}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{i,5},T_2),(\alpha_{i+1,2},T_3) \})\cup\{ (\alpha_{i,5},T_6),(\alpha_{i+1,2},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
+In this section, a specific S\&R procedure for URTS is given to illustrate the proposed URTS system architecture and demonstrate the effectiveness of motion planning and control strategy of a hybrid UAVs and biped robots team system. First, a S\&R area divided into $N_T$ areas, $area_i,i=1,2,...,N_T$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in $i$th team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote $i$th team as a set, $team_i=\{ \alpha_{i,j} | i=1,2,...,5 \}$.
+
+At the beginning, the task allocation block will assign the agents in $team_i$ with some search tasks in $area_i$ to build the occupancy map and find goals. The search task is assumed to be obtained by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks as a set, $task_1=\{ T_j | j=1,2,...,5 \}$, then the proper agent-task pairs can be obtained through the task allocation block, $allocation_i=\{ (\alpha_{i,j},T_j) | j=1,2,...,5 \}$. Suppose a goal is found after a while as shown in Fig. \ref{fig:S_task}. At this point, we have a rescue task $T_6$. The new task list $task_2=task_1\cup\{ T_6 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{i,5}$ and $\alpha_{i+1,2}$ to perform $T_6$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{i,5},T_2),(\alpha_{i+1,2},T_3) \})\cup\{ (\alpha_{i,5},T_6),(\alpha_{i+1,2},T_6) \}$. Until the S\&R mission is over, the task allocation block will continuously work in the similar way.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.4]{fig/SR_area.pdf}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$}%
@@ -808,7 +815,7 @@ In this section, a specific S\&R procedure for URTS is given to illustrate the p
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.4]{fig/S_task.pdf}\caption{The search tasks in $i$th team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinitions $q_{goal}$ (black dots in figure). For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths $(\sigma_n)$. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma_n)$ due to the no-collision assumption.}
+    \includegraphics[scale=.4]{fig/S_task.pdf}\caption{The search tasks in the $i$th team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinations $q_{goal}$ (black dots in figure). For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths $(\sigma_n)$. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma_n)$ due to the no-collision assumption.}
     \label{fig:S_task}
 \end{figure}
 
@@ -821,7 +828,7 @@ For the UAV $\alpha_{i,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=9
     \label{fig:R_task}
 \end{figure}
 
-Following the procedure in Fig. \ref{fig:FandW}, the results of local motion planning of UAV flying and robot walking are shown in Fig. \ref{sim:flying} and \ref{sim:walking}.
+After $(\beta_n)$ is set, we can find the reference path $r[k]$ by local motion planning block. Following the procedure in Fig. \ref{fig:FandW}, the results of local motion planning of UAV flying and robot walking are shown in Fig. \ref{sim:flying} and \ref{sim:walking}, respectively.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.57]{fig/uav_LMP.png}\caption{The result of local motion planning of UAV flying.}%
@@ -833,12 +840,12 @@ Following the procedure in Fig. \ref{fig:FandW}, the results of local motion pla
     \label{sim:walking}
 \end{figure}
 
-Through the previous steps, the reference trajectory $r(t)$ of flying and walking has been designed. The remaining parameters are set as follow.
+Through the previous steps and the help of reference generator block, the reference trajectory $r(t)$ of flying behavior for each UAV and walking behavior for each biped robot has been designed in URTS. The remaining parameters are set as follows:
 
 \textit{Agents:}\begin{enumerate}
     \item system parameters:
-    Initial value $\tilde{x}(0) = [\pmb{e}(0)^T, F_1(0)^T\mathbin{,} F_2(0)^T, \tilde{e}(0)]^T = [[0.1X, ..., 0.1X]^T, 0, 0, 0]^T$ where $X \sim \mathcal{N}(0, 1)$. $C_0 = I_3$.
-    \item designed parameters: $\rho=30$. Actuator and sensor smoothing signal model window sizes are $3$ and $4$, respectively.
+    Initial value $\tilde{x}(0) = [\pmb{e}(0)^T, F_1(0)^T\mathbin{,} F_2(0)^T, \tilde{e}(0)]^T = [[0.1X, ..., 0.1X]^T, 0, 0, 0]^T$ where $X \sim \mathcal{N}(0, 1)$. $C = C_0 \otimes I_n$ where $C_0 = I_3$.
+    \item designed parameters: $\rho^*=30$. Actuator and sensor window size of smoothing signal model are $3$ and $4$, respectively.
 \end{enumerate}
 
 \textit{UAVs:}\begin{enumerate}

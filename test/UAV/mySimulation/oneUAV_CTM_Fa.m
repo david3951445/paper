@@ -61,7 +61,7 @@ if EXE.LMI
     disp('solving LMI ...')
     gain = zeros(1, WINDOW); gain(1) = -1;
     % method 1
-    [uav.K, uav.L] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
+    [uav.K, uav.L, P1, P2] = solveLMI10(uav.A, uav.B, uav.C, Eb, Q1, Q2, [], rho);
 %     uav.K(:, DIM_X + (1:DIM_F*WINDOW)) = kron(gain, eye(DIM_F));
     % method 2
     % [uav.K, uav.L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));

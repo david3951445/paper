@@ -71,7 +71,7 @@ rho = sys_aug.rho;
 if EXE.LMI
     disp('solving LMI ...')
     % method 1
-    [rb.K, rb.KL] = solveLMI10(rb.sys_aug.A, rb.sys_aug.B, rb.sys_aug.C, sys_aug.E, Q1, Q2, R, rho);
+    [rb.K, rb.KL, P1, P2] = solveLMI10(rb.sys_aug.A, rb.sys_aug.B, rb.sys_aug.C, sys_aug.E, Q1, Q2, R, rho);
     % method 2
     % gain = zeros(1, WINDOW); gain(1) = -1;
     % [rb.K, rb.L] = solveLMI11(Ab, Cb, Eb, Q11, Q2, R, rho, kron(Ca, eye(DIM_F)), kron(A, eye(DIM_F)), kron(B, eye(DIM_F)));

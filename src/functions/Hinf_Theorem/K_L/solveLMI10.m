@@ -1,4 +1,4 @@
-function [K, L] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
+function [K, L, P1, P2] = solveLMI10(A, B, C, E, Q1, Q2, R, rho)
 %solution of "Qb + Pb*Ab + Ab'*Pb + Pb*E*E'*Pb/rho^2 < 0, Pb > 0"
 %
 % This function is used to solve a control problem defined below :
@@ -101,6 +101,7 @@ Y2 = value(Y2);
 
 K = Y1/W1;
 L = P2\Y2;
+P1 = I/W1;
 
 % Check eig value
 % P1 = I/W1;

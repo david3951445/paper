@@ -76,7 +76,7 @@ for WINDOW = 2 : MAX_WINDOW
     R = [];
     rho = 10;
 
-    [K, L] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
+    [K, L, P1, P2] = solveLMI10(Ab, Bb, Cb, Eb, Q1, Q2, R, rho);
 %     eig([Ab+Bb*K -Bb*K; zeros(5) Ab+L*Cb])
     %% trajectory
     x = zeros(DIM_X3, length(t));
