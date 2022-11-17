@@ -43,7 +43,7 @@
 \newtheorem{solution}[theorem]{Solution}
 % \newtheorem{summary}[theorem]{Summary}
 \newtheorem{assumption}{Assumption}[section]
-\newtheorem{ramark}{Remark}[section]
+% \newtheorem{remark}{Remark}[section]
 \newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -426,7 +426,7 @@ where $r(t)\in\mathbb{R}^n$ is the reference trajectory, $M(r(t)), \ddot{r}(t)\m
     0 & K_\tau
 \end{bmatrix}\begin{bmatrix}
     \dot{X} \\ \dot{\Theta}
-\end{bmatrix}$, and $n=6$. For robots, we have $u(t)=\tau_R$, $x(t)=q$, $M(x(t))=M_R(q)$, $H(x(t),\dot{x}(t))=C(q,\dot{q})\dot{q} + G(q)$, and $n=12$.
+\end{bmatrix}$, and $n=6$ by (\ref{eq:uav}). For robots, we have $u(t)=\tau_R$, $x(t)=q$, $M(x(t))=M_R(q)$, $H(x(t),\dot{x}(t))=C(q,\dot{q})\dot{q} + G(q)$, and $n=12$ by (\ref{eq:robot}).
 
 To complete the design of reference trajectory $r(t)$ of each agent, a D/A converter is used to transform the reference path $r[k]$ (output of local motion planning) into a continuous signal $r'(t)$ as shown in Fig. \ref{fig:tracking}. For UAV, we get $r'(t) = [x_r, y_r, z_r, \psi_r]^T\in\mathbb{R}^{4}$. Besides, it can be seen that the control input $u(t)=[f_x, f_y, f_z, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^6$ we design of UAV (\ref{eq:control}) is different from the actual control input for actuator $u'(t)=[F, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^4$ of UAV since UAV is an underactuated system. The two degrees of freedom we reserved in Section III-A, i.e., $\phi_r$ and $\theta_r$, are just to solve this problem. By substituting $\Theta=\begin{bmatrix}
     \phi_r \\ \theta_r \\ \psi_r
@@ -437,9 +437,15 @@ To complete the design of reference trajectory $r(t)$ of each agent, a D/A conve
 \end{bmatrix} $ from UAV dynacmis (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations using inverse dynamic because $f_x$, $f_y$, $f_z$ and $\psi_r$ are given. Combining $\phi_r$ and $\theta_r$ with $r'(t)$, we obtain $r(t)= [x_r, y_r, z_r, \phi_r, \theta_r, \psi_r]$. For robot, we get $r'(t)=r(t)\in\mathbb{R}^{12}$ and $u'(t)=u(t)\in\mathbb{R}^{12}$ since robot is a fully actuated system. So far, the design of reference trajectory $r(t)$ of each agent is done. The flowchart can be found in the reference generator block in Fig. \ref{fig:tracking}.
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[scale=.12]{fig/tracking.png}\caption{The flowchart of tracking control in the hybrid URTS. The control scheme of UAV and robot in URTS is only different from the reference generator block. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general $H_\infty$ decentralized observer-based feedforward-linearized PID FTC for an agent in URTS is proposed.}%
+    \includegraphics[scale=.12]{fig/tracking.png}\caption{The flowchart of tracking control in the hybrid URTS. The control scheme of UAV and robot in URTS is only different from the reference generator block. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general $H_\infty$ decentralized observer-based feedforward-linearized PID FTC for an agent in URTS is proposed.}
     \label{fig:tracking}
 \end{figure*}
+
+\textit{
+    \begin{remark}
+        Let $r_{i,j}(t)$ be the reference trajectory $r(t)$, $r[k]_{i,j}$ be the reference path $r[k]$, $(\beta_n)_{i,j}$ be the behavior sequence $(\beta_n)$, $(\sigma_n)_{i,j}$ be the collision-free path $(\sigma_n)$, $q_{start,i,j}$ be the current configuration $q_{start}$, and $q_{goal,i,j}$ be the goal configuration $q_{goal}$ of the agent $\alpha_{i,j}$ in the hybrid URTS. As long as $\alpha_{i,j}$ can track $r_{i,j}(t)$, the URTS works as we expect since the previous blocks have completed their respective responsibilities and found the corresponding values $q_{start,i,j}$, $q_{goal,i,j}$, $(\sigma_n)_{i,j}$, $(\beta_n)_{i,j}$ and $r[k]_{i,j}$. That is, $r_{i,j}(t)$ is the reference trajectory that can complete specific task, follow specific path and perform specific behavior.
+    \end{remark}
+}
 
 To make the model more realistic, the following external disturbances encountered in actual scenarios are considered:
 \begin{enumerate}
