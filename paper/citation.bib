@@ -1,23 +1,28 @@
+% Since there has "in" in front of booktitle={} of inproceedings{} of \bibliographystyle{ieeetr}, the following adjustments were made:
+%   inproceedings{} -> article{}
+%   booktitle={} -> journal={}
+
 @misc{sabatino2015quadrotor,
-  title={Quadrotor control: modeling, nonlinearcontrol design, and simulation},
   author={Sabatino, Francesco},
+  title={Quadrotor control: modeling, nonlinearcontrol design, and simulation},
   year={2015}
 }
 
-@ARTICLE{9306757,  author={Chen, Bor-Sen and Lee, Min-Yen and Chen, Wei-Yu and Zhang, Weihai},  journal={IEEE Access},   title={Reverse-Order Multi-Objective Evolution Algorithm for Multi-Objective Observer-Based Fault-Tolerant Control of T-S Fuzzy Systems},   year={2021},  volume={9},  number={},  pages={1556-1574},  doi={10.1109/ACCESS.2020.3047193}
-}
-
-@misc{ourrobot,
-  author       = {B.S.Chen, Y.Y.Tsai, M.Y.Lee},
-  howpublished = {https://www.dropbox.com/s/qiv63y5hw7vrubp/SupplementFileRobot.pdf},
-  title        = {online supplementary file},
-  year         = {}
+@ARTICLE{9306757, 
+  author={Chen, Bor Sen and Lee, Min Yen and Chen, Wei Yu and Zhang, Weihai},
+  journal={IEEE Access},
+  title={Reverse-Order Multi-Objective Evolution Algorithm for Multi-Objective Observer-Based Fault-Tolerant Control of T-S Fuzzy Systems},
+  year={2021},
+  volume={9},
+  number={},
+  pages={1556-1574},
+  doi={10.1109/ACCESS.2020.3047193}
 }
 
 @article{paden2016survey,
-  title={A survey of motion planning and control techniques for self-driving urban vehicles},
   author={Paden, Brian and {\v{C}}{\'a}p, Michal and Yong, Sze Zheng and Yershov, Dmitry and Frazzoli, Emilio},
-  journal={IEEE Transactions on intelligent vehicles},
+  title={A survey of motion planning and control techniques for self-driving urban vehicles},
+  journal={IEEE Trans. intelligent vehicles},
   volume={1},
   number={1},
   pages={33--55},
@@ -26,8 +31,8 @@
 }
 
 @article{liu2018survey,
-  title={A survey of formation control and motion planning of multiple unmanned vehicles},
   author={Liu, Yuanchang and Bucknall, Richard},
+  title={A survey of formation control and motion planning of multiple unmanned vehicles},
   journal={Robotica},
   volume={36},
   number={7},
@@ -36,22 +41,13 @@
   publisher={Cambridge University Press}
 }
 
-@Inbook{Khamis2015,
-author="Khamis, Alaa
-and Hussein, Ahmed
-and Elmogy, Ahmed",
-editor="Koub{\^a}a, Anis
-and Mart{\'i}nez-de Dios, J.Ramiro",
-title="Multi-robot Task Allocation: A Review of the State-of-the-Art",
-bookTitle="Cooperative Robots and Sensor Networks 2015",
-year="2015",
-publisher="Springer International Publishing",
-address="Cham",
-pages="31--51",
-abstract="Multi-robot systems (MRS) are a group of robots that are designed aiming to perform some collective behavior. By this collective behavior, some goals that are impossible for a single robot to achieve become feasible and attainable. There are several foreseen benefits of MRS compared to single robot systems such as the increased ability to resolve task complexity, increasing performance, reliability and simplicity in design. These benefits have attracted many researchers from academia and industry to investigate how to design and develop robust versatile MRS by solving a number of challenging problems such as complex task allocation, group formation, cooperative object detection and tracking, communication relaying and self-organization to name just a few. One of the most challenging problems of MRS is how to optimally assign a set of robots to a set of tasks in such a way that optimizes the overall system performance subject to a set of constraints. This problem is known as Multi-robot Task Allocation (MRTA) problem. MRTA is a complex problem especially when it comes to heterogeneous unreliable robots equipped with different capabilities that are required to perform various tasks with different requirements and constraints in an optimal way. This chapter provides a comprehensive review on challenging aspects of MRTA problem, recent approaches to tackle this problem and the future directions.",
-isbn="978-3-319-18299-5",
-doi="10.1007/978-3-319-18299-5_2",
-url="https://doi.org/10.1007/978-3-319-18299-5_2"
+@article{khamis2015multi,
+  title={Multi-robot task allocation: A review of the state-of-the-art},
+  author={Khamis, Alaa and Hussein, Ahmed and Elmogy, Ahmed},
+  journal={Cooperative robots and sensor networks 2015},
+  pages={31--51},
+  year={2015},
+  publisher={Springer}
 }
 
 @article{elbanhawi2014sampling,
@@ -64,10 +60,11 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
   publisher={IEEE}
 }
 
-@inproceedings{kajita2001real,
+% inproceedings
+@article{kajita2001real,
   title={Real-time 3D walking pattern generation for a biped robot with telescopic legs},
   author={Kajita, Shuuji and Matsumoto, Osamu and Saigo, Muneharu},
-  booktitle={Proceedings 2001 ICRA. IEEE international conference on robotics and automation (Cat. no. 01ch37164)},
+  journal={Proceedings 2001 ICRA. IEEE international conference on robotics and automation (Cat. no. 01ch37164)},
   volume={3},
   pages={2299--2306},
   year={2001},
@@ -77,7 +74,7 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
 @article{huang2001planning,
   title={Planning walking patterns for a biped robot},
   author={Huang, Qiang and Yokoi, Kazuhito and Kajita, Shuuji and Kaneko, Kenji and Arai, Hirohiko and Koyachi, Noriho and Tanie, Kazuo},
-  journal={IEEE Transactions on robotics and automation},
+  journal={IEEE Trans. robotics and automation},
   volume={17},
   number={3},
   pages={280--289},
@@ -85,7 +82,17 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
   publisher={IEEE}
 }
 
-@INPROCEEDINGS{1241826,  author={Kajita, S. and Kanehiro, F. and Kaneko, K. and Fujiwara, K. and Harada, K. and Yokoi, K. and Hirukawa, H.},  booktitle={2003 IEEE International Conference on Robotics and Automation (Cat. No.03CH37422)},   title={Biped walking pattern generation by using preview control of zero-moment point},   year={2003},  volume={2},  number={},  pages={1620-1626 vol.2},  doi={10.1109/ROBOT.2003.1241826}}
+% inproceedings
+@article{1241826,
+  author={Kajita, S. and Kanehiro, F. and Kaneko, K. and Fujiwara, K. and Harada, K. and Yokoi, K. and Hirukawa, H.},  
+  journal={2003 IEEE International Conference on Robotics and Automation (Cat. No.03CH37422)},   
+  title={Biped walking pattern generation by using preview control of zero-moment point},   
+  year={2003},  
+  volume={2},  
+  number={},  
+  pages={1620-1626 vol.2},  
+  doi={10.1109/ROBOT.2003.1241826}
+}
 
 @book{lewis2012optimal,
   title={Optimal control},
@@ -96,34 +103,89 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
 
 @ARTICLE{9075385,
   author={Yang, Jun and Liu, Cunjia and Coombes, Matthew and Yan, Yunda and Chen, Wen-Hua},
-  journal={IEEE Transactions on Control Systems Technology}, 
+  journal={IEEE Trans. Control Systems Technology}, 
   title={Optimal Path Following for Small Fixed-Wing UAVs Under Wind Disturbances}, 
   year={2021},
   volume={29},
   number={3},
   pages={996-1008},
-  doi={10.1109/TCST.2020.2980727}}
+  doi={10.1109/TCST.2020.2980727}
+}
 
-  @article{chen2013human,
+@article{chen2013human,
+  author={Chen, Bor Sen and Wu, Chia Chou and Chen, Yen Wen},
   title={Human walking gait with 11-DOF humanoid robot through robust neural fuzzy networks tracking control.},
-  author={Chen, Bor-Sen and Wu, Chia-Chou and Chen, Yen-Wen},
   journal={International Journal of Fuzzy Systems},
   volume={15},
   number={1},
   year={2013}
 }
 
-@ARTICLE{9448458,  author={Chen, Bor-Sen and Tsai, Yueh-Yu and Lee, Min-Yen},  journal={IEEE Transactions on Control of Network Systems},   title={Robust Decentralized Formation Tracking Control for Stochastic Large-Scale Biped Robot Team System Under External Disturbance and Communication Requirements},   year={2021},  volume={8},  number={2},  pages={654-666},  doi={10.1109/TCNS.2021.3087621}}
+@ARTICLE{9448458,  
+  author={Chen, Bor Sen and Tsai, Yueh Yu and Lee, Min Yen},  
+  journal={IEEE Trans. Control of Network Systems},  
+  title={Robust Decentralized Formation Tracking Control for Stochastic Large-Scale Biped Robot Team System Under External Disturbance and Communication Requirements},   
+  year={2021},  
+  volume={8},  
+  number={2},  
+  pages={654-666},  
+  doi={10.1109/TCNS.2021.3087621}
+}
 
-@ARTICLE{9108245,  author={Yasin, Jawad N. and Mohamed, Sherif A. S. and Haghbayan, Mohammad-Hashem and Heikkonen, Jukka and Tenhunen, Hannu and Plosila, Juha},  journal={IEEE Access},   title={Unmanned Aerial Vehicles (UAVs): Collision Avoidance Systems and Approaches},   year={2020},  volume={8},  number={},  pages={105139-105155},  doi={10.1109/ACCESS.2020.3000064}}
+@ARTICLE{9108245,  
+  author={Yasin, Jawad N. and Mohamed, Sherif A. S. and Haghbayan, Mohammad-Hashem and Heikkonen, Jukka and Tenhunen, Hannu and Plosila, Juha},  
+  journal={IEEE Access},   
+  title={Unmanned Aerial Vehicles (UAVs): Collision Avoidance Systems and Approaches},   
+  year={2020},  
+  volume={8},  
+  number={},  
+  pages={105139-105155},  
+  doi={10.1109/ACCESS.2020.3000064}
+}
 
-@ARTICLE{8352646,  author={Dorri, Ali and Kanhere, Salil S. and Jurdak, Raja},  journal={IEEE Access},   title={Multi-Agent Systems: A Survey},   year={2018},  volume={6},  number={},  pages={28573-28593},  doi={10.1109/ACCESS.2018.2831228}}
+@ARTICLE{8352646,  
+  author={Dorri, Ali and Kanhere, Salil S. and Jurdak, Raja},  
+  journal={IEEE Access},   
+  title={Multi-Agent Systems: A Survey},   
+  year={2018},  
+  volume={6},  
+  number={},  
+  pages={28573-28593}, 
+  doi={10.1109/ACCESS.2018.2831228}
+}
 
-@ARTICLE{9384209,  author={Li, Linjun and Miao, Yinglong and Qureshi, Ahmed H. and Yip, Michael C.},  journal={IEEE Robotics and Automation Letters},   title={MPC-MPNet: Model-Predictive Motion Planning Networks for Fast, Near-Optimal Planning Under Kinodynamic Constraints},   year={2021},  volume={6},  number={3},  pages={4496-4503},  doi={10.1109/LRA.2021.3067847}}
+@ARTICLE{9384209,  
+  author={Li, Linjun and Miao, Yinglong and Qureshi, Ahmed H. and Yip, Michael C.},  
+  journal={IEEE Robotics and Automation Letters},   
+  title={MPC-MPNet: Model-Predictive Motion Planning Networks for Fast, Near-Optimal Planning Under Kinodynamic Constraints},   
+  year={2021},  
+  volume={6},  
+  number={3},  
+  pages={4496-4503},  
+  doi={10.1109/LRA.2021.3067847}
+}
 
-@INPROCEEDINGS{9476736,  author={Skaltsis, George Marios and Shin, Hyo-Sang and Tsourdos, Antonios},  booktitle={2021 International Conference on Unmanned Aircraft Systems (ICUAS)},   title={A survey of task allocation techniques in MAS},   year={2021},  volume={},  number={},  pages={488-497},  doi={10.1109/ICUAS51884.2021.9476736}}
+% inproceedings
+@article{skaltsis2021survey,
+  title={A survey of task allocation techniques in MAS},
+  author={Skaltsis, George Marios and Shin, Hyo-Sang and Tsourdos, Antonios},
+  journal={2021 International Conference on Unmanned Aircraft Systems (ICUAS)},
+  pages={488--497},
+  year={2021},
+  organization={IEEE}
+}
 
-@INPROCEEDINGS{8931370,  author={Sabri, Yassine and El Kamoun, Najib and Lakrami, Fatima},  booktitle={2019 7th Mediterranean Congress of Telecommunications (CMT)},   title={A Survey: Centralized, Decentralized, and Distributed Control Scheme in Smart Grid Systems},   year={2019},  volume={},  number={},  pages={1-11},  doi={10.1109/CMT.2019.8931370}}
+% INPROCEEDINGS
+@article{8931370,  
+  author={Sabri, Yassine and El Kamoun, Najib and Lakrami, Fatima},  
+  journal={2019 7th Mediterranean Congress of Telecommunications (CMT)},   
+  title={A Survey: Centralized, Decentralized, and Distributed Control Scheme in Smart Grid Systems},   
+  year={2019},  
+  volume={},  
+  number={},  
+  pages={1-11},  
+  doi={10.1109/CMT.2019.8931370}
+}
 
 @book{boyd1994linear,
   title={Linear matrix inequalities in system and control theory},
@@ -132,24 +194,53 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
   publisher={SIAM}
 }
 
-@INPROCEEDINGS{6669235,  author={Rotondo, Damiano and Nejjari, Fatiha and Puig, Vicenç},  booktitle={2013 European Control Conference (ECC)},   title={Passive and active FTC comparison for polytopic LPV systems},   year={2013},  volume={},  number={},  pages={2951-2956},  doi={10.23919/ECC.2013.6669235}}
+% inproceedings
+@article{6669235,  
+  author={Rotondo, Damiano and Nejjari, Fatiha and Puig, Vicenç},  
+  journal={2013 European Control Conference (ECC)},   
+  title={Passive and active FTC comparison for polytopic LPV systems},   
+  year={2013},  
+  volume={},  
+  number={},  
+  pages={2951-2956},  
+  doi={10.23919/ECC.2013.6669235}
+}
 
 @incollection{yu2013multi,
-  title={Multi-agent path planning and network flow},
   author={Yu, Jingjin and LaValle, Steven M},
+  title={Multi-agent path planning and network flow},
   booktitle={Algorithmic foundations of robotics X},
   pages={157--173},
   year={2013},
   publisher={Springer}
 }
 
-@ARTICLE{9834947,  author={Chen, Bor-Sen and Lin, Jun-Hao},  journal={IEEE Access},   title={Robust Collaborative Team Formation Control of Hybrid Teams of Biped Robots and Wheeled Vehicles Under External Disturbance and Communication Interactions},   year={2022},  volume={10},  number={},  pages={77633-77657},  doi={10.1109/ACCESS.2022.3192878}}
+@ARTICLE{9834947,  
+  author={Chen, Bor Sen and Lin, Jun Hao},  
+  journal={IEEE Access},   
+  title={Robust Collaborative Team Formation Control of Hybrid Teams of Biped Robots and Wheeled Vehicles Under External Disturbance and Communication Interactions},   
+  year={2022},  
+  pages={77633-77657},  
+  volume={10},  
+  number={},  
+  doi={10.1109/ACCESS.2022.3192878}
+}
 
-@INPROCEEDINGS{9700861,  author={Kloeker, Laurent and Moers, Tobias and Vater, Lennart and Zlocki, Adrian and Eckstein, Lutz},  booktitle={2021 5th International Conference on Vision, Image and Signal Processing (ICVISP)},   title={Utilization and Potentials of Unmanned Aerial Vehicles (UAVs) in the Field of Automated Driving: A Survey},   year={2021},  volume={},  number={},  pages={9-17},  doi={10.1109/ICVISP54630.2021.00012}}
+% inproceedings
+@article{9700861,  
+  author={Kloeker, Laurent and Moers, Tobias and Vater, Lennart and Zlocki, Adrian and Eckstein, Lutz},  
+  journal={2021 5th International Conference on Vision, Image and Signal Processing (ICVISP)},   
+  title={Utilization and Potentials of Unmanned Aerial Vehicles (UAVs) in the Field of Automated Driving: A Survey},   
+  year={2021},  
+  volume={},  
+  number={},  
+  pages={9-17},  
+  doi={10.1109/ICVISP54630.2021.00012}
+}
 
 @article{chen2019control,
-  title={On the control of multi-agent systems: A survey},
   author={Chen, Fei and Ren, Wei and others},
+  title={On the control of multi-agent systems: A survey},
   journal={Foundations and Trends{\textregistered} in Systems and Control},
   volume={6},
   number={4},
@@ -158,11 +249,20 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
   publisher={Now Publishers, Inc.}
 }
 
-@ARTICLE{9371292,  author={Cheng, Wanglei and Zhang, Ke and Jiang, Bin and Ding, Steven X.},  journal={IEEE Transactions on Circuits and Systems I: Regular Papers},   title={Fixed-Time Fault-Tolerant Formation Control for Heterogeneous Multi-Agent Systems With Parameter Uncertainties and Disturbances},   year={2021},  volume={68},  number={5},  pages={2121-2133},  doi={10.1109/TCSI.2021.3061386}}
+@ARTICLE{9371292,  
+  author={Cheng, Wanglei and Zhang, Ke and Jiang, Bin and Ding, Steven X.},  
+  journal={IEEE Trans. Circuits and Systems I: Regular Papers},   
+  title={Fixed-Time Fault-Tolerant Formation Control for Heterogeneous Multi-Agent Systems With Parameter Uncertainties and Disturbances},   
+  year={2021},  
+  volume={68},  
+  number={5},  
+  pages={2121-2133},  
+  doi={10.1109/TCSI.2021.3061386}
+}
 
 @article{zhang2018path,
   title={Path planning for the mobile robot: A review},
-  author={Zhang, Han-ye and Lin, Wei-ming and Chen, Ai-xia},
+  author={Zhang, Han ye and Lin, Wei ming and Chen, Ai xia},
   journal={Symmetry},
   volume={10},
   number={10},
@@ -202,3 +302,17 @@ url="https://doi.org/10.1007/978-3-319-18299-5_2"
   year={2022},
   publisher={MDPI}
 }
+
+@online{mySimulation,
+  author = {Chen, Bor Sen and Hung, Ting Wei},
+  title = {Hsinchu, Taiwan.},
+  url = {https://www.dropbox.com/scl/fo/5n6y25k3i8kjxsx9efxa3/h?dl=0&rlkey=x5p4stwtuf2gmch6l07etvz4b}
+}
+
+@online{ourrobot,
+  author       = {B. S. Chen and Y. Y. Tsai and M. Y. Lee},
+  title        = {Supplementary File. Hsinchu, Taiwan.},
+  url = {https://www.dropbox.com/s/qiv63y5hw7vrubp/SupplementFileRobot.pdf}
+}
+
+%     \bibitem{b40} B. S. Chen, T. W. Hung, Supplementary File. Hsinchu, Taiwan. [Online]. Available: https://www.dropbox.com/scl/fo/5n6y25k3i8kjxsx9efxa3/h?dl=0&rlkey=x5p4stwtuf2gmch6l07etvz4b

@@ -12,38 +12,23 @@
 \usepackage[flushleft]{threeparttable}
 \usepackage{bm}
 \usepackage[inline]{enumitem}
+\usepackage[hyphens]{url}
 
-% \usepackage{amsmath}
-% \usepackage{amsfonts}
-% \usepackage{amssymb}
-% \usepackage{fontspec}
-% \setmainfont{TeX Gyre Termes}
-
-\setcounter{MaxMatrixCols}{30}
-\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+% \setcounter{MaxMatrixCols}{30}
+% \providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
 \newtheorem{theorem}{Theorem}
-\newtheorem{acknowledgement}[theorem]{Acknowledgement}
-\newtheorem{algorithm}[theorem]{Algorithm}
-% \newtheorem{axiom}[theorem]{Axiom}
-\newtheorem{case}[theorem]{Case}
-% \newtheorem{claim}[theorem]{Claim}
-\newtheorem{conclusion}[theorem]{Conclusion}
-% \newtheorem{condition}[theorem]{Condition}
-% \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{corollary}[theorem]{Corollary}
-% \newtheorem{criterion}[theorem]{Criterion}
-\newtheorem{definition}[theorem]{Definition}
-% \newtheorem{example}[theorem]{Example}
-% \newtheorem{exercise}[theorem]{Exercise}
+% \newtheorem{acknowledgement}[theorem]{Acknowledgement}
+% \newtheorem{algorithm}[theorem]{Algorithm}
+% \newtheorem{case}[theorem]{Case}
+% \newtheorem{conclusion}[theorem]{Conclusion}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}{Lemma}
-\newtheorem{notation}{Notation}
-\newtheorem{problem}[theorem]{Problem}
-% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{notation}{Notation}
+% \newtheorem{problem}[theorem]{Problem}
 \newtheorem{remark}{Remark}
-\newtheorem{solution}[theorem]{Solution}
-% \newtheorem{summary}[theorem]{Summary}
+% \newtheorem{solution}[theorem]{Solution}
 \newtheorem{assumption}{Assumption}[section]
-% \newtheorem{remark}{Remark}[section]
 \newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -52,13 +37,26 @@
 % \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
 
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+
 \doi{10.1109/ACCESS.2017.DOI}
 
 \title{Motion Planning and Robust Fault-Tolerant Control of Hybrid UAVs and Biped Robots Team System for Search and Rescue Usage}
-% \author{\uppercase{First A. Author}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
-% \uppercase{Second B. Author\authorrefmark{2}, and Third C. Author,
-% Jr}.\authorrefmark{3},
-% \IEEEmembership{Member, IEEE}}
+
+\author{\uppercase{Bor-Sen Chen}\authorrefmark{1,2}, \IEEEmembership{Life
+Fellow, IEEE}, \uppercase{Ting-Wei Hung\authorrefmark{1}}}
+
+\address[1]{Department of Electrical Engineering, National Tsing Hua
+University, Hsinchu 30013, Taiwan} \address[2]{Department of Electrical
+Engineering, Yuan Ze University, Taoyuan 32003, Taiwan}
+
+\tfootnote{This work was supported by the Ministry of Science and Technology
+of Taiwan under Grant MOST 108-2221-E-007-099-MY3.}
+
+\markboth
+{Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
+{Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
+
+\corresp{Corresponding author: Bor-Sen Chen (bschen@ee.nthu.edu.tw)}
 % \address[1]{National Institute of Standards and 
 % Technology, Boulder, CO 80305 USA (e-mail: author@boulder.nist.gov)}
 % \address[2]{Department of Physics, Colorado State University, Fort Collins, 
@@ -93,7 +91,7 @@ biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H
 % unmanned vvehcile
 \PARstart{I}{n} recent years, the unmanned vehicle (UV) has attracted attention due to the advances in communication technology, sensing devices, and computing power. It not only reduces labor costs and brings convenience to life, but more importantly, it can replace some dangerous jobs for humans. Due to these benefits, it has been widely used in many scenarios, such as S\&R, battlefield, logistics and transportation, surveillance, etc \cite{9700861}. Compared with a single UV, multiple UVs can perform more complex tasks and are more robust due to a large number of agents \cite{8352646}. However, the cost is that the design of such a multi-agent system (MAS) becomes more intricate as there are more problems to be resolved, such as formation, collision avoidance between agents, task allocation, and cooperation between agents \cite{chen2019control}. In addition to the number increasment, a heterogeneous multi-agent system (HMAS) combining various types of UV is also valued \cite{9371292}. Compared with homogeneous multi-agent system, it can adapt to a wider variety of application scenarios because each agent has different aptitudes.
 
-To construct an unmanned HMAS, the three required key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision through the actuator. To limit the scope of this paper, we focus on decision-making and control problem only. Three main problems of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent under some constraints such as agent capabilities, fuel cost, time cost, etc \cite{9476736}. Path planning is to optimally plan paths for each agent while subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc \cite{zhang2018path}. Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
+To construct an unmanned HMAS, the three required key capabilities are perception, decision-making and control. Perception is to obtain information through the sensor (e.g., localization or computer vision), decision-making is to make decisions through the sensor information, and control is to execute the decision through the actuator. To limit the scope of this paper, we focus on decision-making and control problem only. Three main problems of decision-making in an unmanned HMAS are task allocation, path planning and collision avoidance. Task allocation is to optimally assign tasks to each agent under some constraints such as agent capabilities, fuel cost, time cost, etc \cite{skaltsis2021survey}. Path planning is to optimally plan paths for each agent while subject to constraints such as agent kinodynamic properties, distance, obstacles collision, etc \cite{zhang2018path}. Collision avoidance is to avoid collision with obstacles. Although collision avoidance is often concerned in path planning, the collision avoidance system is also independently studied because of the requirements for the safety and reliability of the actual system \cite{9108245}.
 
 Although there are many types of UVs to make up an unmanned HMAS, Unmanned Aerial Vehicle (UAV) and Unmanned Ground Vehicle (UGV) have been the subject of major recent research because of their availability and applicability. Additionally, the complementarity between them also makes such a system more potential \cite{arbanas2018decentralized}. In other words, UAV is widely used in reconnaissance due to the high mobility. However, the carrying capacity of UAV is very low compared to UGV since there is no ground support. In contrast, UGV has higher carrying capacity but is easily restricted by ground obstacles and cannot move at high speed. For these reasons, a hybrid UAVs-UGVs team system will be more appealing. To discuss more concretely, we consider a hybrid UAVs-UGVs team system for S\&R. For the need for search mobility, we choose quadrotor aircraft as UAV. In order to deal with the complex terrain of the S\&R environment, we choose biped robot as UGV. Even though other types of UGVs like wheeled robots and vehicles are easier to handle than biped robot, the high degree of freedom and the compatibility of the human environment still makes it a good candidate of UGV in a S\&R system.
 
@@ -159,7 +157,7 @@ The agents overall have the same system architecture in URTS except for some sub
 \end{figure}
 
 \subsection{Task Allocation}
-In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agents and tasks is more than one, and each agent has different capabilities (e.g., moving speed or load capacity) and status (e.g., their own position or the amount of supplies carried), and each task has different characteristics (e.g., urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which leads us to find the optimal allocation. This problem is referred to a task allocation problem or multi-robot task allocation problem. A problem formulation and a mathematical model of problem can be found in \cite{Khamis2015}. Although many different formulations and models have been employed to solve the task allocation problem, the common goal is to find a set of agent-task pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned so that every agent knows a destination $q_{goal}$ it needs to go at every moment.
+In the URTS, it can be expected that each agent $\alpha_{i,j}$ will be assigned several specific tasks, such as searching a specific area, or delivering supplies to disaster area, etc. However, the number of agents and tasks is more than one, and each agent has different capabilities (e.g., moving speed or load capacity) and status (e.g., their own position or the amount of supplies carried), and each task has different characteristics (e.g., urgency, position, amout of supplies needed). Therefore, the results of task allocation can be "good or bad", which leads us to find the optimal allocation. This problem is referred to a task allocation problem or multi-robot task allocation problem. A problem formulation and a mathematical model of problem can be found in \cite{khamis2015multi}. Although many different formulations and models have been employed to solve the task allocation problem, the common goal is to find a set of agent-task pairs to achieve a specific cost function. In this paper, we assume that the tasks have been properly assigned so that every agent knows a destination $q_{goal}$ it needs to go at every moment.
 % $(\mathcal{G})_n, n\in\mathbb{Z}\cap[1, N], N\in\mathbb{Z}^+$
 \textit{
     \begin{remark}
@@ -941,15 +939,21 @@ The trajectories of reference, state and estimated state are shown in Fig. \ref{
 In Fig. \ref{fig:UAV, state}, the tracking and estimation errors of UAV position and attitude reach the steady state all within $2$ seconds. There is a brief jitter when the sensor fault signal changes drastically, but it returns quickly to the steady state. In Fig. \ref{fig:robot, state}, the tracking and estimation errors of robot joint angles immediately reach and maintain steady state under the influence of fault signals. In Figs. \ref{fig:UAV, fa} and \ref{fig:robot, fa}, the results show that the actuator fault, i.e., feedforward control errors and disturbances, can be effectively estimated. However, in Figs. \ref{fig:UAV, fs} and \ref{fig:robot, fs}, the estimation of sensor fault has an overshot phenomenon when there is a large change and returns to a steady state after about $2$ seconds. In Figs. \ref{fig:UAV, control} and \ref{fig:robot, control}, the control efforts have high frequency and high amplitude at the initial instance due to the high gain characteristic of the robust control. After that, they maintain the sine wave shape to offset the estimated actuator fault value. Besides, it can be seen that the total force $F$ of UAV remains constant against gravity in Fig. \ref{fig:UAV, control}.
 % The transient responses that occur later are caused from fault signals, especially the sensor fault. This can be inferred from the dynamic of the estimation error (\ref{eq:e_tilde}) because the value of the sensor fault affects the value of the estimation error over time $\dot{\tilde{e}}$ not only from the term $\bar{A}$ but also from the term $L\bar{C}$.
 
-For further verification, we visualized the simulation of a hybrid team tracking in URTS and the configuration trajectory of biped robot on the online resource (cite:online source). The results again demonstrate the effectiveness of the proposed $H_\infty$ decentralized observer-based feedforward-linearized PID FTC method for agents in URTS.
+For further verification, we visualized the simulation of a hybrid team tracking in URTS and the configuration trajectory of biped robot on the online resource \cite{mySimulation}. The results again demonstrate the effectiveness of the proposed $H_\infty$ decentralized observer-based feedforward-linearized PID FTC method for agents in URTS.
 
 \section{conclusion}
 In this study, a system architecture of URTS is given for S\&R usage. This gives a holistic view of the operational framework for URTS. By decomposing the path planning process into three subprocess, i.e., path planning, behavior layer, local motion planning, some common path planning algorithm can be applied in URTS. Next, we focus on the local motion planning of UAV flying and robot walking behavior. Besides, the bridging method between the reference path designed by local motion planning and the tracking control design is also given. By a general nonlinear agent dynamics model, the tracking control problem of UAV and robot can be analysis together. Through a feedforward-linearized strategy, the nonlinear tracking control problem with external disturbances is transformed to a regulation problem with fault signals. Then, a smoothing signal model is introduced to embed the fault signals into the state vector to avoid the corruption on the agent dynamic system. After that, a robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC strategy is proposed for each agent in the hybrid URTS. To solve the robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC problem, we transform it into a LMI-constrained optimization problem by a two-step design procedure, which can be effectively solved by MATLAB LMI Toolbox. A simulation example is given to illustrate more concretely how the proposed hybrid URTS architecture actually works. Finally, the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC method is also verified by the simulation results. In the future, we will...
 
 
 % \nocite{*}
-\bibliographystyle{unsrt}
+\bibliographystyle{ieeetr}
 \bibliography{citation}
+% \begin{thebibliography}{00}
+%     \bibitem{9700861} L. Kloeker, T. Moers, L. Vater, A. Zlocki, and L. Eckstein, “Utilization
+%     and potentials of unmanned aerial vehicles (uavs) in the field of automated
+%     driving: A survey,” in 2021 5th International Conference on Vision, Image
+%     and Signal Processing (ICVISP), pp. 9–17, 2021
+% \end{thebibliography}
 
 \EOD
 
