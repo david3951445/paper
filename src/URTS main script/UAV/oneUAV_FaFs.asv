@@ -82,18 +82,14 @@ sys_aug.Q2  = kron(sys_aug1.Q2, I);
 sys_aug.R   = kron(sys_aug1.R, I);
 
 %% Copy sys, sys_a, sys_s, sys_aug to uav
-uav.sys         = sys;
-
 sys_a.begin     = sys.DIM_X;
-sys_a.fault     = uav.sys_a.fault;
-uav.sys_a       = sys_a;
-
 sys_s.begin     = sys.DIM_X + sys_a.DIM_X;
-sys_s.fault     = uav.sys_s.fault;
+uav.sys         = sys;
+uav.sys_a       = sys_a;
 uav.sys_s       = sys_s;
 
 sys_aug.P1      = uav.sys_aug.P1;
-sys_aug.P2      = uav.sys_aug.P2;
+sys_aug.P1      = uav.sys_aug.P2;
 uav.sys_aug     = sys_aug;
 
 %% solve LMI

@@ -11,6 +11,13 @@ if isfile([ag.PATH '.mat'])
     if isfield(data, 'KL')
         ag.KL = data.KL;
     end
-end
-
+    if isfield(data, 'sys_a')
+        ag.sys_a = data.sys_a;
+    end
+    if isfield(data, 'sys_s')
+        ag.sys_s = data.sys_s;
+    end
+    if isfield(data, 'sys_aug')
+        ag.sys_aug = data.sys_aug;
+    end
 end

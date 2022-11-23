@@ -9,7 +9,8 @@ if ag.EXE_LMI
 %     norm(ag.KL)
 
     ag.Save('K') 
-    ag.Save('KL') 
+    ag.Save('KL')
+    ag.Save('sys_aug')
 end
 
 %% Fine tune of gain
