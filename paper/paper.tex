@@ -272,7 +272,7 @@ A dynamic model about how the UAV moves in the physical world is given first. By
         \end{bmatrix}\begin{bmatrix}
             \dot{X} \\ \dot{\Theta}
         \end{bmatrix}
-        % form 2
+        % Form 2 of rotation matrix R(\Theta)
         % &R(\Theta)=\begin{bmatrix*}[l]
         %     \cos\theta\cos\phi & \sin\phi\sin\theta\cos\psi-\cos\phi\sin\psi & R_1 \\
         %     \cos\theta\sin\phi & R_2 & R_3 \\
@@ -561,9 +561,9 @@ To deal with the fault signals $f_i(t),i=1,2$, a smoothing signal model is intro
 \end{equation}
 where $F_i(t)=\begin{bmatrix}
     f_i^T(t) & f_i^T(t-h) & \dots & f_i^T(t-wh)
-\end{bmatrix}^T\in\mathbb{R}^{(w+1)n}$, $A_i\in\mathbb{R}^{{(w+1)n}\times{(w+1)n}}$, $v_i(t)$ is the model error, $C_i=\begin{bmatrix}
+\end{bmatrix}^T\in\mathbb{R}^{(w_i+1)n_i}$, $A_i\in\mathbb{R}^{{(w_i+1)n_i}\times{(w_i+1)n_i}}$, $v_i(t)$ is the model error, $C_i=\begin{bmatrix}
         1 & 0 & \dots & 0
-    \end{bmatrix}\otimes I_{n_i}$, and $w$ is the window size of smoothing signal model with $n_1=n$ and $n_2 = o$. Substituting (\ref{eq:smooth model}) into (\ref{eq:error}), we get the following augmented tracking error system of an agent:
+    \end{bmatrix}\otimes I_{n_i}$, and $w_i$ is the window size of smoothing signal model with $n_1=n$ and $n_2 = o$. Substituting (\ref{eq:smooth model}) into (\ref{eq:error}), we get the following augmented tracking error system of an agent:
 \begin{equation} \label{eq:e_bar}
     \begin{split}
         & \dot{\bar{e}}(t) = \bar{A}\bar{e}(t)+\bar{B}u_{fb}(t)+\bar{v}(t) \\
@@ -598,7 +598,7 @@ Since the fault signals become a state variable of the augmented tracking error 
 \begin{assumption}
     The augmented tracking error system (\ref{eq:e_bar}) of an agent is observable, i.e., $rank\begin{bmatrix}
         zI-\bar{A} \\ \bar{C}
-    \end{bmatrix} = 3n + (w-1)n + (w-1)o, \forall z \in eig(\bar{A})$.
+    \end{bmatrix} = 3n + (w_1+1)n + (w_2+1)o, \forall z \in eig(\bar{A})$.
 \end{assumption}
 The robust PID FTC law of each agent is given as:
 \begin{equation} \label{eq:u_fb}
@@ -793,7 +793,13 @@ The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. T
 %     \end{equation}
 % \end{proof}
 
-Although the control gain in (\ref{eq:u_fb}) and observer gain in (\ref{eq:e_bar}) for each agent in URTS can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems for each agent if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose the error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}^1$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
+Although the control gain in (\ref{eq:u_fb}) and observer gain in (\ref{eq:e_bar}) for each agent in URTS can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems for each agent if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose 
+the error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, 
+the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, 
+the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, 
+the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, 
+and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ 
+where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
@@ -804,7 +810,7 @@ Although the control gain in (\ref{eq:u_fb}) and observer gain in (\ref{eq:e_bar
     If the linearized system (\ref{eq:error}) can be splited into $n$ subsystems, this means that $\pmb{e}_i(t)$, the PID error of each state variable $x(t)$ of each agent in (\ref{eq:agent}), can be measured independently via sensors to obtain the independent outputs $y_i(t)$. In actual systems, this is usually done.
 \end{remark}
 
-By Theorem \ref{theorem1} again, the form shows that we can find the control gain $K_i\in\mathbb{R}^{1\times s}$ and observer gain $L_i\in\mathbb{R}^{s\times l_0}$ of the $i$th subsystem (\ref{eq:linear subsys}) that achieve the $H_\infty$ observer-based tracking control performance with a prescribed attenuation level $\rho_i$, where $s=3+(w-1)+(w-1)o_0$. The origin control gain $K$ of the origin agent system can be reconstructed by $K = \begin{bmatrix}
+By Theorem \ref{theorem1} again, the form shows that we can find the control gain $K_i\in\mathbb{R}^{1\times s}$ and observer gain $L_i\in\mathbb{R}^{s\times l_0}$ of the $i$th subsystem (\ref{eq:linear subsys}) that achieve the $H_\infty$ observer-based tracking control performance with a prescribed attenuation level $\rho_i$, where $s=3+(w_1+1)+(w_2+1)o_0$. The origin control gain $K$ of the origin agent system can be reconstructed by $K = \begin{bmatrix}
     \mathit{k}_1 & \mathit{k}_2 & ... & \mathit{k}_n
 \end{bmatrix}^T, \mathit{k}_i=K_i^T\otimes\mathbf{e}_i$. The origin observer gain $L$ can be reconstructed in the same way. 
 
@@ -854,7 +860,7 @@ Through the previous steps and the help of reference generator block, the refere
 \textit{Agents:}\begin{enumerate}
     \item system parameters:
     Initial value $\tilde{x}(0) = [\pmb{e}(0)^T, F_1(0)^T\mathbin{,} F_2(0)^T, \tilde{e}(0)]^T = [[0.1X, ..., 0.1X]^T, 0, 0, 0]^T$ where $X \sim \mathcal{N}(0, 1)$. $C = C_0 \otimes I_n$ where $C_0 = I_3$.
-    \item designed parameters: $\rho^*=30$. Actuator and sensor window size of smoothing signal model are $3$ and $4$, respectively.
+    \item designed parameters: $\rho^*=30$. Actuator and sensor window size of smoothing signal model are $w_1=3$ and $w_2=4$, respectively.
 \end{enumerate}
 
 \textit{UAVs:}\begin{enumerate}
@@ -873,7 +879,7 @@ Through the previous steps and the help of reference generator block, the refere
     \item actuator coupling disturbance in (\ref{eq:UAV couple}):
     \\$c(t) = \sum_{k = 1, k \neq i}^{N_T}D_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)\in\mathbb{R}^6$ where $D_{i, 1, k}(x_{i, 1}(t)) = diag(x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t))$ with $x_{i, 1}(t) = [x_{i, 1, 1}(t)\mathbin{,}\dots\mathbin{,}x_{i, 1, 6}(t)]^T$.
     \item actuator non-coupling disturbance:
-    \\ $d_1(t) = [100\sin(3t)\mathbin{,} ...\mathbin{,} 10\sin(3t)]^T\in\mathbb{R}^6$.
+    \\ $d_1(t) = [100\sin(3t)\mathbin{,} ...\mathbin{,} 100\sin(3t)]^T\in\mathbb{R}^6$.
     \item sensor fault: $f_2(t)$ is set as a smoothed square wave as shown in Fig. \ref{fig:UAV, fa}.
 \end{enumerate}
 
@@ -945,7 +951,6 @@ For further verification, we visualized the simulation of a hybrid team tracking
 
 \section{conclusion}
 In this study, a system architecture of URTS is given for S\&R usage. This gives a holistic view of the operational framework for URTS. By decomposing the path planning process into three subprocess, i.e., path planning, behavior layer, local motion planning, some common path planning algorithm can be applied in URTS. Next, we focus on the local motion planning of UAV flying and robot walking behavior. Besides, the bridging method between the reference path designed by local motion planning and the tracking control design is also given. By a general nonlinear agent dynamics model, the tracking control problem of UAV and robot can be analysis together. Through a feedforward-linearized strategy, the nonlinear tracking control problem with external disturbances is transformed to a regulation problem with fault signals. Then, a smoothing signal model is introduced to embed the fault signals into the state vector to avoid the corruption on the agent dynamic system. After that, a robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC strategy is proposed for each agent in the hybrid URTS. To solve the robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC problem, we transform it into a LMI-constrained optimization problem by a two-step design procedure, which can be effectively solved by MATLAB LMI Toolbox. A simulation example is given to illustrate more concretely how the proposed hybrid URTS architecture actually works. Finally, the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward-linearized PID FTC method is also verified by the simulation results. In the future, we will...
-
 
 % \nocite{*}
 \bibliographystyle{ieeetr}
