@@ -221,7 +221,7 @@ where $\mathcal{B}$ is the set of behaviors. It is to say that the path $(\sigma
 \end{figure*}
 
 \subsection{Local Motion Planning}
-After a specific behavior is determined, the next step is to design a motion to achieve that behavior. Local motion planning block is like path planning block but its scale is smaller and its resolution and precision must be higher. Collision checking is needed since we consider agent as a point in path planning block and it is a real mechanical body here. Furthermore, the kinodynamic constraint is handled in this block. Although motion planning and path planning are separated into two blocks, the technologies involved are similar and often with the same notion in other literature. Therefore, the output of this block is also a path but with a timescale, i.e., sampling period. This path is often referred as a desired reference trajectory $r(t)$. $r(t)$ describes the position and orientation that need to be reached over time by a machine system governed by a dynamic equation. Note that the path and trajectory are distinguished in some literature. Different from path $(\sigma_n)$, a trajectory $r(t)$ has considered the time in physic world. We also distinguish in this way in this article. The flowchart of local motion planning block is shown in Fig. \ref{fig:LocalMotionPlanning}
+After a specific behavior is determined, the next step is to design a motion to achieve that behavior. Local motion planning block is like path planning block but its scale is smaller and its resolution and precision must be higher. Collision checking is needed since we consider agent as a point in path planning block and it is a real mechanical body here. Furthermore, the kinodynamic constraint is handled in this block. Although motion planning and path planning are separated into two blocks, the technologies involved are similar and often with the same notion in other literature. Therefore, the output of this block is also a path $r[k]$. The flowchart of local motion planning block is shown in Fig. \ref{fig:LocalMotionPlanning}
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.12]{fig/LMP.png}\caption{The flowchart of local motion planning. The corresponding motion planning will be executed according to the behavior determined by the behavior layer. The exception terminator in figure represents an exceptional condition that performs unconsidered behaviors. The reference path $r[k]$ is a sequence (or say a discrete signal) designed by a specific behavior block.}
@@ -231,6 +231,8 @@ After a specific behavior is determined, the next step is to design a motion to 
 In Fig. \ref{fig:LocalMotionPlanning}, some basic behaviors of UAV and robot mentioned before are added to illustrate the flow of this block. To limit the scope of this article, we only focus on the motion planning of flying behavior of UAV and walking behavior of robot. They are belong to moving behavior in Fig. \ref{fig:LocalMotionPlanning}. A more detailed description will be given in the next section.
 
 \subsection{Tracking Control}
+To analysis the control problem in the continuous time domain, $r[k]$ will first convert to a continuous signal by D/A convertor with a timescale, i.e., sampling period. By analyzing the dynamic model of each agent, a desired reference trajectory $r(t)$ is designed. $r(t)$ describes the position and orientation that need to be reached over time by a machine system governed by a dynamic equation. Note that the path and trajectory are distinguished in some literature. Different from path (e.g., $(\sigma_n)$ or $r[k]$), a trajectory $r(t)$ has considered the time in physic world. We also distinguish in this way in this article.
+
 If each agent in hybrid URTS can track each own reference trajectory $r(t)$, then they can move in the physical world as we expect. To this end, a control method need to be design. It will be discussed detailly in Section IV. In addition, the sensing information collected by the sensors in this block is not only used for control but also sent back to the upper layer as shown in Fig. \ref{fig:sys}.
 
 \section{system description of UAVs and biped robots in URTS}
@@ -401,7 +403,7 @@ where $\bar{x}_c = \begin{bmatrix}
 By combining the CoM orientation path $(CO_n)$ and position path $(CP_n)$, CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]\in\mathbb{R}^{12}$ of robot can be found by solving IK.
 
 \section{Tracking control of each agent in hybrid URTS}
-To analyze the tracking control problem of UAV dynamic system in (\ref{eq:uav}) and robot dynamic system in (\ref{eq:robot}) together, we represent them by the same form called agent dynamics model through some appropriate variable transformations:
+Before converting $r[k]$ to $r(t)$, we first convert the UAV dynamic system in (\ref{eq:uav}) and robot dynamic system in (\ref{eq:robot}) into a form called agent dynamic model to analyze their tracking control problems together. Through some appropriate variable transformations, we have:
 \begin{equation} \label{eq:agent} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t)
 \end{equation}
@@ -409,7 +411,7 @@ where $u(t)\in\mathbb{R}^n$ is the control input vector, $x(t)\in\mathbb{R}^n$ i
 \begin{equation} \label{eq:control}
     u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t)) 
 \end{equation}
-where $r(t)\in\mathbb{R}^n$ is the reference trajectory, $M(r(t)), \ddot{r}(t)\mathbin{,} H(r(t), \dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law to be futher designed for improving system robustness. For UAVs, we have $u(t)=\begin{bmatrix}
+where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t)), \ddot{r}(t)\mathbin{,} H(r(t), \dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law to be futher designed for improving system robustness. For UAVs, we have $u(t)=\begin{bmatrix}
     f_u \\ \tau_u
 \end{bmatrix}$, $x(t)=\begin{bmatrix}
     X \\ \Theta
@@ -441,7 +443,7 @@ To complete the design of reference trajectory $r(t)$ of each agent, a D/A conve
 
 \textit{
     \begin{remark}
-        Let $r_{i,j}(t)$ be the reference trajectory $r(t)$, $r[k]_{i,j}$ be the reference path $r[k]$, $(\beta_n)_{i,j}$ be the behavior sequence $(\beta_n)$, $(\sigma_n)_{i,j}$ be the collision-free path $(\sigma_n)$, $q_{start,i,j}$ be the current configuration $q_{start}$, and $q_{goal,i,j}$ be the goal configuration $q_{goal}$ of the agent $\alpha_{i,j}$ in the hybrid URTS. As long as $\alpha_{i,j}$ can track $r_{i,j}(t)$, the URTS works as we expect since the previous blocks have completed their respective responsibilities and found the corresponding values $q_{start,i,j}$, $q_{goal,i,j}$, $(\sigma_n)_{i,j}$, $(\beta_n)_{i,j}$ and $r[k]_{i,j}$. That is, $r_{i,j}(t)$ is the reference trajectory that can complete specific task, follow specific path and perform specific behavior.
+        Let $r_{i,j}(t)$ be the reference trajectory $r(t)$, $r_{i,j}[k]$ be the reference path $r[k]$, $(\beta_n)_{i,j}$ be the behavior sequence $(\beta_n)$, $(\sigma_n)_{i,j}$ be the collision-free path $(\sigma_n)$, $q_{start,i,j}$ be the current configuration $q_{start}$, and $q_{goal,i,j}$ be the goal configuration $q_{goal}$ of the agent $\alpha_{i,j}$ in the hybrid URTS. As long as $\alpha_{i,j}$ can track $r_{i,j}(t)$, the URTS works as we expect since the previous blocks, i.e, task allocation, path planning, behavior layer and local motion planning, have completed their respective responsibilities and found the corresponding values $q_{start,i,j}$, $q_{goal,i,j}$, $(\sigma_n)_{i,j}$, $(\beta_n)_{i,j}$ and $r_{i,j}[k]$. That is, $r_{i,j}(t)$ is the reference trajectory that can complete specific task, follow specific path and perform specific behavior.
     \end{remark}
 }
 
@@ -758,7 +760,7 @@ The overall flowchart of tracking control is shown in Fig. \ref{fig:tracking}. T
 
 \textit{
     \begin{remark}
-        By the proposed agent dynamics model in (\ref{eq:agent}) and the introduction of reference generator block in Fig. \ref{fig:tracking}, the tracking control block of each agent $\alpha_{i,j}$ in the hybrid URTS can be designed by a general method. The decentralized architecture also ensures the scalability of URTS scale. More specifically, each agent $\alpha_{i,j},i=1,2,...,N_T,j=1,2,...,N_A$ will have its own state $x_{i,j}(t)$, reference trajectory $r_{i,j}(t)$, control gain $K_{i,j}$, etc. by introducing subscripts $i$ and $j$ to the corresponding variables. And the number of teams $N_T>0$ and number of agents in a team $N_A>0$ are scalable.
+        By the proposed agent dynamics model in (\ref{eq:agent}) and the introduction of reference generator block in Fig. \ref{fig:tracking}, the tracking control block of each agent $\alpha_{i,j}$ in the hybrid URTS can be designed by a general method. The decentralized architecture also ensures the scalability of URTS scale. More specifically, let us introduce subscripts $i$ and $j$ to the corresponding variables of each agent $\alpha_{i,j},i=1,2,...,N_T,j=1,2,...,N_A$ (e.g., the state $x_{i,j}(t)$, the reference trajectory $r_{i,j}(t)$, the control gain $K_{i,j}$, etc.). It can be seen that the number of teams $N_T>0$ and the number of agents in a team $N_A>0$ are scalable.
     \end{remark}
 }
 % \begin{theorem} \label{theorem2}

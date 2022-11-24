@@ -7,7 +7,7 @@ uav = UAV_AGENTmodel();
 % flow control of code
 uav.EXE_LMI     = 0; % solving LMI
 uav.EXE_TRAJ    = 0; % trajectory
-uav.EXE_PLOT    = 0; % plot results
+uav.EXE_PLOT    = 1; % plot results
 
 % time
 uav.tr.dt   = .001; % Time step
@@ -122,8 +122,8 @@ if uav.EXE_PLOT
     r = uav.tr.r{1};
     
     %% Tracking control results
-%     PlotLMP(uav)
-    uav.PlotTC(); 
+    PlotLMP(uav)
+%     uav.PlotTC(); 
     % PlotActualControl(uav) % Actual control input
     
     %% 3D, r(t), state
