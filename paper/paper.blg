@@ -1,53 +1,8 @@
-This is BibTeX, Version 0.99d
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
-The top-level auxiliary file: paper.aux
-Reallocating 'name_of_file' (item size: 1) to 7 items.
-The style file: ieeetr.bst
-Reallocating 'name_of_file' (item size: 1) to 9 items.
+This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
+The style file: IEEEtran.bst
 Database file #1: citation.bib
-Warning--entry type for "mySimulation" isn't style-file defined
---line 611 of file citation.bib
-Warning--entry type for "ourrobot" isn't style-file defined
---line 623 of file citation.bib
-You've used 30 entries,
-            1876 wiz_defined-function locations,
-            649 strings with 9100 characters,
-and the built_in function-call counts, 9521 in all, are:
-= -- 957
-> -- 380
-< -- 0
-+ -- 137
-- -- 107
-* -- 676
-:= -- 1303
-add.period$ -- 30
-call.type$ -- 30
-change.case$ -- 28
-chr.to.int$ -- 0
-cite$ -- 30
-duplicate$ -- 464
-empty$ -- 857
-format.name$ -- 107
-if$ -- 2356
-int.to.chr$ -- 0
-int.to.str$ -- 30
-missing$ -- 29
-newline$ -- 95
-num.names$ -- 30
-pop$ -- 78
-preamble$ -- 1
-purify$ -- 0
-quote$ -- 0
-skip$ -- 384
-stack$ -- 0
-substring$ -- 765
-swap$ -- 233
-text.length$ -- 0
-text.prefix$ -- 0
-top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 87
-width$ -- 32
-write$ -- 295
-(There were 2 warnings)
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
