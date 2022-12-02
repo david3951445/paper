@@ -66,14 +66,14 @@
 \newlabel{eq:error, state eq}{{14}{9}}
 \newlabel{eq:linear f1}{{15}{9}}
 \citation{9306757}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The flowchart of tracking control in the hybrid URTS. The control scheme of UAV and robot in URTS is only different from the reference generator block. The reason is that the underactuated nature of the UAV imposes the limitation on the control input and reference trajectory. By introducing this block, a general $H_\infty $ decentralized observer-based feedforward-linearized PID FTC for an agent in URTS is proposed.\relax }}{10}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The flowchart of tracking control in the hybrid URTS. (a) The tracking control block of each agent in hybrid URTS. The reference generator block and control block are predefined processes defined in (b) and (c). The control block (the proposed general $H_\infty $ decentralized observer-based feedforward-linearized FTC scheme) is designed for a fully actuated agent dynamic model in (8\hbox {}) while the UAV is an underactuated system. It makes the designed control law $u(t)\in \mathbb  {R}^6$ and the actual control input $u'(t)\in \mathbb  {R}^4$ different for UAV. The reference generator block is introduced to deal with this problem. (b) The reference generator blocks for UAV and robot are different since UAV is an underactuated system. For UAV, we need to calculate $u'(t)$ and $r(t)$ from $u(t)$ and $r'(t)$ by inverse dynamic through the UAV dynamic model in (3\hbox {}). For robot, $u'(t)=u(t)$ and $r(t)=r'(t)$ since the system is fully actuated. (c) The proposed general $H_\infty $ decentralized observer-based feedforward-linearized FTC scheme for each agent in hybrid URTS.\relax }}{10}{}\protected@file@percent }
 \newlabel{fig:tracking}{{5}{10}}
 \newlabel{eq:agent output}{{16}{10}}
 \newlabel{eq:error}{{17}{10}}
 \newlabel{eq:smooth model}{{18}{10}}
-\newlabel{eq:e_bar}{{19}{10}}
 \citation{boyd1994linear}
 \citation{boyd1994linear}
+\newlabel{eq:e_bar}{{19}{11}}
 \newlabel{eq:e_hat}{{20}{11}}
 \newlabel{eq:u_fb}{{21}{11}}
 \newlabel{eq:e_tilde}{{22}{11}}
@@ -85,20 +85,20 @@
 \newlabel{BMI1}{{27}{11}}
 \newlabel{pf:1}{{28}{11}}
 \newlabel{pf:2}{{29}{11}}
-\newlabel{pf:3}{{IV}{11}}
+\newlabel{pf:3}{{IV}{12}}
 \newlabel{eq:M}{{30}{12}}
 \newlabel{eq:step1}{{31}{12}}
 \newlabel{eq:step2}{{32}{12}}
 \newlabel{LMI constraint}{{33}{12}}
-\newlabel{eq:linear subsys}{{34}{12}}
+\newlabel{eq:linear subsys}{{34}{13}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}simulation results}{13}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$\relax }}{13}{}\protected@file@percent }
 \newlabel{fig:SR_area}{{6}{13}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The search tasks in the $i$th team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive destinations $q_{goal}$ (black dots in figure) obtained from task allocation block. For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths $(\sigma _n)$. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma _n)$ due to the no-collision assumption {\it  Assumption 2.4\hbox {}}.\relax }}{13}{}\protected@file@percent }
 \newlabel{fig:S_task}{{7}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The path planning result of robot using RRT algorithm. The block polygons represent the obstacle space $\mathcal  {C}_{obs}$.\relax }}{13}{}\protected@file@percent }
-\newlabel{fig:R_task}{{8}{13}}
 \citation{ourrobot}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The path planning result of robot using RRT algorithm. The block polygons represent the obstacle space $\mathcal  {C}_{obs}$.\relax }}{14}{}\protected@file@percent }
+\newlabel{fig:R_task}{{8}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The result of local motion planning of UAV flying.\relax }}{14}{}\protected@file@percent }
 \newlabel{sim:flying}{{9}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The top view of result of local motion planning of robot walking. The joint path, i.e., reference path $r[k]$ will be obtained by solving IK with CoM, left foothold and right foothold path.\relax }}{14}{}\protected@file@percent }
@@ -113,8 +113,6 @@
 \newlabel{fig:UAV, control}{{14}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The trajectories of reference, state and estimated state of the robot $\alpha _{1,2}$\relax }}{15}{}\protected@file@percent }
 \newlabel{fig:robot, state}{{15}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces The estimation of actuator fault of the robot $\alpha _{1,2}$.\relax }}{15}{}\protected@file@percent }
-\newlabel{fig:robot, fa}{{16}{15}}
 \citation{mySimulation}
 \bibstyle{IEEEtran}
 \bibdata{citation}
@@ -125,6 +123,14 @@
 \bibcite{skaltsis2021survey}{5}
 \bibcite{zhang2018path}{6}
 \bibcite{9108245}{7}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces The estimation of actuator fault of the robot $\alpha _{1,2}$.\relax }}{16}{}\protected@file@percent }
+\newlabel{fig:robot, fa}{{16}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces The estimation of sensor fault of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
+\newlabel{fig:robot, fs}{{17}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The control effort of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
+\newlabel{fig:robot, control}{{18}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}conclusion}{16}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{REFERENCES}{16}{}\protected@file@percent }
 \bibcite{arbanas2018decentralized}{8}
 \bibcite{9384209}{9}
 \bibcite{olcay2017design}{10}
@@ -132,12 +138,6 @@
 \bibcite{wang2022consensus}{12}
 \bibcite{6669235}{13}
 \bibcite{paden2016survey}{14}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces The estimation of sensor fault of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
-\newlabel{fig:robot, fs}{{17}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The control effort of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
-\newlabel{fig:robot, control}{{18}{16}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}conclusion}{16}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{REFERENCES}{16}{}\protected@file@percent }
 \bibcite{khamis2015multi}{15}
 \bibcite{elbanhawi2014sampling}{16}
 \bibcite{liu2018survey}{17}
