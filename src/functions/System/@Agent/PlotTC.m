@@ -24,8 +24,8 @@ function PlotTC(ag)
 
         ylabel(['$x_{' num2str(i) '} (' ag.UNIT{i} ')$'], 'Interpreter','latex')
         
-        if strcmp(ag.FILE_NAME, 'UAV_AGENTmodel')
-            if (i>3)
+        if strcmp(ag.FILE_NAME, 'UAV_AGENTmodel') % UAV
+            if (i>3) % psi, theta, phi
                 ylim([-2 2])
             end
         end

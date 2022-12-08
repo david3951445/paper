@@ -6,8 +6,6 @@ classdef Agent
     end   
 
     properties (Access = protected)
-        PATH % path of saved data
-        FILE_NAME % file name of class
     end
 
     properties
@@ -31,6 +29,9 @@ classdef Agent
         EXE_LMI = 1 % solving LMI
         EXE_TRAJ = 1 % trajectory
         EXE_PLOT = 1 % plot results
+
+        FILE_NAME % file name of class
+        PATH % path of saved data
     end
     
     methods

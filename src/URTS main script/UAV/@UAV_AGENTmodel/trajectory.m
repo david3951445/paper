@@ -10,7 +10,7 @@ DIM_X3      = uav.sys_aug.DIM_X;
 startTime   = 5; % For calculate ddr(t), start at 3-rd step (k = 3)
 
 %% set disturbance
-%-1 actuator fault
+%-1 actuator disturbance
 d1 = repmat(100*sin(3*t), uav.sys_a.DIM, 1);
 uav.sys_a.fault = zeros(uav.sys_a.DIM, LEN);
 

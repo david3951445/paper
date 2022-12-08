@@ -10,6 +10,10 @@ function y = GetHinfPerformance(ag)
         num = num + xQ1x + xQ2x + uRu;
     end
     % V(0)
+    if (isempty(ag.sys_aug.P1) || isempty(ag.sys_aug.P1))
+        disp('P1 or P2 in V(x)=x''Px is empty, please solve LMI again')
+        return
+    end
     num = num - WeightedNorm(ag.sys_aug.P1, ag.tr.x0) - WeightedNorm(ag.sys_aug.P2, ag.tr.xh0);
     % den
     den = 0;

@@ -8,13 +8,13 @@ uav = UAV_AGENTmodel();
 uav = uav.Load(); % load old data
 
 % flow control of code
-uav.EXE_LMI     = 0; % solving LMI
-uav.EXE_TRAJ    = 0; % trajectory
+uav.EXE_LMI     = 1; % solving LMI
+uav.EXE_TRAJ    = 1; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
 uav.tr.dt   = .001; % Time step 
-uav.tr.T    = 40; % Final time
+uav.tr.T    = 10; % Final time
 uav.tr.t    = 0 : uav.tr.dt : uav.tr.T;
 uav.tr.LEN  = length(uav.tr.t);
 
@@ -111,17 +111,36 @@ end
 %% Plot
 if uav.EXE_PLOT
     disp('Ploting trajectory ...')
-  
-    %% Tracking control results
-    % PlotLMP(uav)
-    uav.PlotTC(); 
-    % PlotActualControl(uav) % Actual control input
-    % PlotStateAndRef3D(uav) % 3D, r(t), state
 
+    r = uav.tr.r{1};
+    
+    %% Tracking control results
+    PlotLMP(uav)
+%     uav.PlotTC(); 
+    % PlotActualControl(uav) % Actual control input
+    
+    %% 3D, r(t), state
+    % figure
+
+    % plot3(r(1, :), r(2, :), r(3, :), DisplayName='reference');
+    % hold on
+
+    % X = uav.tr.x(DIM_F+1, :) + r(1, :);
+    % Y = uav.tr.x(DIM_F+2, :) + r(2, :);
+    % Z = uav.tr.x(DIM_F+3, :) + r(3, :);
+    % plot3(X, Y, Z, DisplayName='state')
+
+    % grid on
+    % xlabel('X (m)'); ylabel('Y (m)'); zlabel('Z (m)')
+    % legend(Interpreter="latex", Location='best')
+
+
+    %% state, error, estimated state   
+    % Y_LABEL = {'x (m)', 'y (m)', 'z (m)', '\phi (rad)', '\theta (rad)', '\psi (rad)'};
 end
 
 %% Calculate Hinf Performance
-% uav.GetHinfPerformance()
+uav.GetHinfPerformance()
 
 %% Execution time
 toc
