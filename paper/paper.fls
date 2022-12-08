@@ -917,6 +917,17 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
+INPUT fig\uav (1) noFTC.png
+INPUT .\fig\uav (1) noFTC.png
 INPUT .\paper.bbl
 INPUT paper.bbl
 INPUT .\paper.bbl
@@ -928,6 +939,14 @@ INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8c.tfm
+INPUT .\notaglinelogo.png
+INPUT .\notaglinelogo.png
+INPUT notaglinelogo.png
+INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi8.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy8.tfm
@@ -944,15 +963,6 @@ INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sym
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx8.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmmib8.tfm
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmbsy8.tfm
-INPUT .\notaglinelogo.png
-INPUT .\notaglinelogo.png
-INPUT notaglinelogo.png
-INPUT .\notaglinelogo.png
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8t.vf
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8t.vf
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
-INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8c.vf
 INPUT .\bullet.png
 INPUT .\bullet.png
 INPUT bullet.png
@@ -961,6 +971,7 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8c.vf
 INPUT paper.aux
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb

@@ -977,6 +977,18 @@ The trajectories of reference, state and estimated state are shown in Fig. \ref{
 In Fig. \ref{fig:UAV, state}, the tracking and estimation errors of UAV position and attitude reach the steady state all within $2$ seconds. There is a brief jitter when the sensor fault signal changes drastically, but it returns quickly to the steady state. In Fig. \ref{fig:robot, state}, the tracking and estimation errors of robot joint angles immediately reach and maintain steady state under the influence of fault signals. In Figs. \ref{fig:UAV, fa} and \ref{fig:robot, fa}, the results show that the actuator fault, i.e., feedforward control errors and disturbances, can be effectively estimated. However, in Figs. \ref{fig:UAV, fs} and \ref{fig:robot, fs}, the estimation of sensor fault has an overshot phenomenon when there is a large change and returns to a steady state after about $2$ seconds. In Figs. \ref{fig:UAV, control} and \ref{fig:robot, control}, the control efforts have high frequency and high amplitude at the initial instance due to the high gain characteristic of the robust control. After that, they maintain the sine wave shape to offset the estimated actuator fault value. Besides, it can be seen that the total force $F$ of UAV remains constant against gravity in Fig. \ref{fig:UAV, control}.
 % The transient responses that occur later are caused from fault signals, especially the sensor fault. This can be inferred from the dynamic of the estimation error (\ref{eq:e_tilde}) because the value of the sensor fault affects the value of the estimation error over time $\dot{\tilde{e}}$ not only from the term $\bar{A}$ but also from the term $L\bar{C}$.
 
+In order to show the effect of active FTC based on the proposed embed smoothing model method, a traditional PID computed torque controller without FTC is used for comparison \cite{7456706}. In order to only focus on the effect of FTC, the method in \cite{7456706} was revised to oberserver based, that is, the control law become $u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t))$ where $u_{fb}(t) = [K_I, K_P, K_D][\int_{0}^{t}\hat{e}^T(\tau)d\tau, \hat{e}^T(t), \dot{\hat{e}}^T(t)]^T$. The results are shown in Fig. \ref{fig:uav, state, noFTC} for UAV and Fig. \ref{fig:robot, state, noFTC} for robot. From Fig. \ref{fig:uav, state, noFTC} and Fig. \ref{fig:robot, state, noFTC}, it can be clearly seen that the influence of the acuator fault $f_1$ on the tracking error is revealed. The value of sensor fault $f_2$ is relatively insignificant because it is much smaller than that of acuator fault by our simulation setting but $x_4,x_5,x_6$ can still see the ups and downs with a period of 10 seconds. Although still stable, its tracking performance has dropped significantly compared to Fig. \ref{fig:UAV, state}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.57]{fig/uav (1) noFTC.png}\caption{The trajectories of reference, state and estimated state of the UAV $\alpha_{1,1}$ by traditional PID computed torque controller without FTC \cite{7456706}}%
+    \label{fig:uav, state, noFTC}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=.57]{fig/uav (1) noFTC.png}\caption{The trajectories of reference, state and estimated state of the robot $\alpha_{1,2}$ by traditional PID computed torque controller without FTC \cite{7456706}}%
+    \label{fig:robot, state, noFTC}
+\end{figure}
+
 For further verification, we visualized the simulation of a hybrid team tracking in URTS and the configuration trajectory of biped robot on the online resource \cite{mySimulation}. The results again demonstrate the effectiveness of the proposed $H_\infty$ decentralized observer-based feedforward FTC method for agents in URTS.
 
 \section{conclusion}

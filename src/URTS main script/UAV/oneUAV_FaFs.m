@@ -4,12 +4,12 @@ clc; clear; close all; tic;
 addpath(genpath('../../../src'))
 
 uav = UAV_AGENTmodel();
-% uav.PATH  = './data/test'; % path of saved data
+uav.PATH  = ['./data/' mfilename]; % path of saved data
 uav = uav.Load(); % load old data
 
 % flow control of code
-uav.EXE_LMI     = 0; % solving LMI
-uav.EXE_TRAJ    = 0; % trajectory
+uav.EXE_LMI     = 1; % solving LMI
+uav.EXE_TRAJ    = 1; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time

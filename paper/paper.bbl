@@ -170,6 +170,12 @@ S.~Boyd, L.~El~Ghaoui, E.~Feron, and V.~Balakrishnan, \emph{Linear matrix
   inequalities in system and control theory}.\hskip 1em plus 0.5em minus
   0.4em\relax SIAM, 1994.
 
+\bibitem{7456706}
+E.~Rastogi and L.~B. Prasad, ``Comparative performance analysis of pd/pid
+  computed torque control, filtered error approximation based control and nn
+  control for a robot manipulator,'' in \emph{2015 IEEE UP Section Conference
+  on Electrical Computer and Electronics (UPCON)}, 2015, pp. 1--6.
+
 \bibitem{mySimulation}
 \BIBentryALTinterwordspacing
 B.~S. Chen and T.~W. Hung. Hsinchu, taiwan. [Online]. Available:
