@@ -9,7 +9,7 @@ function SaveFig(fig, name_)
 
     % Save figure as .png
     folderName = 'data/png';
-    if ~exist(folderName, 'dir') % Create folder if not exist
+    if ~isfolder(folderName) % Create folder if not exist
         mkdir(folderName)
     end
     filePath = [folderName '/' name '.png']; % File path
@@ -19,7 +19,7 @@ function SaveFig(fig, name_)
 
     % Save figure as .fig
     folderName = 'data/fig';
-    if ~exist(folderName, 'dir') % Create folder if not exist
+    if ~isfolder(folderName) % Create folder if not exist
         mkdir(folderName)
     end
     filePath = [folderName '/' name '.fig']; % File path

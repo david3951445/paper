@@ -7,6 +7,9 @@ clc; clear; close all; tic;
 addpath(genpath('../../../src'))
 
 rb = Robot();
+% rb.PATH  = ['./data/' mfilename]; % path of saved data
+rb = rb.Load(); % load old data
+
 % flow control of code
 rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
@@ -37,7 +40,7 @@ sys1.Q1     = 10^(2)*diag([1 100 10]);
 sys1.Q2     = 10^(2)*diag([1 100 10]); % corresponding to [Intergral{e}, e, de]
 
 % for plot trajectories
-sys = LinearModel(kron(A0, I), kron(B0, I), kron(C0, I));
+rb.sys = LinearModel(kron(A0, I), kron(B0, I), kron(C0, I));
 
 %% Smooth model (acuator)
 WINDOW  = 3;
@@ -51,8 +54,9 @@ sys_a1.Q1   = diag(zeros(1,WINDOW)); % Can't stablilze unknown signal
 sys_a1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
-sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_a.B     = kron(sys_a1.B, I);
+rb.sys_a       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+rb.sys_a.B     = kron(sys_a1.B, I);
+rb.sys_a.begin = rb.sys.DIM_X;
 
 %% Smooth model (sensor)
 WINDOW  = 3;
@@ -66,8 +70,9 @@ sys_s1.Q1   = diag(zeros(1,WINDOW));  % Can't stablilze unknown signal
 sys_s1.Q2   = 10^(2)*diag((.1.^(0 : WINDOW-1)));
 
 % for plot trajectories
-sys_s       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
-sys_s.B     = kron(sys_s1.B, I);
+rb.sys_s       = SmoothModel(WINDOW, DIM_F, dt_, METHOD);
+rb.sys_s.B     = kron(sys_s1.B, I);
+rb.sys_s.begin = rb.sys.DIM_X + rb.sys_a.DIM_X;
 
 %% Augment system
 % for solving control and observer gain
@@ -80,16 +85,8 @@ sys_aug1.R      = 2*10^(-3)*eye(sys_aug1.DIM_U);
 sys_aug1.rho    = 30;
 
 % for plot trajectories
-[A, B, C]   = AugmentSystem(sys.A, sys.B, sys.C, sys_a.A, sys_a.B, sys_a.C, sys_s.A, sys_s.B, sys_s.C);
-sys_aug     = LinearModel(A, B, C);
-
-%% Copy sys, sys_a, sys_s, sys_aug to rb
-sys_a.begin = sys.DIM_X;
-sys_s.begin = sys.DIM_X + sys_a.DIM_X;
-rb.sys      = sys;
-rb.sys_a    = sys_a;
-rb.sys_s    = sys_s;
-rb.sys_aug = sys_aug;
+[A, B, C]       = AugmentSystem(rb.sys.A, rb.sys.B, rb.sys.C, rb.sys_a.A, rb.sys_a.B, rb.sys_a.C, rb.sys_s.A, rb.sys_s.B, rb.sys_s.C);
+rb.sys_aug      = LinearModel(A, B, C);
 
 %% solve LMI
 rb = rb.get_K_L(sys1, sys_aug1);
@@ -102,9 +99,9 @@ if rb.EXE_TRAJ
     % Set initial
     % x0_pos = [0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
     % x0_pos = .1*[0.2 0.2 0 0.1 0.1 0.5 0.2 0.2 0 0.1 0.1 0.5];
-%     x0_pos      = zeros(1, sys.DIM_X);
-    x0_pos = .1.*rand(1, sys.DIM_X) + 0; % Random between the range [-1, 1];
-    rb.tr.x0    = [x0_pos zeros(1, sys_a.DIM_X) zeros(1, sys_a.DIM_X)]';
+    % x0_pos      = zeros(1, sys.DIM_X);
+    x0_pos = .1.*rand(1, rb.sys.DIM_X) + 0; % Random between the range [-1, 1];
+    rb.tr.x0    = [x0_pos zeros(1, rb.sys_a.DIM_X) zeros(1, rb.sys_a.DIM_X)]';
     rb.tr.xh0   = zeros(rb.sys_aug.DIM_X, 1);
 
     rb = rb.trajectory();
@@ -113,7 +110,7 @@ end
 
 if rb.EXE_PLOT
     disp('Ploting trajectory ...')
-%     Show.PlotPP(pp); % path planning
+    % Show.PlotPP(pp); % path planning
     % Show.PlotLMP(pp, rb); % local motion planning
     rb.PlotTC() % tracking control
 end
