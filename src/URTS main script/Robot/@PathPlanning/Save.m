@@ -1,4 +1,4 @@
-function Save(rb, whichVar)
+function Save(pp, whichVar)
 %Save a property into classname.mat
 % whichVar  : which property be saved
 
@@ -9,10 +9,10 @@ switch whichVar
         disp(['No such property in rb'])
 end
 
-if isfile([rb.PATH '.mat'])
-    save(rb.PATH, whichVar, '-append');
+if isfile([pp.PATH '.mat'])
+    save(pp.PATH, whichVar, '-append');
 else
-    save(rb.PATH, whichVar);
+    save(pp.PATH, whichVar);
 end
     
 end

@@ -8,8 +8,8 @@ uav.PATH  = ['./data/' mfilename]; % path of saved data
 uav = uav.Load(); % load old data
 
 % flow control of code
-uav.EXE_LMI     = 1; % solving LMI
-uav.EXE_TRAJ    = 1; % trajectory
+uav.EXE_LMI     = 0; % solving LMI
+uav.EXE_TRAJ    = 0; % trajectory
 uav.EXE_PLOT    = 1; % plot results
 
 % time
@@ -114,9 +114,9 @@ if uav.EXE_PLOT
   
     %% Tracking control results
     % PlotLMP(uav)
-    uav.PlotTC(); 
+    % uav.PlotTC(); 
     % PlotActualControl(uav) % Actual control input
-    % PlotStateAndRef3D(uav) % 3D, r(t), state
+    PlotStateAndRef3D(uav) % 3D, r(t), state
 
 end
 
