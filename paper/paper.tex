@@ -413,7 +413,7 @@ where $\bar{x}_c = \begin{bmatrix}
 By combining the CoM orientation path $(CO_n)$ wtih the position path $(CP_n)$, the CoM path can be obtained. Finally, the joint path, i.e., reference path $r[k]\in\mathbb{R}^{12}$ of robot can be found by solving IK as shown in Fig. \ref{fig:FandW}.
 
 \section{Tracking control of each agent in hybrid URTS}
-Before converting $r[k]$ to $r(t)$, we first convert the UAV dynamic system in (\ref{eq:uav}) and robot dynamic system in (\ref{eq:robot}) into a form called agent dynamic model in a hybrid team to analyze their team formation tracking control problems together. Through some appropriate variable transformations, we have:
+Before converting the reference path $r[k]$ to reference trajectory $r(t)$, we first convert the UAV dynamic model in (\ref{eq:uav}) and robot dynamic model in (\ref{eq:robot}) into a form called agent dynamic model in a hybrid team to analyze their team formation tracking control problems together. Through some appropriate variable transformations, we have:
 \begin{equation} \label{eq:agent} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t)
 \end{equation}
@@ -436,21 +436,21 @@ where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t))$, $\dd
     0 & K_\tau
 \end{bmatrix}\begin{bmatrix}
     \dot{X} \\ \dot{\Theta}
-\end{bmatrix}$, and $n=6$ by (\ref{eq:uav}). For each robot in hybrid URTS, we have $u(t)=\tau_R$, $x(t)=q$, $M(x(t))=M_R(q)$, $H(x(t),\dot{x}(t))=C(q,\dot{q})\dot{q} + G(q)$, and $n=12$ by (\ref{eq:robot}).
+\end{bmatrix}$, and $n=6$ by UAV dynamics in (\ref{eq:uav}). For each robot in hybrid URTS, we have $u(t)=\tau_R$, $x(t)=q$, $M(x(t))=M_R(q)$, $H(x(t),\dot{x}(t))=C(q,\dot{q})\dot{q} + G(q)$, and $n=12$ by robot dynamics in (\ref{eq:robot}).
 
 \textit{
     \begin{remark}
-        The difference between the control law $u(t)$ in \ref{eq:control} of this article and the traditional feedback linearization control is that we use the "feedward" linearization control, i.e., use $M(r(t))$ and $H(r(t),\dot{r}(t))$ instead of $M(x(t))$ and $H(x(t),\dot{x}(t))$. This is because the state $x(t)$ is assumed to be unavailable in this paper so $x(t)$ cannot be use in control law $u(t)$.
+        The difference between the control law $u(t)$ in (\ref{eq:control}) of this article and the traditional feedback linearization control (or computed torque control) is that we use the "feedward" linearization control, i.e., use $M(r(t))$ and $H(r(t),\dot{r}(t))$ instead of $M(x(t))$ and $H(x(t),\dot{x}(t))$. This is because the state $x(t)$ is assumed to be unavailable in this paper so $x(t)$ cannot be use in control law $u(t)$.
     \end{remark}
 }
 
-To complete the design of reference trajectory $r(t)$ of each agent, a D/A converter is used to transform the reference path $r[k]$ (output of local motion planning) into a continuous signal $r'(t)$ as shown in Fig. \ref{fig:tracking}. For UAV, we get $r'(t) = [x_r, y_r, z_r, \psi_r]^T\in\mathbb{R}^{4}$. Besides, for an UAV in hybrid URTS, it can be seen that the control input $u(t)=[f_u^T, \tau_u^T]^T = [f_x, f_y, f_z, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^6$ we design in (\ref{eq:control}) is different from the actuator control input $u'(t)=[F, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^4$ for UAV actuator since UAV is an underactuated system. The two degrees of freedom we reserved in Section III-A, i.e., $\phi_r$ and $\theta_r$, are just to solve this problem. By substituting $\Theta=\begin{bmatrix}
+To complete the design of reference trajectory $r(t)$ of each agent, a D/A converter is used to transform the reference path $r[k]$ (output of local motion planning) into a continuous signal $r'(t)$ as shown in Fig. \ref{fig:tracking}. For UAV, we get $r'(t) = [x_r, y_r, z_r, \psi_r]^T\in\mathbb{R}^{4}$. Besides, for an UAV in hybrid URTS, it can be seen that the control input $u(t)=[f_u^T, \tau_u^T]^T = [f_x, f_y, f_z, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^6$ we design in (\ref{eq:control}) is different from the actuator control input $u'(t)=[F, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^4$ for UAV since UAV is an underactuated system. The two degrees of freedom we reserved in Section III-A, i.e., $\phi_r$ and $\theta_r$, are just to solve this problem. By substituting $\Theta=\begin{bmatrix}
     \phi_r \\ \theta_r \\ \psi_r
 \end{bmatrix}$ into $\begin{bmatrix}
         f_x \\ f_y \\ f_z
 \end{bmatrix} = R(\Theta)\begin{bmatrix}
         0 \\ 0 \\ F
-\end{bmatrix}$ from UAV dynacmis in (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations using inverse dynamic because $f_x$, $f_y$, $f_z$ and $\psi_r$ are given. Combining $\phi_r$ and $\theta_r$ with $r'(t)$, we obtain $r(t)= [x_r, y_r, z_r, \phi_r, \theta_r, \psi_r]^T$. For biped robot, we get $r'(t)=r(t)\in\mathbb{R}^{12}$ and $u'(t)=u(t)\in\mathbb{R}^{12}$ since biped robot is a fully actuated system. So far, the design of reference trajectory $r(t)$ of each agent in hybrid URTS is done. We define the process of converting $r'(t)$ and $u(t)$ into $r(t)$ and $u'(t)$ mentioned above as the reference generation block in Fig. \ref{fig:tracking}.
+\end{bmatrix}$ from UAV dynacmis in (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations using inverse dynamic because $f_x$, $f_y$, $f_z$ and $\psi_r$ are given. Combining $\phi_r$ and $\theta_r$ with $r'(t)$, we obtain $r(t)= [x_r, y_r, z_r, \phi_r, \theta_r, \psi_r]^T$. For biped robot, we directly have $r'(t)=r(t)\in\mathbb{R}^{12}$ and $u'(t)=u(t)\in\mathbb{R}^{12}$ since biped robot is a fully actuated system. So far, the design of reference trajectory $r(t)$ of each agent in hybrid URTS is done. We define the process of converting $r'(t)$ and $u(t)$ into $r(t)$ and $u'(t)$ mentioned above as the reference generation block in Fig. \ref{fig:tracking}.
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.12]{fig/tracking.png}\caption{The flowchart of tracking control in the hybrid URTS.
@@ -478,8 +478,8 @@ To make the model more realistic, the following external disturbances encountere
 Let $x_{i,j}(t), i=1,2,\dots,N_T, j=1,2,\dots,N_A$ denote the state vector of agents $\alpha_{i,j}$. The coupling disturbance $c(t)$ on each agent in hybrid URTS can be represented as \begin{equation} \label{eq:UAV couple}
     c(t) = \sum_{k = 1, k \neq i}^{N_T}D_{i, 1, k}(x_{i, 1}(t))x_{k, 1}(t)
 \end{equation} for UAV $\alpha_{i, 1}$ and \begin{equation} \label{eq:robot couple}
-    c(t) = \sum_{k = 1, k \neq j'}^{N_A}D_{i, j', k}(x_{i, j'}(t))x_{i, k}(t)
-\end{equation} for biped robot $\alpha_{i, j'}$ where $j'=2,3,...,N_A$ \cite{9834947}. Since the ground station is responsible for the calculation, the calculated control command in (\ref{eq:control}) will be transmitted to the agent through the network channel in hybrid URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent in (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to a disturbance force $c(t)$ + $d_1(t)\in\mathbb{R}^n$ where $d_1(t)$ is the non-coupling disturbance. The nominal system in (\ref{eq:agent}) of an agent in hybrid URTS then be rewrited as the following real system:
+    c(t) = \sum_{k = 1, k \neq j}^{N_A}D_{i, j, k}(x_{i, j}(t))x_{i, k}(t)
+\end{equation} for biped robot $\alpha_{i, j}$ where $i=1,2,\dots,N_T$ and $j=2,3,\dots,N_A$ \cite{9834947}. Since the ground station is responsible for the calculation, the calculated control command in (\ref{eq:control}) will be transmitted to the agent through the network channel in hybrid URTS. Therefore, the coupling effect due to co-channel interference and the cyber-attack signal will deteriorate the control command. In addition, the wind disturbance and the ground reaction force will apply extra force on an agent in (\ref{eq:agent}). Therefore, through appropriate conversion, the above disturbances can be equivalent to two disturbance forces $c(t)$ + $d_1(t)\in\mathbb{R}^n$ where $d_1(t)$ is the non-coupling disturbance. The nominal system in (\ref{eq:agent}) of an agent in hybrid URTS then be rewrited as the following real system:
 % The coupling effect for an agent \textit{$agent_{i,j}$} in URTS can be expressed as the form $\sum_{i'=1,i'\neq i}^{N_i}\sum_{j'=1,j'\neq j}^{N_j}\textit{c}_{i,j}(x_{i,j}(t))\times x_{i',j'}(t)$ where $x_{i,j}(t)$ is the own state.
 \begin{equation} \label{eq:agent d1} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t) + c(t) + d_1(t)
@@ -526,7 +526,7 @@ with $A_0 = \begin{bmatrix}
 0 \\ 0 \\ 1
 \end{bmatrix}$. 
 
-Through the above analysis, the tracking control problem of the nonlinear system of each agent in hybrid URTS with external disturbance in (\ref{eq:agent d1}) is transformed into the regulation problem of the linear tracking error system in (\ref{eq:linear f1}) with actuator fault signal $f_1(t)$ by the feedforward linearization control law $u(t)$. The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear tracking error system stable. In a real system, the feedback information is measured by sensor, i.e, the state $x(t)$ in (\ref{eq:agent}) is unavailable. At the same time, the sensor fault on sensor also needs to be considered as mentioned before. Since the sensor information will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but the cyber-attack signal are concerned. Let $\pmb{x}(t)=\begin{bmatrix}
+Through the above analysis, the tracking control problem of the nonlinear system of each agent in hybrid URTS with external disturbance in (\ref{eq:agent d1}) is transformed into the regulation problem of the linear tracking error system in (\ref{eq:linear f1}) with actuator fault signal $f_1(t)$ by the feedforward linearization control law $u(t)$. The remaining step is to design an appropriate feedback control law $u_{fb}(t)$ to make the linear tracking error system stable. In a real system, the feedback information is measured by sensor, i.e, the state $x(t)$ in (\ref{eq:agent}) is unavailable. At the same time, the sensor noise on sensor also needs to be considered as mentioned before. Since the sensor information will transmitted back to the ground station for calculating control command through the network channel in URTS, not only the sensor noise but the cyber-attack signal are concerned. We consider the effect of them as a sensor fault in this paper. Let $\pmb{x}(t)=\begin{bmatrix}
     \int_{0}^{t}x^T(\tau)d\tau & x^T(t) & \dot{x}^T(t)
 \end{bmatrix}^T$
 % Suppose the total effect can be equivalent to an unknown sensor fault signal $f_2(t)\in \mathbb{R}^{n}$ with same size as $f_1(t)$, 
@@ -627,7 +627,7 @@ The feedback control law $u_{fb}(t)$ of each agent in hybrid URTS then be design
 where $K$ is the control gain.
 \textit{
     \begin{remark}
-        Let $u_{fb}(t) = K\hat{\bar{e}}(t) = [K_I\mathbin{,} K_P\mathbin{,} K_D\mathbin{,} K_{F_1}\mathbin{,} K_{F_2}][\int_{0}^{t}\hat{e}^T(\tau)d\tau, \hat{e}^T(t), \dot{\hat{e}}^T(t), F_1^T(t), F_2^T(t)]^T$, we can find that the control gain $K$ is composed of the PID control gains $K_I$, $K_P$ and $K_D$ for $\int_{0}^{t}\hat{e}(\tau)d\tau$, $\hat{e}(t)$ and $\dot{\hat{e}}(t)$, respectively, and the fault control gains $K_{F_i}$ for $F_i(t)$ with $i=1,2$. This show that $u_{fb}(t)$ is a fault-tolerant PID controller.
+        Let $u_{fb}(t) = K\hat{\bar{e}}(t) = [K_I\mathbin{,} K_P\mathbin{,} K_D\mathbin{,} K_{F_1}\mathbin{,} K_{F_2}][\int_{0}^{t}\hat{e}^T(\tau)d\tau, \hat{e}^T(t), \dot{\hat{e}}^T(t), F_1^T(t), F_2^T(t)]^T$, we can find that the control gain $K$ is composed of the PID control gains $K_I$, $K_P$ and $K_D$ for $\int_{0}^{t}\hat{e}(\tau)d\tau$, $\hat{e}(t)$ and $\dot{\hat{e}}(t)$, respectively, and the fault control gains $K_{F_i}$ for $F_i(t)$ with $i=1,2$. This shows that the feedback control law $u_{fb}(t)$ has fault-tolerant capability and PID control characteristic.
     \end{remark}
 }
 
@@ -647,7 +647,7 @@ where $\tilde{x}(t)=\begin{bmatrix}
     \bar{v}(t) \\ \bar{v}(t)
 \end{bmatrix}$
 
-In order to enable the designed control gain $K$ in (\ref{eq:u_fb}) and observer gain $L$ in (\ref{eq:e_hat}) to achieve a specific performance for the augmented system in (\ref{eq:x_tilde}) under the disturbance $\bar{v}(t)$, the robust $H_\infty$ decentralized observer-based tracking control strategy below a prescribed disturbance attenuation level $\rho^2$ for each agent in hybrid URTS is given as:
+In order to enable the designed control gain $K$ in (\ref{eq:u_fb}) and observer gain $L$ in (\ref{eq:e_hat}) to achieve a specific performance for the augmented system in (\ref{eq:x_tilde}) under the disturbance $\bar{v}(t)$, the robust $H_\infty$ decentralized observer-based tracking control strategy below a prescribed disturbance attenuation level $\rho^2$ for each agent in hybrid URTS is given as follow:
 \begin{equation} \label{Hinf}
     % \begin{split}
     \resizebox{1\hsize}{!}{    
@@ -657,7 +657,7 @@ In order to enable the designed control gain $K$ in (\ref{eq:u_fb}) and observer
     }
     % \end{split}
 \end{equation}
-where $t_f$ is the final time, $Q_1 \geq 0$ is the tracking error weighting matrix, $Q_2 \geq 0$ is the estimation error weighting matrix, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}(0))$ is the initial condition effect on the augmented system in (\ref{eq:x_tilde}), and $\tilde{v}(t)$ is the total disturbance needed to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on augmented tracking error $\bar{e}(t)$ and augmented estimation error $\tilde{e}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the robust $H_\infty$ decentralized observer-based tracking control problem of each agent in (\ref{Hinf}), the following lemmas are given:
+where $t_f$ is the final time, $Q_1 \geq 0$ is the tracking error weighting matrix, $Q_2 \geq 0$ is the estimation error weighting matrix, $R > 0$ is the weighting matrix of control effort, $V(\tilde{x}(0))$ is the initial condition effect on the augmented tracking and estimation error system in (\ref{eq:x_tilde}), and $\tilde{v}(t)$ is the total disturbance needed to be attenuated. If we can find the control gain $K$ and observer gain $L$ such that (\ref{Hinf}) holds, then the effect of total disturbance $\tilde{v}(t)$ on augmented tracking error $\bar{e}(t)$ and augmented estimation error $\tilde{e}(t)$ can be attenuated to a prescribed level $\rho^2$ from the viewpoint of energy. Before analyzing the robust $H_\infty$ decentralized observer-based tracking control problem of each agent in (\ref{Hinf}), the following lemmas are given:
 \begin{lemma}[\cite{boyd1994linear}] \label{lemma1}
     For any matriices $X$ and $Y$ with appropriate dimensions, and matrix $R=R^T>0$ the following inequality holds:
     \begin{equation} \label{}
@@ -686,7 +686,7 @@ Then, the following theorem is given.
 \end{theorem}
 \textit{
     \begin{remark}
-        Since Riccati-like inequality of each agent in URTS has not involved the system information of other agents, therefore, the robust decentralized team formation tracking control can be achieved.
+        Since the Riccati-like inequality of each agent $\alpha_{i,j}$ in URTS has not involved the system information of other agents (e.g., the coupling term $c(t)$ in (\ref{eq:UAV couple}) and (\ref{eq:robot couple})), therefore, the robust decentralized team formation tracking control can be achieved.
     \end{remark}
 }
 \begin{proof}
@@ -829,7 +829,7 @@ the control $u_{fb,i}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$,
 the acuaor fault $f_{1,i}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, 
 the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, 
 and the sensor fault $f_{2,i}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ 
-where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}$, $f_{1,i}(t)\in\mathbb{R}^1$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems:
+where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}$, $f_{1,i}(t)\in\mathbb{R}$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems for each agent:
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\

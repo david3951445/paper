@@ -60,16 +60,16 @@
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Tracking control of each agent in hybrid URTS}{9}{}\protected@file@percent }
 \newlabel{eq:agent}{{8}{9}}
 \newlabel{eq:control}{{9}{9}}
-\newlabel{eq:UAV couple}{{10}{9}}
 \citation{9834947}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The flowchart of tracking control in the hybrid URTS. (a) The tracking control block of each agent in hybrid URTS. The controller block is predefined in (d). The controller block (the proposed general $H_\infty $ decentralized observer-based feedforward FTC scheme) is designed for a fully actuated agent dynamic model in (8\hbox {}) while the UAV is an underactuated system. It makes the designed control law $u(t)\in \mathbb  {R}^6$ and the actuator control input $u'(t)\in \mathbb  {R}^4$ different for UAV. The reference generator block is introduced to deal with this problem. For UAVs, the reference generator block is predefined in (b). For robots, the reference generator block is predefined in (c). (b) The reference generator block for each UAV. $u'(t)$ and $r(t)$ can be calculated from $u(t)$ and $r'(t)$ by inverse dynamic through the UAV dynamic model in (3\hbox {}). (c) The reference generator block for each robot. $u'(t)=u(t)$ and $r(t)=r'(t)$ since the robot dynamic model in (4\hbox {}) is fully actuated. (d) The proposed general $H_\infty $ decentralized observer-based feedforward FTC scheme for each agent in hybrid URTS.\relax }}{10}{}\protected@file@percent }
 \newlabel{fig:tracking}{{5}{10}}
+\newlabel{eq:UAV couple}{{10}{10}}
 \newlabel{eq:robot couple}{{11}{10}}
 \newlabel{eq:agent d1}{{12}{10}}
 \newlabel{eq:agent1}{{13}{10}}
-\newlabel{eq:error, state eq}{{14}{10}}
 \citation{9306757}
 \citation{9306757}
+\newlabel{eq:error, state eq}{{14}{11}}
 \newlabel{eq:linear f1}{{15}{11}}
 \newlabel{eq:agent output}{{16}{11}}
 \newlabel{eq:error}{{17}{11}}
@@ -79,9 +79,9 @@
 \newlabel{eq:u_fb}{{21}{11}}
 \newlabel{eq:e_tilde}{{22}{11}}
 \newlabel{eq:x_tilde}{{23}{11}}
-\newlabel{Hinf}{{24}{11}}
 \citation{boyd1994linear}
 \citation{boyd1994linear}
+\newlabel{Hinf}{{24}{12}}
 \newlabel{lemma1}{{1}{12}}
 \newlabel{lemma2}{{2}{12}}
 \newlabel{theorem1}{{1}{12}}
@@ -90,26 +90,26 @@
 \newlabel{pf:2}{{29}{12}}
 \newlabel{pf:3}{{IV}{12}}
 \newlabel{eq:M}{{30}{12}}
-\newlabel{eq:step1}{{31}{12}}
-\newlabel{eq:step2}{{32}{12}}
+\newlabel{eq:step1}{{31}{13}}
+\newlabel{eq:step2}{{32}{13}}
 \newlabel{LMI constraint}{{33}{13}}
 \newlabel{eq:linear subsys}{{34}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}simulation results}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}simulation results}{14}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$\relax }}{14}{}\protected@file@percent }
 \newlabel{fig:SR_area}{{6}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The search tasks in the $i$th team at the begining. The search tasks $T_j,j=1,2,...,5$ are to reach some consecutive goals $q_{goal}$ (black dots in figure) obtained from task allocation block. For robots, $q_{goal}$ will be passed to path planning block to find collision-free paths $(\sigma _n)$. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma _n)$ due to the no-collision assumption {\it  Assumption 2.4\hbox {}}.\relax }}{14}{}\protected@file@percent }
 \newlabel{fig:S_task}{{7}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The path planning result of robot using RRT algorithm. The block polygons represent the obstacle space $\mathcal  {C}_{obs}$.\relax }}{14}{}\protected@file@percent }
 \newlabel{fig:R_task}{{8}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The result of local motion planning of UAV flying.\relax }}{14}{}\protected@file@percent }
-\newlabel{sim:flying}{{9}{14}}
 \citation{ourrobot}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The result of local motion planning of UAV flying.\relax }}{15}{}\protected@file@percent }
+\newlabel{sim:flying}{{9}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The top view of result of local motion planning of robot walking. The joint path, i.e., reference path $r[k]$ will be obtained by solving IK with CoM, left foothold and right foothold path.\relax }}{15}{}\protected@file@percent }
 \newlabel{sim:walking}{{10}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The trajectories of reference, state and estimated state of the UAV $\alpha _{1,1}$\relax }}{15}{}\protected@file@percent }
 \newlabel{fig:UAV, state}{{11}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The estimation of actuator fault of the UAV $\alpha _{1,1}$\relax }}{15}{}\protected@file@percent }
-\newlabel{fig:UAV, fa}{{12}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The estimation of actuator fault of the UAV $\alpha _{1,1}$\relax }}{16}{}\protected@file@percent }
+\newlabel{fig:UAV, fa}{{12}{16}}
 \@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The estimation of sensor fault of the UAV $\alpha _{1,1}$\relax }}{16}{}\protected@file@percent }
 \newlabel{fig:UAV, fs}{{13}{16}}
 \@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces The control effort of the UAV $\alpha _{1,1}$\relax }}{16}{}\protected@file@percent }
@@ -120,8 +120,6 @@
 \newlabel{fig:robot, fa}{{16}{16}}
 \@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces The estimation of sensor fault of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
 \newlabel{fig:robot, fs}{{17}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The control effort of the robot $\alpha _{1,2}$\relax }}{16}{}\protected@file@percent }
-\newlabel{fig:robot, control}{{18}{16}}
 \citation{7456706}
 \citation{7456706}
 \citation{7456706}
@@ -129,13 +127,15 @@
 \citation{7456706}
 \citation{7456706}
 \citation{mySimulation}
-\bibstyle{IEEEtran}
-\bibdata{citation}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The control effort of the robot $\alpha _{1,2}$\relax }}{17}{}\protected@file@percent }
+\newlabel{fig:robot, control}{{18}{17}}
 \@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces The trajectories of reference, state and estimated state of the UAV $\alpha _{1,1}$ by traditional PID computed torque controller without FTC \cite  {7456706}\relax }}{17}{}\protected@file@percent }
 \newlabel{fig:uav, state, noFTC}{{19}{17}}
 \@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces The trajectories of reference, state and estimated state of the robot $\alpha _{1,2}$ by traditional PID computed torque controller without FTC \cite  {7456706}\relax }}{17}{}\protected@file@percent }
 \newlabel{fig:robot, state, noFTC}{{20}{17}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}conclusion}{17}{}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{citation}
 \bibcite{9700861}{1}
 \bibcite{8352646}{2}
 \bibcite{chen2019control}{3}
@@ -143,15 +143,15 @@
 \bibcite{skaltsis2021survey}{5}
 \bibcite{zhang2018path}{6}
 \bibcite{9108245}{7}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces The simulation of team tracking of URTS when perform search tasks. As shown in Fig. 6\hbox {}, the UAV and robot in URTS will be released along the direction of the road ($Y$-axis) and each team is responsible for an area. First, the respective tasks of each agent are determined by the task allocation algorithm. According to the task content, the agent will be determined a goal $q_{goal}$. As in Fig. 7\hbox {}, this simulation assumes that URTS are assigned search tasks. Subsequently, the path planning algorithm calculates the collision-free path $(\sigma _n)$ for each agent. Depending on the terrain environment, an appropriate behavior $(\beta _n)$ is determined to enable the agent to follow the path $(\sigma _n)$. A reference path $r[k]$ corresponding to a behavior is designed via local motion planning to enable an actual mechanical body to perform the behavior. Since this article only gives the motion planning method of flying (for UAV) or walking (for biped-robot), it is assumed that from $q_{start}$ to $q_{goal}$ are all flying or walking behaviors in this simulation. In this figure, we draw the smoothed path $\sigma '_n$ of each agent, which is the intermediate result of local motion planning as shown in Fig, 4\hbox {}. It represents the path that the agent is going to reach in the task space. According to $r[k]$ and the dynamic model of UAV and robot, the reference trajectory $r(t)$ of each agent is obtained. Finally, through the decentralized $H_\infty $ observer-based feedforward FTC scheme proposed in this paper, the team tracking result of the agents in $team_i, i=1,2,3$ in URTS are shown. Note that the above process is dynamic. If a block in a higher layer in URTS architecture makes a new decision that produces a new output, the lower blocks must recalculate based on it. Rrelatively, this simulation is the static result, that is, there is no re-decision from $q_{start}$ to $q_{goal}$.\relax }}{18}{}\protected@file@percent }
+\newlabel{fig:URTS}{{21}{18}}
+\@writefile{toc}{\contentsline {section}{REFERENCES}{18}{}\protected@file@percent }
 \bibcite{arbanas2018decentralized}{8}
 \bibcite{9384209}{9}
 \bibcite{olcay2017design}{10}
 \bibcite{8931370}{11}
 \bibcite{wang2022consensus}{12}
 \bibcite{6669235}{13}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces The simulation of team tracking of URTS when perform search tasks. As shown in Fig. 6\hbox {}, the UAV and robot in URTS will be released along the direction of the road ($Y$-axis) and each team is responsible for an area. First, the respective tasks of each agent are determined by the task allocation algorithm. According to the task content, the agent will be determined a goal $q_{goal}$. As in Fig. 7\hbox {}, this simulation assumes that URTS are assigned search tasks. Subsequently, the path planning algorithm calculates the collision-free path $(\sigma _n)$ for each agent. Depending on the terrain environment, an appropriate behavior $(\beta _n)$ is determined to enable the agent to follow the path $(\sigma _n)$. A reference path $r[k]$ corresponding to a behavior is designed via local motion planning to enable an actual mechanical body to perform the behavior. Since this article only gives the motion planning method of flying (for UAV) or walking (for biped-robot), it is assumed that from $q_{start}$ to $q_{goal}$ are all flying or walking behaviors in this simulation. In this figure, we draw the smoothed path $\sigma '_n$ of each agent, which is the intermediate result of local motion planning as shown in Fig, 4\hbox {}. It represents the path that the agent is going to reach in the task space. According to $r[k]$ and the dynamic model of UAV and robot, the reference trajectory $r(t)$ of each agent is obtained. Finally, through the decentralized $H_\infty $ observer-based feedforward FTC scheme proposed in this paper, the team tracking result of the agents in $team_i, i=1,2,3$ in URTS are shown. Note that the above process is dynamic. If a block in a higher layer in URTS architecture makes a new decision that produces a new output, the lower blocks must recalculate based on it. Rrelatively, this simulation is the static result, that is, there is no re-decision from $q_{start}$ to $q_{goal}$.\relax }}{18}{}\protected@file@percent }
-\newlabel{fig:URTS}{{21}{18}}
-\@writefile{toc}{\contentsline {section}{REFERENCES}{18}{}\protected@file@percent }
 \bibcite{paden2016survey}{14}
 \bibcite{khamis2015multi}{15}
 \bibcite{elbanhawi2014sampling}{16}
