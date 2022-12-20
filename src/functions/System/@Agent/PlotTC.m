@@ -22,7 +22,7 @@ function PlotTC(ag)
         plot(ag.tr.t, ag.tr.xh(index, :)+r(i, :))
         plot(ag.tr.t, r(i, :))
 
-        ylabel(['$x_{' num2str(i) '} (' ag.UNIT{i} ')$'], 'Interpreter','latex')
+        ylabel(['$x_{' num2str(i) '} (' ag.UNIT{i} ')$'], Interpreter='latex')
         
         if strcmp(ag.FILE_NAME, 'UAV_AGENTmodel') % UAV
             if (i>3) % psi, theta, phi
@@ -31,7 +31,7 @@ function PlotTC(ag)
         end
     end
     xlabel(Layout,'t (sec)')
-    lg  = legend('state', 'estimated state', 'reference', NumColumns=3); 
+    lg  = legend('state $x(t)$', 'estimated state $\hat{x}(t)$ ', 'reference $r(t)$', NumColumns=3, Interpreter='latex'); 
     lg.Layout.Tile = 'north';
     % ylabel(Layout, 'rad')
 

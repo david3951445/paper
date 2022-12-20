@@ -19,10 +19,10 @@ function PlotFault(ag, TITLE)
         plot(ag.tr.t, ag.tr.xh(index, :))
 
         grid on
-        ylabel(['$f_{' TITLE ',' num2str(i) '}(' ag.UNIT{i} unit ')$'], 'Interpreter','latex')      
+        ylabel(['$f_{' TITLE ',' num2str(i) '}(' ag.UNIT{i} unit ')$'], Interpreter='latex')      
     end
     xlabel(Layout,'t (sec)')
-    lg  = legend('state', 'estimated state', NumColumns=3); 
+    lg  = legend(['state $f_' TITLE '(t)$'], ['estimated state $\hat{f_' TITLE '}(t)$'], NumColumns=3, Interpreter='latex'); 
     lg.Layout.Tile = 'north';
 
     SaveFig(fig)

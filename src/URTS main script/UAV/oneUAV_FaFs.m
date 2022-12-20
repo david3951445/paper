@@ -115,8 +115,8 @@ if uav.EXE_PLOT
     %% Tracking control results
     % PlotLMP(uav)
     % uav.PlotTC(); 
-    % PlotActualControl(uav) % Actual control input
-    PlotStateAndRef3D(uav) % 3D, r(t), state
+    PlotActualControl(uav) % Actual control input
+    % PlotStateAndRef3D(uav) % 3D, r(t), state
 
 end
 
