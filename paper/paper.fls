@@ -932,10 +932,6 @@ INPUT .\fig\robot (1) noFTC.png
 INPUT .\fig\robot (1) noFTC.png
 INPUT .\fig\robot (1) noFTC.png
 INPUT .\fig\robot (1) noFTC.png
-INPUT .\notaglinelogo.png
-INPUT .\notaglinelogo.png
-INPUT notaglinelogo.png
-INPUT .\notaglinelogo.png
 INPUT .\fig\URTS.png
 INPUT .\fig\URTS.png
 INPUT fig\URTS.png
@@ -943,6 +939,10 @@ INPUT .\fig\URTS.png
 INPUT .\fig\URTS.png
 INPUT .\fig\URTS.png
 INPUT .\fig\URTS.png
+INPUT .\notaglinelogo.png
+INPUT .\notaglinelogo.png
+INPUT notaglinelogo.png
+INPUT .\notaglinelogo.png
 INPUT .\paper.bbl
 INPUT paper.bbl
 INPUT .\paper.bbl
@@ -983,6 +983,30 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8t.tfm
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT fig\Author1.jpg
+INPUT .\fig\Author1.jpg
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT .\fig\Author2.jpg
+INPUT fig\Author2.jpg
+INPUT .\fig\Author2.jpg
 INPUT .\bullet.png
 INPUT .\bullet.png
 INPUT bullet.png
@@ -991,6 +1015,10 @@ INPUT .\notaglinelogo.png
 INPUT .\notaglinelogo.png
 INPUT notaglinelogo.png
 INPUT .\notaglinelogo.png
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8t.vf
+INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT paper.aux
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT C:\Users\david\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb

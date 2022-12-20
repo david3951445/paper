@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  20 DEC 2022 15:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  20 DEC 2022 19:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -892,12 +892,7 @@ Package pdftex.def Info: fig/SR_area.pdf  used on input line 886.
 File: fig/S_task.png Graphic file (type png)
 <use fig/S_task.png>
 Package pdftex.def Info: fig/S_task.png  used on input line 891.
-(pdftex.def)             Requested size: 266.18301pt x 125.8648pt.
-
-Overfull \hbox (23.50946pt too wide) in paragraph at lines 891--891
- [][] 
- []
-
+(pdftex.def)             Requested size: 232.91014pt x 110.13171pt.
 <fig/uav_LMP.png, id=81, 368.577pt x 276.93864pt>
 File: fig/uav_LMP.png Graphic file (type png)
 <use fig/uav_LMP.png>
@@ -938,9 +933,14 @@ Underfull \hbox (badness 1521) in paragraph at lines 930--934
 []\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 10 \OMS/cmsy/m/n/10 
  []
 
+
+Underfull \hbox (badness 1521) in paragraph at lines 944--948
+[]\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 50 \OMS/cmsy/m/n/10 
+ []
+
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 944.
+Package pdftex.def Info: notaglinelogo.png  used on input line 948.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -958,10 +958,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [15 <./fig/uav_LMP.png (PNG copy)> <./fig/robot_PP.png (PNG copy)> <./fig/robot_LMP.png (PNG copy)>]
-Underfull \hbox (badness 1521) in paragraph at lines 944--948
-[]\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 50 \OMS/cmsy/m/n/10 
- []
-
 <fig/uav (1).png, id=106, 420.90048pt x 316.83168pt>
 File: fig/uav (1).png Graphic file (type png)
 <use fig/uav (1).png>
@@ -1032,12 +1028,17 @@ File: fig/robot (1) noFTC.png Graphic file (type png)
 <use fig/robot (1) noFTC.png>
 Package pdftex.def Info: fig/robot (1) noFTC.png  used on input line 1019.
 (pdftex.def)             Requested size: 240.08054pt x 180.59593pt.
+<fig/URTS.png, id=120, 1175.8329pt x 611.69328pt>
+File: fig/URTS.png Graphic file (type png)
+<use fig/URTS.png>
+Package pdftex.def Info: fig/URTS.png  used on input line 1026.
+(pdftex.def)             Requested size: 493.84645pt x 256.90942pt.
 
 Underfull \vbox (badness 1584) has occurred while \output is active []
 
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 1022.
+Package pdftex.def Info: notaglinelogo.png  used on input line 1029.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1054,20 +1055,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[17 <./fig/robot (1).png (PNG copy)> <./fig/robot (2).png (PNG copy)> <./fig/robot (3).png (PNG copy)> <./fig/robot (4).png (PNG copy)>]
-<fig/URTS.png, id=123, 1175.8329pt x 611.69328pt>
-File: fig/URTS.png Graphic file (type png)
-<use fig/URTS.png>
-Package pdftex.def Info: fig/URTS.png  used on input line 1026.
-(pdftex.def)             Requested size: 493.84645pt x 256.90942pt.
- (paper.bbl
+[17 <./fig/robot (1).png (PNG copy)> <./fig/robot (2).png (PNG copy)> <./fig/robot (3).png (PNG copy)> <./fig/robot (4).png (PNG copy)>] (paper.bbl
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 37.
  (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 70.
+Package pdftex.def Info: notaglinelogo.png  used on input line 84.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1089,11 +1084,11 @@ Underfull \vbox (badness 2600) has occurred while \output is active []
 
 LaTeX Font Info:    Calculating math sizes for size <7.61> on input line 122.
 
-Underfull \vbox (badness 1635) has occurred while \output is active []
+Underfull \vbox (badness 2600) has occurred while \output is active []
 
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 136.
+Package pdftex.def Info: notaglinelogo.png  used on input line 151.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1111,13 +1106,31 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [19 <./fig/URTS.png (PNG copy)>])
+<fig/Author1.jpg, id=131, 90.3375pt x 117.43875pt>
+File: fig/Author1.jpg Graphic file (type jpg)
+<use fig/Author1.jpg>
+Package pdftex.def Info: fig/Author1.jpg  used on input line 1045.
+(pdftex.def)             Requested size: 69.48978pt x 90.3367pt.
+File: fig/Author1.jpg Graphic file (type jpg)
+<use fig/Author1.jpg>
+Package pdftex.def Info: fig/Author1.jpg  used on input line 1045.
+(pdftex.def)             Requested size: 69.48978pt x 90.3367pt.
+<fig/Author2.jpg, id=134, 96.8418pt x 133.6995pt>
+File: fig/Author2.jpg Graphic file (type jpg)
+<use fig/Author2.jpg>
+Package pdftex.def Info: fig/Author2.jpg  used on input line 1049.
+(pdftex.def)             Requested size: 65.43481pt x 90.33914pt.
+File: fig/Author2.jpg Graphic file (type jpg)
+<use fig/Author2.jpg>
+Package pdftex.def Info: fig/Author2.jpg  used on input line 1049.
+(pdftex.def)             Requested size: 65.43481pt x 90.33914pt.
 File: bullet.png Graphic file (type png)
 <use bullet.png>
-Package pdftex.def Info: bullet.png  used on input line 1045.
+Package pdftex.def Info: bullet.png  used on input line 1053.
 (pdftex.def)             Requested size: 5.0pt x 14.6871pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 1047.
+Package pdftex.def Info: notaglinelogo.png  used on input line 1055.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1136,23 +1149,23 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [20
 
-] (paper.aux)
+ <./fig/Author1.jpg> <./fig/Author2.jpg>] (paper.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 8754 strings out of 478659
- 149984 string characters out of 2845921
- 490616 words of memory out of 3000000
- 26655 multiletter control sequences out of 15000+600000
- 496450 words of font info for 163 fonts, out of 8000000 for 9000
+ 8775 strings out of 478659
+ 150312 string characters out of 2845921
+ 493571 words of memory out of 3000000
+ 26671 multiletter control sequences out of 15000+600000
+ 502062 words of font info for 167 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,22n,117p,2395b,529s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 70i,22n,117p,2395b,531s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (20 pages, 7329052 bytes).
+Output written on paper.pdf (20 pages, 7469989 bytes).
 PDF statistics:
- 225 PDF objects out of 1000 (max. 8388607)
+ 233 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

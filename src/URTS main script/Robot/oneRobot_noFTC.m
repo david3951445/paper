@@ -9,10 +9,10 @@ rb.PATH  = ['./data/' mfilename]; % path of saved data
 rb = rb.Load(); % load old data
 
 % flow control of code
-rb.EXE_LMI     = 1;
+rb.EXE_LMI     = 0;
 rb.EXE_Z2C     = 0; % ZMP to CoM converter
 rb.EXE_IK      = 0; % inverse dynamic
-rb.EXE_TRAJ    = 1; % trajectory
+rb.EXE_TRAJ    = 0; % trajectory
 rb.EXE_PLOT    = 1; % plot results
 
 % time
