@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  20 DEC 2022 19:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  21 DEC 2022 23:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -549,7 +549,14 @@ Overfull \hbox (9.2679pt too wide) in paragraph at lines 88--88
  []
 
 
+LaTeX Warning: Optional argument of \twocolumn too tall on page 1.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+LaTeX Warning: Text page 1 contains only floats.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -557,7 +564,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <logo.png, id=4, 206.27063pt x 53.44969pt>
 File: logo.png Graphic file (type png)
 <use logo.png>
-Package pdftex.def Info: logo.png  used on input line 93.
+Package pdftex.def Info: logo.png  used on input line 88.
 (pdftex.def)             Requested size: 91.32pt x 23.66309pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -583,10 +590,10 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 
  <./logo.png> <./bullet.png>]
-<notaglinelogo.png, id=16, 169.38281pt x 42.91031pt>
+<notaglinelogo.png, id=15, 169.38281pt x 42.91031pt>
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 109.
+Package pdftex.def Info: notaglinelogo.png  used on input line 107.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -604,9 +611,16 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [2 <./notaglinelogo.png>]
+Underfull \hbox (badness 2376) in paragraph at lines 117--118
+[]\T1/ptm/n/n/10 A trans-for-ma-tion be-tween the path planned by a
+ []
+
+
+Underfull \vbox (badness 1024) has occurred while \output is active []
+
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 152.
+Package pdftex.def Info: notaglinelogo.png  used on input line 148.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -631,7 +645,7 @@ Package pdftex.def Info: fig/sys.png  used on input line 157.
 (pdftex.def)             Requested size: 226.58678pt x 227.33957pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 186.
+Package pdftex.def Info: notaglinelogo.png  used on input line 178.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -649,19 +663,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [4 <./fig/sys.png>]
-<fig/behavior.png, id=38, 3949.75626pt x 1244.65pt>
+<fig/behavior.png, id=38, 3949.75626pt x 1249.66875pt>
 File: fig/behavior.png Graphic file (type png)
 <use fig/behavior.png>
 Package pdftex.def Info: fig/behavior.png  used on input line 228.
-(pdftex.def)             Requested size: 473.9503pt x 149.35155pt.
-<fig/LMP.png, id=39, 3859.41875pt x 1686.3pt>
-File: fig/LMP.png Graphic file (type png)
-<use fig/LMP.png>
-Package pdftex.def Info: fig/LMP.png  used on input line 240.
-(pdftex.def)             Requested size: 463.11028pt x 202.34726pt.
+(pdftex.def)             Requested size: 473.9503pt x 149.95378pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 248.
+Package pdftex.def Info: notaglinelogo.png  used on input line 236.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -679,14 +688,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [5]
-Underfull \vbox (badness 1769) has occurred while \output is active []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+<fig/LMP.png, id=42, 3859.41875pt x 1686.3pt>
+File: fig/LMP.png Graphic file (type png)
+<use fig/LMP.png>
+Package pdftex.def Info: fig/LMP.png  used on input line 240.
+(pdftex.def)             Requested size: 463.11028pt x 202.34726pt.
+<fig/FandW.png, id=43, 4035.075pt x 1214.5375pt>
+File: fig/FandW.png Graphic file (type png)
+<use fig/FandW.png>
+Package pdftex.def Info: fig/FandW.png  used on input line 258.
+(pdftex.def)             Requested size: 484.18811pt x 145.7382pt.
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 254.
+Package pdftex.def Info: notaglinelogo.png  used on input line 309.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -703,13 +717,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[6 <./fig/behavior.png> <./fig/LMP.png>]
-<fig/FandW.png, id=48, 4035.075pt x 1214.5375pt>
-File: fig/FandW.png Graphic file (type png)
-<use fig/FandW.png>
-Package pdftex.def Info: fig/FandW.png  used on input line 258.
-(pdftex.def)             Requested size: 484.18811pt x 145.7382pt.
-
+[6 <./fig/behavior.png>]
 Underfull \hbox (badness 3601) in paragraph at lines 309--349
 \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 = []$\T1/ptm/n/n/10 , $\OML/cmm/m/it/10 X \OT1/cmr/m/n/10 = []$\T1/ptm/n/n/10 , $\OT1/cmr/m/n/10  = []$\T1/ptm/n/n/10 , $\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
@@ -724,9 +732,15 @@ Underfull \hbox (badness 2088) in paragraph at lines 309--349
 []$\T1/ptm/n/n/10 , $\OML/cmm/m/it/10 R[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 \OT1/cmr/m/n/10 ) = []$\T1/ptm/n/n/10 ,
  []
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 379.
+Package pdftex.def Info: notaglinelogo.png  used on input line 349.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -743,10 +757,10 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[7]
+[7 <./fig/LMP.png> <./fig/FandW.png>]
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 403.
+Package pdftex.def Info: notaglinelogo.png  used on input line 398.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -763,15 +777,10 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[8 <./fig/FandW.png>]
-<fig/tracking.png, id=58, 4065.1875pt x 2700.0875pt>
-File: fig/tracking.png Graphic file (type png)
-<use fig/tracking.png>
-Package pdftex.def Info: fig/tracking.png  used on input line 470.
-(pdftex.def)             Requested size: 487.80145pt x 323.99652pt.
+[8]
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 477.
+Package pdftex.def Info: notaglinelogo.png  used on input line 455.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -789,6 +798,31 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [9]
+<fig/tracking.png, id=62, 4065.1875pt x 2700.0875pt>
+File: fig/tracking.png Graphic file (type png)
+<use fig/tracking.png>
+Package pdftex.def Info: fig/tracking.png  used on input line 470.
+(pdftex.def)             Requested size: 487.80145pt x 323.99652pt.
+File: notaglinelogo.png Graphic file (type png)
+<use notaglinelogo.png>
+Package pdftex.def Info: notaglinelogo.png  used on input line 539.
+(pdftex.def)             Requested size: 91.32pt x 23.1352pt.
+
+Overfull \hbox (505.12177pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Overfull \hbox (505.12177pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[10]
 Underfull \hbox (badness 1436) in paragraph at lines 541--548
 \T1/ptm/n/n/10 where $\OML/cmm/m/it/10 A \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 A[] \OMS/cmsy/m/n/10 
  \OML/cmm/m/it/10 I[]; B \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 B[] \OMS/cmsy/m/n/10 
@@ -814,34 +848,10 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[10]
-File: notaglinelogo.png Graphic file (type png)
-<use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 632.
-(pdftex.def)             Requested size: 91.32pt x 23.1352pt.
-
-Overfull \hbox (505.12177pt too wide) has occurred while \output is active
-[]
- []
-
-
-Overfull \hbox (505.12177pt too wide) has occurred while \output is active
-[]
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[]
- []
-
 [11 <./fig/tracking.png>]
-Underfull \hbox (badness 2253) in paragraph at lines 714--715
-\T1/ptm/b/n/10 Proof. \T1/ptm/n/n/10 (i) Choose the Lya-punov func-tion $\OML/cmm/m/it/10 V\OT1/cmr/m/n/10 ([](\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) =
- []
-
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 739.
+Package pdftex.def Info: notaglinelogo.png  used on input line 707.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -859,13 +869,18 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  []
 
 [12]
+Underfull \hbox (badness 2253) in paragraph at lines 714--715
+\T1/ptm/b/n/10 Proof. \T1/ptm/n/n/10 (i) Choose the Lya-punov func-tion $\OML/cmm/m/it/10 V\OT1/cmr/m/n/10 ([](\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) =
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 742--746
 []\T1/ptm/n/n/10 (ii) From (27[]) and $\OML/cmm/m/it/10 V\OT1/cmr/m/n/10 ([](0))$ \T1/ptm/n/n/10 is fi-nite, we get
  []
 
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 858.
+Package pdftex.def Info: notaglinelogo.png  used on input line 812.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -922,8 +937,8 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[14 <./fig/SR_area.pdf> <./fig/S_task.png>]
-<fig/robot_LMP.png, id=102, 359.1819pt x 292.83804pt>
+[14]
+<fig/robot_LMP.png, id=87, 359.1819pt x 292.83804pt>
 File: fig/robot_LMP.png Graphic file (type png)
 <use fig/robot_LMP.png>
 Package pdftex.def Info: fig/robot_LMP.png  used on input line 910.
@@ -933,14 +948,9 @@ Underfull \hbox (badness 1521) in paragraph at lines 930--934
 []\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 10 \OMS/cmsy/m/n/10 
  []
 
-
-Underfull \hbox (badness 1521) in paragraph at lines 944--948
-[]\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 50 \OMS/cmsy/m/n/10 
- []
-
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 948.
+Package pdftex.def Info: notaglinelogo.png  used on input line 937.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -957,7 +967,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[15 <./fig/uav_LMP.png (PNG copy)> <./fig/robot_PP.png (PNG copy)> <./fig/robot_LMP.png (PNG copy)>]
+[15 <./fig/SR_area.pdf> <./fig/S_task.png> <./fig/uav_LMP.png (PNG copy)> <./fig/robot_PP.png (PNG copy)>]
+Underfull \hbox (badness 1521) in paragraph at lines 944--948
+[]\T1/ptm/n/n/10 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/10 Q[] \OT1/cmr/m/n/10 = 50 \OMS/cmsy/m/n/10 
+ []
+
 <fig/uav (1).png, id=106, 420.90048pt x 316.83168pt>
 File: fig/uav (1).png Graphic file (type png)
 <use fig/uav (1).png>
@@ -1017,28 +1031,45 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[16 <./fig/uav (1).png (PNG copy)> <./fig/uav (2).png (PNG copy)> <./fig/uav (3).png (PNG copy)> <./fig/uav (4).png (PNG copy)>]
-<fig/uav (1) noFTC.png, id=118, 420.90048pt x 316.83168pt>
+[16 <./fig/robot_LMP.png (PNG copy)> <./fig/uav (1).png (PNG copy)> <./fig/uav (2).png (PNG copy)>]
+File: notaglinelogo.png Graphic file (type png)
+<use notaglinelogo.png>
+Package pdftex.def Info: notaglinelogo.png  used on input line 1010.
+(pdftex.def)             Requested size: 91.32pt x 23.1352pt.
+
+Overfull \hbox (505.12177pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Overfull \hbox (505.12177pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[17 <./fig/uav (3).png (PNG copy)> <./fig/uav (4).png (PNG copy)> <./fig/robot (1).png (PNG copy)> <./fig/robot (2).png (PNG copy)> <./fig/robot (3).png (PNG copy)> <./fig/robot (4).png (PNG copy)>]
+<fig/uav (1) noFTC.png, id=121, 420.90048pt x 316.83168pt>
 File: fig/uav (1) noFTC.png Graphic file (type png)
 <use fig/uav (1) noFTC.png>
 Package pdftex.def Info: fig/uav (1) noFTC.png  used on input line 1014.
 (pdftex.def)             Requested size: 239.91576pt x 180.59593pt.
-<fig/robot (1) noFTC.png, id=119, 421.18956pt x 316.83168pt>
+<fig/robot (1) noFTC.png, id=122, 421.18956pt x 316.83168pt>
 File: fig/robot (1) noFTC.png Graphic file (type png)
 <use fig/robot (1) noFTC.png>
 Package pdftex.def Info: fig/robot (1) noFTC.png  used on input line 1019.
 (pdftex.def)             Requested size: 240.08054pt x 180.59593pt.
-<fig/URTS.png, id=120, 1175.8329pt x 611.69328pt>
+<fig/URTS.png, id=123, 1175.8329pt x 611.69328pt>
 File: fig/URTS.png Graphic file (type png)
 <use fig/URTS.png>
 Package pdftex.def Info: fig/URTS.png  used on input line 1026.
 (pdftex.def)             Requested size: 493.84645pt x 256.90942pt.
-
-Underfull \vbox (badness 1584) has occurred while \output is active []
-
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 1029.
+Package pdftex.def Info: notaglinelogo.png  used on input line 1034.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1055,14 +1086,16 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[17 <./fig/robot (1).png (PNG copy)> <./fig/robot (2).png (PNG copy)> <./fig/robot (3).png (PNG copy)> <./fig/robot (4).png (PNG copy)>] (paper.bbl
+[18 <./fig/uav (1) noFTC.png (PNG copy)> <./fig/robot (1) noFTC.png (PNG copy)>] (paper.bbl
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 37.
  (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
+Underfull \vbox (badness 4492) has occurred while \output is active []
+
 File: notaglinelogo.png Graphic file (type png)
 <use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 84.
+Package pdftex.def Info: notaglinelogo.png  used on input line 69.
 (pdftex.def)             Requested size: 91.32pt x 23.1352pt.
 
 Overfull \hbox (505.12177pt too wide) has occurred while \output is active
@@ -1079,33 +1112,9 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[18 <./fig/uav (1) noFTC.png (PNG copy)> <./fig/robot (1) noFTC.png (PNG copy)>]
-Underfull \vbox (badness 2600) has occurred while \output is active []
-
+[19 <./fig/URTS.png (PNG copy)>]
 LaTeX Font Info:    Calculating math sizes for size <7.61> on input line 122.
-
-Underfull \vbox (badness 2600) has occurred while \output is active []
-
-File: notaglinelogo.png Graphic file (type png)
-<use notaglinelogo.png>
-Package pdftex.def Info: notaglinelogo.png  used on input line 151.
-(pdftex.def)             Requested size: 91.32pt x 23.1352pt.
-
-Overfull \hbox (505.12177pt too wide) has occurred while \output is active
-[]
- []
-
-
-Overfull \hbox (505.12177pt too wide) has occurred while \output is active
-[]
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[]
- []
-
-[19 <./fig/URTS.png (PNG copy)>])
+)
 <fig/Author1.jpg, id=131, 90.3375pt x 117.43875pt>
 File: fig/Author1.jpg Graphic file (type jpg)
 <use fig/Author1.jpg>
@@ -1147,23 +1156,21 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[20
-
- <./fig/Author1.jpg> <./fig/Author2.jpg>] (paper.aux)
+[20 <./fig/Author1.jpg> <./fig/Author2.jpg>] (paper.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 8775 strings out of 478659
- 150312 string characters out of 2845921
- 493571 words of memory out of 3000000
- 26671 multiletter control sequences out of 15000+600000
- 502062 words of font info for 167 fonts, out of 8000000 for 9000
+ 8776 strings out of 478659
+ 150324 string characters out of 2845921
+ 494504 words of memory out of 3000000
+ 26672 multiletter control sequences out of 15000+600000
+ 503706 words of font info for 168 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,22n,117p,2395b,531s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 70i,22n,117p,2784b,529s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (20 pages, 7469989 bytes).
+Output written on paper.pdf (20 pages, 7474732 bytes).
 PDF statistics:
  233 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
