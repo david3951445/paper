@@ -455,6 +455,11 @@ where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t))$, $\dd
 
 \textit{
     \begin{remark}
+        In Section 3.2.2 of \cite{sabatino2015quadrotor}, the dynamic system of UAV is divided into inner loop system and outer loop system to analyze the reference tracking problem of UAV. In order to improve the problem that the control gains in four state equations ($z$, $\phi$, $\theta$ and $\psi$) of inner loop system and the two states of outer loop system ($x$ and $y$) in \cite{sabatino2015quadrotor} has no design specifications, we changed the controller design method so that the control gains of the six states of UAV can be designed together via the given specifications, i.e., design control law $u(t)\in\mathbb{R}^6$ to achieve the tracking specification in (\ref{Hinf}). This can reduce the time cost of manually adjusting control gains. At the same time, the tracking control problem of UAV and robot can be analyzed simultaneously.
+    \end{remark}
+}
+\textit{
+    \begin{remark}
         The difference between the control law $u(t)$ in (\ref{eq:control}) of this article and the traditional feedback linearization control (or computed torque control) is that we use the "feedforward" linearization control, i.e., use $M(r(t))$ and $H(r(t),\dot{r}(t))$ instead of $M(x(t))$ and $H(x(t),\dot{x}(t))$. This is because the state $x(t)$ is assumed to be unavailable in this paper so $x(t)$ cannot be use in control law $u(t)$. While the asymptotical tracking control is achieved, i.e., $x(t)\rightarrow r(t)$, feedforward linearization control will be achieved too.
     \end{remark}
 }
