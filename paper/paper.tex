@@ -1,4 +1,6 @@
 \documentclass{ieeeaccess}
+% For one column
+% \documentclass[journal,12pt,onecolumn,draftclsnofoot,]{IEEEtran} 
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{breqn}
@@ -33,14 +35,15 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
     
-\begin{document}
 % \captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No need for one columne
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 
 \doi{10.1109/ACCESS.2017.DOI}
 
-\title{Integrating Local Motion Planning and Robust Decentralized Fault-Tolerant Tracking Control for Search and Rescue of Hybrid UAVs and Biped Robots Team System}
+\title{Integrating Local Motion Planning and Robust Decentralized Fault-Tolerant Tracking Control for Search and Rescue Task of Hybrid UAVs and Biped Robots Team System}
 
 \author{\uppercase{Bor-Sen Chen}\authorrefmark{1,2}, \IEEEmembership{Life
 Fellow, IEEE}, \uppercase{Ting-Wei Hung\authorrefmark{1}}}
@@ -57,33 +60,21 @@ of Taiwan under Grant MOST 108-2221-E-007-099-MY3.}
 {Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
 
 \corresp{Corresponding author: Bor-Sen Chen (bschen@ee.nthu.edu.tw)}
-% \address[1]{National Institute of Standards and 
-% Technology, Boulder, CO 80305 USA (e-mail: author@boulder.nist.gov)}
-% \address[2]{Department of Physics, Colorado State University, Fort Collins, 
-% CO 80523 USA (e-mail: author@lamar.colostate.edu)}
-% \address[3]{Electrical Engineering Department, University of Colorado, Boulder, CO 
-% 80309 USA}
-% \tfootnote{This paragraph of the first footnote will contain support 
-% information, including sponsor and financial support acknowledgment. For 
-% example, ``This work was supported in part by the U.S. Department of 
-% Commerce under Grant BS123456.''}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \markboth
-% {Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
-% {Author \headeretal: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS}
-
-% \corresp{Corresponding author: First A. Author (e-mail: author@ boulder.nist.gov).}
-% .
+\begin{document}
 
 \begin{abstract}
-In this study, we integrate a local motion planning and robust $H_\infty$ decentralized feedforward reference tracking fault-tolerant control (FTC) of a hybrid UAVs and biped robots team system (URTS) for the purpose of search and rescue (S\&R). A system architecture of performing S\&R tasks for each agent in URTS is proposed to explain how to integrate reference trajectory planning and tracking control in URTS for S\&R usage. In order to optimally allocate tasks to each agent in URTS, a task allocate problem is investigated. In order to optimally plan a path for each agent in URTS to reach these allocated task locations, a path planning problem is formulated. To deal with complex S\&R terrain, we decompose the path planning problem into three steps, i.e., (i) global path planning, (ii) behavior decision and (iii) local motion planning. Through such decomposition, some roadmap-based path planning algorithms can be applied to the global path planning of agents in URTS. By the behavior decision, we can decide what behavior to follow the global path according to the terrain environment. Next, we focus on the local motion planning problem of flying behavior for UAV and walking behavior for robot, and then the tracking control problem for UAVs and robots in the hybrid team system. The relationship between local motion planning and tracking control, i.e., the transformation of the reference trajectory, is also explored in detail. By converting the dynamics models of UAV and robot into an unified agent dynamic model, the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC strategy is proposed for each agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to achieve the active FTC through observer estimation. Then, the design of the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC strategy of URTS is transformed into a linear matrix inequality (LMI) -constrained optimization problem of each agent in the hybrid team system which can be solved by a two-step design procedure. With the help of MATLAB LMI Toolbox, the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC design problem of each UAV and robot in URTS is effectively solved. Finally, the simulation results are used to demonstrate the integration of local motion planning with the S\&R tasks of hybrid URTS and to verify the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC method of hybrid URTS under the external disturbance and the actuator and sensor fault.
+In this study, we integrate a local motion planning and robust $H_\infty$ decentralized observer-based feedforward reference tracking fault-tolerant control (FTC) of a hybrid UAVs and biped robots team system (URTS) for the purpose of search and rescue (S\&R). A system architecture of performing S\&R tasks for each agent in URTS is proposed to explain how to integrate reference trajectory planning and tracking control in URTS for S\&R usage. In order to optimally allocate tasks to each agent in URTS, a task allocate problem is investigated. In order to optimally plan a path for each agent in URTS to reach these allocated task locations, a path planning problem is formulated. To deal with complex S\&R terrain, we decompose the path planning problem into three steps, i.e., (i) global path planning, (ii) behavior decision and (iii) local motion planning. Through such decomposition, some roadmap-based path planning algorithms can be applied to the global path planning of agents in URTS. By the behavior decision, we can decide what behavior to follow the global path according to the terrain environment. Next, we focus on the local motion planning problem of flying behavior for UAV and walking behavior for robot, and then the tracking control problem for UAVs and robots in the hybrid team system. The relationship between local motion planning and tracking control, i.e., the transformation of the reference trajectory, is also explored in detail. By a proposed novel feedforward linearization control scheme, the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC design is significantly simplified for each agent in URTS. A novel smoothing signal model of fault signal is embedded into the linearized system to achieve the active FTC through observer estimation. Then, the design of the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC strategy is transformed into a linear matrix inequality (LMI) -constrained optimization problem of each agent in the hybrid team system which can be solved by a two-step design procedure. With the help of MATLAB LMI Toolbox, the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC design problem of each UAV and robot in URTS is effectively solved. Finally, the simulation results are used to demonstrate the integration of local motion planning with the S\&R tasks of hybrid URTS and to verify the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC method of hybrid URTS under the external disturbance and the actuator and sensor fault.
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% No need for one columne
 \begin{keywords}
 biped robot, fault-tolerant control, heterogeneous multi-agent system, robust $H_\infty$ control, S\&R, smoothing signal model, UAV, hybrid UAVs-UGVs team system
 \end{keywords}
-
 \titlepgskip=-15pt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \maketitle
 
@@ -114,8 +105,8 @@ In order to cope with the fault in the actual system, the fault-tolerant control
 The contributions of this study are described as follows:
 \begin{enumerate}
     \item A system architecture of performing S\&R tasks for each agent in hybrid URTS is proposed so that the local motion planning and reference tracking control issues involved in each agent of hybrid URTS and their systematic relationships can be defined and resolved.
-    \item A transformation from the path planned by a roadmap-based path planning algorithm to the reference trajectory required for team formation tracking control design is proposed to enable some common roadmap-based path planning algorithms to guide the team formation tracking control of agents in hybrid URTS to reach the goal location without obstacle collision.
-    \item A general agent dynamic model is proposed so that the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC problems of the heterogeneous agents in URTS, i.e., UAVs and biped robots, can be solved together to achieve S\&R task under external disturbance and actuator and sensor fault.
+    \item A transformation from the path planned by a roadmap-based path planning algorithm to the reference trajectory required for S\&R task of team formation tracking control design is proposed to enable some common roadmap-based path planning algorithms to guide the team formation tracking control of agents in hybrid URTS to reach the goal location without obstacle collision.
+    \item A general agent dynamic model and a novel feedforward linearization control scheme are proposed so that the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC problems of the heterogeneous agents in URTS, i.e., UAVs and biped robots, can be solved simultaneously to achieve S\&R task under external disturbance and actuator and sensor fault.
 \end{enumerate}
 
 The remainder of the paper is organized as follows. In Section II, a system architecture of performing S\&R tasks for each agent in hybrid URTS is proposed and the function and relationship among its components, i.e., Task Allocation, Global Path Planning, Behavior Decision, Local Motion Planning and Reference Tracking Control are described. In Section III, the dynamics models of agents in URTS are given to plan the motion of UAV flying and biped robot walking behavior and the control strategy of agents. In Section IV, a robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC is proposed for the agents in URTS with the help of a general agent dynamic model. In Section V, a simulation example is given to illustrate the operation of the system architecture of performing S\&R tasks for each agent in hybrid URTS and to verify the effectiveness of the proposed tracking control method. In Section VI, a conclusion is maded.
@@ -262,6 +253,7 @@ However, for these two behaviors, there exists an inevitable holonomic constrain
 
 \subsection{Local motion planning of flying of UAV}
 A dynamic model about how an UAV in URTS moves in the physical world is given first. By Newton-Euler equation, the dynamic model of each UAV in URTS can be formulated as \cite{sabatino2015quadrotor}:
+
 \begin{equation} \label{eq:uav} 
     \begin{split}
         \begin{bmatrix}
@@ -366,7 +358,7 @@ By Lagrange equation, the dynamic model of a biped robot in URTS can be formulat
         & \tau_R = M_R(q)\ddot{q} + C(q,\dot{q})\dot{q} + G(q)    
     \end{split}
 \end{equation}
-where $\tau_R$ is the total torque on revolute joints, $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M_R(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For biped robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is planned in the joint space. Furthermore, the walking of biped robot suffers from the falling problem, i.e, how to plan a stable walking pattern to prevent robot from falling. These make the motion planning of walking behavior of robot more difficult. In this paper, a three-dimensional linear inverted pendulum Model (3D-LIPM) \cite{kajita2001real} is used for the motion planning of walking behavior of each biped robot in URTS.
+where $\tau_R$ is the total torque on revolute joints, $q,\dot{q},\ddot{q}\in\mathbb{R}^{12}$  are angular position, angular velocity, and angular acceleration vector of revolute joints, $M_R(q)\in\mathbb{R}^{12\times 12}$ is the inertia matrix, $C(q,\dot{q})\in\mathbb{R}^{12}$ is the Coriolis and centripetal force vector and $G(q)\in\mathbb{R}^{12}$ is the gravitational force vector. The detailed kinematic and dynamic parameters can be found in the online source \cite{ourrobot}. For biped robot, the reference trajectory $r(t)=q_r(t)\in\mathbb{R}^{12}$ is planned in the joint space. Furthermore, the walking of biped robot suffers from the falling problem, i.e, how to plan a stable walking pattern to prevent robot from falling. These make the motion planning of walking behavior of robot more difficult. In this paper, a Three-Dimensional Linear Inverted Pendulum Model (3D-LIPM) \cite{kajita2001real} is used for the motion planning of walking behavior of each biped robot in URTS.
 
 With 3D-LIPM, we can significantly reduce the amount of computation. Let us define the body frame of biped robot as $\{ \widehat{X_b}, \widehat{Y_b}, \widehat{Z_b} \}$ as in \cite{ourrobot}. Taking the forward direction of biped robot as $\widehat{X_b}$ direction, the left direction as $\widehat{Y_b}$ direction, and the torso direction as $\widehat{Z_b}$ direction in body frame, "Falling" means the moments on the robot in $\widehat{X_b}$ and $\widehat{Y_b}$ direction are not zero. More accuately, the biped robot will not fall if the zero moment point (ZMP) lies in the support polygon, i.e., the convex hull of face of supported foots. The ZMP in $\widehat{X_b}$ direction can be described as \cite{huang2001planning} (The ZMP in the $\widehat{Y_b}$ direction is in the same form):
 \begin{equation} \label{eq:x_zmp}
@@ -423,11 +415,7 @@ Through the previous step, the planning of the reference path $r[k]$ of each age
 \begin{equation} \label{eq:agent} 
     M(x(t))\ddot{x}(t) + H(x(t),\dot{x}(t)) = u(t)
 \end{equation}
-where $u(t)\in\mathbb{R}^n$ is the control input vector, $x(t)\in\mathbb{R}^n$ is the state vector, $M(x(t))\in\mathbb{R}^{n\times n}$ is the inertia matrix, and $H(x(t),\dot{x}(t))\in\mathbb{R}^n$ is the non-inertial force vector. The control law for an agent in URTS is given as:
-\begin{equation} \label{eq:control}
-    u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t)) 
-\end{equation}
-where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t))$, $\ddot{r}(t)$ and $H(r(t), \dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law to be futher designed for improving system tracking robustness. For each UAV in hybrid URTS, we have $u(t)=\begin{bmatrix}
+where $u(t)\in\mathbb{R}^n$ is the control input vector, $x(t)\in\mathbb{R}^n$ is the state vector, $M(x(t))\in\mathbb{R}^{n\times n}$ is the inertia matrix, and $H(x(t),\dot{x}(t))\in\mathbb{R}^n$ is the non-inertial force vector. For each UAV in hybrid URTS, we have $u(t)=\begin{bmatrix}
     f_u \\ \tau_u
 \end{bmatrix}$, $x(t)=\begin{bmatrix}
     X \\ \Theta
@@ -444,27 +432,33 @@ where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t))$, $\dd
     \dot{X} \\ \dot{\Theta}
 \end{bmatrix}$, and $n=6$ by UAV dynamics in (\ref{eq:uav}). For each robot in hybrid URTS, we have $u(t)=\tau_R$, $x(t)=q$, $M(x(t))=M_R(q)$, $H(x(t),\dot{x}(t))=C(q,\dot{q})\dot{q} + G(q)$, and $n=12$ by robot dynamics in (\ref{eq:robot}).
 
+The feedforward linearization control law for an agent in URTS is proposed as:
+\begin{equation} \label{eq:control}
+    u(t)= M(r(t))(\ddot{r}(t) + u_{fb}(t)) + H(r(t),\dot{r}(t)) 
+\end{equation}
+where $r(t)\in\mathbb{R}^n$ is the desired reference trajectory, $M(r(t))$, $\ddot{r}(t)$ and $H(r(t), \dot{r}(t))$ are the feedfoward control terms for canceling system nonlinearity, and $u_{fb}(t)$ is the feedback control law to be futher designed for improving system tracking robustness.
+
 \textit{
     \begin{remark}
-        In Section 3.2.2 of \cite{sabatino2015quadrotor}, the dynamic system of UAV is divided into inner loop system and outer loop system to analyze the reference tracking problem of UAV. In order to improve the problem that the control gains in four state equations ($z$, $\phi$, $\theta$ and $\psi$) of inner loop system and the two states of outer loop system ($x$ and $y$) in \cite{sabatino2015quadrotor} has no design specifications, we changed the controller design method so that the control gains of the six states of UAV can be designed together via the given specifications, i.e., design control law $u(t)\in\mathbb{R}^6$ to achieve the observer-based tracking specification in (\ref{Hinf}). This can reduce the time cost of manually adjusting control gains. At the same time, the tracking control problem of UAV and robot can be analyzed simultaneously.
+        In Section 3.2.2 of \cite{sabatino2015quadrotor}, the dynamic system of UAV is divided into inner loop system and outer loop system to analyze the reference tracking problem of UAV. In order to improve the problem that the control gains in four state equations ($z$, $\phi$, $\theta$ and $\psi$) of inner loop system and the two states of outer loop system ($x$ and $y$) in \cite{sabatino2015quadrotor} has no design specifications, we changed the controller design method so that the control gains of the six states of UAV can be designed together via the given specifications, i.e., design the feedforward linearization control law $u(t)\in\mathbb{R}^6$ to achieve the observer-based tracking specification in (\ref{Hinf}). This can reduce the time cost of manually adjusting control gains. At the same time, the tracking control problem of UAV and robot can be analyzed simultaneously.
     \end{remark}
 }
 \textit{
     \begin{remark}
-        The difference between the control law $u(t)$ in (\ref{eq:control}) of this article and the traditional feedback linearization control (or computed torque control) is that we use the "feedforward" linearization control, i.e., use $M(r(t))$ and $H(r(t),\dot{r}(t))$ instead of $M(x(t))$ and $H(x(t),\dot{x}(t))$. This is because the state $x(t)$ is assumed to be unavailable in this paper so $x(t)$ cannot be used in control law $u(t)$. While the asymptotical tracking control is achieved, i.e., $x(t)\rightarrow r(t)$, feedforward linearization control will be achieved too.
+        The difference between the feedforward linearization control law $u(t)$ in (\ref{eq:control}) of this article and the traditional feedback linearization control (or computed torque control) is that we use the "feedforward" linearization control, i.e., use $M(r(t))$ and $H(r(t),\dot{r}(t))$ in (\ref{eq:control}) instead of $M(x(t))$ and $H(x(t),\dot{x}(t))$. This is because the state $x(t)$ is assumed to be unavailable in this paper so $x(t)$ cannot be used in feedforward linearization control law $u(t)$. While the asymptotical tracking control is achieved, i.e., $x(t)\rightarrow r(t)$, the feedforward linearization control will be achieved too.
     \end{remark}
 }
-To complete the planning of reference trajectory $r(t)$ of each agent, a D/A converter is used to transform the reference path $r[k]$ (output of local motion planning) into a continuous signal $r'(t)$ as shown in Fig. \ref{fig:tracking}. For UAV, we get $r'(t) = [x_r, y_r, z_r, \phi_r]^T\in\mathbb{R}^{4}$. Besides, for an UAV in hybrid URTS, it can be seen that the control input $u(t)=[f_u^T, \tau_u^T]^T = [f_x, f_y, f_z, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^6$ we design in (\ref{eq:control}) is different from the actuator control input $u'(t)=[F, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^4$ for UAV since UAV is an underactuated system. The two degrees of freedom we reserved in Section III-A, i.e., $\phi_r$ and $\theta_r$, are just to solve this problem. By substituting $\Theta=\begin{bmatrix}
+To complete the planning of reference trajectory $r(t)$ of each agent, a D/A converter is used to transform the reference path $r[k]$ (output of local motion planning) into a continuous signal $r'(t)$ as shown in Fig. \ref{fig:tracking}. For UAV, we get $r'(t) = [x_r, y_r, z_r, \psi_r]^T\in\mathbb{R}^{4}$. Besides, for an UAV in hybrid URTS, it can be seen that the control input $u(t)=[f_u^T, \tau_u^T]^T = [f_x, f_y, f_z, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^6$ we design in (\ref{eq:control}) is different from the actuator control input $u'(t)=[F, \tau_x, \tau_y, \tau_z]^T\in\mathbb{R}^4$ for UAV since UAV is an underactuated system. The two degrees of freedom we reserved in Section III-A, i.e., $\phi_r$ and $\theta_r$, are just to solve this problem. By substituting $\Theta=\begin{bmatrix}
     \phi_r \\ \theta_r \\ \psi_r
 \end{bmatrix}$ into $\begin{bmatrix}
         f_x \\ f_y \\ f_z
 \end{bmatrix} = R(\Theta)\begin{bmatrix}
         0 \\ 0 \\ F
-\end{bmatrix}$ from UAV dynacmis in (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations using inverse dynamic because the component forces $f_x$, $f_y$ and $f_z$, and the yaw angle $\psi_r$ are given. Combining $\phi_r$ and $\theta_r$ with $r'(t)$, we obtain $r(t)= [x_r, y_r, z_r, \phi_r, \theta_r, \psi_r]^T$. At the same time, we find $u'(t)$. For biped robot, we directly have $r'(t)=r(t)\in\mathbb{R}^{12}$ and $u'(t)=u(t)\in\mathbb{R}^{12}$ since biped robot is a fully actuated system. So far, the transformation from reference path $r[k]$ to reference trajectory $r(t)$ for each agent in hybrid URTS is done. We define the process of converting $r'(t)$ and $u(t)$ into $r(t)$ and $u'(t)$ mentioned above as the reference generation block in Fig. \ref{fig:tracking}.
+\end{bmatrix}$ from UAV dynacmis in (\ref{eq:uav}), the 3 unknown variables $F$, $\phi_r$ and $\theta_r$ can be found from these 3 equations using inverse dynamic because the component forces $f_x$, $f_y$ and $f_z$, and the yaw angle $\psi_r$ are given. Combining $\phi_r$ and $\theta_r$ with $r'(t)$, we obtain $r(t)= [x_r, y_r, z_r, \phi_r, \theta_r, \psi_r]^T$. At the same time, we find $u'(t)$. For biped robot, we directly have $r(t)=r'(t)\in\mathbb{R}^{12}$ and $u'(t)=u(t)\in\mathbb{R}^{12}$ since biped robot is a fully actuated system. So far, the transformation from reference path $r[k]$ to reference trajectory $r(t)$ for each agent in hybrid URTS is done. We define the process of converting $r'(t)$ and $u(t)$ into $r(t)$ and $u'(t)$ mentioned above as the reference generation block in Fig. \ref{fig:tracking}.
 \begin{figure*}[htbp]
     \centering
     \includegraphics[scale=.12]{fig/tracking.png}\caption{
-    (a) The flowchart of Reference Tracking Control block in Fig. \ref{fig:sys} of each agent in hybrid URTS. The controller block is described in (d). The controller block (the proposed general $H_\infty$ decentralized observer-based feedforward reference tracking FTC scheme) is designed for a fully actuated agent dynamic model in (\ref{eq:agent}) while the UAV is an underactuated system. It makes the designed control law $u(t)\in\mathbb{R}^6$ and the actuator control input $u'(t)\in\mathbb{R}^4$ different for UAV. The reference generator block is introduced to deal with this problem. For UAVs, the reference generator block is described in (b). For robots, the reference generator block is described in (c). 
+    (a) The flowchart of Reference Tracking Control block in Fig. \ref{fig:sys} of each agent in hybrid URTS. The controller block is described in (d). The controller block (the proposed general $H_\infty$ decentralized observer-based feedforward reference tracking FTC scheme) is designed for a fully actuated agent dynamic model in (\ref{eq:agent}) while the UAV is an underactuated system. It makes the designed feedforward linearization control law $u(t)\in\mathbb{R}^6$ and the actuator control input $u'(t)\in\mathbb{R}^4$ different for UAV. The reference generator block is introduced to deal with this problem. For UAVs, the reference generator block is described in (b). For robots, the reference generator block is described in (c). 
     (b) The reference generator block for each UAV. $u'(t)$ and $r(t)$ can be calculated from $u(t)$ and $r'(t)$ by inverse dynamic through the UAV dynamic model in (\ref{eq:uav}). 
     (c) The reference generator block for each robot. $u'(t)=u(t)$ and $r(t)=r'(t)$ since the robot dynamic model in (\ref{eq:robot}) is fully actuated. 
     (d) The proposed general $H_\infty$ decentralized observer-based feedforward reference tracking FTC scheme for each agent in hybrid URTS.}
@@ -511,7 +505,7 @@ Let $x_{i,j}(t)$ denote the state vector of agents $\alpha_{i,j}$ where $i=1,2,\
 % \end{equation}
 % where $M_0, C_0, G_0$ and  $F_0$ is the nominal part and $\Delta M,\Delta C,\Delta G$ and $\Delta F$ is the uncertain part.
 
-Now, substituting the control law $u(t)$ in (\ref{eq:control}) into (\ref{eq:agent d1}) and subtracting $M(x(t))\ddot{r}(t)$ from the left and right sides, we have:
+Now, substituting the feedforward linearization control law $u(t)$ in (\ref{eq:control}) into (\ref{eq:agent d1}) and subtracting $M(x(t))\ddot{r}(t)$ from the left and right sides, we have:
 \begin{equation} \label{eq:agent1}
     \begin{split}
         & M(x(t))(\ddot{x}(t)-\ddot{r}(t)) + H(x(t),\dot{x}(t)) \\
@@ -631,7 +625,7 @@ where $\bar{e}(t) = \begin{bmatrix}
 %         The equation (\ref{eq:df}) is derived by Taylor expansion, so Assumption \ref{asm:smooth} is nessasry. Unlike previous work, a finite-difference-method-based modeling method is proposed, which reduce the approximation error between origin fault signal and its smooth model. Besides, the fault signals $f_i(t)$ are assumed to be of differentiability class $C^{p-1}$ rather than bounded, which will make the proposed method more general for practical scenario.
 %     \end{remark}
 % }
-Since the fault signals become a state variable of the augmented tracking error system of an agent in (\ref{eq:e_bar}), their corruption on the tracking error dynamic system in (\ref{eq:error}) can be avoided. A Luenberger observer is proposed to estimate them and $\pmb{e}(t)$ simutaniously to achieve an active FTC by the following estimation system:
+Since the fault signals become a state variable of the augmented tracking error system of an agent in (\ref{eq:e_bar}), their corruption on the tracking error dynamic system in (\ref{eq:error}) can be avoided. A Luenberger observer is proposed to estimate them and $\pmb{e}(t)$ simultaneously to achieve an active FTC by the following estimation system:
 \begin{equation} \label{eq:e_hat}
     \begin{split}
         & \dot{\hat{\bar{e}}}(t)=\bar{A}\hat{\bar{e}}(t)+\bar{B}u_{fb}(t)-{L}(y(t)-\hat{y}(t)) \\
@@ -814,7 +808,7 @@ The design procedure of the optimal decentralized $H_\infty$ observer-based feed
     \item Solve the LMIs-constrained optimization problem (\ref{LMI constraint}) by the two-step design procedure to obtain the control gain $K$ and observer gain $L=P_2^{-1}Y_2$ for observer-based controller in (\ref{eq:e_hat}) and (\ref{eq:u_fb}) of each agent in the hybrid URTS.
 \end{enumerate}
 
-The overall flowchart of reference tracking control of each agent in hybrid URTS is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the desired reference trajectory $r(t)$ and actuator control input $u'(t)$ for each agent according to the continuous signal $r'(t)$ obtained by D/A and the control law $u(t)$ we design in (\ref{eq:control}). Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)$. $\pmb{r}(t)$ is then passed to observer to calculate the error $\pmb{e}(t)$. Its differential, $\dot{\pmb{r}}(t)$, is then inputted to controller for feedforward control. The sensor measures not only the agent's own information (e.g., position or velocity) but also environmental information. The former, measurement output $y(t)$, is passed to observer in (\ref{eq:e_hat}) to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The latter is passed back to the high-level block for positioning, mapping and object recognition.
+The overall flowchart of reference tracking control of each agent in hybrid URTS is shown in Fig. \ref{fig:tracking}. The reference generator is used to compute the desired reference trajectory $r(t)$ and actuator control input $u'(t)$ for each agent according to the continuous signal $r'(t)$ obtained by D/A and the feedforward linearization control law $u(t)$ we design in (\ref{eq:control}). Passing $r(t)$ through the integrator and differentiator, we get $\pmb{r}(t)$. $\pmb{r}(t)$ is then passed to observer to calculate the error $\pmb{e}(t)$. Its differential, $\dot{\pmb{r}}(t)$, is then inputted to controller for feedforward control. The sensor measures not only the agent's own information (e.g., position or velocity) but also environmental information. The former, measurement output $y(t)$, is passed to observer in (\ref{eq:e_hat}) to get the estimation $\hat{\bar{e}}(t)$ for feedback control. The latter is passed back to the high-level block for positioning, mapping and object recognition.
 
 \textit{
     \begin{remark}
@@ -854,14 +848,14 @@ The overall flowchart of reference tracking control of each agent in hybrid URTS
 Although the control gain in (\ref{eq:u_fb}) and observer gain in (\ref{eq:e_hat}) for each agent in URTS can already be found through the previous steps, the calculation speed of solving the matrix inequality (\ref{BMI1}) and the online calculation speed of controller and observer can be further improved by reducing the dimensionality of the system. Observing the matrices $A,B,C,B_2$ in the linearized system (\ref{eq:error}), it can be further split into $n$ subsystems for each agent ($n=6$ for UAV and $n=12$ for robot) if the matrices $C,B_2$ in the output equation (\ref{eq:agent output}) have the same form to $A,B$ and $l=l_0n, o=o_0n$, i.e., $C = C_0\otimes I_n,B_2 = B_{2,0}\otimes I_n$ where $C_0\in\mathbb{R}^{l_0\times 3},B_{2,0}\in\mathbb{R}^{l_0\times o_0}$. Let us decompose 
 the error $\pmb{e}(t)=\sum_{i=1}^{n} \pmb{e}_i(t)\otimes\mathbf{e}_i$, 
 the control $u_{fb}(t)=\sum_{i=1}^{n} {u}_{fb,i}(t)\otimes\mathbf{e}_i$, 
-the acuaor fault $f_{1}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, 
+the acuator fault $f_{1}(t)=\sum_{i=1}^{n} {f}_{1,i}(t)\otimes\mathbf{e}_i$, 
 the output $y(t)=\sum_{i=1}^{n} {y}_i(t)\otimes\mathbf{e}_i$, 
 and the sensor fault $f_{2}(t)=\sum_{i=1}^{n} {f}_{2,i}(t)\otimes\mathbf{e}_i$ in (\ref{eq:error})
 where $\pmb{e}_i(t)\in\mathbb{R}^3$, $u_{fb,i}(t)\in\mathbb{R}$, $f_{1,i}(t)\in\mathbb{R}$, $y_i(t)\in\mathbb{R}^{l_0}$, $f_{2,i}(t)\in\mathbb{R}^{o_0}$ and $\mathbf{e}_i$ is standard unit column vectors in $\mathbb{R}^n$, we get the $n$ subsystems for each agent:
 \begin{equation} \label{eq:linear subsys}
     \begin{split}
         & \dot{\pmb{e}}_i(t)=A_0\pmb{e}_i(t)+B_0(u_{fb,i}(t)+f_{1,i}(t)) \\
-        & {y}_i(t)=C_0\pmb{e}_i(t)+B_{2,0}f_{2,i}(t)   
+        & {y}_i(t)=C_0\pmb{e}_i(t) + C_0\pmb{r}_i(t) + B_{2,0}f_{2,i}(t)   
     \end{split}
 \end{equation} where $i=1,2,...,n$.
 \textit{
@@ -883,10 +877,10 @@ In this case, the calculation speed of finding gains $K,L$ of each agent can be 
 \section{simulation results}
 In this section, a specific S\&R procedure for URTS is given to illustrate the proposed system architecture of performing S\&R tasks for each agent in hybrid URTS and demonstrate the effectiveness of local motion planning and reference control strategy in hybrid URTS. First, a S\&R area divided into $N_T$ areas $area_i,i=1,2,...,N_T$, is given as shown in Fig. \ref{fig:SR_area}. To simplify the description, we will focus on the UAV and robot in the $i$th team and the $(i+1)$th team. Suppose each team has 5 agents, i.e., $N_A=5$, then we can denote the $i$th team as a set, $team_i=\{ \alpha_{i,j} | j=1,2,...,5 \}$.
 
-At the beginning, the task allocation block will assign the agents in $team_i$ with some search tasks in $area_i$ to build the occupancy map and find targets. The search task is assumed to be allocated by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks in Fig. \ref{fig:S_task} as a set $task_1=\{ T_j | j=1,2,...,5 \}\cup\{T_6\}$, then the proper agent-task pairs $allocation_i=\{ (\alpha_{i,j},T_j) | j=1,2,...,5 \}\cup\{(\alpha_{i+1,2},T_6)\}$ can be obtained through the task allocation block. Suppose a goal is found after a while as shown in Fig. \ref{fig:S_task}. At this point, we have a rescue task $T_7$. The new task list $task_2=task_1\cup\{ T_7 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{i,5}$ and $\alpha_{i+1,2}$ to perform $T_7$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{i,5},T_5),(\alpha_{i+1,2},T_6) \})\cup\{ (\alpha_{i,5},T_7),(\alpha_{i+1,2},T_7) \}$. Until the S\&R task is over, the task allocation block will continuously work in the similar way.
+At the beginning, the task allocation block will assign the agents in $team_i$ with some search tasks in $area_i$ to build the occupancy map and find targets. The search task is assumed to be allocated by dividing the unsearched region as shown in Fig. \ref{fig:S_task}. Representing the search tasks in Fig. \ref{fig:S_task} as a set $task_1=\{ T_j | j=1,2,...,5 \}\cup\{T_6\}$, then the proper agent-task pairs $allocation_1=\{ (\alpha_{i,j},T_j) | j=1,2,...,5 \}\cup\{(\alpha_{i+1,2},T_6)\}$ can be obtained through the task allocation block. Suppose a goal is found after a while as shown in Fig. \ref{fig:S_task}. At this point, we have a rescue task $T_7$. The new task list $task_2=task_1\cup\{ T_7 \}$ is obtained by updating the old one. If the ground station assigns $\alpha_{i,5}$ and $\alpha_{i+1,2}$ to perform $T_7$ through the task allocation algorithm, then we have the new allocation $allocation_2=(allocation_1-\{ (\alpha_{i,5},T_5),(\alpha_{i+1,2},T_6) \})\cup\{ (\alpha_{i,5},T_7),(\alpha_{i+1,2},T_7) \}$. Until the S\&R task is over, the task allocation block will continuously work in the similar way.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.4]{fig/SR_area.pdf}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$.}%
+    \includegraphics[scale=.12]{fig/SR_area.png}\caption{An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$.}%
     \label{fig:SR_area}
 \end{figure}
 \begin{figure}[htbp]
@@ -895,7 +889,7 @@ At the beginning, the task allocation block will assign the agents in $team_i$ w
     \label{fig:S_task}
 \end{figure}
 
-To illustrate the global path planning block and behavior decision block, we choose the pairs $(\alpha_{i,5},T_7)$ and $(\alpha_{i,1}, T_1)$ as example. For the UAV $\alpha_{i,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=16$ is directly assigned as shown in Fig. \ref{sim:flying} without going through the global path planning block by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,k_f]$. For the robot $\alpha_{i,5}$, we have the goal configuration $q_{goal}$ from the task $T_7$. With the current configuration $q_{start}$ and configuration space $\mathcal{C}$ obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be found as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking}$ for $n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing}$ for $n\in\mathbb{Z}\cap[6,15]$ and $\beta_n=\mathit{running}$ for $n\in\mathbb{Z}\cap[16,27]$. We choose the walking behavior $\beta_n, n\in\mathbb{Z}\cap[1,5]$ to illustrate the local motion planning block of robots.
+To illustrate the global path planning block and behavior decision block, we choose the pairs $(\alpha_{i,5},T_7)$ and $(\alpha_{i,1}, T_1)$ as example. For the UAV $\alpha_{i,1}$, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=16$ is directly assigned as shown in Fig. \ref{sim:flying} without going through the global path planning block by \textit{Assumption \ref{asm:collision}}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{flying}, n\in\mathbb{Z}\cap[1,k_f]$. For the robot $\alpha_{i,5}$, we have the goal configuration $q_{goal}$ from the task $T_7$. With the current configuration $q_{start}$ and configuration space $\mathcal{C}$ obtained by SLAM, the path $(\sigma_n),n\in\mathbb{Z}\cap[1,k_f],k_f=27$ can be planned as shown in Fig. \ref{fig:R_task}. The behavior sequence $(\beta_n)$ is set as $\beta_n=\mathit{walking}$ for $n\in\mathbb{Z}\cap[1,5]$, $\beta_n=\mathit{climbing}$ for $n\in\mathbb{Z}\cap[6,15]$ and $\beta_n=\mathit{running}$ for $n\in\mathbb{Z}\cap[16,27]$. We choose the walking behavior $\beta_n, n\in\mathbb{Z}\cap[1,5]$ to illustrate the local motion planning block of robots.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=.57]{fig/uav_LMP.png}\caption{The result of local motion planning of flying behavior in $(\beta_n), n\in\mathbb{Z}\cap[1,16]$ of UAV $\alpha_{i,1}$ performing the search task $T_1$.}%
@@ -903,7 +897,7 @@ To illustrate the global path planning block and behavior decision block, we cho
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=.6]{fig/robot_PP.png}\caption{The path planning result of the robot $\alpha_{i,5}$ performing the rescue task $T_7$ using RRT algorithm. The block polygons represent the obstacle space $\mathcal{C}_{obs}$.}%
+    \includegraphics[scale=.6]{fig/robot_PP.png}\caption{The global path planning result of the robot $\alpha_{i,5}$ performing the rescue task $T_7$ using RRT algorithm. The block polygons represent the obstacle space $\mathcal{C}_{obs}$.}%
     \label{fig:R_task}
 \end{figure}
 
@@ -1033,7 +1027,7 @@ We use three teams $team_i, i=1, 2, 3$ to show the team tracking results of hybr
 For further verification, we visualized the real time simulation of reference planning and team formation tracking control in hybrid URTS and the configuration trajectory of biped robot on the online resource \cite{mySimulation}. The results again demonstrate the effectiveness of the proposed $H_\infty$ decentralized observer-based feedforward reference tracking FTC method for agents in URTS.
 
 \section{conclusion}
-In this study, a system architecture of performing S\&R tasks for each agent in hybrid URTS is given. The task allocation problem and path planning problem are investigated and unified to the integration of local motion planning and robust $H_\infty$ decentralized feedforward reference tracking FTC for hybrid URTS. By decomposing the path planning process into three subprocess, i.e., global path planning, behavior decision and local motion planning, some common roadmap-based path planning algorithm can be applied in the global path planning of URTS. Through the behavior decision, the agent can decide the appropriate behavior according to the terrain environment. Next, we focus on the local motion planning of UAV flying and robot walking behavior. Besides, the bridging method between the reference path planned by the local motion planning block and the reference trajectory to be followed in the reference tracking control block is also given. By a general nonlinear agent dynamic model, the tracking control problem of UAV and robot can be analyzed together. Through a feedforward control strategy, the nonlinear tracking control problem with external disturbances is transformed to a regulation problem with fault signals. Then, a smoothing signal model is introduced to embed the fault signals into the state vector to avoid the corruption on the agent dynamic model. After that, a robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC strategy is proposed for each agent in the hybrid URTS. To solve the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC problem, we transform it into a LMI-constrained optimization problem by a two-step design procedure, which can be effectively solved by MATLAB LMI Toolbox. A simulation example is given to illustrate more concretely how the proposed hybrid URTS architecture actually works. Finally, the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC method is also verified by the simulation results.
+In this study, a system architecture of performing S\&R tasks for each agent in hybrid URTS is given. The task allocation problem and path planning problem are investigated and unified to the integration of local motion planning and robust $H_\infty$ decentralized feedforward reference tracking FTC for hybrid URTS. By decomposing the path planning process into three subprocess, i.e., global path planning, behavior decision and local motion planning, some common roadmap-based path planning algorithm can be applied in the global path planning of URTS. Through the behavior decision, the agent can decide the appropriate behavior according to the terrain environment. Next, we focus on the local motion planning of UAV flying and robot walking behavior. Besides, the bridging method between the reference path planned by the local motion planning block and the reference trajectory to be followed in the reference tracking control block is also given. By a general nonlinear agent dynamic model, the tracking control problem of UAV and robot can be analyzed together. Through a novel feedforward linearization control strategy, the nonlinear tracking control problem with external disturbances is transformed to a regulation problem with fault signals. Then, a smoothing signal model is introduced to embed the fault signals into the state vector to avoid the corruption on the agent dynamic model. After that, a robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC strategy is proposed for each agent in the hybrid URTS. To solve the robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC problem, we transform it into a LMI-constrained optimization problem by a two-step design procedure, which can be effectively solved by MATLAB LMI Toolbox. A simulation example is given to illustrate more concretely how the proposed hybrid URTS architecture actually works. Finally, the effectiveness of the proposed robust $H_\infty$ decentralized observer-based feedforward reference tracking FTC method is also verified by the simulation results.
 
 % \nocite{*}
 \bibliographystyle{IEEEtran}
