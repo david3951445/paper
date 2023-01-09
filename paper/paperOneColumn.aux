@@ -1,0 +1,177 @@
+\relax 
+\citation{9700861}
+\citation{8352646}
+\citation{chen2019control}
+\citation{9371292}
+\citation{skaltsis2021survey}
+\citation{zhang2018path}
+\citation{9108245}
+\citation{arbanas2018decentralized}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\citation{9384209}
+\citation{olcay2017design}
+\citation{8931370}
+\citation{wang2022consensus}
+\citation{6669235}
+\citation{paden2016survey}
+\@writefile{toc}{\contentsline {section}{\numberline {II}PRELIMINARIES OF URTS for S\&R usage}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The system architecture of performing S\&R tasks for each agent in hybrid URTS. The 2 blocks on left hand side are used to convert the low-level sensor information into high-level information. The Simultaneous Localization And Mapping (SLAM) block converts sensor information and distance information into the current configuration $q_{start}$ of agents and an occupancy map $\mathcal  {C}$ of URTS. The visual object recognition block provides distance information and object information through the analysis of sensor information. The object information provides agent machine vision that enables it to determine an appropriate behavior (e.g., a robot can see an obstacle and decide to climb through it). The 5 blocks on right hand side are the flowchart of an agent performing a S\&R task. From the top to the bottom, it is the decision of the goal configuration $q_{qoal}$ of agents, the planning of the path $(\sigma _n)$ of agents, the decision of the behavior $(\beta _n)$ of agents corresponding to the path, the planning of the reference path $r[k]$ of agents corresponding to the behavior, and the low-level reference tracking control of agents. A block with two vertical lines inside in flowchart represents a predefined process which has more detailed subprocesses. Behavior Decision block is described detailly in Fig. 2\hbox {}. Local Motion Planning block to generate the desired reference is described detailly in Fig. 3\hbox {}. Reference Tracking Control block is described detailly in Fig. 5\hbox {}.\relax }}{6}{}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:sys}{{1}{6}}
+\citation{khamis2015multi}
+\citation{elbanhawi2014sampling}
+\citation{liu2018survey}
+\citation{elbanhawi2014sampling}
+\citation{elbanhawi2014sampling}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Task Allocation}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Global Path Planning}{7}{}\protected@file@percent }
+\citation{yu2013multi}
+\newlabel{asm:collision}{{2.4}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Behavior Decision}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  (a) The flowchart of Behavior Decision block in Fig. 1\hbox {} of each agent in URTS. The behavior to be took at every moment by each agent will be decided in this block. (b) The behavior set of each agent in URTS. The leaves of the tree structure are the possible behaviors an agent can take. For UAVs, the moving behavior set is described in (c). For robots, the moving behavior set is described in (d). (c) The moving behavior set of each UAV. (d) The moving behavior set of each robot.\relax }}{10}{}\protected@file@percent }
+\newlabel{fig:behavior}{{2}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Local Motion Planning}{10}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  (a) The flowchart of Local Motion Planning block in Fig. 1\hbox {} of each agent in URTS. Some basic behaviors of UAV and robot mentioned in Fig. 2\hbox {} are given to futher illustrate the flow of this block. The corresponding motion planning of an agent will be executed according to the behavior determined by Behavior Decision block. The exception terminator in figure represents an exceptional condition that performs unconsidered behaviors. The reference path $r[k]$ is a sequence (or discrete signal) planned by a specific behavior block. For UAVs, Moving block is described in (b). For robots, Moving block is described in (c). (b) Moving block of each UAV. Flying block in it is described detailly in Fig. 4\hbox {}. (c) Moving block of each robot. Walking block in it is described detailly in Fig. 4\hbox {}.\relax }}{11}{}\protected@file@percent }
+\newlabel{fig:LMP}{{3}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Reference Tracking Control}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {III}system description of UAVs and biped robots in URTS}{12}{}\protected@file@percent }
+\newlabel{asm:cc again}{{3.1}{12}}
+\citation{sabatino2015quadrotor}
+\citation{sabatino2015quadrotor}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The flowchart of flying block and walking block for local motion planning in Fig. 3\hbox {}. In both blocks, a smoothed path $(\sigma '_n)$ is obtained by post-processing first. Then the respective motion of behavior is planned. (a) For the Flying block in Fig. 3\hbox {} of each UAV, by combining the smoothed path $(\sigma '_n)$ and setting $\phi _d=0$ (let UAV fly without spinning), we can plan the reference path $r[k]$. (b) For the Walking block in Fig. 3\hbox {} of each robot, following the process in Section IV-B, we can plan the reference path $r[k]$.\relax }}{13}{}\protected@file@percent }
+\newlabel{fig:FandW}{{4}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Local motion planning of flying of UAV}{13}{}\protected@file@percent }
+\newlabel{eq:uav}{{3}{13}}
+\citation{ourrobot}
+\citation{kajita2001real}
+\citation{ourrobot}
+\citation{huang2001planning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Local motion planning of walking of robot}{15}{}\protected@file@percent }
+\newlabel{eq:robot}{{4}{15}}
+\newlabel{eq:x_zmp}{{5}{15}}
+\citation{kajita2001real}
+\citation{1241826}
+\citation{lewis2012optimal}
+\newlabel{eq:LIPM}{{6}{17}}
+\newlabel{eq:output tracking}{{7}{17}}
+\citation{sabatino2015quadrotor}
+\citation{sabatino2015quadrotor}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Reference tracking control of each agent in hybrid URTS}{18}{}\protected@file@percent }
+\newlabel{eq:agent}{{8}{18}}
+\newlabel{eq:control}{{9}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  (a) The flowchart of Reference Tracking Control block in Fig. 1\hbox {} of each agent in hybrid URTS. The controller block is described in (d). The controller block (the proposed general $H_\infty $ decentralized observer-based feedforward reference tracking FTC scheme) is designed for a fully actuated agent dynamic model in (8\hbox {}) while the UAV is an underactuated system. It makes the designed feedforward linearization control law $u(t)\in \mathbb  {R}^6$ and the actuator control input $u'(t)\in \mathbb  {R}^4$ different for UAV. The reference generator block is introduced to deal with this problem. For UAVs, the reference generator block is described in (b). For robots, the reference generator block is described in (c). (b) The reference generator block for each UAV. $u'(t)$ and $r(t)$ can be calculated from $u(t)$ and $r'(t)$ by inverse dynamic through the UAV dynamic model in (3\hbox {}). (c) The reference generator block for each robot. $u'(t)=u(t)$ and $r(t)=r'(t)$ since the robot dynamic model in (4\hbox {}) is fully actuated. (d) The proposed general $H_\infty $ decentralized observer-based feedforward reference tracking FTC scheme for each agent in hybrid URTS.\relax }}{20}{}\protected@file@percent }
+\newlabel{fig:tracking}{{5}{20}}
+\citation{9834947}
+\citation{9075385}
+\citation{chen2013human}
+\citation{9834947}
+\newlabel{eq:UAV couple}{{10}{21}}
+\newlabel{eq:robot couple}{{11}{21}}
+\newlabel{eq:agent d1}{{12}{22}}
+\newlabel{eq:agent1}{{13}{22}}
+\newlabel{eq:error, state eq}{{14}{22}}
+\newlabel{eq:linear f1}{{15}{22}}
+\citation{9306757}
+\newlabel{eq:agent output}{{16}{23}}
+\newlabel{eq:error}{{17}{23}}
+\newlabel{eq:smooth model}{{18}{23}}
+\newlabel{eq:e_bar}{{19}{23}}
+\citation{9306757}
+\newlabel{eq:e_hat}{{20}{24}}
+\newlabel{eq:u_fb}{{21}{24}}
+\newlabel{eq:e_tilde}{{22}{24}}
+\newlabel{eq:x_tilde}{{23}{24}}
+\newlabel{Hinf}{{24}{24}}
+\citation{boyd1994linear}
+\citation{boyd1994linear}
+\newlabel{lemma1}{{1}{25}}
+\newlabel{lemma2}{{2}{25}}
+\newlabel{theorem1}{{1}{25}}
+\newlabel{BMI1}{{27}{25}}
+\newlabel{pf:1}{{28}{26}}
+\newlabel{pf:2}{{29}{26}}
+\newlabel{pf:3}{{IV}{26}}
+\newlabel{eq:M}{{30}{27}}
+\newlabel{eq:step1}{{31}{27}}
+\newlabel{eq:step2}{{32}{27}}
+\newlabel{LMI constraint}{{33}{27}}
+\newlabel{eq:linear subsys}{{34}{29}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}simulation results}{30}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces An example of a S\&R area in URTS. This area is divided into $N_T$ areas, and $team_i$ is responsible for $area_i$.\relax }}{30}{}\protected@file@percent }
+\newlabel{fig:SR_area}{{6}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The allocation of search tasks in the $i$th team and $(i+1)$th team at the begining. The search tasks $T_j,j=1,2,...,6$ are allocated by the task allocation block. The content of the search tasks is to reach some consecutive goals $q_{goal}$ (black dots in figure) so that the straight path between goals $q_{goal}$ can cover the unsearched area. For UAV, the sequence formed by $q_{goal}$ is directly the path $(\sigma _n)$ due to the no-collision assumption \textit  {Assumption 2.4\hbox {}}. For robots, $q_{goal}$ will be passed to the global path planning block together with current configuration $q_{start}$ and occupancy map $\mathcal  {C}$ to find collision-free paths $(\sigma _n)$.\relax }}{31}{}\protected@file@percent }
+\newlabel{fig:S_task}{{7}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The result of local motion planning of flying behavior in $(\beta _n), n\in \mathbb  {Z}\cap [1,16]$ of UAV $\alpha _{i,1}$ performing the search task $T_1$.\relax }}{31}{}\protected@file@percent }
+\newlabel{sim:flying}{{8}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The global path planning result of the robot $\alpha _{i,5}$ performing the rescue task $T_7$ using RRT algorithm. The block polygons represent the obstacle space $\mathcal  {C}_{obs}$.\relax }}{32}{}\protected@file@percent }
+\newlabel{fig:R_task}{{9}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The top view of result of local motion planning of walking behavior in $(\beta _n), n\in \mathbb  {Z}\cap [1,3]$ of robot $\alpha _{i,5}$ performing the rescue task $T_7$. The joint path, i.e., reference path $r[k]$ will be obtained by solving IK with CoM, left foothold and right foothold path.\relax }}{32}{}\protected@file@percent }
+\newlabel{sim:walking}{{10}{32}}
+\citation{ourrobot}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The trajectories of components of reference $r(t)$, state $x(t)$ and estimated state $\hat  {x}(t)$ of the UAV $\alpha _{1,1}$.\relax }}{34}{}\protected@file@percent }
+\newlabel{fig:UAV, state}{{11}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The estimation of components of actuator fault $f_1(t)$ of the UAV $\alpha _{1,1}$.\relax }}{34}{}\protected@file@percent }
+\newlabel{fig:UAV, fa}{{12}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The estimation of components of sensor fault $f_2(t)$ of the UAV $\alpha _{1,1}$.\relax }}{35}{}\protected@file@percent }
+\newlabel{fig:UAV, fs}{{13}{35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces The actuator control input $u'(t)$ of the UAV $\alpha _{1,1}$.\relax }}{35}{}\protected@file@percent }
+\newlabel{fig:UAV, control}{{14}{35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The trajectories of components of reference $r(t)$, state $x(t)$ and estimated state $\hat  {x}(t)$ of the robot $\alpha _{1,5}$.\relax }}{36}{}\protected@file@percent }
+\newlabel{fig:robot, state}{{15}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces The estimation of components of actuator fault $f_1(t)$ of the robot $\alpha _{1,5}$.\relax }}{36}{}\protected@file@percent }
+\newlabel{fig:robot, fa}{{16}{36}}
+\citation{7456706}
+\citation{7456706}
+\citation{7456706}
+\citation{7456706}
+\citation{7456706}
+\citation{7456706}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces The estimation of components of sensor fault $f_2(t)$ of the robot $\alpha _{1,5}$.\relax }}{37}{}\protected@file@percent }
+\newlabel{fig:robot, fs}{{17}{37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces The actuator control input $u'(t)$ of the robot $\alpha _{1,5}$.\relax }}{37}{}\protected@file@percent }
+\newlabel{fig:robot, control}{{18}{37}}
+\citation{mySimulation}
+\citation{mySimulation}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces The trajectories of reference $r(t)$, state $x(t)$ and estimated state $\hat  {x}(t)$ of the UAV $\alpha _{1,1}$ by the traditional PID computed torque controller without FTC \cite  {7456706}.\relax }}{38}{}\protected@file@percent }
+\newlabel{fig:uav, state, noFTC}{{19}{38}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces The trajectories of reference $r(t)$, state $x(t)$ and estimated state $\hat  {x}(t)$ of the robot $\alpha _{1,5}$ by the traditional PID computed torque controller without FTC \cite  {7456706}.\relax }}{38}{}\protected@file@percent }
+\newlabel{fig:robot, state, noFTC}{{20}{38}}
+\citation{mySimulation}
+\bibstyle{IEEEtran}
+\bibdata{citation}
+\bibcite{9700861}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}conclusion}{39}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces The simulation of team tracking of URTS for $team_i,i=1,2,3$ when they perform search tasks. As shown in Fig. 6\hbox {}, the UAV and robot in URTS will be released along the direction of the road ($Y$-axis) and each team is responsible for an area. First, the respective tasks of each agent are determined by the task allocation algorithm. According to the task content, each agent will be determined a goal $q_{goal}$. As shown in Fig. 7\hbox {}, this simulation assumes that $team_i,i=1,2,3$ are assigned with search tasks. Subsequently, the path $(\sigma _n)$ for each UAV is assigned and the collision-free path $(\sigma _n)$ for each robot is planned by the path planning algorithm to reach the goal configuration $q_{goal}$. Depending on the terrain environment, an appropriate behavior $(\beta _n)$ is decided to enable the agent to follow the path $(\sigma _n)$. A reference path $r[k]$ corresponding to a behavior is planned via local motion planning to enable an actual mechanical body to perform the behavior. Since this article only gives the motion planning method of flying (for UAV) and walking (for biped-robot), it is assumed that the appropriate behaviors from $q_{start}$ to $q_{goal}$ are all flying or walking behaviors in this simulation. In this figure, we draw the smoothed path $(\sigma '_n)$ of each agent, which is the intermediate result of local motion planning as shown in Fig, 4\hbox {}. It represents the path that the agent is going to reach in the task space. According to $r[k]$ and the dynamic model of UAV and robot, the reference trajectory $r(t)$ of each agent is planned. Finally, through the decentralized $H_\infty $ observer-based feedforward reference tracking FTC scheme proposed in this paper, the team tracking result of the agents in $team_i, i=1,2,3$ in URTS are shown. Note that the above process is dynamic. If a higher block in Fig. 1\hbox {} makes a new decision that produces a new reference planning, the lower blocks must recalculate based on it. Relatively, this simulation is the static result, that is, there is no re-decision from $q_{start}$ to $q_{goal}$. The real time simulation of reference planning and team formation tracking control of URTS is given in \cite  {mySimulation}\relax }}{40}{}\protected@file@percent }
+\newlabel{fig:URTS}{{21}{40}}
+\bibcite{8352646}{2}
+\bibcite{chen2019control}{3}
+\bibcite{9371292}{4}
+\bibcite{skaltsis2021survey}{5}
+\bibcite{zhang2018path}{6}
+\bibcite{9108245}{7}
+\bibcite{arbanas2018decentralized}{8}
+\bibcite{9384209}{9}
+\bibcite{olcay2017design}{10}
+\bibcite{8931370}{11}
+\bibcite{wang2022consensus}{12}
+\bibcite{6669235}{13}
+\bibcite{paden2016survey}{14}
+\bibcite{khamis2015multi}{15}
+\bibcite{elbanhawi2014sampling}{16}
+\bibcite{liu2018survey}{17}
+\bibcite{yu2013multi}{18}
+\bibcite{sabatino2015quadrotor}{19}
+\bibcite{ourrobot}{20}
+\bibcite{kajita2001real}{21}
+\@writefile{toc}{\contentsline {section}{References}{41}{}\protected@file@percent }
+\bibcite{huang2001planning}{22}
+\bibcite{1241826}{23}
+\bibcite{lewis2012optimal}{24}
+\bibcite{9834947}{25}
+\bibcite{9075385}{26}
+\bibcite{chen2013human}{27}
+\bibcite{9306757}{28}
+\bibcite{boyd1994linear}{29}
+\bibcite{7456706}{30}
+\bibcite{mySimulation}{31}
+\gdef \@abspage@last{42}

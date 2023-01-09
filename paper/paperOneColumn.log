@@ -1,0 +1,645 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 21.12) (preloaded format=pdflatex 2022.3.2)  9 JAN 2023 10:34
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/david/OneDrive/文件/清大/paper/paper/paperOneColumn.tex
+(c:/Users/david/OneDrive/文件/清大/paper/paper/paperOneColumn.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2021-11-22> (IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+\@IEEEtrantmpdimenA=\dimen138
+\@IEEEtrantmpdimenB=\dimen139
+\@IEEEtrantmpdimenC=\dimen140
+\@IEEEtrantmpcountA=\count183
+\@IEEEtrantmpcountB=\count184
+\@IEEEtrantmpcountC=\count185
+\@IEEEtrantmptoksA=\toks16
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 503.
+(C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+\@IEEEnormalsizeunitybaselineskip=\dimen141
+-- This is a 12 point document.
+\CLASSINFOnormalsizebaselineskip=\dimen142
+\CLASSINFOnormalsizeunitybaselineskip=\dimen143
+\IEEEnormaljot=\dimen144
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <14> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <22> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <22> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+\IEEEquantizedlength=\dimen145
+\IEEEquantizedlengthdiff=\dimen146
+\IEEEquantizedtextheightdiff=\dimen147
+\IEEEilabelindentA=\dimen148
+\IEEEilabelindentB=\dimen149
+\IEEEilabelindent=\dimen150
+\IEEEelabelindent=\dimen151
+\IEEEdlabelindent=\dimen152
+\IEEElabelindent=\dimen153
+\IEEEiednormlabelsep=\dimen154
+\IEEEiedmathlabelsep=\dimen155
+\IEEEiedtopsep=\skip47
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@IEEEsubequation=\count190
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\c@figure=\count191
+\c@table=\count192
+\@IEEEeqnnumcols=\count193
+\@IEEEeqncolcnt=\count194
+\@IEEEsubeqnnumrollback=\count195
+\@IEEEquantizeheightA=\dimen156
+\@IEEEquantizeheightB=\dimen157
+\@IEEEquantizeheightC=\dimen158
+\@IEEEquantizeprevdepth=\dimen159
+\@IEEEquantizemultiple=\count196
+\@IEEEquantizeboxA=\box50
+\@IEEEtmpitemindent=\dimen160
+\IEEEPARstartletwidth=\dimen161
+\c@IEEEbiography=\count197
+\@IEEEtranrubishbin=\box51
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/cite\cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2021/10/15 v2.17l AMS math features
+\@mathmargin=\skip50
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen162
+)) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen163
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2021/08/26 v2.02 operator names
+)
+\inf@bad=\count198
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count199
+\leftroot@=\count266
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count267
+\DOTSCASE@=\count268
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box52
+\strutbox@=\box53
+\big@size=\dimen164
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count269
+\c@MaxMatrixCols=\count270
+\dotsspace@=\muskip16
+\c@parentequation=\count271
+\dspbrk@lvl=\count272
+\tag@help=\toks18
+\row@=\count273
+\column@=\count274
+\maxfields@=\count275
+\andhelp@=\toks19
+\eqnshift@=\dimen165
+\alignsep@=\dimen166
+\tagshift@=\dimen167
+\tagwidth@=\dimen168
+\totwidth@=\dimen169
+\lineht@=\dimen170
+\@envbody=\toks20
+\multlinegap=\skip51
+\multlinetaggap=\skip52
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2938.
+LaTeX Info: Redefining \] on input line 2939.
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/breqn\breqn.sty (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2021-11-22 L3 programming layer (loader) 
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2021-10-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count276
+\l__pdf_internal_box=\box54
+))
+Package: breqn 2021/10/28 v0.98l Breaking equations
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks22
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen171
+\Gin@req@width=\dimen172
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/breqn\flexisym.sty
+Package: flexisym 2021/10/28 v0.98l Make math characters macros
+LaTeX Info: Redefining \textprime on input line 299.
+LaTeX Info: Redefining \not on input line 357.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/breqn\cmbase.sym
+File: cmbase.sym 2007/12/19 v0.92
+LaTeX Info: Redefining \hbar on input line 324.
+LaTeX Info: Redefining \surd on input line 326.
+LaTeX Info: Redefining \angle on input line 334.
+LaTeX Info: Redefining \neq on input line 335.
+LaTeX Info: Redefining \mapsto on input line 336.
+LaTeX Info: Redefining \cong on input line 337.
+LaTeX Info: Redefining \notin on input line 340.
+LaTeX Info: Redefining \rightleftharpoons on input line 341.
+LaTeX Info: Redefining \doteq on input line 342.
+LaTeX Info: Redefining \hookrightarrow on input line 343.
+LaTeX Info: Redefining \hookleftarrow on input line 344.
+LaTeX Info: Redefining \bowtie on input line 345.
+LaTeX Info: Redefining \models on input line 346.
+LaTeX Info: Redefining \Longrightarrow on input line 347.
+LaTeX Info: Redefining \longrightarrow on input line 348.
+LaTeX Info: Redefining \Longleftarrow on input line 349.
+LaTeX Info: Redefining \longleftarrow on input line 350.
+LaTeX Info: Redefining \longmapsto on input line 351.
+LaTeX Info: Redefining \longleftrightarrow on input line 352.
+LaTeX Info: Redefining \Longleftrightarrow on input line 353.
+LaTeX Info: Redefining \cdots on input line 357.
+LaTeX Info: Redefining \vdots on input line 360.
+LaTeX Info: Redefining \ddots on input line 365.
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/breqn\mathstyle.sty
+Package: mathstyle 2021/10/28 v0.98l Tracking mathstyle implicitly
+LaTeX Info: Redefining \displaystyle on input line 95.
+LaTeX Info: Redefining \textstyle on input line 97.
+LaTeX Info: Redefining \scriptstyle on input line 99.
+LaTeX Info: Redefining \scriptscriptstyle on input line 101.
+LaTeX Info: Redefining \genfrac on input line 149.
+)) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count277
+\calc@Bcount=\count278
+\calc@Adimen=\dimen173
+\calc@Bdimen=\dimen174
+\calc@Askip=\skip53
+\calc@Bskip=\skip54
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count279
+\calc@Cskip=\skip55
+)
+\inf@bad=\count280
+\maxint=\count281
+\listwidth=\dimen175
+\eqnumsep=\dimen176
+\eqmargin=\dimen177
+\eqlinespacing=\skip56
+\eqlineskip=\skip57
+\eqlineskiplimit=\dimen178
+\eqbinoffset=\muskip17
+\eqdelimoffset=\muskip18
+\eqindentstep=\dimen179
+\eqstyle=\toks23
+\eqbreakdepth=\count282
+\eqinterlinepenalty=\count283
+\intereqpenalty=\count284
+\intereqskip=\skip58
+\prerelpenalty=\count285
+\prebinoppenalty=\count286
+\Dmedmuskip=\muskip19
+\Dthickmuskip=\muskip20
+\eqleftskip=\skip59
+\eqrightskip=\skip60
+\eq@vspan=\skip61
+\eq@binoffset=\muskip21
+\EQ@box=\box55
+\EQ@copy=\box56
+\EQ@numbox=\box57
+\eq@wdNum=\dimen180
+\GRP@numbox=\box58
+\grp@wdNum=\dimen181
+\eq@lines=\count287
+\eq@curline=\count288
+\eq@badness=\count289
+\EQ@vims=\count290
+\eq@dp=\dimen182
+\eq@wdL=\dimen183
+\eq@wdT=\dimen184
+\eq@wdMin=\dimen185
+\grp@wdL=\dimen186
+\grp@wdR=\dimen187
+\grp@wdT=\dimen188
+\eq@wdRmax=\dimen189
+\eq@firstht=\dimen190
+\eq@wdCond=\dimen191
+\eq@indentstep=\dimen192
+\eq@linewidth=\dimen193
+\grp@linewidth=\dimen194
+\eq@hshift=\dimen195
+\eq@given@sidespace=\dimen196
+\mathindent=\dimen197
+\eq@final@linecount=\count291
+\eq@wdR=\dimen198
+\EQ@continue=\toks24
+\lr@level=\count292
+\GRP@queue=\toks25
+\GRP@box=\box59
+\GRP@wholebox=\box60
+\darraycolsep=\skip62
+\cur@row=\count293
+\cur@col=\count294
+\conditionsep=\skip63
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mathtools.sty
+Package: mathtools 2022/02/07 v1.28a mathematical typesetting tools
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+\g_MT_multlinerow_int=\count295
+\l_MT_multwidth_dim=\dimen199
+\origjot=\skip64
+\l_MT_shortvdotswithinadjustabove_dim=\dimen256
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen257
+\l_MT_above_intertext_sep=\dimen258
+\l_MT_below_intertext_sep=\dimen259
+\l_MT_above_shortintertext_sep=\dimen260
+\l_MT_below_shortintertext_sep=\dimen261
+\xmathstrut@box=\box61
+\xmathstrut@dim=\dimen262
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithmic.sty
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@ALC@unique=\count296
+\c@ALC@line=\count297
+\c@ALC@rem=\count298
+\c@ALC@depth=\count299
+\ALC@tlm=\skip65
+\algorithmicindent=\skip66
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/base\textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2022/02/28 v3.6a Customizing captions (AR)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2022/02/28 v2.3a caption3 kernel (AR)
+\caption@tempdima=\dimen263
+\captionmargin=\dimen264
+\caption@leftmargin=\dimen265
+\caption@rightmargin=\dimen266
+\caption@width=\dimen267
+\caption@indent=\dimen268
+\caption@parindent=\dimen269
+\caption@hangindent=\dimen270
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEtablestring \footnotesize \bgroup \par \centering \@IEEEtabletopskipstrut {\normalfont \footnotesize #1}\\{\normalfont \footnotesize \scshape #2}\par \addvspace {0.5\baselineskip }\egroup \@IEEEtablecaptionsepspace \else \@IEEEfigurecaptionsepspace \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspace \nobreakspace #2}\ifdim \wd \@tempboxa >\hsize \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspace \nobreakspace }\parbox [t]{\hsize }{\normalfont \footnotesize \noindent \unhbox \@tempboxa #2}\else \ifCLASSOPTIONconference \hbox to\hsize {\normalfont \footnotesize \hfil \box \@tempboxa \hfil }\else \hbox to\hsize {\normalfont \footnotesize \box \@tempboxa \hfil }\fi \fi \fi  on input line 1176.
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count300
+\c@continuedfloat=\count301
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2022/01/07 v1.5 Sub-captions (AR)
+\c@subfigure=\count302
+\c@subtable=\count303
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count304
+\float@exts=\toks26
+\float@box=\box62
+\@float@everytoks=\toks27
+\@floatcapt=\box63
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/threeparttable\threeparttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box64
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/tools\bm.sty
+Package: bm 2021/04/25 v1.2e Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup6
+\symboldletters=\mathgroup7
+\symboldsymbols=\mathgroup8
+Package bm Info: No bold for \OMX/cmex/m/n, using \pmb.
+Package bm Info: No bold for \U/msa/m/n, using \pmb.
+Package bm Info: No bold for \U/msb/m/n, using \pmb.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip67
+\enit@outerparindent=\dimen271
+\enit@toks=\toks28
+\enit@inbox=\box65
+\enit@count@id=\count305
+\enitdp@description=\count306
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip22
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+\c@theorem=\count307
+\c@lemma=\count308
+\c@remark=\count309
+\c@assumption=\count310
+ (paperOneColumn.aux)
+\openout1 = `paperOneColumn.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+
+-- Lines per column: 32 (exact).
+(C:\Users\david\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count311
+\scratchdimen=\dimen272
+\scratchbox=\box66
+\nofMPsegments=\count312
+\nofMParguments=\count313
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count314
+\MPscratchDim=\dimen273
+\MPnumerator=\count315
+\makeMPintoPDFobject=\count316
+\everyMPtoPDFconversion=\toks30
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/grfext\grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: threeparttable package is loaded.
+Package caption Info: End \AtBeginDocument code.
+ [1{C:/Users/david/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
+LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [3]
+Overfull \hbox (34.05354pt too wide) in paragraph at lines 60--64
+[]\OT1/ptm/b/n/12 Notation 1: $\OML/cmm/m/it/12 diag\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 A[]; A[]; [] ; A[]\OT1/cmr/m/n/12 )$\OT1/ptm/m/n/12 : a block di-ag-o-nal ma-trix with main di-ag-o-nal blocks $\OML/cmm/m/it/12 A[]; A[]; [] ; A[]$\OT1/ptm/m/n/12 .
+ []
+
+[4] [5]
+<fig/sys.png, id=27, 1510.64375pt x 1515.6625pt>
+File: fig/sys.png Graphic file (type png)
+<use fig/sys.png>
+Package pdftex.def Info: fig/sys.png  used on input line 87.
+(pdftex.def)             Requested size: 226.58678pt x 227.33957pt.
+ [6 <./fig/sys.png>] [7] [8] [9]
+<fig/behavior.png, id=45, 3949.75626pt x 1249.66875pt>
+File: fig/behavior.png Graphic file (type png)
+<use fig/behavior.png>
+Package pdftex.def Info: fig/behavior.png  used on input line 156.
+(pdftex.def)             Requested size: 473.9503pt x 149.95378pt.
+
+Overfull \hbox (4.19528pt too wide) in paragraph at lines 156--160
+ [][] 
+ []
+
+<fig/LMP.png, id=46, 3859.41875pt x 1686.3pt>
+File: fig/LMP.png Graphic file (type png)
+<use fig/LMP.png>
+Package pdftex.def Info: fig/LMP.png  used on input line 168.
+(pdftex.def)             Requested size: 463.11028pt x 202.34726pt.
+[10 <./fig/behavior.png>] [11 <./fig/LMP.png>]
+<fig/FandW.png, id=55, 3949.75626pt x 1214.5375pt>
+File: fig/FandW.png Graphic file (type png)
+<use fig/FandW.png>
+Package pdftex.def Info: fig/FandW.png  used on input line 186.
+(pdftex.def)             Requested size: 473.9503pt x 145.7382pt.
+
+Overfull \hbox (4.19528pt too wide) in paragraph at lines 186--189
+ [][] 
+ []
+
+[12] [13 <./fig/FandW.png>] [14] [15] [16] [17] [18]
+<fig/tracking.png, id=81, 4065.1875pt x 2700.0875pt>
+File: fig/tracking.png Graphic file (type png)
+<use fig/tracking.png>
+Package pdftex.def Info: fig/tracking.png  used on input line 406.
+(pdftex.def)             Requested size: 487.80145pt x 323.99652pt.
+
+Overfull \hbox (18.04643pt too wide) in paragraph at lines 406--410
+ [][] 
+ []
+
+[19] [20 <./fig/tracking.png>] [21] [22] [23]
+Overfull \hbox (24.87204pt too wide) in paragraph at lines 595--595
+[][]\OT1/ptm/m/it/12 Remark 12: Let $\OML/cmm/m/it/12 u[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 K[]e\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 ) = [\OML/cmm/m/it/12 K[] [] K[] [] K[] [] K[] [] K[]\OT1/cmr/m/n/12 ][[][] [](\OML/cmm/m/it/12 \OT1/cmr/m/n/12 )\OML/cmm/m/it/12 d; []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; []e[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; [][]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; [][]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\OT1/cmr/m/n/12 )][]$\OT1/ptm/m/it/12 ,
+ []
+
+[24] [25] [26] [27] [28] [29]
+<fig/SR_area.png, id=121, 1691.31876pt x 732.7375pt>
+File: fig/SR_area.png Graphic file (type png)
+<use fig/SR_area.png>
+Package pdftex.def Info: fig/SR_area.png  used on input line 829.
+(pdftex.def)             Requested size: 202.9495pt x 87.9247pt.
+<fig/S_task.png, id=122, 2218.2875pt x 1048.91875pt>
+File: fig/S_task.png Graphic file (type png)
+<use fig/S_task.png>
+Package pdftex.def Info: fig/S_task.png  used on input line 834.
+(pdftex.def)             Requested size: 232.91014pt x 110.13171pt.
+<fig/uav_LMP.png, id=123, 368.577pt x 276.93864pt>
+File: fig/uav_LMP.png Graphic file (type png)
+<use fig/uav_LMP.png>
+Package pdftex.def Info: fig/uav_LMP.png  used on input line 841.
+(pdftex.def)             Requested size: 210.09106pt x 157.85666pt.
+<fig/robot_PP.png, id=124, 357.15834pt x 300.20958pt>
+File: fig/robot_PP.png Graphic file (type png)
+<use fig/robot_PP.png>
+Package pdftex.def Info: fig/robot_PP.png  used on input line 846.
+(pdftex.def)             Requested size: 214.29666pt x 180.12712pt.
+ [30 <./fig/SR_area.png>]
+<fig/robot_LMP.png, id=129, 359.1819pt x 292.83804pt>
+File: fig/robot_LMP.png Graphic file (type png)
+<use fig/robot_LMP.png>
+Package pdftex.def Info: fig/robot_LMP.png  used on input line 853.
+(pdftex.def)             Requested size: 204.7358pt x 166.9194pt.
+ [31 <./fig/S_task.png> <./fig/uav_LMP.png (PNG copy)>] [32 <./fig/robot_PP.png (PNG copy)> <./fig/robot_LMP.png (PNG copy)>]
+Overfull \hbox (35.57349pt too wide) in paragraph at lines 860--862
+[]\OT1/ptm/m/n/12 System pa-ram-e-ters: Ini-tial value $[]\OT1/cmr/m/n/12 (0) = [[](0)[] [] \OML/cmm/m/it/12 F[]\OT1/cmr/m/n/12 (0)[] [] \OML/cmm/m/it/12 F[]\OT1/cmr/m/n/12 (0)[]\OML/cmm/m/it/12 ; []\OT1/cmr/m/n/12 (0)][] = [[0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 1\OML/cmm/m/it/12 X; :::; \OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 1\OML/cmm/m/it/12 X\OT1/cmr/m/n/12 ][]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 0\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 0\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 0][]$
+ []
+
+
+Overfull \hbox (13.59126pt too wide) in paragraph at lines 887--891
+[]\OT1/ptm/m/n/12 Designed pa-ram-e-ters of sub-sys-tems: $\OML/cmm/m/it/12 Q[] \OT1/cmr/m/n/12 = 50 \OMS/cmsy/m/n/12  \OML/cmm/m/it/12 diag\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 diag\OT1/cmr/m/n/12 (1\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 100\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 10) [] 0 [] 0)$\OT1/ptm/m/n/12 , $\OML/cmm/m/it/12 Q[] \OT1/cmr/m/n/12 = 5\OML/cmm/m/it/12 diag\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 diag\OT1/cmr/m/n/12 ([1 []
+ []
+
+[33]
+<fig/uav (1).png, id=142, 420.90048pt x 316.83168pt>
+File: fig/uav (1).png Graphic file (type png)
+<use fig/uav (1).png>
+Package pdftex.def Info: fig/uav (1).png  used on input line 909.
+(pdftex.def)             Requested size: 239.91576pt x 180.59593pt.
+<fig/uav (2).png, id=143, 421.62318pt x 316.83168pt>
+File: fig/uav (2).png Graphic file (type png)
+<use fig/uav (2).png>
+Package pdftex.def Info: fig/uav (2).png  used on input line 914.
+(pdftex.def)             Requested size: 240.3277pt x 180.59593pt.
+<fig/uav (3).png, id=144, 420.90048pt x 316.83168pt>
+File: fig/uav (3).png Graphic file (type png)
+<use fig/uav (3).png>
+Package pdftex.def Info: fig/uav (3).png  used on input line 919.
+(pdftex.def)             Requested size: 239.91576pt x 180.59593pt.
+<fig/uav (4).png, id=145, 420.90048pt x 314.22997pt>
+File: fig/uav (4).png Graphic file (type png)
+<use fig/uav (4).png>
+Package pdftex.def Info: fig/uav (4).png  used on input line 924.
+(pdftex.def)             Requested size: 239.91576pt x 179.11293pt.
+<fig/robot (1).png, id=146, 421.18956pt x 316.83168pt>
+File: fig/robot (1).png Graphic file (type png)
+<use fig/robot (1).png>
+Package pdftex.def Info: fig/robot (1).png  used on input line 932.
+(pdftex.def)             Requested size: 240.08054pt x 180.59593pt.
+<fig/robot (2).png, id=147, 421.91226pt x 316.83168pt>
+File: fig/robot (2).png Graphic file (type png)
+<use fig/robot (2).png>
+Package pdftex.def Info: fig/robot (2).png  used on input line 937.
+(pdftex.def)             Requested size: 240.49248pt x 180.59593pt.
+<fig/robot (3).png, id=148, 421.18956pt x 316.83168pt>
+File: fig/robot (3).png Graphic file (type png)
+<use fig/robot (3).png>
+Package pdftex.def Info: fig/robot (3).png  used on input line 942.
+(pdftex.def)             Requested size: 240.08054pt x 180.59593pt.
+<fig/robot (4).png, id=149, 366.55344pt x 292.54897pt>
+File: fig/robot (4).png Graphic file (type png)
+<use fig/robot (4).png>
+Package pdftex.def Info: fig/robot (4).png  used on input line 947.
+(pdftex.def)             Requested size: 208.93762pt x 166.75464pt.
+ [34 <./fig/uav (1).png (PNG copy)> <./fig/uav (2).png (PNG copy)>] [35 <./fig/uav (3).png (PNG copy)> <./fig/uav (4).png (PNG copy)>] [36 <./fig/robot (1).png (PNG copy)> <./fig/robot (2).png (PNG copy)>]
+<fig/uav (1) noFTC.png, id=159, 420.90048pt x 316.83168pt>
+File: fig/uav (1) noFTC.png Graphic file (type png)
+<use fig/uav (1) noFTC.png>
+Package pdftex.def Info: fig/uav (1) noFTC.png  used on input line 957.
+(pdftex.def)             Requested size: 239.91576pt x 180.59593pt.
+<fig/robot (1) noFTC.png, id=160, 421.18956pt x 316.83168pt>
+File: fig/robot (1) noFTC.png Graphic file (type png)
+<use fig/robot (1) noFTC.png>
+Package pdftex.def Info: fig/robot (1) noFTC.png  used on input line 962.
+(pdftex.def)             Requested size: 240.08054pt x 180.59593pt.
+ [37 <./fig/robot (3).png (PNG copy)> <./fig/robot (4).png (PNG copy)>]
+<fig/URTS.png, id=165, 1175.8329pt x 611.69328pt>
+File: fig/URTS.png Graphic file (type png)
+<use fig/URTS.png>
+Package pdftex.def Info: fig/URTS.png  used on input line 969.
+(pdftex.def)             Requested size: 493.84645pt x 256.90942pt.
+
+Overfull \hbox (24.09143pt too wide) in paragraph at lines 969--969
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 90.56554pt on input line 971.
+
+[38 <./fig/uav (1) noFTC.png (PNG copy)> <./fig/robot (1) noFTC.png (PNG copy)>] (paperOneColumn.bbl [39] [40 <./fig/URTS.png (PNG copy)>]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 37.
+ (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [41]) [42] (paperOneColumn.aux) ) 
+Here is how much of TeX's memory you used:
+ 8027 strings out of 478659
+ 138492 string characters out of 2845921
+ 460409 words of memory out of 3000000
+ 25972 multiletter control sequences out of 15000+600000
+ 444246 words of font info for 119 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 70i,22n,85p,2446b,372s stack positions out of 5000i,500n,10000p,200000b,80000s
+{C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paperOneColumn.pdf (42 pages, 7318644 bytes).
+PDF statistics:
+ 258 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 106 words of extra memory for PDF output out of 10000 (max. 10000000)
+
