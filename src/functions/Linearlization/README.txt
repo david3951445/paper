@@ -3,8 +3,8 @@ Transform nonlinear system to linear system
     - @Fuzzy
       T-S fuzzy
 
-    - @GlobalLinear
-      global linearize
-
     - @TPmodel
       TP model transformation
+
+    - @GlobalLinear
+      global linearize

@@ -15,7 +15,7 @@ My paper
 
 ---
 ## src
-All scripts in my study
+All source scripts in my study
 
 ### functions
 External source codes and my function and class

@@ -1,5 +1,6 @@
 function obj = getA_CT(obj)
 %CONSTRUCT SMooth Model's A matrix
+%
 % method 1-1    - [FDC; 1- 1 0 ... 0; 0 1 -1 0 ... 0; ...]
 % method 1-2    - [1 -1 0 ... 0; 1- 1 0 ... 0; 0 1 -1 0 ... 0; ...]
 % method 1-3    - [a1-1 a2 ... an; 1- 1 0 ... 0; 0 1 -1 0 ... 0; ...], sum of "a1" to "an" = 1
@@ -7,6 +8,9 @@ function obj = getA_CT(obj)
 % method 3      - zeros
 % method 4      - with second order differential term
 % method 5      - with integral term
+%
+% - FDC: Finite Difference Coefficient
+
 WINDOW  = obj.WINDOW;
 h      = obj.dt;
 method  = obj.METHOD;
